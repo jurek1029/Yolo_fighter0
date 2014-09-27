@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/stone" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/playerBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab2"
+            android:text="@string/player_tab" 
+            android:textColor="@color/highlited_tab"
+            android:onClick="skillsClick"/>
+
+        <Button
+            android:id="@+id/weaponBtn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab"
+            android:text="@string/weapon_tab"
+            android:textColor="@color/dark_tab"
+            android:onClick="weaponClick"/>
+
+        <Button
+            android:id="@+id/skill1Btn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab" 
+            android:text="@string/skill1_tab" 
+            android:textColor="@color/dark_tab"
+            android:onClick="skill1Click"/>
+
+        <Button
+            android:id="@+id/skill2Btn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab" 
+            android:text="@string/skill2_tab" 
+            android:textColor="@color/dark_tab"
+            android:onClick="skill2Click"/>
+
+        <Button
+            android:id="@+id/skill3Btn"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab" 
+            android:text="@string/skill3_tab" 
+            android:textColor="@color/dark_tab"
+            android:onClick="skill3Click"/>
+    </LinearLayout>
+    
+    <LinearLayout 
+    	android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+    	android:orientation="horizontal" 
+    	android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/stat1Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="@string/Stat1" />
+
+            <TextView
+                android:id="@+id/stat1Counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/stat2Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="@string/Stat2" />
+
+            <TextView
+                android:id="@+id/stat2Counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/stat3Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="@string/Stat3" />
+
+            <TextView
+                android:id="@+id/stat3Counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/stat4Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="@string/Stat4" />
+
+            <TextView
+                android:id="@+id/stat4Counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                android:text="0" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+		
+             <TextView
+                 android:id="@+id/unitsTxt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:text="@string/Units" />
+
+            <TextView
+                android:id="@+id/unitsCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0" />
+            
+    	</LinearLayout>
+    	
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:orientation="vertical" >
+		
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:drawSelectorOnTop="true"/>
+        		<!-- android:entries="@array/player_list"-->
+        		 
+
+            <ImageView
+                android:id="@+id/playerImage"
+                android:layout_width="142dp"
+                android:layout_height="138dp"
+                android:layout_gravity="center"
+                android:src="@drawable/dark_angel" />
+            
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="||||||||||||||||||||||||||||||||||||||||||||||||||   Lvl. 69" />
+    	</LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

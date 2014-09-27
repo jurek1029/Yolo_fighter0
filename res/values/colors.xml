@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+<!-- Skills Menu -->
+ 
+ <color name="highlited_tab">#000000</color>
+ <color name="dark_tab">#FFFFFF</color>
+
+
+</resources>

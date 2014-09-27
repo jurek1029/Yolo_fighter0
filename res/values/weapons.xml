@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weapons">
+        <item>Ak 47</item>
+        <item>PKP Pecheneg</item>
+        <item>Thompson</item>
+    </string-array>
+</resources>

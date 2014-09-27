@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Yolo_fighter</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    
+    
+    <!-- Skills Menu -->
+    <string name="player_tab">Player</string>
+    <string name="weapon_tab">Weapon</string>
+    <string name="skill1_tab">Skill 1</string>
+    <string name="skill2_tab">Skill 2</string>
+    <string name="skill3_tab">Skill 3</string>
+    
+    <!-- Player Stats -->
+    <string name="Stat1">Strength</string>
+    <string name="Stat2">Agility</string>
+    <string name="Stat3">Resistance</string>
+    <string name="Stat4">Vitality</string>
+    <string name="Units">Units</string>
+    
+    <string-array name="player_list">
+		<item>Anioł Dewastator</item>
+		<item>Nekromanta Rozbójnik</item>
+		<item>Devil Evil</item>
+	</string-array>
+
+</resources>
