@@ -59,6 +59,7 @@ public class YoloGameRenderer implements Renderer {
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
 		
+		System.out.println(joyBackTX+" "+joyBackYT+" "+joyBallX1+" "+joyBallY1);
 		//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------		
 		if(YoloEngine.canMove)
 		{
@@ -120,10 +121,20 @@ public class YoloGameRenderer implements Renderer {
 					XADD = 2f;
 					cameraPosX = -XADD;
 					BtnTX = XADD/ (MOVE_BALL_SIZE_X*2);
-					joyBallTX = XADD /MOVE_BALL_SIZE_X;
-					joyBackTX = XADD / MOVE_SIZE_X;
+					//joyBallTX = XADD /MOVE_BALL_SIZE_X;
+					//joyBackTX = XADD / MOVE_SIZE_X;
 					liveBarTX = XADD / LIVE_BAR_SIZE_X_0;
 					liveBarTX_1 = XADD / LIVE_BAR_SIZE_X_1;
+					if(YoloEngine.isClasic)
+					{
+						joyBallTX = XADD /MOVE_BALL_SIZE_X;
+						joyBackTX = XADD / MOVE_SIZE_X;
+					}
+					else
+					{
+						joyBallTX = XADD /(MOVE_SIZE_X1*2f);
+						joyBackTX = XADD / MOVE_SIZE_X1;
+					}
 					
 					gl.glTranslatef(cameraPosX,cameraPosY,0f);
 				}

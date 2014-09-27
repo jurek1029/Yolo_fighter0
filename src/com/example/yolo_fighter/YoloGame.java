@@ -83,6 +83,7 @@ public class YoloGame extends Activity{
 									{
 										YoloEngine.Player_vy = 0.25f;
 										YoloEngine.isJumping = true;
+										YoloEngine.isCrouch = false;
 									}
 								
 								if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
@@ -124,6 +125,7 @@ public class YoloGame extends Activity{
 							{
 								YoloEngine.Player_vy = 0.25f;
 								YoloEngine.isJumping = true;
+								YoloEngine.isCrouch = false;
 							}
 						
 						if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
@@ -253,6 +255,7 @@ public class YoloGame extends Activity{
 										y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
 								if( y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
 								{
+									
 									if(YoloEngine.canClimb)
 									{
 										if(!YoloEngine.isClimbing)
@@ -266,7 +269,9 @@ public class YoloGame extends Activity{
 									{
 										YoloEngine.Player_vy = 0.25f;
 										YoloEngine.isJumping = true;
+										
 									}
+									YoloEngine.isCrouch = false;
 								}
 								else 
 									{
