@@ -9,6 +9,7 @@ public class YoloEngine {
 	public static final int MENU_BUTTON_ALPAH = 0;
 	public static final int BACKGROUND = R.drawable.level_01;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
+	public static final int OPPONENT_TEXTURE = R.drawable.player_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
 	public static final int MOVE_TEXTURE = R.drawable.move_1;
 	public static final int MOVE_BALL_TEXTURE =R.drawable.move_ball_1;
 	public static final int MOVE_TEXTURE_1 = R.drawable.back;
@@ -67,9 +68,33 @@ public class YoloEngine {
 	public static int display_x; 
 	public static int display_y; 
 	
+	// ------------------------- Multislayer BEGIN -----------------------	
 	
-	public static YoloPlayerInfo currentPlayerInfo;
-//-----------------------------------------------------------------------------------------------------------		
+	public static boolean actingAsServer;
+	
+	public static boolean multiWorking = false;
+	public static String lastMessage = null;
+	
+	
+	
+	public static float Opponent_x = 1f;
+	public static float Opponent_y = 0.4f;
+	
+	public static int opponentsNo = 0; 
+	public static float Opponents_x[] = new float[4];
+	public static float Opponents_y[] = new float[4];
+
+	public static boolean Opponent_isCrouched = false;
+	
+	   //public static YoloBTservice mServiceX; 
+	// ------------------------- Multislayer END -------------------------
+	
+	
+	
+//-----------------------------------------------------------------------------------------------------------	
+
+//-------------------Player Sats & Info-----------------------------------------------------------------	
+	public static YoloPlayerInfo currentPlayerInfo;	
 	
 	public static Context context;
 }
