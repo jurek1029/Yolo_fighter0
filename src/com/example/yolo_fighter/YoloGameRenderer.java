@@ -59,7 +59,7 @@ public class YoloGameRenderer implements Renderer {
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
 		
-		System.out.println(joyBackTX+" "+joyBackYT+" "+joyBallX1+" "+joyBallY1);
+		//System.out.println(YoloEngine.Player_y+" "+YoloEngine.GAME_ACCELERATION+" "+joyBallX1+" "+joyBallY1);
 		//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------		
 		if(YoloEngine.canMove)
 		{
@@ -223,8 +223,9 @@ public class YoloGameRenderer implements Renderer {
 	private boolean IsCollidedTop(YoloObject object)
 	{
 		if(YoloEngine.Player_x + 1  < object.min_x || YoloEngine.Player_x > object.max_x)return false;
-		if(YoloEngine.Player_y < object.min_y || YoloEngine.Player_y > object.max_y)return false;
-		
+	//	if(YoloEngine.Player_y < object.min_y || YoloEngine.Player_y > object.max_y)return false;
+		if(YoloEngine.Player_y < object.max_y && YoloEngine.Player_y - YoloEngine.Player_vy < object.max_y)return false;
+		if(YoloEngine.Player_y > object.max_y && YoloEngine.Player_y - YoloEngine.Player_vy > object.max_y)return false;
 		return true;
 	}
 	
