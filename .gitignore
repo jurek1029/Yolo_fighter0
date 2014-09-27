@@ -1,4 +1,4 @@
-gen\
+
 
 # Windows image file caches
 Thumbs.db
@@ -43,3 +43,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+gen/com/example/yolo_fighter/R.java
