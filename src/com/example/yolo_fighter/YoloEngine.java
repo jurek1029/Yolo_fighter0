@@ -18,6 +18,7 @@ public class YoloEngine {
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
+	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
 	
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
 	public static float MIN_VALUE_TO_CLIMB = 30;
@@ -30,6 +31,16 @@ public class YoloEngine {
 	public static float LEVEL_Y = 1440;
 	public static float LEVEL_SIZE_X;
 	public static float LEVEL_SIZE_Y;
+	//--------------------------------------------
+	public static int SKILL1_COOLDOWN = 10;
+	public static int SKILL2_COOLDOWN = 100;
+	public static int SKILL3_COOLDOWN = 200;
+	
+	public static float SKILL_X;
+	public static float SKILL_Y;
+	
+	public static boolean is = false;
+	//--------------------------------------------
 	
 	
 	public static boolean isClasic = false;
@@ -42,6 +53,11 @@ public class YoloEngine {
 	public static boolean isClimbingUp = false;
 	public static boolean isClimbingDown = false;
 	public static boolean isClimbing = false;
+	public static boolean isUsingSkill = false;
+	public static boolean isSkillPressed = false;
+	public static boolean canSkill1 = true;
+	public static boolean canSkill2 = true;
+	public static boolean canSkill3 = true;
 	public static boolean canClimb = false;
 	public static boolean canMove = true;
 	

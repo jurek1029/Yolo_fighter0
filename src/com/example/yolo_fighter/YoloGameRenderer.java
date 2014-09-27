@@ -10,7 +10,7 @@ import android.opengl.GLSurfaceView.Renderer;
 public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
-	private int[] spriteSheets = new int[4];
+	private int[] spriteSheets = new int[5];
 	private YoloBackground back = new YoloBackground();
 	private YoloPlayer player = new YoloPlayer();
 	private YoloBackground btn_mov = new YoloBackground(),btn_movball = new YoloBackground(); 
@@ -35,18 +35,24 @@ public class YoloGameRenderer implements Renderer {
 	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y;
 	
 	private float cameraPosX,joyBallX = (YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)/MOVE_BALL_SIZE_X,
-			jumpBtnX = 1/(MOVE_BALL_SIZE_X*2)-1.5f,shotBtnX = jumpBtnX,crouchBtnX = 2.75f,liveBarX_0 = (0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
+			jumpBtnX = 1/(MOVE_BALL_SIZE_X*2)-1.5f,shotBtnX = jumpBtnX,crouchBtnX = 2.75f,skillBtnX = 1/(MOVE_BALL_SIZE_X*2)/2,liveBarX_0 = (0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
 	private float joyBackTX = 0,joyBallTX = 0,BtnTX = 0,liveBarTX = 0,liveBarTX_1 = 0,XADD = 0; 
 
 	private float cameraPosY,jumpBtnY = 1.5f,shotBtnY = .25f,crouchBtnY = .25f ,liveBarY = 1f/LIVE_BAR_SIZE_Y -1.75f;
 	private float joyBackYT = 0,joyBallYT = 0,BtnYT = 0,liveBarYT = 0,YADD = 0;
 	
+	private float SkillADDX = 0f,SkillADDY=0f;
 	private float joyBallX1,joyBallY1;
 	
+	
+	//-------------------------
+	private float x =0,y=0;
+	//------------------------
 	
 	private int nextBullet = 0;
 	private boolean onGround = true;
 	private int ClimbingOn;
+	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0;
 				
 	private YoloObject[] ObjectTab = new YoloObject[17];
 	private YoloObject[] LaddreTab = new YoloObject[4];
@@ -187,6 +193,19 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.Player_vy = 0;
 			}
 		}
+//----------------------------------------------------------------------------------------------------------------------------
+		if(YoloEngine.canSkill1 == false)S1cooldown++;
+		if(YoloEngine.canSkill2 == false)S2cooldown++;
+		if(YoloEngine.canSkill3 == false)S3cooldown++;
+		
+		if(YoloEngine.SKILL1_COOLDOWN == S1cooldown){S1cooldown = 0; YoloEngine.canSkill1 = true;}
+		if(YoloEngine.SKILL2_COOLDOWN == S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;}
+		if(YoloEngine.SKILL3_COOLDOWN == S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;}
+		
+		
+		
+			
+		
 //----------------------------------------------------------------------------------------------------------------------------		
 
 		try
@@ -210,6 +229,9 @@ public class YoloGameRenderer implements Renderer {
 		if(YoloEngine.isShoting)playerFire(0.5f);
 		else nextBullet = 0;
 		moveBullets(gl);
+		
+		if(YoloEngine.is)
+		UseSkill(gl,.375f,.875f);
 
 		
 		
@@ -433,6 +455,46 @@ public class YoloGameRenderer implements Renderer {
 		btn.draw(gl, spriteSheets,1);
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, 1f);
+		gl.glTranslatef(skillBtnX + BtnTX-1.5f,BtnYT , 0f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		if(YoloEngine.canSkill1)gl.glTranslatef(0, .125f, 0);
+		else gl.glTranslatef(.125f, .125f, 0);
+		gl.glColor4f(.8f,.8f,.8f,0.5f);
+		btn.draw(gl, spriteSheets,1);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, 1f);
+		gl.glTranslatef(skillBtnX + BtnTX-.5f,BtnYT , 0f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		if(YoloEngine.canSkill2)gl.glTranslatef(0, .125f, 0);
+		else gl.glTranslatef(.125f, .125f, 0);
+		gl.glColor4f(.8f,.8f,.8f,0.5f);
+		btn.draw(gl, spriteSheets,1);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, 1f);
+		gl.glTranslatef(skillBtnX + BtnTX+.5f,BtnYT , 0f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		if(YoloEngine.canSkill3)gl.glTranslatef(0, .125f, 0);
+		else gl.glTranslatef(.125f, .125f, 0);
+		gl.glColor4f(.8f,.8f,.8f,0.5f);
+		btn.draw(gl, spriteSheets,1);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
 	}
 	
 	private void drawBackground(GL10 gl)
@@ -534,6 +596,49 @@ public class YoloGameRenderer implements Renderer {
 		//TODO pociski przeciwnika
 	}
 	
+	private void UseSkill(GL10 gl, float xEnd, float yEnd)
+	{
+		
+		if(x==0 && y==0)
+		{
+			if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
+				SkillADDX = (((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f)*YoloEngine.GAME_PROJECTION_X;
+			else
+			{
+				SkillADDX = 0; 
+				if(YoloEngine.Player_x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
+					YoloEngine.SKILL_X = YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - (YoloEngine.GAME_PROJECTION_X - YoloEngine.SKILL_X);
+			}
+			
+			if(YoloEngine.Player_y > YoloEngine.GAME_PROJECTION_Y/2 + .5f && YoloEngine.Player_y < YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
+				SkillADDY = (((YoloEngine.Player_y-.5f)/YoloEngine.GAME_PROJECTION_Y) - .5f)*YoloEngine.GAME_PROJECTION_Y;
+			else 
+			{
+				SkillADDY = 0;
+				if(YoloEngine.Player_y > YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
+					YoloEngine.SKILL_Y = YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - (YoloEngine.GAME_PROJECTION_Y - YoloEngine.SKILL_Y);
+			}
+		}
+			
+		if(x<1)x+=0.125f;
+		else{y+=0.125f; x=0f;}
+		
+		if(y == yEnd && x == xEnd){YoloEngine.is = false;x=0;y=0;}
+			
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+		gl.glTranslatef((YoloEngine.SKILL_X+SkillADDX)/4f-.5f, (YoloEngine.SKILL_Y+SkillADDY)/4f-.5f, 0f);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glTranslatef(x, y, 0f);
+		btn.draw(gl, spriteSheets,4);
+		//player.draw(gl,spriteSheets,2);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+	}
+	
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	private void drawOponnent(GL10 gl, float x, float y, int sheetNo)
@@ -601,7 +706,8 @@ public class YoloGameRenderer implements Renderer {
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
-		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3);
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);// Multislayer
 		
 //------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
