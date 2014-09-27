@@ -264,15 +264,28 @@ public class YoloGameRenderer implements Renderer {
 
 			drawBullet(gl, Weapontab.get(i));
 			
-			if(Weapontab.get(i).x < 0)Weapontab.remove(i);
-			else if(Weapontab.get(i).x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X)Weapontab.remove(i);
+			if(Weapontab.get(i).x < 0)
+			{
+				Weapontab.remove(i);
+				break;
+			}
+			else if(Weapontab.get(i).x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X)
+			{
+				Weapontab.remove(i);
+				break;
+			}
 			else if(!Weapontab.get(i).isMy && IsCollided(Weapontab.get(i)))
 			{
 				YoloEngine.PlayerLive -= Weapontab.get(i).damage;
 				Weapontab.remove(i);
+				break;
 			}
 			else for (int j = 0 ; j< ObjectTab.length ; j++)
-					if (IsCollided(Weapontab.get(i), ObjectTab[j])) Weapontab.remove(i);
+					if (IsCollided(Weapontab.get(i), ObjectTab[j])) 
+					{
+						Weapontab.remove(i);
+						break;
+					}
 			
 		}
 	}
@@ -496,7 +509,7 @@ public class YoloGameRenderer implements Renderer {
 		{
 			bullet = new YoloWeapon(bulletSpeed);
 			bullet.damage = 1f;
-			bullet.isMy = false; // ------------------strzelarz nie swoimi pociskami tylko do sprawdzenia czy umierasz ----
+			bullet.isMy = true; // ------------------strzelarz nie swoimi pociskami tylko do sprawdzenia czy umierasz ----
 			bullet.x = YoloEngine.Player_x;
 			if(!YoloEngine.isCrouch)	bullet.y = YoloEngine.Player_y + .5f; 
 			else bullet.y = YoloEngine.Player_y + .025f; 

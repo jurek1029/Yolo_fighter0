@@ -84,11 +84,7 @@ public class YoloGame extends Activity{
 										YoloEngine.Player_vy = 0.25f;
 										YoloEngine.isJumping = true;
 									}
-								if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-									if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-									{
-										YoloEngine.isShoting = true;
-									}
+								
 								if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
 									if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
 									{
@@ -99,6 +95,12 @@ public class YoloGame extends Activity{
 											YoloEngine.isCrouch = true;
 									}
 							}
+							if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
+								if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+								{
+									YoloEngine.isShoting = true;
+								}
+							
 						}
 					if(YoloEngine.canClimb)y_climb = y;
 					
@@ -123,11 +125,7 @@ public class YoloGame extends Activity{
 								YoloEngine.Player_vy = 0.25f;
 								YoloEngine.isJumping = true;
 							}
-						if(x > buttonShotX - 25 && x < buttonShotX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonShotY + 25 && y > buttonShotY - 25 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								YoloEngine.isShoting = true;
-							}
+						
 						if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
 							if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
 							{
@@ -138,6 +136,11 @@ public class YoloGame extends Activity{
 									YoloEngine.isCrouch = true;
 							}
 						}
+						if(x > buttonShotX - 25 && x < buttonShotX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
+							if(y < buttonShotY + 25 && y > buttonShotY - 25 - YoloEngine.BUTTON_JUMP_SIZE )
+							{
+								YoloEngine.isShoting = true;
+							}
 					}
 				if(YoloEngine.canClimb)y_climb = y;
 				
