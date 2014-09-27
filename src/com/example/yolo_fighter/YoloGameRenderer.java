@@ -193,6 +193,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		drawBackground(gl);
 		drawPlayer(gl);
+		for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
 		drawControls(gl);
 		drawButtons(gl);
 		if(YoloEngine.isShoting)playerFire(0.5f);
@@ -507,6 +508,31 @@ public class YoloGameRenderer implements Renderer {
 		nextBullet--;
 		//TODO pociski przeciwnika
 	}
+	
+	
+	// ------------------------- Multislayer BEGIN -----------------------
+	private void drawOponnent(GL10 gl, float x, float y, int sheetNo)
+	{
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		//gl.glTranslatef(YoloEngine.Opponent_x, YoloEngine.Opponent_y, 0f);
+		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X, 1/YoloEngine.GAME_PROJECTION_Y, 1f);
+		gl.glTranslatef(x, y, 0f);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		if(YoloEngine.Opponent_isCrouched) gl.glTranslatef(0f, 0f, 0f);
+		else gl.glTranslatef(0.125f, 0f, 0f);
+		gl.glTranslatef(0f, 0f, 0f);
+		player.draw(gl,spriteSheets, sheetNo);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+	}
+	
+	// ------------------------- Multislayer END -------------------------
+	
+	
+	
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 
@@ -550,6 +576,7 @@ public class YoloGameRenderer implements Renderer {
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
 		
 //------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
