@@ -7,10 +7,50 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView.Renderer;
 
+class Skill 
+{
+	float x=0,y=0;
+	float x_texture=0,y_texture=0,xEnd,yEnd;
+	float SkillADDX=0,SkillADDY = 0;
+	int sprite;
+	
+	boolean isUsed=false;
+	
+	public Skill() {}
+
+	public void setX()
+	{
+		if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
+			SkillADDX = (((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f)*YoloEngine.GAME_PROJECTION_X;
+		else
+		{
+			SkillADDX = 0; 
+			if(YoloEngine.Player_x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
+				x = YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - (YoloEngine.GAME_PROJECTION_X - x);
+		}
+		
+		x = x + SkillADDX;
+	}
+	public void setY()
+	{
+		if(YoloEngine.Player_y > YoloEngine.GAME_PROJECTION_Y/2 + .5f && YoloEngine.Player_y < YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
+			SkillADDY = (((YoloEngine.Player_y-.5f)/YoloEngine.GAME_PROJECTION_Y) - .5f)*YoloEngine.GAME_PROJECTION_Y;
+		else 
+		{
+			SkillADDY = 0;
+			if(YoloEngine.Player_y > YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
+				y = YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - (YoloEngine.GAME_PROJECTION_Y - y);
+		}
+		
+		y = y + SkillADDY;
+	}
+	
+}
+
 public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
-	private int[] spriteSheets = new int[5];
+	private int[] spriteSheets = new int[6];
 	private YoloBackground back = new YoloBackground();
 	private YoloPlayer player = new YoloPlayer();
 	private YoloBackground btn_mov = new YoloBackground(),btn_movball = new YoloBackground(); 
@@ -19,6 +59,8 @@ public class YoloGameRenderer implements Renderer {
 	
 	private Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
 	private YoloWeapon bullet;
+	
+	public static Skill[] skilltab = new Skill[3];
 
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x;
@@ -41,13 +83,12 @@ public class YoloGameRenderer implements Renderer {
 	private float cameraPosY,jumpBtnY = 1.5f,shotBtnY = .25f,crouchBtnY = .25f ,liveBarY = 1f/LIVE_BAR_SIZE_Y -1.75f;
 	private float joyBackYT = 0,joyBallYT = 0,BtnYT = 0,liveBarYT = 0,YADD = 0;
 	
-	private float SkillADDX = 0f,SkillADDY=0f;
+//	private float SkillADDX = 0f,SkillADDY=0f;
 	private float joyBallX1,joyBallY1;
 	
+
+//	private float x =0,y=0;
 	
-	//-------------------------
-	private float x =0,y=0;
-	//------------------------
 	
 	private int nextBullet = 0;
 	private boolean onGround = true;
@@ -224,15 +265,19 @@ public class YoloGameRenderer implements Renderer {
 		drawBackground(gl);
 		drawPlayer(gl);
 		for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
-		drawControls(gl);
-		drawButtons(gl);
+		
 		if(YoloEngine.isShoting)playerFire(0.5f);
 		else nextBullet = 0;
 		moveBullets(gl);
 		
-		if(YoloEngine.is)
-		UseSkill(gl,.375f,.875f);
-
+	
+		for(int i=0;i<3;i++)
+		{
+				UseSkill(gl,i);
+		}		
+			
+		drawControls(gl);
+		drawButtons(gl);
 		
 		
 		gl.glEnable(GL10.GL_BLEND);
@@ -596,12 +641,10 @@ public class YoloGameRenderer implements Renderer {
 		//TODO pociski przeciwnika
 	}
 	
-	private void UseSkill(GL10 gl, float xEnd, float yEnd)
+	private void UseSkill(GL10 gl,int skill)
 	{
-		
-		if(x==0 && y==0)
-		{
-			if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
+		/*
+			 if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
 				SkillADDX = (((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f)*YoloEngine.GAME_PROJECTION_X;
 			else
 			{
@@ -618,25 +661,35 @@ public class YoloGameRenderer implements Renderer {
 				if(YoloEngine.Player_y > YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
 					YoloEngine.SKILL_Y = YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - (YoloEngine.GAME_PROJECTION_Y - YoloEngine.SKILL_Y);
 			}
+			*/
+		if(skilltab[skill].isUsed)
+		{
+			if(skilltab[skill].x_texture==0 && skilltab[skill].y_texture==0)
+			{
+				skilltab[skill].setX();
+				skilltab[skill].setY();
+				
+			}
+				
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+			gl.glTranslatef(skilltab[skill].x/4f-.5f, skilltab[skill].y/4f-.5f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(skilltab[skill].x_texture, skilltab[skill].y_texture, 0f);
+			btn.draw(gl, spriteSheets,skilltab[skill].sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			
+			
+			if(skilltab[skill].x_texture<1)skilltab[skill].x_texture+=0.125f;
+			else{skilltab[skill].y_texture+=0.125f; skilltab[skill].x_texture=0f;}
+			
+			if(skilltab[skill].y_texture == skilltab[skill].yEnd && skilltab[skill].x_texture == skilltab[skill].xEnd){skilltab[skill].isUsed = false;skilltab[skill].x_texture=0f;skilltab[skill].y_texture=0f;}
+			
 		}
-			
-		if(x<1)x+=0.125f;
-		else{y+=0.125f; x=0f;}
-		
-		if(y == yEnd && x == xEnd){YoloEngine.is = false;x=0;y=0;}
-			
-		gl.glMatrixMode(GL10.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		gl.glPushMatrix();
-		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
-		gl.glTranslatef((YoloEngine.SKILL_X+SkillADDX)/4f-.5f, (YoloEngine.SKILL_Y+SkillADDY)/4f-.5f, 0f);
-		gl.glColor4f(1f,1f,1f,1f);
-		gl.glMatrixMode(GL10.GL_TEXTURE);
-		gl.glTranslatef(x, y, 0f);
-		btn.draw(gl, spriteSheets,4);
-		//player.draw(gl,spriteSheets,2);
-		gl.glPopMatrix();
-		gl.glLoadIdentity();
 	}
 	
 	
@@ -688,6 +741,7 @@ public class YoloGameRenderer implements Renderer {
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
+		
 		back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
 		if(YoloEngine.isClasic)
 		{
@@ -706,8 +760,9 @@ public class YoloGameRenderer implements Renderer {
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
-		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3);
-		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);// Multislayer
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
+		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
 		
 //------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
@@ -741,6 +796,21 @@ public class YoloGameRenderer implements Renderer {
 		
 		
 //-----------------------------------------------------------------------------------------------------------		
+		
+	//-------------------------------------fragment wczytywania danych zale¿ny od danych playera--------------------------------
+		skilltab[0] = new Skill();
+		skilltab[0].xEnd = .375f;
+		skilltab[0].yEnd = .875f;
+		skilltab[0].sprite = 4;
+		skilltab[1] = new Skill();
+		skilltab[1].xEnd = .125f;
+		skilltab[1].yEnd = .375f;
+		skilltab[1].sprite = 5;
+		skilltab[2] = new Skill();
+		skilltab[2].xEnd = .375f;
+		skilltab[2].yEnd = .875f;
+		skilltab[2].sprite = 4;
+	//--------------------------------------------------------------------------------------------------------------------------
 	}
 
 }

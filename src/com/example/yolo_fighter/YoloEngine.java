@@ -19,6 +19,7 @@ public class YoloEngine {
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
+	public static final int THUNDER_SKILL = R.drawable.skill_sprite_tunder;
 	
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
 	public static float MIN_VALUE_TO_CLIMB = 30;
@@ -40,6 +41,7 @@ public class YoloEngine {
 	public static float SKILL_Y;
 	
 	public static boolean is = false;
+	public static int usedSkill;
 	//--------------------------------------------
 	
 	
