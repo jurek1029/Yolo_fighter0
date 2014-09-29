@@ -71,41 +71,13 @@ public class YoloGame extends Activity{
 		{
 			case MotionEvent.ACTION_DOWN:
 				{
-				if(YoloEngine.isUsingSkill) 
-				{
-					switch (YoloEngine.usedSkill)
-					{
-					case 0:
-						YoloGameRenderer.skilltab[0].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[0].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[0].isUsed = true;
-						break;
-					case 1:
-						YoloGameRenderer.skilltab[1].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[1].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[1].isUsed = true;
-						break;
-					case 2:
-						YoloGameRenderer.skilltab[2].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[2].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[2].isUsed = true;
-						break;
-					}
-					YoloEngine.isUsingSkill = false;
-					//YoloEngine.is = true;
-				//	System.out.println(YoloEngine.Player_x+" "+YoloEngine.Player_y+" "+YoloEngine.SKILL_X+" "+YoloEngine.SKILL_Y);
-				
-				}
-				else if(x < 275)
+				 if(x < 275)
 					{
 						y2=0;
 						YoloEngine.isMoving = true;
 					}
 					else
 						{
-						//________________________________________________________________
-						
-						//________________________________________________________________
 							if(YoloEngine.isClasic)
 							{
 								if(x > buttonJumpX - 50 && x < buttonJumpX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -139,6 +111,7 @@ public class YoloGame extends Activity{
 										YoloEngine.canSkill1 = false;
 										YoloEngine.isSkillPressed = true;
 										YoloEngine.usedSkill = 0;
+										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 									}
 								}
 							if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -149,6 +122,7 @@ public class YoloGame extends Activity{
 										YoloEngine.canSkill2 = false;
 										YoloEngine.isSkillPressed = true;
 										YoloEngine.usedSkill = 1;
+										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 									}
 								}
 							if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -159,11 +133,33 @@ public class YoloGame extends Activity{
 										YoloEngine.canSkill3 = false;
 										YoloEngine.isSkillPressed = true;
 										YoloEngine.usedSkill = 0;
+										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 									}
-								}
-							
-							
+								}	
 						}
+				 if(YoloEngine.isUsingSkill) 
+					{
+						switch (YoloEngine.usedSkill)
+						{
+						case 0:
+							YoloGameRenderer.skilltab[0].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[0].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[0].isUsed = true;
+							break;
+						case 1:
+							YoloGameRenderer.skilltab[1].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[1].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[1].isUsed = true;
+							break;
+						case 2:
+							YoloGameRenderer.skilltab[2].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[2].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[2].isUsed = true;
+							break;
+						}
+						YoloEngine.isUsingSkill = false;			
+					}
+				 
 					if(YoloEngine.canClimb)y_climb = y;
 					
 					
@@ -171,31 +167,8 @@ public class YoloGame extends Activity{
 				}
 			case MotionEvent.ACTION_POINTER_DOWN:
 			{
-				if(YoloEngine.isUsingSkill) 
-				{
-					switch (YoloEngine.usedSkill)
-					{
-					case 0:
-						YoloGameRenderer.skilltab[0].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[0].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[0].isUsed = true;
-						break;
-					case 1:
-						YoloGameRenderer.skilltab[1].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[1].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[1].isUsed = true;
-						break;
-					case 2:
-						YoloGameRenderer.skilltab[2].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-						YoloGameRenderer.skilltab[2].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-						YoloGameRenderer.skilltab[2].isUsed = true;
-						break;
-					}
-					YoloEngine.isUsingSkill = false;
-					YoloEngine.is = true;
-					
-				}
-				else if(x < 275)
+				
+				 if(x < 275)
 				{
 					y2=0;
 					YoloEngine.isMoving = true;
@@ -235,6 +208,7 @@ public class YoloGame extends Activity{
 									YoloEngine.canSkill1 = false;
 									YoloEngine.isSkillPressed = true;
 									YoloEngine.usedSkill = 0;
+									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 								}
 							}
 						if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -245,6 +219,7 @@ public class YoloGame extends Activity{
 									YoloEngine.canSkill2 = false;
 									YoloEngine.isSkillPressed = true;
 									YoloEngine.usedSkill = 1;
+									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 								}
 							}
 						if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -255,8 +230,33 @@ public class YoloGame extends Activity{
 									YoloEngine.canSkill3 = false;
 									YoloEngine.isSkillPressed = true;
 									YoloEngine.usedSkill = 0;
+									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 								}
 							}
+					}
+				 if(YoloEngine.isUsingSkill) 
+					{
+						switch (YoloEngine.usedSkill)
+						{
+						case 0:
+							YoloGameRenderer.skilltab[0].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[0].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[0].isUsed = true;
+							break;
+						case 1:
+							YoloGameRenderer.skilltab[1].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[1].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[1].isUsed = true;
+							break;
+						case 2:
+							YoloGameRenderer.skilltab[2].x = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+							YoloGameRenderer.skilltab[2].y = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+							YoloGameRenderer.skilltab[2].isUsed = true;
+							break;
+						}
+						YoloEngine.isUsingSkill = false;
+						YoloEngine.is = true;
+						
 					}
 				if(YoloEngine.canClimb)y_climb = y;
 				

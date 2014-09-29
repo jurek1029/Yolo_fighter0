@@ -86,8 +86,7 @@ public class YoloGameRenderer implements Renderer {
 //	private float SkillADDX = 0f,SkillADDY=0f;
 	private float joyBallX1,joyBallY1;
 	
-
-//	private float x =0,y=0;
+	private boolean toLoad = true,first = false;
 	
 	
 	private int nextBullet = 0;
@@ -105,180 +104,216 @@ public class YoloGameRenderer implements Renderer {
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
-		
-		//System.out.println(YoloEngine.Player_y+" "+YoloEngine.GAME_ACCELERATION+" "+joyBallX1+" "+joyBallY1);
-		//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------		
-		if(YoloEngine.canMove)
+		//====================================================LOADING===============================================================
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		back.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		if(toLoad && first)
 		{
-			YoloEngine.Player_vy -= YoloEngine.GAME_ACCELERATION;
-			
-			for(int i = 0; i < ObjectTab.length; i++)
+			if(YoloEngine.isClasic)
 			{
-				if(IsCollidedTop(ObjectTab[i]))
-				{
-					if(YoloEngine.Player_vy > 0)
-						{
-							//YoloEngine.Player_y = ObjectTab[i].min_y - YoloEngine.Player_y;
-							onGround = false;
-						}
-					else
-						{
-							YoloEngine.Player_y = ObjectTab[i].max_y;
-							YoloEngine.Player_vy = 0;
-							onGround = true;
-						}
-					
-						
-					break;
-				}
-				onGround = false;
-			}
-		}
-		YoloEngine.Player_y += YoloEngine.Player_vy;
-		//-------------------------------------------TARCIE-----------------------------------------------------------------
-		
-		
-		if(!YoloEngine.isMoving && YoloEngine.Player_vx != 0)
-		{
-			if(onGround)
-			{
-				if(YoloEngine.Player_vx>YoloEngine.GAME_GROUND_FRICTION *2) YoloEngine.Player_vx -= YoloEngine.GAME_GROUND_FRICTION;
-				else if(YoloEngine.Player_vx<-YoloEngine.GAME_GROUND_FRICTION *2 )YoloEngine.Player_vx += YoloEngine.GAME_GROUND_FRICTION;
-				else YoloEngine.Player_vx = 0;
+				btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE, YoloEngine.context);
+				btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE, YoloEngine.context);
 			}
 			else
 			{
-				if(YoloEngine.Player_vx>YoloEngine.GAME_AIR_FRICTION *2) YoloEngine.Player_vx -= YoloEngine.GAME_AIR_FRICTION;
-				else if(YoloEngine.Player_vx<-YoloEngine.GAME_AIR_FRICTION *2 )YoloEngine.Player_vx += YoloEngine.GAME_AIR_FRICTION;
-				else YoloEngine.Player_vx = 0;
+				btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE_1, YoloEngine.context);
+				btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE_1, YoloEngine.context);
 			}
+			live_bar_1.loadTexture(gl, YoloEngine.LIVE_BAR_1, YoloEngine.context);
+			live_bar_0.loadTexture(gl, YoloEngine.LIVE_BAR_0, YoloEngine.context);
+			
+			
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
+			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
+			
+			back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
+			
+			toLoad = false;
 		}
-		
-//--------------------------------------------------------PORUSZNIE KAMER¥---------------------------------------------------	
-		if(YoloEngine.canMove)
+		first = true;
+		if(!toLoad)
 		{
-			YoloEngine.Player_x += YoloEngine.Player_vx;
-			if(YoloEngine.Player_x < 0)
+			
+			//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------		
+			if(YoloEngine.canMove)
+			{
+				YoloEngine.Player_vy -= YoloEngine.GAME_ACCELERATION;
+				
+				for(int i = 0; i < ObjectTab.length; i++)
 				{
-					YoloEngine.Player_x = YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X-1;
-					gl.glMatrixMode(GL10.GL_PROJECTION);
-					gl.glLoadIdentity();
-					gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
-					
-					XADD = 2f;
-					cameraPosX = -XADD;
-					BtnTX = XADD/ (MOVE_BALL_SIZE_X*2);
-					//joyBallTX = XADD /MOVE_BALL_SIZE_X;
-					//joyBackTX = XADD / MOVE_SIZE_X;
-					liveBarTX = XADD / LIVE_BAR_SIZE_X_0;
-					liveBarTX_1 = XADD / LIVE_BAR_SIZE_X_1;
-					if(YoloEngine.isClasic)
+					if(IsCollidedTop(ObjectTab[i]))
 					{
-						joyBallTX = XADD /MOVE_BALL_SIZE_X;
-						joyBackTX = XADD / MOVE_SIZE_X;
+						if(YoloEngine.Player_vy > 0)
+							{
+								//YoloEngine.Player_y = ObjectTab[i].min_y - YoloEngine.Player_y;
+								onGround = false;
+							}
+						else
+							{
+								YoloEngine.Player_y = ObjectTab[i].max_y;
+								YoloEngine.Player_vy = 0;
+								onGround = true;
+							}
+						
+							
+						break;
 					}
-					else
-					{
-						joyBallTX = XADD /(MOVE_SIZE_X1*2f);
-						joyBackTX = XADD / MOVE_SIZE_X1;
-					}
-					
-					gl.glTranslatef(cameraPosX,cameraPosY,0f);
+					onGround = false;
 				}
-			else if(YoloEngine.Player_x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X -1)
+			}
+			YoloEngine.Player_y += YoloEngine.Player_vy;
+			//-------------------------------------------TARCIE-----------------------------------------------------------------
+			
+			
+			if(!YoloEngine.isMoving && YoloEngine.Player_vx != 0)
+			{
+				if(onGround)
+				{
+					if(YoloEngine.Player_vx>YoloEngine.GAME_GROUND_FRICTION *2) YoloEngine.Player_vx -= YoloEngine.GAME_GROUND_FRICTION;
+					else if(YoloEngine.Player_vx<-YoloEngine.GAME_GROUND_FRICTION *2 )YoloEngine.Player_vx += YoloEngine.GAME_GROUND_FRICTION;
+					else YoloEngine.Player_vx = 0;
+				}
+				else
+				{
+					if(YoloEngine.Player_vx>YoloEngine.GAME_AIR_FRICTION *2) YoloEngine.Player_vx -= YoloEngine.GAME_AIR_FRICTION;
+					else if(YoloEngine.Player_vx<-YoloEngine.GAME_AIR_FRICTION *2 )YoloEngine.Player_vx += YoloEngine.GAME_AIR_FRICTION;
+					else YoloEngine.Player_vx = 0;
+				}
+			}
+			
+	//--------------------------------------------------------PORUSZNIE KAMER¥---------------------------------------------------	
+			if(YoloEngine.canMove)
+			{
+				YoloEngine.Player_x += YoloEngine.Player_vx;
+				if(YoloEngine.Player_x < 0)
 					{
-						YoloEngine.Player_x = 0;
+						YoloEngine.Player_x = YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X-1;
 						gl.glMatrixMode(GL10.GL_PROJECTION);
 						gl.glLoadIdentity();
 						gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
-						cameraPosX = 0;
-						joyBackTX = 0;
-						joyBallTX = 0;
-						BtnTX = 0;
-						liveBarTX = 0;
-						liveBarTX_1 = 0;
+						
+						XADD = 2f;
+						cameraPosX = -XADD;
+						BtnTX = XADD/ (MOVE_BALL_SIZE_X*2);
+						//joyBallTX = XADD /MOVE_BALL_SIZE_X;
+						//joyBackTX = XADD / MOVE_SIZE_X;
+						liveBarTX = XADD / LIVE_BAR_SIZE_X_0;
+						liveBarTX_1 = XADD / LIVE_BAR_SIZE_X_1;
+						if(YoloEngine.isClasic)
+						{
+							joyBallTX = XADD /MOVE_BALL_SIZE_X;
+							joyBackTX = XADD / MOVE_SIZE_X;
+						}
+						else
+						{
+							joyBallTX = XADD /(MOVE_SIZE_X1*2f);
+							joyBackTX = XADD / MOVE_SIZE_X1;
+						}
 						
 						gl.glTranslatef(cameraPosX,cameraPosY,0f);
 					}
-		}
-		
-//------------------------------------------------------DARBINY---------------------------------------------------------------
-		for (int i = 0;i < LaddreTab.length;i++)
-		{
-			if(IsCollided(LaddreTab[i]))
+				else if(YoloEngine.Player_x > YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X -1)
+						{
+							YoloEngine.Player_x = 0;
+							gl.glMatrixMode(GL10.GL_PROJECTION);
+							gl.glLoadIdentity();
+							gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
+							cameraPosX = 0;
+							joyBackTX = 0;
+							joyBallTX = 0;
+							BtnTX = 0;
+							liveBarTX = 0;
+							liveBarTX_1 = 0;
+							
+							gl.glTranslatef(cameraPosX,cameraPosY,0f);
+						}
+			}
+			
+	//------------------------------------------------------DARBINY---------------------------------------------------------------
+			for (int i = 0;i < LaddreTab.length;i++)
 			{
-				YoloEngine.canClimb = true;
-				if(YoloEngine.isClimbingUp)
+				if(IsCollided(LaddreTab[i]))
 				{
-					ClimbingOn = i;
-					YoloEngine.Player_vy = YoloEngine.PLAYER_CLIMBING_SPEED;
-				}
-				else if(YoloEngine.isClimbingDown)
+					YoloEngine.canClimb = true;
+					if(YoloEngine.isClimbingUp)
 					{
 						ClimbingOn = i;
-						YoloEngine.Player_vy = -YoloEngine.PLAYER_CLIMBING_SPEED;
+						YoloEngine.Player_vy = YoloEngine.PLAYER_CLIMBING_SPEED;
 					}
+					else if(YoloEngine.isClimbingDown)
+						{
+							ClimbingOn = i;
+							YoloEngine.Player_vy = -YoloEngine.PLAYER_CLIMBING_SPEED;
+						}
+					
+					break;
+				}
+				YoloEngine.canClimb = false;
 				
-				break;
 			}
-			YoloEngine.canClimb = false;
-			
-		}
-		if(YoloEngine.isClimbingDown || YoloEngine.isClimbingUp)
-		{
-			if(!IsCollided(LaddreTab[ClimbingOn]))
+			if(YoloEngine.isClimbingDown || YoloEngine.isClimbingUp)
 			{
-				YoloEngine.canMove = true;
-				YoloEngine.isClimbingDown = false;
-				YoloEngine.isClimbingUp = false;
-				YoloEngine.Player_vy = 0;
+				if(!IsCollided(LaddreTab[ClimbingOn]))
+				{
+					YoloEngine.canMove = true;
+					YoloEngine.isClimbingDown = false;
+					YoloEngine.isClimbingUp = false;
+					YoloEngine.Player_vy = 0;
+				}
 			}
-		}
-//----------------------------------------------------------------------------------------------------------------------------
-		if(YoloEngine.canSkill1 == false)S1cooldown++;
-		if(YoloEngine.canSkill2 == false)S2cooldown++;
-		if(YoloEngine.canSkill3 == false)S3cooldown++;
-		
-		if(YoloEngine.SKILL1_COOLDOWN == S1cooldown){S1cooldown = 0; YoloEngine.canSkill1 = true;}
-		if(YoloEngine.SKILL2_COOLDOWN == S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;}
-		if(YoloEngine.SKILL3_COOLDOWN == S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;}
-		
-		
-		
+	//----------------------------------------------------------------------------------------------------------------------------
+			if(YoloEngine.canSkill1 == false)S1cooldown++;
+			if(YoloEngine.canSkill2 == false)S2cooldown++;
+			if(YoloEngine.canSkill3 == false)S3cooldown++;
 			
-		
-//----------------------------------------------------------------------------------------------------------------------------		
-
-		try
-		{
-			if(loopRunTime < YoloEngine.GAME_THREAD_FSP_SLEEP)
-			{
-			Thread.sleep(YoloEngine.GAME_THREAD_FSP_SLEEP - loopRunTime);
-			}
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		
-		drawBackground(gl);
-		drawPlayer(gl);
-		for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
-		
-		if(YoloEngine.isShoting)playerFire(0.5f);
-		else nextBullet = 0;
-		moveBullets(gl);
-		
+			if(YoloEngine.SKILL1_COOLDOWN == S1cooldown){S1cooldown = 0; YoloEngine.canSkill1 = true;}
+			if(YoloEngine.SKILL2_COOLDOWN == S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;}
+			if(YoloEngine.SKILL3_COOLDOWN == S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;}
+			
+			
+			
+				
+			
+	//----------------------------------------------------------------------------------------------------------------------------		
 	
-		for(int i=0;i<3;i++)
-		{
-				UseSkill(gl,i);
-		}		
+			try
+			{
+				if(loopRunTime < YoloEngine.GAME_THREAD_FSP_SLEEP)
+				{
+				Thread.sleep(YoloEngine.GAME_THREAD_FSP_SLEEP - loopRunTime);
+				}
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 			
-		drawControls(gl);
-		drawButtons(gl);
+			drawBackground(gl);
+			drawPlayer(gl);
+			for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
+			
+			if(YoloEngine.isShoting)playerFire(0.5f);
+			else nextBullet = 0;
+			moveBullets(gl);
+			
 		
+			for(int i=0;i<3;i++)
+			{
+					UseSkill(gl,i);
+			}		
+				
+			drawControls(gl);
+			drawButtons(gl);
+		}
 		
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -741,8 +776,11 @@ public class YoloGameRenderer implements Renderer {
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
+//----------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
+		TextureLoader = new YoloTexture(gl);
+		back.loadTexture(gl, R.drawable.loading, YoloEngine.context);
+		/*
 		
-		back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
 		if(YoloEngine.isClasic)
 		{
 			btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE, YoloEngine.context);
@@ -756,7 +794,7 @@ public class YoloGameRenderer implements Renderer {
 		live_bar_1.loadTexture(gl, YoloEngine.LIVE_BAR_1, YoloEngine.context);
 		live_bar_0.loadTexture(gl, YoloEngine.LIVE_BAR_0, YoloEngine.context);
 		
-		TextureLoader = new YoloTexture(gl);
+		
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
@@ -764,6 +802,8 @@ public class YoloGameRenderer implements Renderer {
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
 		spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
 		
+		back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
+		*/
 //------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y; 
