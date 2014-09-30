@@ -51,7 +51,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
 	private int[] spriteSheets = new int[6];
-	private YoloBackground back = new YoloBackground();
+	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground();
 	private YoloPlayer player = new YoloPlayer();
 	private YoloBackground btn_mov = new YoloBackground(),btn_movball = new YoloBackground(); 
 	private YoloBackground live_bar_1 = new YoloBackground(),live_bar_0 = new YoloBackground();
@@ -87,6 +87,7 @@ public class YoloGameRenderer implements Renderer {
 	private float joyBallX1,joyBallY1;
 	
 	private boolean toLoad = true,first = false;
+	private int loading_faze=0,loadingStepsCout =7;
 	
 	
 	private int nextBullet = 0;
@@ -105,38 +106,64 @@ public class YoloGameRenderer implements Renderer {
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
 		//====================================================LOADING===============================================================
-		gl.glMatrixMode(GL10.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		gl.glPushMatrix();
-		back.draw(gl);
-		gl.glPopMatrix();
-		gl.glLoadIdentity();
+		
 		if(toLoad && first)
 		{
-			if(YoloEngine.isClasic)
+			switch(loading_faze)
 			{
-				btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE, YoloEngine.context);
-				btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE, YoloEngine.context);
+			case 0:
+				if(YoloEngine.isClasic)
+				{
+					btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE, YoloEngine.context);
+					btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE, YoloEngine.context);
+				}
+				else
+				{
+					btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE_1, YoloEngine.context);
+					btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE_1, YoloEngine.context);
+				}
+				drawLoadingSrean(gl, 1f/loadingStepsCout);
+				break;
+			case 1:
+				live_bar_1.loadTexture(gl, YoloEngine.LIVE_BAR_1, YoloEngine.context);
+				live_bar_0.loadTexture(gl, YoloEngine.LIVE_BAR_0, YoloEngine.context);
+				drawLoadingSrean(gl, 1f/loadingStepsCout);
+				break;
+			case 2:			
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
+				drawLoadingSrean(gl, 2f/loadingStepsCout);
+				break;
+			case 3:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
+				drawLoadingSrean(gl, 3f/loadingStepsCout);
+				break;
+			case 4:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
+				drawLoadingSrean(gl, 4f/loadingStepsCout);
+				break;
+			case 5:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
+				drawLoadingSrean(gl, 5f/loadingStepsCout);
+				break;
+			case 6:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
+				drawLoadingSrean(gl, 6f/loadingStepsCout);
+				break;
+			case 7:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
+				drawLoadingSrean(gl, 7f/loadingStepsCout);
+				
+				break;
+			case 8:
+				back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
+				toLoad = false;
+				break;
 			}
-			else
-			{
-				btn_mov.loadTexture(gl, YoloEngine.MOVE_TEXTURE_1, YoloEngine.context);
-				btn_movball.loadTexture(gl, YoloEngine.MOVE_BALL_TEXTURE_1, YoloEngine.context);
-			}
-			live_bar_1.loadTexture(gl, YoloEngine.LIVE_BAR_1, YoloEngine.context);
-			live_bar_0.loadTexture(gl, YoloEngine.LIVE_BAR_0, YoloEngine.context);
-			
-			
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WEAPON_SPRITE, YoloEngine.context, 0);
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
-			spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
-			
-			back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
-			
-			toLoad = false;
+			loading_faze ++;
+		}
+		else
+		{
+			drawLoadingSrean(gl,0.1f);
 		}
 		first = true;
 		if(!toLoad)
@@ -639,6 +666,32 @@ public class YoloGameRenderer implements Renderer {
 		gl.glLoadIdentity();
 		
 	}
+	
+	private void drawLoadingSrean( GL10 gl,float percet)
+	{
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		back.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glTranslatef(1f/8f, 1f/12f, 0f);
+		gl.glScalef(1f/1.3f,1f/6f,1f);
+		load_back.draw(gl);
+		if(percet != 0)
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			gl.glTranslatef(1f/8f, 1f/12f, 0f);
+			gl.glScalef(percet*(1f/1.3f),1f/6f,1f);
+			load_front.draw(gl);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+	}
 
 	private void drawPlayer(GL10 gl)
 	{
@@ -778,7 +831,9 @@ public class YoloGameRenderer implements Renderer {
 		
 //----------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
 		TextureLoader = new YoloTexture(gl);
-		back.loadTexture(gl, R.drawable.loading, YoloEngine.context);
+		back.loadTexture(gl, R.drawable.aniol_tlo_loading, YoloEngine.context);
+		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
+		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		/*
 		
 		if(YoloEngine.isClasic)
