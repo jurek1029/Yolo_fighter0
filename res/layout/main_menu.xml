@@ -3,14 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-   <!--  <VideoView
+    <!--
+         <VideoView
         android:id="@+id/bgVideo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" /> --> 
+        android:layout_alignParentTop="true" />
+    -->
 
     <ImageButton
         android:id="@+id/btnJoin"
@@ -38,5 +40,42 @@
         android:layout_toLeftOf="@+id/btnJoin"
         android:onClick="createClick"
         android:src="@drawable/playbtn" />
+
+    <Button
+        android:id="@+id/sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_in_button"
+        android:layout_below="@+id/sign_in_button"
+        android:onClick="signOut"
+        android:text="Sign Out" />
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/btnSW"
+        android:layout_marginTop="14dp"
+        android:onClick="signIn"
+        android:text="  Sign In " />
+
+        <Button
+            android:id="@+id/invite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sign_out_button"
+            android:layout_alignLeft="@+id/btnCreate"
+            android:onClick="invite"
+            android:text="Invite" />
+
+                <Button
+                    android:id="@+id/quick_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/invite_button"
+                    android:layout_below="@+id/invite_button"
+                    android:onClick="startQuickGame"
+                    android:text="Quick" />
 
 </RelativeLayout>

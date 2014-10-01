@@ -359,7 +359,8 @@ public class YoloGameRenderer implements Renderer {
 			
 			// ------------------------- Multislayer BEGIN -----------------------
 			
-		//		YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
+			if(YoloEngine.multiActive)					
+				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
 			
 				
 			// ------------------------- Multislayer END -------------------------

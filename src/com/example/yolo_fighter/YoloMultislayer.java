@@ -1,5 +1,7 @@
 package com.example.yolo_fighter;
 
+import com.google.android.gms.games.Games;
+
 public class YoloMultislayer {
 
 	public float Opponents_x_last[] = new float[4];
@@ -16,7 +18,7 @@ public class YoloMultislayer {
 		if (System.currentTimeMillis() - sentAt >= 100) {
 			// System.out.println("x: "+x+" y: "+y);
 			sentAt = System.currentTimeMillis();
-
+			sendMessageToAll(("x: "+x+" y: "+y).toString().getBytes());
 		}
 	}
 
@@ -65,5 +67,15 @@ public class YoloMultislayer {
 				}
 			}).start();
 		}
+	}
+	
+	
+	public void sendMessageToAll(byte[] data) {
+		for (int i = 0; i < YoloEngine.cRoom.getParticipants().size(); i++) {
+			if (YoloEngine.cRoom.getParticipantIds().get(i) != Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient())) {
+				Games.RealTimeMultiplayer.sendReliableMessage(YoloEngine.mHelper.getApiClient(), null, data, YoloEngine.cRoom.getRoomId().toString(), YoloEngine.cRoom.getParticipantIds().get(i));
+			}
+		}
+
 	}
 }
