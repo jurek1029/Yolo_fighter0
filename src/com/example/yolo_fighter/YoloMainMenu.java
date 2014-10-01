@@ -93,6 +93,8 @@ public class YoloMainMenu extends Activity
 
 			// Trochê niekonsekwentnie, bo zak³¹damy, ¿e mamy stringa...
 			String dd = new String(message.getMessageData());
+			
+			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]));
 			System.out.println(dd);
 		}
 	};
@@ -109,6 +111,8 @@ public class YoloMainMenu extends Activity
 		
 		
 // ------------------------- Multislayer BEGIN -----------------------
+		
+
 		
 		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
@@ -347,6 +351,7 @@ public class YoloMainMenu extends Activity
 	
 	public void startQuickGame(View v) {
 		YoloEngine.multiActive = true;
+		YoloEngine.opponentsNo = 1; // TODO
 		
 		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame(true, null));
 
@@ -358,7 +363,7 @@ public class YoloMainMenu extends Activity
 	
 	public void invite(View v) {
 		YoloEngine.multiActive = true;
-
+		YoloEngine.opponentsNo = 1; // TODO
 		// request code for the "select players" UI
 		// can be any number as long as it's unique
 		RC_SELECT_PLAYERS = 10000;
