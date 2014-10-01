@@ -12,7 +12,7 @@ public class YoloEngine {
 	public static final int MENU_BUTTON_ALPAH = 0;
 	public static final int BACKGROUND = R.drawable.level_01;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
-	public static final int OPPONENT_TEXTURE = R.drawable.player_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
+	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
 	public static final int MOVE_TEXTURE = R.drawable.move_1;
 	public static final int MOVE_BALL_TEXTURE =R.drawable.move_ball_1;
 	public static final int MOVE_TEXTURE_1 = R.drawable.back;
