@@ -23,21 +23,23 @@ public class YoloMultislayer {
 		if (System.currentTimeMillis() - sentAt >= 100) {
 			// System.out.println("x: "+x+" y: "+y);
 			sentAt = System.currentTimeMillis();
+			
 			sendMessageToAll((x+"|"+y).toString().getBytes());
+			
 		}
 	}
 
 	private void updateData(int playerID, float x, float y) {
 		if(firstrr ){
-			YoloEngine.mMultislayer.Opponents_x_last[0] = 3f;
-			YoloEngine.mMultislayer.Opponents_y_last[0] = 5f;
+			YoloEngine.Opponents_x[0] = 3f;
+			YoloEngine.Opponents_x[0] = 5f;
 			firstrr = false;
 		}
 		
 //		Opponents_x_change[playerID] = ((x - Opponents_x_last[playerID]) / (float) 5); // de facto trzerba sprawdziæ ile razy odpalany jest DrawOpponnent i jakoœ to powi¹zaæ
 //		Opponents_y_change[playerID] = ((y - Opponents_y_last[playerID]) / (float) 5);
 
-		Opponents_x_change[playerID] = x;
+		Opponents_x_change[playerID] = x; // tymczasowe !
 		Opponents_y_change[playerID] = y;
 		
 		Opponents_x_last[playerID] = x;

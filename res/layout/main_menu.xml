@@ -78,4 +78,13 @@
                     android:onClick="startQuickGame"
                     android:text="Quick" />
 
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/sign_in_button"
+                    android:layout_alignBottom="@+id/sign_in_button"
+                    android:layout_centerHorizontal="true"
+                    android:text="" />
+
 </RelativeLayout>

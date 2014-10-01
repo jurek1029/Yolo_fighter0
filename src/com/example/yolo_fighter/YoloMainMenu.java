@@ -28,6 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +52,9 @@ public class YoloMainMenu extends Activity
 	int RC_SELECT_PLAYERS;
 	int RC_SIGNIN = 9001;
 	
+	Button btn_quick;
+	Button btn_invite;
+	TextView debug_textview;
 	
 	RoomUpdateListener mRoomUpdateListener = new RoomUpdateListener() {
 		// https://developer.android.com/reference/com/google/android/gms/games/multiplayer/realtime/RoomUpdateListener.html
@@ -59,13 +63,14 @@ public class YoloMainMenu extends Activity
 		public void onRoomCreated(int arg0, Room arg1) {
 			YoloEngine.cRoom = arg1;
 			System.out.println("Room created");
+			debug_textview.setText("Room created");
 		}
 
 		@Override
 		public void onRoomConnected(int statusCode, Room room) {
 
 			System.out.println("Room connected");
-
+			debug_textview.setText("Room connected");
 			YoloEngine.cRoom = room;
 
 			// byte[] ff = "test".getBytes();
@@ -81,7 +86,7 @@ public class YoloMainMenu extends Activity
 		public void onJoinedRoom(int arg0, Room arg1) {
 			YoloEngine.cRoom = arg1;
 			System.out.println("Room joined code: " + arg0);
-
+			debug_textview.setText("Room joined code: " + arg0);
 		}
 	};
 	
@@ -111,8 +116,12 @@ public class YoloMainMenu extends Activity
 		
 		
 // ------------------------- Multislayer BEGIN -----------------------
-		
 
+		btn_quick = (Button) findViewById(R.id.quick_button);
+		btn_invite = (Button) findViewById(R.id.invite_button);
+		debug_textview = (TextView) findViewById(R.id.textView1);
+		btn_quick.setEnabled(false);
+		btn_invite.setEnabled(false);
 		
 		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
@@ -134,6 +143,10 @@ public class YoloMainMenu extends Activity
 
 				// mHelper.beginUserInitiatedSignIn();
 				System.out.println("Signed in successfully");
+				
+				btn_quick.setEnabled(true);
+				btn_invite.setEnabled(true);
+				
 				mSignInprogress = false;
 				if (YoloEngine.mHelper.getInvitationId() != null) {
 					// accept invitation
@@ -172,6 +185,7 @@ public class YoloMainMenu extends Activity
 			public void onSignInFailed() {
 				System.out.println("Signing in failed :(");
 				System.out.println("ERROR: " + YoloEngine.mHelper.getSignInError());
+				debug_textview.setText("sign in failed");
 			}
 
 		};
@@ -338,6 +352,10 @@ public class YoloMainMenu extends Activity
 	
 	public void signOut(View v) {
 		System.out.println("Signing out");
+		
+		btn_quick.setEnabled(false);
+		btn_invite.setEnabled(false);
+		
 		if (YoloEngine.mHelper.getApiClient().isConnected()) {
 			if (YoloEngine.cRoom != null)
 				if (YoloEngine.cRoom.getStatus() != 6)
@@ -346,6 +364,7 @@ public class YoloMainMenu extends Activity
 			YoloEngine.mHelper.signOut();
 			// mHelper.disconnect(); od³¹cza, nie wylogowuje
 		}
+		
 	}
 	
 	

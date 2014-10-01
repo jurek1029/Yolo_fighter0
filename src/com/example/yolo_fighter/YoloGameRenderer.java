@@ -341,7 +341,7 @@ public class YoloGameRenderer implements Renderer {
 
 			
 			
-			// ------------------------- Multislayer BEGIN -----------------------
+// ------------------------- Multislayer BEGIN -----------------------
 			
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
 				YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
@@ -354,7 +354,7 @@ public class YoloGameRenderer implements Renderer {
 				drawOponnent(gl, YoloEngine.mMultislayer.Opponents_x_change[i], YoloEngine.mMultislayer.Opponents_y_change[i], 3);
 			} 
 			
-			// ------------------------- Multislayer END -------------------------
+// ------------------------- Multislayer END -------------------------
 			
 			
 			if(YoloEngine.isShoting)playerFire(0.5f);
@@ -365,13 +365,13 @@ public class YoloGameRenderer implements Renderer {
 			drawButtons(gl);
 			
 			
-			// ------------------------- Multislayer BEGIN -----------------------
+// ------------------------- Multislayer BEGIN -----------------------
 			
 			if(YoloEngine.multiActive)					
 				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
 			
 				
-			// ------------------------- Multislayer END -------------------------
+// ------------------------- Multislayer END -------------------------
 			
 			
 		}
