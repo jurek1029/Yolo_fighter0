@@ -81,6 +81,7 @@ public class YoloEngine {
 	public static float Player_vy =0;
 	public static float Player_vx = 0f;
 	public static float PlayerLive = 100;
+	public static boolean isPlayerPoisoned = false;
 	
 	public static Display display;
 	public static int display_x; 

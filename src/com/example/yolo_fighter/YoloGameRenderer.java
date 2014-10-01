@@ -13,6 +13,8 @@ class Skill
 	float x_texture=0,y_texture=0,xEnd,yEnd;
 	float SkillADDX=0,SkillADDY = 0;
 	int sprite;
+	float x_radius,y_radius;
+	float damage;
 	
 	boolean isUsed=false;
 	
@@ -61,6 +63,8 @@ public class YoloGameRenderer implements Renderer {
 	private YoloWeapon bullet;
 	
 	public static Skill[] skilltab = new Skill[3];
+	private Vector<Skill> skillvector = new Vector<Skill>();
+	private int ile = 0;
 
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x;
@@ -93,7 +97,7 @@ public class YoloGameRenderer implements Renderer {
 	private int nextBullet = 0;
 	private boolean onGround = true;
 	private int ClimbingOn;
-	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0;
+	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,poisoned = 0;
 				
 	private YoloObject[] ObjectTab = new YoloObject[17];
 	private YoloObject[] LaddreTab = new YoloObject[4];
@@ -296,7 +300,7 @@ public class YoloGameRenderer implements Renderer {
 					YoloEngine.Player_vy = 0;
 				}
 			}
-	//----------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------SKILLS------------------------------------------------------------
 			if(YoloEngine.canSkill1 == false)S1cooldown++;
 			if(YoloEngine.canSkill2 == false)S2cooldown++;
 			if(YoloEngine.canSkill3 == false)S3cooldown++;
@@ -305,7 +309,11 @@ public class YoloGameRenderer implements Renderer {
 			if(YoloEngine.SKILL2_COOLDOWN == S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;}
 			if(YoloEngine.SKILL3_COOLDOWN == S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;}
 			
-			
+			if(YoloEngine.isPlayerPoisoned && poisoned != 0)
+			{
+				poisoned--;
+				YoloEngine.PlayerLive -= 0.16f;
+			}
 			
 				
 			
@@ -325,19 +333,17 @@ public class YoloGameRenderer implements Renderer {
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 			
 			drawBackground(gl);
+			for(int i=0;i<3;i++) useSkill(gl,i);	
 			drawPlayer(gl);
+			for(;ile<skillvector.size();ile++)drawSkillOponent(gl,ile);
+			ile = 0;
+
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
 			
 			if(YoloEngine.isShoting)playerFire(0.5f);
 			else nextBullet = 0;
 			moveBullets(gl);
 			
-		
-			for(int i=0;i<3;i++)
-			{
-					UseSkill(gl,i);
-			}		
-				
 			drawControls(gl);
 			drawButtons(gl);
 		}
@@ -378,6 +384,13 @@ public class YoloGameRenderer implements Renderer {
 		if(object.max_y  < bullet.y || object.min_y > bullet.y + bullet.size)return false;
 		
 		return true;
+	}
+	private boolean IsCollided(Skill skill)
+	{
+		if(YoloEngine.Player_x + 1  < skill.x*4 || YoloEngine.Player_x > skill.x*4 + skill.x_radius)return false;
+		if(YoloEngine.Player_y + 1 < skill.y*4 || YoloEngine.Player_y > skill.y*4 + skill.y_radius) return false;
+		
+		return true;	
 	}
 	
 	private void drawBullet(GL10 gl, YoloWeapon bullet)
@@ -729,7 +742,7 @@ public class YoloGameRenderer implements Renderer {
 		//TODO pociski przeciwnika
 	}
 	
-	private void UseSkill(GL10 gl,int skill)
+	private void useSkill(GL10 gl,int skill)
 	{
 		/*
 			 if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
@@ -780,6 +793,53 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
+	private void drawSkillOponent (GL10 gl ,int skill)
+	{		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+		gl.glTranslatef(skillvector.elementAt(skill).x/4f-.5f, skillvector.elementAt(skill).y/4f-.5f, 0f);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glTranslatef(skillvector.elementAt(skill).x_texture, skillvector.elementAt(skill).y_texture, 0f);
+		btn.draw(gl, spriteSheets,skillvector.elementAt(skill).sprite);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();	
+			
+		if(skillvector.elementAt(skill).x_texture<1)skillvector.elementAt(skill).x_texture+=0.125f;
+		else{skillvector.elementAt(skill).y_texture+=0.125f; skillvector.elementAt(skill).x_texture=0f;}
+			
+		if(skillvector.elementAt(skill).y_texture == skillvector.elementAt(skill).yEnd && skillvector.elementAt(skill).x_texture == skillvector.elementAt(skill).xEnd)
+		{
+			skillvector.remove(skill);
+			ile--;
+		}
+		
+		switch (skillvector.elementAt(skill).sprite)
+		{
+		case 4:
+			if(IsCollided(skillvector.elementAt(skill)))
+			{
+				poisoned = 300;
+				YoloEngine.isPlayerPoisoned = true; 
+			}
+			break;
+		case 5:
+			if(IsCollided(skillvector.elementAt(skill)))
+				YoloEngine.PlayerLive -= 30;
+			break;
+		}
+	}
+	
+	private void addSkillOponent(float x,float y,int sprite) //-------------------Bartku coœ dla cb ---------------------------
+	{
+		Skill a = new Skill();
+		a.x = x;
+		a.y = y;
+		a.sprite = sprite;
+		skillvector.add(a);
+	}
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	private void drawOponnent(GL10 gl, float x, float y, int sheetNo)
