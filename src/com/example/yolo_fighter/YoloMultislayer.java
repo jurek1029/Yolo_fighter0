@@ -1,9 +1,6 @@
 package com.example.yolo_fighter;
 
 public class YoloMultislayer {
-	public float[] xR = new float[300000];
-	public float[] yR = new float[300000];
-	public int iR = 0;
 
 	public float Opponents_x_last[] = new float[4];
 	public float Opponents_y_last[] = new float[4];
@@ -20,9 +17,6 @@ public class YoloMultislayer {
 			// System.out.println("x: "+x+" y: "+y);
 			sentAt = System.currentTimeMillis();
 
-			xR[iR] = x;
-			yR[iR] = y;
-			iR++;
 		}
 	}
 
