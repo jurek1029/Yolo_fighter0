@@ -3,7 +3,7 @@ package com.example.yolo_fighter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.MotionEventCompat;
+
 import android.view.MotionEvent;
 
 public class YoloGame extends Activity{

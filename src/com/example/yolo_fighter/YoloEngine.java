@@ -87,25 +87,30 @@ public class YoloEngine {
 	public static int display_x; 
 	public static int display_y; 
 	
-	// ------------------------- Multislayer BEGIN -----------------------	
-	
+	// ------------------------- Multislayer BEGIN -----------------------
+
+	// test purposes
+	public static int changesMade = 0;
+	public static long savingStart = 0;
+	public static long dsdsdsd = 0;
+	//
+
+	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	public static boolean actingAsServer;
-	
+
 	public static boolean multiWorking = false;
 	public static String lastMessage = null;
-	
-	
-	
+
 	public static float Opponent_x = 1f;
 	public static float Opponent_y = 0.4f;
-	
-	public static int opponentsNo = 0; 
+
+	public static int opponentsNo = 0;
 	public static float Opponents_x[] = new float[4];
 	public static float Opponents_y[] = new float[4];
 
 	public static boolean Opponent_isCrouched = false;
-	
-	   //public static YoloBTservice mServiceX; 
+
+	// public static YoloBTservice mServiceX;
 	// ------------------------- Multislayer END -------------------------
 	
 	
