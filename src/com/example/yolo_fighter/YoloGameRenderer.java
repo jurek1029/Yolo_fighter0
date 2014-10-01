@@ -335,12 +335,10 @@ public class YoloGameRenderer implements Renderer {
 			drawBackground(gl);
 			for(int i=0;i<3;i++) useSkill(gl,i);	
 			drawPlayer(gl);
-<<<<<<< HEAD
 			for(;ile<skillvector.size();ile++)drawSkillOponent(gl,ile);
 			ile = 0;
 
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
-=======
 			
 			
 			// ------------------------- Multislayer BEGIN -----------------------
@@ -357,7 +355,6 @@ public class YoloGameRenderer implements Renderer {
 			
 			// ------------------------- Multislayer END -------------------------
 			
->>>>>>> 954828b86a92c2883e81ed7dec75115ac4e210e6
 			
 			if(YoloEngine.isShoting)playerFire(0.5f);
 			else nextBullet = 0;
