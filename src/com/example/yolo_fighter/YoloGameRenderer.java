@@ -105,7 +105,7 @@ public class YoloGameRenderer implements Renderer {
 	private long loopStart = 0;
 	private long loopEnd = 0;
 	private long loopRunTime = 0;
-	
+
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
@@ -338,22 +338,23 @@ public class YoloGameRenderer implements Renderer {
 			for(;ile<skillvector.size();ile++)drawSkillOponent(gl,ile);
 			ile = 0;
 
-			for(int i = 0; i < YoloEngine.opponentsNo; i++) { drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3); } // Multislayer
+
 			
 			
-			// ------------------------- Multislayer BEGIN -----------------------
+// ------------------------- Multislayer BEGIN -----------------------
 			
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
 				YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
 				YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
-				
+		
 				YoloEngine.changesMade++;
 				System.out.println(YoloEngine.changesMade);
 				
-				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3);
+				//drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3);
+				drawOponnent(gl, YoloEngine.mMultislayer.Opponents_x_change[i], YoloEngine.mMultislayer.Opponents_y_change[i], 3);
 			} 
 			
-			// ------------------------- Multislayer END -------------------------
+// ------------------------- Multislayer END -------------------------
 			
 			
 			if(YoloEngine.isShoting)playerFire(0.5f);
@@ -364,12 +365,13 @@ public class YoloGameRenderer implements Renderer {
 			drawButtons(gl);
 			
 			
-			// ------------------------- Multislayer BEGIN -----------------------
+// ------------------------- Multislayer BEGIN -----------------------
 			
-		//		YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
+			if(YoloEngine.multiActive)					
+				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
 			
 				
-			// ------------------------- Multislayer END -------------------------
+// ------------------------- Multislayer END -------------------------
 			
 			
 		}
@@ -378,6 +380,8 @@ public class YoloGameRenderer implements Renderer {
 		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		loopEnd = System.currentTimeMillis();
 		loopRunTime = (loopEnd - loopStart);
+		
+		
 		
 		
 	}

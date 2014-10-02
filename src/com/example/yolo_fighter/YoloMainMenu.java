@@ -4,15 +4,31 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.android.gms.games.Games;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
+import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.google.example.games.basegameutils.GameHelper;
+import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +41,72 @@ public class YoloMainMenu extends Activity
 	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
 	
+	
+// ------------------------- Multislayer BEGIN -----------------------
+//	GameHelper mHelper;
+	boolean mSignInprogress = false;
+	private AlertDialog.Builder askInvitation; 
+	
+//	Room cRoom;
+	Invitation IncomingInvitation;
+	int RC_SELECT_PLAYERS;
+	int RC_SIGNIN = 9001;
+	
+	Button btn_quick;
+	Button btn_invite;
+	TextView debug_textview;
+	
+	RoomUpdateListener mRoomUpdateListener = new RoomUpdateListener() {
+		// https://developer.android.com/reference/com/google/android/gms/games/multiplayer/realtime/RoomUpdateListener.html
+
+		@Override
+		public void onRoomCreated(int arg0, Room arg1) {
+			YoloEngine.cRoom = arg1;
+			System.out.println("Room created");
+			debug_textview.setText("Room created");
+		}
+
+		@Override
+		public void onRoomConnected(int statusCode, Room room) {
+
+			System.out.println("Room connected");
+			debug_textview.setText("Room connected");
+			YoloEngine.cRoom = room;
+
+			// byte[] ff = "test".getBytes();
+		}
+
+		@Override
+		public void onLeftRoom(int arg0, String arg1) {
+
+			System.out.println("Room left");
+		}
+
+		@Override
+		public void onJoinedRoom(int arg0, Room arg1) {
+			YoloEngine.cRoom = arg1;
+			System.out.println("Room joined code: " + arg0);
+			debug_textview.setText("Room joined code: " + arg0);
+		}
+	};
+	
+	RealTimeMessageReceivedListener mRTMreceiveList = new RealTimeMessageReceivedListener() {
+
+		@Override
+		public void onRealTimeMessageReceived(RealTimeMessage message) {
+			// TODO Auto-generated method stub
+
+			// Trochê niekonsekwentnie, bo zak³¹damy, ¿e mamy stringa...
+			String dd = new String(message.getMessageData());
+			
+			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]));
+			System.out.println(dd);
+		}
+	};
+	
+// ------------------------- Multislayer END -------------------------
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 
@@ -32,6 +114,85 @@ public class YoloMainMenu extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 	
+		
+// ------------------------- Multislayer BEGIN -----------------------
+
+		btn_quick = (Button) findViewById(R.id.quick_button);
+		btn_invite = (Button) findViewById(R.id.invite_button);
+		debug_textview = (TextView) findViewById(R.id.textView1);
+		btn_quick.setEnabled(false);
+		btn_invite.setEnabled(false);
+		
+		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				System.out.println("Invitation accepted");
+				Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(false, IncomingInvitation));
+			}
+		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				System.out.println("Invitation rejected");
+			}
+		}).setIcon(android.R.drawable.ic_dialog_alert);
+		
+		YoloEngine.mHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
+		YoloEngine.mHelper.enableDebugLog(true);
+		
+		GameHelperListener listener = new GameHelper.GameHelperListener() {
+			@Override
+			public void onSignInSucceeded() {
+
+				// mHelper.beginUserInitiatedSignIn();
+				System.out.println("Signed in successfully");
+				
+				btn_quick.setEnabled(true);
+				btn_invite.setEnabled(true);
+				
+				mSignInprogress = false;
+				if (YoloEngine.mHelper.getInvitationId() != null) {
+					// accept invitation
+
+					Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(false, YoloEngine.mHelper.getInvitation()));
+
+					// prevent screen from sleeping during handshake
+					getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+				}
+
+				Games.Invitations.registerInvitationListener(YoloEngine.mHelper.getApiClient(), new OnInvitationReceivedListener() {
+
+					@Override
+					public void onInvitationRemoved(String invitationId) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onInvitationReceived(Invitation invitation) {
+						// TODO Auto-generated method stub
+						System.out.println("Invitation arrived, asking");
+						IncomingInvitation = invitation;
+
+						askInvitation.setTitle("New invitation");
+						askInvitation.setMessage("Do u wanna accept, huh? from:" + invitation.getInviter().getDisplayName());
+						askInvitation.show();
+
+					}
+				});
+
+			}
+
+			@Override
+			public void onSignInFailed() {
+				System.out.println("Signing in failed :(");
+				System.out.println("ERROR: " + YoloEngine.mHelper.getSignInError());
+				debug_textview.setText("sign in failed");
+			}
+
+		};
+
+		YoloEngine.mHelper.setup(listener);
+		
+// ------------------------- Multislayer END -------------------------
 		
 	//	dbm.close();
 		
@@ -173,10 +334,129 @@ public class YoloMainMenu extends Activity
 	}
 	
 	
+	
 	@Override
 	public void onResume()
 	{
 		super.onResume();
 	}
+	
+	
+	
+// ------------------------- Multislayer BEGIN -----------------------
+	public void signIn(View v) {
+		System.out.println("Signing in");
+		mSignInprogress = true;
+		YoloEngine.mHelper.beginUserInitiatedSignIn();
+	}
+	
+	public void signOut(View v) {
+		System.out.println("Signing out");
+		
+		btn_quick.setEnabled(false);
+		btn_invite.setEnabled(false);
+		
+		if (YoloEngine.mHelper.getApiClient().isConnected()) {
+			if (YoloEngine.cRoom != null)
+				if (YoloEngine.cRoom.getStatus() != 6)
+					; //Games.RealTimeMultiplayer.leave(mHelper.getApiClient(), mRoomUpdateListener, cRoom.getRoomId()); @TODO
+
+			YoloEngine.mHelper.signOut();
+			// mHelper.disconnect(); od³¹cza, nie wylogowuje
+		}
+		
+	}
+	
+	
+	public void startQuickGame(View v) {
+		YoloEngine.multiActive = true;
+		YoloEngine.opponentsNo = 1; // TODO
+		
+		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame(true, null));
+
+		// prevent screen from sleeping during handshake
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		// go to game screen */
+	}
+	
+	public void invite(View v) {
+		YoloEngine.multiActive = true;
+		YoloEngine.opponentsNo = 1; // TODO
+		// request code for the "select players" UI
+		// can be any number as long as it's unique
+		RC_SELECT_PLAYERS = 10000;
+
+		// launch the player selection screen
+		// minimum: 1 other player; maximum: 3 other players
+		Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(YoloEngine.mHelper.getApiClient(), 1, 3);
+		startActivityForResult(intent, RC_SELECT_PLAYERS);
+	}
+	
+	
+	private RoomConfig prepareGame(boolean automatch, Invitation invitation)
+	{
+		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
+		roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
+		if(automatch) {
+			// automatch criteria
+			Bundle am = RoomConfig.createAutoMatchCriteria(1, 1, 0);
+			roomConfigBuilder.setAutoMatchCriteria(am);
+		}
+		if(!(invitation == null)) {
+			roomConfigBuilder.setInvitationIdToAccept(invitation.getInvitationId());
+		}
+		RoomConfig roomConfig = roomConfigBuilder.build();
+		
+		return roomConfig;
+	}
+	
+	@Override
+	public void onActivityResult(int request, int response, Intent data) {
+		
+		if(request == RC_SIGNIN) { // Wracamy z powrotem do gameHelpera, który otworzy³ okienko i chce wiedzieæ co siê sta³o
+			YoloEngine.mHelper.onActivityResult(request, response, data);
+		}
+		
+		if (request == RC_SELECT_PLAYERS) {
+			if (response != Activity.RESULT_OK) {
+				// user canceled
+				return;
+			}
+
+			// get the invitee list
+			Bundle extras = data.getExtras();
+			final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+
+			// get auto-match criteria
+			Bundle autoMatchCriteria = null;
+			int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+			int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+			if (minAutoMatchPlayers > 0) {
+				autoMatchCriteria = RoomConfig.createAutoMatchCriteria(minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+			} else {
+				autoMatchCriteria = null;
+			}
+
+			// create the room and specify a variant if appropriate
+			RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);
+			
+			roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
+			
+			roomConfigBuilder.addPlayersToInvite(invitees);
+			if (autoMatchCriteria != null) {
+				roomConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+			}
+			RoomConfig roomConfig = roomConfigBuilder.build();
+			Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), roomConfig);
+
+			// prevent screen from sleeping during handshake
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
+
+	}
+	
+// ------------------------- Multislayer END -------------------------
 	
 }

@@ -1,5 +1,8 @@
 package com.example.yolo_fighter;
 
+import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.example.games.basegameutils.GameHelper;
+
 import android.content.Context;
 import android.view.Display;
 
@@ -9,7 +12,7 @@ public class YoloEngine {
 	public static final int MENU_BUTTON_ALPAH = 0;
 	public static final int BACKGROUND = R.drawable.level_01;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
-	public static final int OPPONENT_TEXTURE = R.drawable.player_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
+	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
 	public static final int MOVE_TEXTURE = R.drawable.move_1;
 	public static final int MOVE_BALL_TEXTURE =R.drawable.move_ball_1;
 	public static final int MOVE_TEXTURE_1 = R.drawable.back;
@@ -89,12 +92,11 @@ public class YoloEngine {
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 
-	// test purposes
+	public static Room cRoom;
+	public static GameHelper mHelper;
 	public static int changesMade = 0;
-	public static long savingStart = 0;
-	public static long dsdsdsd = 0;
-	//
 
+	public static boolean multiActive = false;
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	public static boolean actingAsServer;
 
@@ -121,4 +123,5 @@ public class YoloEngine {
 	public static YoloPlayerInfo currentPlayerInfo;	
 	
 	public static Context context;
+	
 }
