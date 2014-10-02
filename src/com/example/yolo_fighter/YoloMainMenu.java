@@ -31,7 +31,7 @@ public class YoloMainMenu extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-		
+	
 		
 	//	dbm.close();
 		
@@ -117,7 +117,7 @@ public class YoloMainMenu extends Activity
 		plInfoList=dbm.getAll();
 	//	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	//	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
-		
+			
 		for(int i=0;i<plInfoList.size(); i++)
 		{
 			YoloPlayerInfo playerInfo = plInfoList.get(i);
