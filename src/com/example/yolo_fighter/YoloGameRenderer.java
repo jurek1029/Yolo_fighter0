@@ -344,14 +344,20 @@ public class YoloGameRenderer implements Renderer {
 // ------------------------- Multislayer BEGIN -----------------------
 			
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
-				YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
-				YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
-		
-				YoloEngine.changesMade++;
-				System.out.println(YoloEngine.changesMade);
 				
-				//drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3);
-				drawOponnent(gl, YoloEngine.mMultislayer.Opponents_x_change[i], YoloEngine.mMultislayer.Opponents_y_change[i], 3);
+				if(YoloEngine.changesMade < 7) {
+					YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
+					YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
+			
+					
+					
+					YoloEngine.changesMade++;
+					System.out.println(YoloEngine.changesMade);
+				}
+				else 
+					;//System.out.println("no new data");
+				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3);
+
 			} 
 			
 // ------------------------- Multislayer END -------------------------

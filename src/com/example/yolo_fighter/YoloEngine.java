@@ -102,15 +102,14 @@ public class YoloEngine {
 
 	public static boolean multiWorking = false;
 	public static String lastMessage = null;
-
-	public static float Opponent_x = 1f;
-	public static float Opponent_y = 0.4f;
+public static int UpdateFreq = 50;
 
 	public static int opponentsNo = 0;
 	public static float Opponents_x[] = new float[4];
 	public static float Opponents_y[] = new float[4];
 
 	public static boolean Opponent_isCrouched = false;
+
 
 	// public static YoloBTservice mServiceX;
 	// ------------------------- Multislayer END -------------------------
