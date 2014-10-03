@@ -102,13 +102,13 @@ public class YoloEngine {
 
 	public static boolean multiWorking = false;
 	public static String lastMessage = null;
-public static int UpdateFreq = 50;
+	public static int UPDATE_FREQ = 50;
 
 	public static int opponentsNo = 0;
 	public static float Opponents_x[] = new float[4];
 	public static float Opponents_y[] = new float[4];
 
-	public static boolean Opponent_isCrouched = false;
+	public static boolean Opponent_isCrouched[] = new boolean[4];
 
 
 	// public static YoloBTservice mServiceX;

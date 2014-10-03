@@ -99,8 +99,9 @@ public class YoloMainMenu extends Activity
 			// Trochê niekonsekwentnie, bo zak³¹damy, ¿e mamy stringa...
 			String dd = new String(message.getMessageData());
 			
-			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]));
-			System.out.println(dd);
+			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]),Boolean.parseBoolean(dd.split("\\|")[2]));
+			//System.out.println(dd);
+			
 		}
 	};
 	

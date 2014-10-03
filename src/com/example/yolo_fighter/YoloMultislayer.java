@@ -19,21 +19,21 @@ public class YoloMultislayer {
 	private long receivedAt;
 	private boolean firstrr = true;
 
-	public void SendData(float x, float y) {
-		if (System.currentTimeMillis() - sentAt >= YoloEngine.UpdateFreq) {
+	public void SendData(float x, float y, boolean isCrouch) {
+		if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
 			// System.out.println("x: "+x+" y: "+y);
 			sentAt = System.currentTimeMillis();
 			
-			sendMessageToAll((x+"|"+y).toString().getBytes());
+			sendMessageToAll((x+"|"+y+"|"+isCrouch).toString().getBytes());
 			
 		}
 	}
 
-	private void updateData(int playerID, float x, float y) {
+	private void updateData(int playerID, float x, float y, boolean isCrouch) {
 
-		
-		Opponents_x_change[playerID] = ((x - Opponents_x_last[playerID]) / (float) 6); // de facto trzerba sprawdziæ ile razy odpalany jest DrawOpponnent i jakoœ to powi¹zaæ
-		Opponents_y_change[playerID] = ((y - Opponents_y_last[playerID]) / (float) 6);
+		YoloEngine.Opponent_isCrouched[playerID] = isCrouch;
+		Opponents_x_change[playerID] = ((x - Opponents_x_last[playerID]) / (float) 10); // de facto trzerba sprawdziæ ile razy odpalany jest DrawOpponnent i jakoœ to powi¹zaæ
+		Opponents_y_change[playerID] = ((y - Opponents_y_last[playerID]) / (float) 10);
 
 		YoloEngine.changesMade = 0;
 		
@@ -59,10 +59,10 @@ public class YoloMultislayer {
 		
 	}
 
-	public void DataReceived(final int playerID, final float x, final float y) {
+	public void DataReceived(final int playerID, final float x, final float y, final boolean isCrouch) {
 		newPackage = true;
-		if (System.currentTimeMillis() - receivedAt >= YoloEngine.UpdateFreq) {
-			updateData(playerID, x, y);
+		if (System.currentTimeMillis() - receivedAt >= YoloEngine.UPDATE_FREQ) {
+			updateData(playerID, x, y, isCrouch);
 		} else { // nie lubimy zbyt czêstych updateów
 			new Thread(new Runnable() {
 
@@ -78,8 +78,8 @@ public class YoloMultislayer {
 							break;
 						}
 
-						if (System.currentTimeMillis() - receivedAt >= YoloEngine.UpdateFreq) {
-							updateData(playerID, x, y);
+						if (System.currentTimeMillis() - receivedAt >= YoloEngine.UPDATE_FREQ) {
+							updateData(playerID, x, y, isCrouch);
 							break;
 						}
 						try {

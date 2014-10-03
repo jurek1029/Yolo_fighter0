@@ -346,17 +346,22 @@ public class YoloGameRenderer implements Renderer {
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
 				
 				if(YoloEngine.changesMade < 7) {
+					if(YoloEngine.changesMade == 0)
+					{
+						YoloEngine.Opponents_x[i] = YoloEngine.mMultislayer.Opponents_x_last[i];
+						YoloEngine.Opponents_y[i] = YoloEngine.mMultislayer.Opponents_y_last[i];
+					}
 					YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
 					YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
 			
 					
 					
 					YoloEngine.changesMade++;
-					System.out.println(YoloEngine.changesMade);
+					//System.out.println(YoloEngine.changesMade);
 				}
 				else 
-					;//System.out.println("no new data");
-				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], 3);
+					System.out.println("no new data");
+				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i],YoloEngine.Opponent_isCrouched[i], 3);
 
 			} 
 			
@@ -374,7 +379,7 @@ public class YoloGameRenderer implements Renderer {
 // ------------------------- Multislayer BEGIN -----------------------
 			
 			if(YoloEngine.multiActive)					
-				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y);						
+				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);						
 			
 				
 // ------------------------- Multislayer END -------------------------
@@ -878,7 +883,7 @@ public class YoloGameRenderer implements Renderer {
 	}
 	
 	// ------------------------- Multislayer BEGIN -----------------------
-	private void drawOponnent(GL10 gl, float x, float y, int sheetNo)
+	private void drawOponnent(GL10 gl, float x, float y, boolean isCrouch, int sheetNo)
 	{
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -888,7 +893,7 @@ public class YoloGameRenderer implements Renderer {
 		gl.glTranslatef(x, y, 0f);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
-		if(YoloEngine.Opponent_isCrouched) gl.glTranslatef(0f, 0f, 0f);
+		if(isCrouch) gl.glTranslatef(0f, 0f, 0f);
 		else gl.glTranslatef(0.125f, 0f, 0f);
 		gl.glTranslatef(0f, 0f, 0f);
 		player.draw(gl,spriteSheets, sheetNo);
