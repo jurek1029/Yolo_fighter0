@@ -43,14 +43,12 @@ public class YoloMainMenu extends Activity
 	
 	
 // ------------------------- Multislayer BEGIN -----------------------
-//	GameHelper mHelper;
-	boolean mSignInprogress = false;
-	private AlertDialog.Builder askInvitation; 
 	
-//	Room cRoom;
-	Invitation IncomingInvitation;
-	int RC_SELECT_PLAYERS;
-	int RC_SIGNIN = 9001;
+	private boolean mSignInprogress = false;
+	private AlertDialog.Builder askInvitation; 
+	private Invitation IncomingInvitation;
+	private int RC_SELECT_PLAYERS;
+	private int RC_SIGNIN = 9001;
 	
 	Button btn_quick;
 	Button btn_invite;
@@ -99,7 +97,7 @@ public class YoloMainMenu extends Activity
 			// Trochê niekonsekwentnie, bo zak³¹damy, ¿e mamy stringa...
 			String dd = new String(message.getMessageData());
 			
-			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]),Boolean.parseBoolean(dd.split("\\|")[2]));
+			YoloEngine.mMultislayer.DataReceived(0, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]),Boolean.parseBoolean(dd.split("\\|")[2]),Integer.parseInt(dd.split("\\|")[3]));
 			//System.out.println(dd);
 			
 		}

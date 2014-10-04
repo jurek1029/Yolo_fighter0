@@ -102,7 +102,8 @@ public class YoloEngine {
 
 	public static boolean multiWorking = false;
 	public static String lastMessage = null;
-	public static int UPDATE_FREQ = 50;
+	public static int UPDATE_FREQ = 100;
+	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
 
 	public static int opponentsNo = 0;
 	public static float Opponents_x[] = new float[4];
