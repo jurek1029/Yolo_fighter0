@@ -94,7 +94,7 @@ public class YoloEngine {
 
 	public static Room cRoom;
 	public static GameHelper mHelper;
-	public static int changesMade = 0;
+	public static int changesMade[] = new int[4];
 
 	public static boolean multiActive = false;
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
@@ -106,6 +106,8 @@ public class YoloEngine {
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
 
 	public static int opponentsNo = 0;
+	public static String opponents[] = new String[4];
+	
 	public static float Opponents_x[] = new float[4];
 	public static float Opponents_y[] = new float[4];
 

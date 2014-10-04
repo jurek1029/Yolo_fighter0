@@ -321,14 +321,18 @@ public class YoloGameRenderer implements Renderer {
 	
 // ------------------------- Multislayer BEGIN -----------------------	
 
-			if (YoloEngine.multiActive)
-				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);
+			if (YoloEngine.multiActive) {
+				
+				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);				
+				YoloEngine.opponentsNo = YoloEngine.cRoom.getParticipantIds().size()-1;
+				
+			}
 			
 			
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
 				
-				if(YoloEngine.changesMade < YoloEngine.MULTI_STEPS) {
-					if(YoloEngine.changesMade == 0)
+				if(YoloEngine.changesMade[i] < YoloEngine.MULTI_STEPS) {
+					if(YoloEngine.changesMade[i] == 0)
 					{
 						YoloEngine.Opponents_x[i] = YoloEngine.mMultislayer.Opponents_x_lastX[i];
 						YoloEngine.Opponents_y[i] = YoloEngine.mMultislayer.Opponents_y_lastX[i];
@@ -339,7 +343,7 @@ public class YoloGameRenderer implements Renderer {
 					YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
 					YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
 			
-					YoloEngine.changesMade++;
+					YoloEngine.changesMade[i]++;
 					//if(YoloEngine.changesMade == 5) System.out.println(YoloEngine.mMultislayer.Opponents_x_last[i] - YoloEngine.Opponents_x[i]); 
 					//System.out.println(YoloEngine.changesMade);
 					
