@@ -40,8 +40,8 @@ public class YoloMultislayer {
 			System.out.println("old data");
 			return;
 		} else
-			receivedPackageId = packageId; // XXX dla > 2 graczy trzeba zrobiæ array, Licznik oparty na INT, kiedyœ
-											// skoñczy siê zakres
+			receivedPackageId = packageId; // NIE DZIA£A, mo¿e powinno?? (nie zwiêksza sie zmienna) XXX dla > 2 graczy trzeba zrobiæ array, Licznik oparty na INT, kiedyœ
+											// skoñczy siê zakres 
 
 		YoloEngine.Opponent_isCrouched[playerID] = isCrouch;
 		Opponents_x_change[playerID] = ((x - Opponents_x_last[playerID]) / (float) YoloEngine.MULTI_STEPS);

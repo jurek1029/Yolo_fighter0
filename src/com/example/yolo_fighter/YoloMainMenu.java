@@ -509,7 +509,7 @@ public class YoloMainMenu extends Activity
 		roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
 		if(automatch) {
 			// automatch criteria
-			Bundle am = RoomConfig.createAutoMatchCriteria(2, 2, 0);
+			Bundle am = RoomConfig.createAutoMatchCriteria(1, 2, 0);
 			roomConfigBuilder.setAutoMatchCriteria(am);
 		}
 		if(!(invitation == null)) {
