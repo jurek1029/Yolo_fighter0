@@ -232,7 +232,6 @@ public class YoloGameRenderer implements Renderer {
 	public static Skill[] skilltab = new Skill[3];
 	private Vector<Skill> skillOponentVe = new Vector<Skill>();
 	public static Vector<Skill> skillPlayerVe = new Vector<Skill>();
-	private int ile = 0;
 
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x;
@@ -544,8 +543,7 @@ public class YoloGameRenderer implements Renderer {
 			drawBackground(gl);
 			drawPlayerSkills(gl);	
 			drawPlayer(gl);
-			for(;ile<skillOponentVe.size();ile++)drawOponentSkills(gl,ile);
-			ile = 0;
+			drawOponentSkills(gl);
 
 
 			
@@ -1032,9 +1030,7 @@ public class YoloGameRenderer implements Renderer {
 							AIFire(skillPlayerVe.elementAt(i).x, skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).isLeft);
 							skillPlayerVe.elementAt(i).ret = YoloEngine.ARCHER_NOPE;
 						}
-						
-						
-						
+
 						break;
 					}
 							
@@ -1086,42 +1082,46 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
-	private void drawOponentSkills (GL10 gl ,int skill)
+	private void drawOponentSkills (GL10 gl)
 	{		
-		gl.glMatrixMode(GL10.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		gl.glPushMatrix();
-		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
-		gl.glTranslatef(skillOponentVe.elementAt(skill).x/4f-.5f, skillOponentVe.elementAt(skill).y/4f-.5f, 0f);
-		gl.glColor4f(1f,1f,1f,1f);
-		gl.glMatrixMode(GL10.GL_TEXTURE);
-		gl.glTranslatef(skillOponentVe.elementAt(skill).x_texture, skillOponentVe.elementAt(skill).y_texture, 0f);
-		btn.draw(gl, spriteSheets,skillOponentVe.elementAt(skill).sprite);
-		gl.glPopMatrix();
-		gl.glLoadIdentity();	
-			
-		if(skillOponentVe.elementAt(skill).x_texture<1)skillOponentVe.elementAt(skill).x_texture+=0.125f;
-		else{skillOponentVe.elementAt(skill).y_texture+=0.125f; skillOponentVe.elementAt(skill).x_texture=0f;}
-			
-		if(skillOponentVe.elementAt(skill).y_texture == skillOponentVe.elementAt(skill).yEnd && skillOponentVe.elementAt(skill).x_texture == skillOponentVe.elementAt(skill).xEnd)
-		{
-			skillOponentVe.remove(skill);
-			ile--;
-		}
 		
-		switch (skillOponentVe.elementAt(skill).sprite)
+		for (int i = 0;i<skillOponentVe.size();i++)
 		{
-		case 4:
-			if(IsCollided(skillOponentVe.elementAt(skill)))
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+			gl.glTranslatef(skillOponentVe.elementAt(i).x/4f-.5f, skillOponentVe.elementAt(i).y/4f-.5f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(skillOponentVe.elementAt(i).x_texture, skillOponentVe.elementAt(i).y_texture, 0f);
+			btn.draw(gl, spriteSheets,skillOponentVe.elementAt(i).sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();	
+				
+			if(skillOponentVe.elementAt(i).x_texture<1)skillOponentVe.elementAt(i).x_texture+=0.125f;
+			else{skillOponentVe.elementAt(i).y_texture+=0.125f; skillOponentVe.elementAt(i).x_texture=0f;}
+				
+			if(skillOponentVe.elementAt(i).y_texture == skillOponentVe.elementAt(i).yEnd && skillOponentVe.elementAt(i).x_texture == skillOponentVe.elementAt(i).xEnd)
 			{
-				poisoned = 300;
-				YoloEngine.isPlayerPoisoned = true; 
+				skillOponentVe.remove(i);
+				i--;
 			}
-			break;
-		case 5:
-			if(IsCollided(skillOponentVe.elementAt(skill)))
-				YoloEngine.PlayerLive -= 30;
-			break;
+			
+			switch (skillOponentVe.elementAt(i).sprite)
+			{
+			case 4:
+				if(IsCollided(skillOponentVe.elementAt(i)))
+				{
+					poisoned = 300;
+					YoloEngine.isPlayerPoisoned = true; 
+				}
+				break;
+			case 5:
+				if(IsCollided(skillOponentVe.elementAt(i)))
+					YoloEngine.PlayerLive -= 30;
+				break;
+			}
 		}
 	}
 	
