@@ -21,13 +21,15 @@ public class YoloWeapon {
 	
 	private int[] textures = new int[1];
 	
-	public float x;
-	public float y;
+	public float x,x_texture;
+	public float y,y_texture;
 	public float size;
 	public float damage;
 	public boolean isLeft,isMy;
 	public float bulletSpeed;
-	
+	public int sprite;
+	public float scale = 1f;
+
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,
 			1.0f, 0.0f, 0.0f,

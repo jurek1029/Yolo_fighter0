@@ -47,8 +47,8 @@ public class YoloEngine {
 	public static boolean is = false;
 	public static int usedSkill;
 	
-	public static final int ARCHER_STAND=0,ARCHER_WALK=1,ARCHER_FIRE=2;
-	public static float ARCHER_SPEED = 0.125f;
+	public static final int ARCHER_STAND=0,ARCHER_WALK=1,ARCHER_FIRE=2,ARCHER_NOPE = 100;
+	public static float ARCHER_SPEED = 0.0625f;
 	//--------------------------------------------
 	
 	
@@ -94,6 +94,9 @@ public class YoloEngine {
 	public static int display_x; 
 	public static int display_y; 
 	
+	public static int SkillSprite1 = 4;
+	public static int SkillSprite2 = 5;
+	public static int SkillSprite3 = 6;
 	// ------------------------- Multislayer BEGIN -----------------------
 
 	public static Room cRoom;
