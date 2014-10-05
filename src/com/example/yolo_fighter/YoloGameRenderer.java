@@ -10,15 +10,40 @@ import android.opengl.GLSurfaceView.Renderer;
 class Skill 
 {
 	float x=0,y=0;
-	float x_texture=0,y_texture=0,xEnd,yEnd;
+	float x_texture=0,y_texture=0,xEnd,yEnd,xStart,yStart;
 	float SkillADDX=0,SkillADDY = 0;
-	int sprite;
 	float x_radius,y_radius;
 	float damage;
+	float  vy = 0;
+	//------------------------(X,Y) PRZECIWNIKA-------------------
+	float x_oponnent, y_oponnent ;
+	//-------------------------------------------------------------
 	
+	int sprite;
+	int ret = 0,j=0;
+	
+	boolean isLeft = false,onGround = false;
 	boolean isUsed=false;
 	
 	public Skill() {}
+	
+	public Skill(int sprite)
+	{	
+		if(YoloEngine.isPlayerLeft)
+			x = YoloEngine.Player_x - 2f;
+		else
+			x = YoloEngine.Player_x + 2f;
+		y = YoloEngine.Player_y;
+		
+		this.sprite = sprite;
+		
+		if(sprite==6)
+		{
+			x_radius = 14f;
+			y_radius = 5f;
+		}
+		
+	}
 
 	public void setX()
 	{
@@ -47,12 +72,124 @@ class Skill
 		y = y + SkillADDY;
 	}
 	
+	public void move ()
+	{
+		x_oponnent = YoloEngine.mMultislayer.Opponents_x_last[0]; 
+		y_oponnent = YoloEngine.mMultislayer.Opponents_y_last[0];
+		 
+		vy -= YoloEngine.GAME_ACCELERATION;
+		
+		for(int i = j; i < YoloGameRenderer.ObjectTab.length; i++)
+		{
+			if(YoloGameRenderer.IsCollidedTop(YoloGameRenderer.ObjectTab[i]))
+			{
+					y = YoloGameRenderer.ObjectTab[i].max_y;
+					vy = 0;
+					onGround = true;
+					j=i;
+				break;
+			}
+		}
+		
+		onGround = false;
+		
+		switch(sprite)
+		{
+		case 6:
+			
+			if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)
+			{
+				if(ret != YoloEngine.ARCHER_FIRE)
+				if(x>x_oponnent)
+				{
+					//isLeft = true;
+					x_texture = xStart = 0;
+					y_texture = yStart = 0.25f;
+					xEnd = 1f;
+					yEnd = 0.25f;
+				}
+				else
+				{
+					//isLeft = false;
+					x_texture = xStart = 0;
+					y_texture = yStart = 0.125f;
+					xEnd = 1f;
+					yEnd = 0.125f;
+				}
+				ret = YoloEngine.ARCHER_FIRE;
+			}
+			else
+			{
+				if(!onGround)
+				{
+					if(ret != YoloEngine.ARCHER_STAND)
+					if(x>x_oponnent)
+					{
+						x_texture = xStart = xEnd = 0.75f;
+						y_texture = yStart = yEnd = 0.375f;
+					}
+					else
+					{
+						x_texture = xStart = xEnd = 0.875f;
+						y_texture = yStart = yEnd = 0.375f;
+					}
+					ret = YoloEngine.ARCHER_STAND;
+				}	
+				else
+				{
+					if(ret != YoloEngine.ARCHER_WALK)
+					if(x>x_oponnent)
+					{
+						//isLeft = true;
+						if(x>YoloGameRenderer.ObjectTab[j].min_x)
+						{
+							x -= YoloEngine.ARCHER_SPEED;
+							x_texture = xStart = 0.5f;
+							y_texture = yStart = 0f;
+							xEnd = 1f;
+							yEnd = 0f;
+						}
+						else
+						{
+							x_texture = xStart = xEnd = 0.75f;
+							y_texture = yStart = yEnd = 0.375f;
+							ret = YoloEngine.ARCHER_STAND;
+						}
+					}
+					else
+					{
+						//isLeft = false;
+						if(x<YoloGameRenderer.ObjectTab[j].max_x)
+						{
+							x += YoloEngine.ARCHER_SPEED;
+							x_texture = xStart = 0f;
+							y_texture = yStart = 0f;
+							xEnd = 0.5f;
+							yEnd = 0f;
+						}
+						else
+						{
+							x_texture = xStart = xEnd = 0.875f;
+							y_texture = yStart = yEnd = 0.375f;
+							ret = YoloEngine.ARCHER_STAND;	
+						}
+					}
+					ret = YoloEngine.ARCHER_WALK;
+				}
+				
+			}
+			
+			break;
+		}
+
+	}
+	
 }
 
 public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
-	private int[] spriteSheets = new int[6];
+	private int[] spriteSheets = new int[7];
 	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground();
 	private YoloPlayer player = new YoloPlayer();
 	private YoloBackground btn_mov = new YoloBackground(),btn_movball = new YoloBackground(); 
@@ -91,7 +228,7 @@ public class YoloGameRenderer implements Renderer {
 	private float joyBallX1,joyBallY1;
 	
 	private boolean toLoad = true,first = false;
-	private int loading_faze=0,loadingStepsCout =7;
+	private int loading_faze=0,loadingStepsCout =8;
 	
 	
 	private int nextBullet = 0;
@@ -99,7 +236,7 @@ public class YoloGameRenderer implements Renderer {
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,poisoned = 0;
 				
-	private YoloObject[] ObjectTab = new YoloObject[17];
+	public static YoloObject[] ObjectTab = new YoloObject[17];
 	private YoloObject[] LaddreTab = new YoloObject[4];
 	
 	private long loopStart = 0;
@@ -156,9 +293,12 @@ public class YoloGameRenderer implements Renderer {
 			case 7:
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
 				drawLoadingSrean(gl, 7f/loadingStepsCout);
-				
 				break;
 			case 8:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.ARCHER_SPRITE, YoloEngine.context, 6);
+				drawLoadingSrean(gl, 8f/loadingStepsCout);
+				break;
+			case 9:
 				back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
 				toLoad = false;
 				break;
@@ -409,7 +549,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		
 	}
-	private boolean IsCollidedTop(YoloObject object)
+	public static boolean IsCollidedTop(YoloObject object)
 	{
 		if(YoloEngine.Player_x + 1  < object.min_x || YoloEngine.Player_x > object.max_x)return false;
 	//	if(YoloEngine.Player_y < object.min_y || YoloEngine.Player_y > object.max_y)return false;
@@ -816,16 +956,50 @@ public class YoloGameRenderer implements Renderer {
 				if(YoloEngine.Player_y > YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
 					YoloEngine.SKILL_Y = YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - (YoloEngine.GAME_PROJECTION_Y - YoloEngine.SKILL_Y);
 			}
+		
 			*/
 		if(skilltab[skill].isUsed)
 		{
-			if(skilltab[skill].x_texture==0 && skilltab[skill].y_texture==0)
+			
+			switch (skilltab[skill].sprite)
 			{
-				skilltab[skill].setX();
-				skilltab[skill].setY();
+			case 6:
+				//TODO animacja
+					skilltab[skill].move();
+					
+					skilltab[skill].x_texture+=0.125f;
+					
+					if(skilltab[skill].y_texture == skilltab[skill].yEnd && skilltab[skill].x_texture == skilltab[skill].xEnd)
+					{
+						skilltab[skill].x_texture = skilltab[skill].xStart;
+						skilltab[skill].y_texture = skilltab[skill].yStart;
+					}
+						
+					if(skilltab[skill].x_texture >= 1){skilltab[skill].y_texture+=0.125f; skilltab[skill].x_texture=0f;}
+					
+					//if(skilltab[skill].y_texture == skilltab[skill].yEnd && skilltab[skill].x_texture == skilltab[skill].xEnd){skilltab[skill].isUsed = false;skilltab[skill].x_texture=0f;skilltab[skill].y_texture=0f;}
+					
 				
+				break;
+				
+			default : 
+				
+				if(skilltab[skill].x_texture==0 && skilltab[skill].y_texture==0)
+				{
+					skilltab[skill].setX();
+					skilltab[skill].setY();
+						
+				}
+	
+				if(skilltab[skill].x_texture<1)skilltab[skill].x_texture+=0.125f;
+				else{skilltab[skill].y_texture+=0.125f; skilltab[skill].x_texture=0f;}
+					
+				if(skilltab[skill].y_texture == skilltab[skill].yEnd && skilltab[skill].x_texture == skilltab[skill].xEnd){skilltab[skill].isUsed = false;skilltab[skill].x_texture=0f;skilltab[skill].y_texture=0f;}
+				
+			
+				break;
 			}
-				
+			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
@@ -837,13 +1011,6 @@ public class YoloGameRenderer implements Renderer {
 			btn.draw(gl, spriteSheets,skilltab[skill].sprite);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
-			
-			
-			if(skilltab[skill].x_texture<1)skilltab[skill].x_texture+=0.125f;
-			else{skilltab[skill].y_texture+=0.125f; skilltab[skill].x_texture=0f;}
-			
-			if(skilltab[skill].y_texture == skilltab[skill].yEnd && skilltab[skill].x_texture == skilltab[skill].xEnd){skilltab[skill].isUsed = false;skilltab[skill].x_texture=0f;skilltab[skill].y_texture=0f;}
-			
 		}
 	}
 	
@@ -1015,10 +1182,8 @@ public class YoloGameRenderer implements Renderer {
 		skilltab[1].xEnd = .125f;
 		skilltab[1].yEnd = .375f;
 		skilltab[1].sprite = 5;
-		skilltab[2] = new Skill();
-		skilltab[2].xEnd = .375f;
-		skilltab[2].yEnd = .875f;
-		skilltab[2].sprite = 4;
+		skilltab[2] = new Skill(6);
+		skilltab[2].sprite = 6;
 	//--------------------------------------------------------------------------------------------------------------------------
 	}
 

@@ -12,10 +12,10 @@ import android.opengl.GLUtils;
 
 public class YoloTexture {
 
-	private int[]textures = new int[6];
+	private int[]textures = new int[7];
 	
 	public YoloTexture(GL10 gl){
-		gl.glGenTextures(6, textures,0);
+		gl.glGenTextures(7, textures,0);
 	}
 	
 	public int[] loadTexture(GL10 gl, int texture, Context context, int TextureNumber)
