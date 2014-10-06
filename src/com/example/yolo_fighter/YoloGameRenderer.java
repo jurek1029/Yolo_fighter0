@@ -992,7 +992,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.y = y; 
 		bullet.sprite = 0;
 		bullet.x_texture = 0f;
-		bullet.y_texture = 0.5f;
+		bullet.y_texture = 0f;
 		bullet.size = 0.25f;
 		bullet.scale = 4f;
 		bullet.isLeft = isLeft;
