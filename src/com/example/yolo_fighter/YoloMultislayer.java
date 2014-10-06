@@ -55,6 +55,26 @@ public class YoloMultislayer {
 	}
 	
 	
+	public void sendMessageToAllreliable(byte[] data)
+	{
+		mMyId = YoloEngine.cRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
+
+		mParticipants = YoloEngine.cRoom.getParticipants();	
+		
+		for (Participant p : mParticipants) {
+			if (p.getParticipantId().equals(mMyId))
+				continue;
+			if (p.getStatus() != Participant.STATUS_JOINED)
+				continue;
+			else {
+				Games.RealTimeMultiplayer.sendReliableMessage(YoloEngine.mHelper.getApiClient(), null,  data, YoloEngine.cRoom.getRoomId().toString(), p.getParticipantId());
+
+			}
+		}
+
+		
+	}
+	
 	public void sendMessageToAll(byte[] data) {
 		mMyId = YoloEngine.cRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
 

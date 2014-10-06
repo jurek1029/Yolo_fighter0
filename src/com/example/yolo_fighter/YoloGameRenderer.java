@@ -226,8 +226,8 @@ public class YoloGameRenderer implements Renderer {
 	private YoloBackground live_bar_1 = new YoloBackground(),live_bar_0 = new YoloBackground();
 	private YoloWeapon btn = new YoloWeapon();
 	
-	private Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
-	private YoloWeapon bullet;
+	private static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
+	private static YoloWeapon bullet;
 	
 	public static Skill[] skilltab = new Skill[3];
 	private Vector<Skill> skillOponentVe = new Vector<Skill>();
@@ -970,10 +970,35 @@ public class YoloGameRenderer implements Renderer {
 			bullet.isLeft = YoloEngine.isPlayerLeft;
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
+			
+			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft).getBytes());
 		}
 		nextBullet--;
 		//TODO pociski przeciwnika
+		
+		
 	}
+	
+	
+	public static void OpponentFire(float x, float y, boolean isLeft)
+	{
+		bullet = new YoloWeapon(0.2f);
+		bullet.damage = 10f;
+		bullet.isMy = false; 
+		if(isLeft)
+			bullet.x = x-2f;
+		else
+			bullet.x = x;
+		bullet.y = y; 
+		bullet.sprite = 0;
+		bullet.x_texture = 0f;
+		bullet.y_texture = 0.5f;
+		bullet.size = 0.25f;
+		bullet.scale = 4f;
+		bullet.isLeft = isLeft;
+		Weapontab.add(bullet);
+	}
+
 	
 	private void AIFire(float x,float y,boolean isLeft)
 	{
@@ -993,6 +1018,9 @@ public class YoloGameRenderer implements Renderer {
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 	}
+	
+	
+	
 	
 	private void drawPlayerSkills(GL10 gl)
 	{

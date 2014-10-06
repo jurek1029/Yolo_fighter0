@@ -57,6 +57,8 @@ public class YoloMainMenu extends Activity
 	Button btn_invite;
 	TextView debug_textview;
 	
+	private String[] MessString;
+	
 	RoomUpdateListener mRoomUpdateListener = new RoomUpdateListener() {
 		// https://developer.android.com/reference/com/google/android/gms/games/multiplayer/realtime/RoomUpdateListener.html
 
@@ -189,16 +191,28 @@ public class YoloMainMenu extends Activity
 			playerIDd=0;
 			String dd = new String(message.getMessageData());
 			
+			MessString = dd.split("\\|");
+			if (MessString.length == 4) {
 
+				for (int i = 0; i < 4; i++)
+					if (YoloEngine.opponents[i].equals(message
+							.getSenderParticipantId())) {
+						playerIDd = i;
+						break;
+					}
+				// System.out.println(playerIDd);
+
+				YoloEngine.mMultislayer.DataReceived(playerIDd,
+						Float.parseFloat(dd.split("\\|")[0]),
+						Float.parseFloat(dd.split("\\|")[1]),
+						Boolean.parseBoolean(dd.split("\\|")[2]),
+						Integer.parseInt(dd.split("\\|")[3]));
+			}
 			
-			for(int i = 0; i < 4; i++)
-				if(YoloEngine.opponents[i].equals(message.getSenderParticipantId()))
-				{
-					playerIDd = i;
-					break;
-				}
-			//System.out.println(playerIDd);
-			YoloEngine.mMultislayer.DataReceived(playerIDd, Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]),Boolean.parseBoolean(dd.split("\\|")[2]),Integer.parseInt(dd.split("\\|")[3]));			
+			else {
+				YoloGameRenderer.OpponentFire( Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Boolean.parseBoolean(dd.split("\\|")[2]));
+			}
+				
 		}
 	};
 	
