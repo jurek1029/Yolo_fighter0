@@ -977,7 +977,7 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
 			
-			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft).getBytes());
+			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
 		}
 		nextBullet--;
 		//TODO pociski przeciwnika
@@ -986,21 +986,19 @@ public class YoloGameRenderer implements Renderer {
 	}
 	
 	
-	public static void OpponentFire(float x, float y, boolean isLeft)
+	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch)
 	{
 		bullet = new YoloWeapon(0.2f);
 		bullet.damage = 10f;
 		bullet.isMy = false; 
-		if(isLeft)
-			bullet.x = x-2f;
-		else
-			bullet.x = x;
+		bullet.x = x;
+		if(!isCrouch)	bullet.y = y + .5f; 
+		else bullet.y = y + .025f; 
 		bullet.y = y; 
 		bullet.sprite = 0;
 		bullet.x_texture = 0f;
 		bullet.y_texture = 0f;
 		bullet.size = 0.25f;
-		bullet.scale = 4f;
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 	}

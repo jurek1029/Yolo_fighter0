@@ -219,7 +219,7 @@ public class YoloMainMenu extends Activity
 				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[2]) ] = true;
 			}
 			else {
-				YoloGameRenderer.OpponentFire( Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Boolean.parseBoolean(dd.split("\\|")[2]));
+				YoloGameRenderer.OpponentFire( Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Boolean.parseBoolean(dd.split("\\|")[2]),Boolean.parseBoolean(dd.split("\\|")[3]));
 			}
 			
 			
