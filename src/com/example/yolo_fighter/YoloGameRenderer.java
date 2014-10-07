@@ -977,7 +977,8 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
 			
-			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
+			if(YoloEngine.multiActive)
+				YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
 		}
 		nextBullet--;
 		//TODO pociski przeciwnika
