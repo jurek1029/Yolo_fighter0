@@ -108,10 +108,7 @@ public class YoloEngine {
 
 	public static boolean multiActive = false;
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
-	public static boolean actingAsServer;
 
-	public static boolean multiWorking = false;
-	public static String lastMessage = null;
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
 
@@ -125,9 +122,6 @@ public class YoloEngine {
 	
 	public static boolean[] sprite_load = new boolean[30];
 	
-
-
-	// public static YoloBTservice mServiceX;
 	// ------------------------- Multislayer END -------------------------
 	
 	

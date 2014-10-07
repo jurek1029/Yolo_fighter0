@@ -52,12 +52,12 @@ public class YoloMainMenu extends Activity
 	private Invitation IncomingInvitation;
 	private int RC_SELECT_PLAYERS;
 	private int RC_SIGNIN = 9001;
-	int playerIDd = 0;
+
 	Button btn_quick;
 	Button btn_invite;
 	TextView debug_textview;
 	
-	private String[] MessString;
+
 	
 	RoomUpdateListener mRoomUpdateListener = new RoomUpdateListener() {
 		// https://developer.android.com/reference/com/google/android/gms/games/multiplayer/realtime/RoomUpdateListener.html
@@ -190,40 +190,29 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onRealTimeMessageReceived(RealTimeMessage message) {
-			
-			playerIDd=0;
-			String dd = new String(message.getMessageData());
-			
-			MessString = dd.split("\\|");
+
+			String[] MessString = new String(message.getMessageData()).split("\\|");
 			if (MessString.length == 4) {
 
+				int playerIDd = 0;
 				for (int i = 0; i < 4; i++)
-					if (YoloEngine.opponents[i].equals(message
-							.getSenderParticipantId())) {
+					if (YoloEngine.opponents[i].equals(message.getSenderParticipantId())) {
 						playerIDd = i;
 						break;
 					}
 
-
-				YoloEngine.mMultislayer.DataReceived(playerIDd,
-						Float.parseFloat(dd.split("\\|")[0]),
-						Float.parseFloat(dd.split("\\|")[1]),
-						Boolean.parseBoolean(dd.split("\\|")[2]),
-						Integer.parseInt(dd.split("\\|")[3]));
-			}
-			else if (MessString.length == 8)
-				YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Integer.parseInt(dd.split("\\|")[2]), Integer.parseInt(dd.split("\\|")[3]), Float.parseFloat(dd.split("\\|")[4]), Float.parseFloat(dd.split("\\|")[5]), Float.parseFloat(dd.split("\\|")[6]), Float.parseFloat(dd.split("\\|")[7])));
+				YoloEngine.mMultislayer.DataReceived(playerIDd, Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Integer.parseInt(MessString[3]));
+			} else if (MessString.length == 8)
+				YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Integer.parseInt(MessString[2]), Integer.parseInt(MessString[3]), Float
+						.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7])));
 			else if (MessString.length == 3) {
-				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[0]) ] = true;
-				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[1]) ] = true;
-				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[2]) ] = true;
+				YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
+				YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;
+				YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
+			} else {
+				YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));
 			}
-			else {
-				YoloGameRenderer.OpponentFire( Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Boolean.parseBoolean(dd.split("\\|")[2]),Boolean.parseBoolean(dd.split("\\|")[3]));
-			}
-			
-			
-				
+
 		}
 	};
 	
