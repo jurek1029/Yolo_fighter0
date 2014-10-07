@@ -94,9 +94,12 @@ public class YoloEngine {
 	public static int display_x; 
 	public static int display_y; 
 	
-	public static int SkillSprite1 = 4;
-	public static int SkillSprite2 = 5;
-	public static int SkillSprite3 = 6;
+	
+	//Multislayer SEND XXX
+	public static int SkillSprite1 = 4; //MiHu baza danych
+	public static int SkillSprite2 = 5; //MiHu baza danych
+	public static int SkillSprite3 = 6; //MiHu baza danych
+	
 	// ------------------------- Multislayer BEGIN -----------------------
 
 	public static Room cRoom;
@@ -119,6 +122,9 @@ public class YoloEngine {
 	public static float Opponents_y[] = new float[4];
 
 	public static boolean Opponent_isCrouched[] = new boolean[4];
+	
+	public static boolean[] sprite_load = new boolean[30];
+	
 
 
 	// public static YoloBTservice mServiceX;

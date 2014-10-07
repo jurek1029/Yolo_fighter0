@@ -85,7 +85,7 @@ class Skill
 			if(Math.abs(x-YoloEngine.mMultislayer.Opponents_y_last[x]) < Math.abs(x-YoloEngine.mMultislayer.Opponents_y_last[x+1]))
 					closest = x;
 			
-		x_oponnent = 20f;//YoloEngine.mMultislayer.Opponents_x_last[closest]; 
+		x_oponnent = YoloEngine.mMultislayer.Opponents_x_last[closest]; 
 		y_oponnent = YoloEngine.mMultislayer.Opponents_y_last[closest];
 		 
 		vy -= YoloEngine.GAME_ACCELERATION;
@@ -230,7 +230,7 @@ public class YoloGameRenderer implements Renderer {
 	private static YoloWeapon bullet;
 	
 	public static Skill[] skilltab = new Skill[3];
-	private Vector<Skill> skillOponentVe = new Vector<Skill>();
+	private Vector<Skill> skillOponentVe = new Vector<Skill>(); // XXX tutaj dodaæ po otrzymaniu skilla
 	public static Vector<Skill> skillPlayerVe = new Vector<Skill>();
 
 	
@@ -309,24 +309,30 @@ public class YoloGameRenderer implements Renderer {
 				drawLoadingSrean(gl, 3f/loadingStepsCout);
 				break;
 			case 4:
-				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
-				drawLoadingSrean(gl, 4f/loadingStepsCout);
-				break;
-			case 5:
-				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
-				drawLoadingSrean(gl, 5f/loadingStepsCout);
-				break;
-			case 6:
+				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
 				drawLoadingSrean(gl, 6f/loadingStepsCout);
 				break;
-			case 7:
+			case 5:
+				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
 				drawLoadingSrean(gl, 7f/loadingStepsCout);
 				break;
-			case 8:
+			case 6:
+				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.ARCHER_SPRITE, YoloEngine.context, 6);
 				drawLoadingSrean(gl, 8f/loadingStepsCout);
+				break;
+				
+				//TODO Loading texturek skilli
+				
+			case 7:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
+				drawLoadingSrean(gl, 4f/loadingStepsCout);
+				break;
+			case 8:
+				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
+				drawLoadingSrean(gl, 5f/loadingStepsCout);
 				break;
 			case 9:
 				back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
@@ -1235,6 +1241,16 @@ public class YoloGameRenderer implements Renderer {
 		LaddreTab[1]= new YoloObject(1388, 666, 85, 311);
 		LaddreTab[2]= new YoloObject(1808, 988, 82, 321);
 		LaddreTab[3]= new YoloObject(1876, 87, 81, 580);
+		
+		YoloEngine.sprite_load[0] = true;
+		YoloEngine.sprite_load[1] = true;
+		YoloEngine.sprite_load[2] = true;
+		YoloEngine.sprite_load[3] = true;
+		
+		// Mulstislayer po otrzymaniu XXX
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3] = true;//Zale¿y od playera
 		
 		
 		

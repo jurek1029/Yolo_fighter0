@@ -143,7 +143,7 @@ public class YoloGame extends Activity{
 					 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
 					 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
 					 
-					 switch (YoloEngine.usedSkill)
+					 switch (YoloEngine.usedSkill) //TODO wysy³anie danych do przeciwników XXX np. new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f)
 						{
 						case 0:
 							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
@@ -232,7 +232,7 @@ public class YoloGame extends Activity{
 								}
 							}
 					}
-				 if(YoloEngine.isUsingSkill) 
+				 if(YoloEngine.isUsingSkill) //TODO wysy³anie danych do przeciwników
 					{
 					 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
 					 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
