@@ -10,7 +10,7 @@ public class YoloEngine {
 
 	public static final int GAME_THREAD_FSP_SLEEP = (1000/60);
 	public static final int MENU_BUTTON_ALPAH = 0;
-	public static final int BACKGROUND = R.drawable.level_01;
+	public static final int BACKGROUND = R.drawable.level_01_1;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
 	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
 	public static final int MOVE_TEXTURE = R.drawable.move_1;
