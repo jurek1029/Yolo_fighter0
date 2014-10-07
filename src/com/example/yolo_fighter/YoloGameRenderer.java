@@ -230,7 +230,7 @@ public class YoloGameRenderer implements Renderer {
 	private static YoloWeapon bullet;
 	
 	public static Skill[] skilltab = new Skill[3];
-	private Vector<Skill> skillOponentVe = new Vector<Skill>(); // XXX tutaj dodaæ po otrzymaniu skilla
+	public static Vector<Skill> skillOponentVe = new Vector<Skill>();
 	public static Vector<Skill> skillPlayerVe = new Vector<Skill>();
 
 	

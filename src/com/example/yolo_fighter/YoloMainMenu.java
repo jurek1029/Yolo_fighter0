@@ -74,8 +74,11 @@ public class YoloMainMenu extends Activity
 
 			System.out.println("Room connected");
 			debug_textview.setText("Room connected");
+			
 			YoloEngine.cRoom = room;
 
+			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.SkillSprite1+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.SkillSprite3).getBytes());
+			
 			// byte[] ff = "test".getBytes();
 		}
 
@@ -200,7 +203,7 @@ public class YoloMainMenu extends Activity
 						playerIDd = i;
 						break;
 					}
-				// System.out.println(playerIDd);
+
 
 				YoloEngine.mMultislayer.DataReceived(playerIDd,
 						Float.parseFloat(dd.split("\\|")[0]),
@@ -208,10 +211,18 @@ public class YoloMainMenu extends Activity
 						Boolean.parseBoolean(dd.split("\\|")[2]),
 						Integer.parseInt(dd.split("\\|")[3]));
 			}
-			
+			else if (MessString.length == 8)
+				YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Integer.parseInt(dd.split("\\|")[2]), Integer.parseInt(dd.split("\\|")[3]), Float.parseFloat(dd.split("\\|")[4]), Float.parseFloat(dd.split("\\|")[5]), Float.parseFloat(dd.split("\\|")[6]), Float.parseFloat(dd.split("\\|")[7])));
+			else if (MessString.length == 3) {
+				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[0]) ] = true;
+				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[1]) ] = true;
+				YoloEngine.sprite_load[ Integer.parseInt(dd.split("\\|")[2]) ] = true;
+			}
 			else {
 				YoloGameRenderer.OpponentFire( Float.parseFloat(dd.split("\\|")[0]), Float.parseFloat(dd.split("\\|")[1]), Boolean.parseBoolean(dd.split("\\|")[2]));
 			}
+			
+			
 				
 		}
 	};
@@ -521,6 +532,7 @@ public class YoloMainMenu extends Activity
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
 		roomConfigBuilder.setRoomStatusUpdateListener(mRoomStatusUpdateListener);
 		roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
+		
 		if(automatch) {
 			// automatch criteria
 			Bundle am = RoomConfig.createAutoMatchCriteria(1, 2, 0);
@@ -529,8 +541,7 @@ public class YoloMainMenu extends Activity
 		if(!(invitation == null)) {
 			roomConfigBuilder.setInvitationIdToAccept(invitation.getInvitationId());
 		}
-		RoomConfig roomConfig = roomConfigBuilder.build();
-		
+		RoomConfig roomConfig = roomConfigBuilder.build();	
 		return roomConfig;
 	}
 	
