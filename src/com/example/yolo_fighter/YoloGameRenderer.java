@@ -311,28 +311,28 @@ public class YoloGameRenderer implements Renderer {
 			case 4:
 				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
-				drawLoadingSrean(gl, 6f/loadingStepsCout);
+				drawLoadingSrean(gl, 4f/loadingStepsCout);
 				break;
 			case 5:
 				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_SKILL, YoloEngine.context, 5);
-				drawLoadingSrean(gl, 7f/loadingStepsCout);
+				drawLoadingSrean(gl, 5f/loadingStepsCout);
 				break;
 			case 6:
 				if(YoloEngine.sprite_load[loading_faze])
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.ARCHER_SPRITE, YoloEngine.context, 6);
-				drawLoadingSrean(gl, 8f/loadingStepsCout);
+				drawLoadingSrean(gl, 6f/loadingStepsCout);
 				break;
 				
 				//TODO Loading texturek skilli
 				
 			case 7:
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.PLAYER_TEXTURE, YoloEngine.context, 2);
-				drawLoadingSrean(gl, 4f/loadingStepsCout);
+				drawLoadingSrean(gl, 7f/loadingStepsCout);
 				break;
 			case 8:
 				spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.OPPONENT_TEXTURE, YoloEngine.context, 3); // Multislayer
-				drawLoadingSrean(gl, 5f/loadingStepsCout);
+				drawLoadingSrean(gl, 8f/loadingStepsCout);
 				break;
 			case 9:
 				back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
