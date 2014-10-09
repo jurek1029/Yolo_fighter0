@@ -995,7 +995,6 @@ public class YoloGameRenderer implements Renderer {
 		bullet.x = x;
 		if(!isCrouch)	bullet.y = y + .5f; 
 		else bullet.y = y + .025f; 
-		bullet.y = y; 
 		bullet.sprite = 0;
 		bullet.x_texture = 0f;
 		bullet.y_texture = 0f;
