@@ -1050,6 +1050,7 @@ public class YoloGameRenderer implements Renderer {
 				skillPlayerVe.elementAt(i).move();
 					
 				skillPlayerVe.elementAt(i).aniSlowCounter++;
+				end :
 				if(skillPlayerVe.elementAt(i).aniSlowCounter == skillPlayerVe.elementAt(i).animation_slowdown)
 				{
 					skillPlayerVe.elementAt(i).aniSlowCounter = -1;
@@ -1063,8 +1064,8 @@ public class YoloGameRenderer implements Renderer {
 							AIFire(skillPlayerVe.elementAt(i).x, skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).isLeft);
 							skillPlayerVe.elementAt(i).ret = YoloEngine.ARCHER_NOPE;
 						}
-
-						break;
+						
+						break end;
 					}
 							
 					skillPlayerVe.elementAt(i).x_texture+=0.125f;
