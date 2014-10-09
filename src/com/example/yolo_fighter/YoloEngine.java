@@ -101,13 +101,12 @@ public class YoloEngine {
 	public static int SkillSprite3 = 6; //MiHu baza danych
 	
 	// ------------------------- Multislayer BEGIN -----------------------
-
-	public static Room cRoom;
+	
+	public static Room mRoom;
 	public static GameHelper mHelper;
 	public static int changesMade[] = new int[4];
 
-	public static boolean multiActive = false;
-	public static YoloMultislayer mMultislayer = new YoloMultislayer();
+	public static boolean MULTI_ACTIVE = false;
 
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
@@ -121,6 +120,8 @@ public class YoloEngine {
 	public static boolean Opponent_isCrouched[] = new boolean[4];
 	
 	public static boolean[] sprite_load = new boolean[30];
+	
+	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	
 	// ------------------------- Multislayer END -------------------------
 	

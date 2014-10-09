@@ -497,10 +497,10 @@ public class YoloGameRenderer implements Renderer {
 	
 // ------------------------- Multislayer BEGIN -----------------------	
 
-			if (YoloEngine.multiActive) {
+			if (YoloEngine.MULTI_ACTIVE) {
 				
 				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);				
-				YoloEngine.opponentsNo = YoloEngine.cRoom.getParticipantIds().size()-1;
+				YoloEngine.opponentsNo = YoloEngine.mRoom.getParticipantIds().size()-1;
 				
 			}
 			
@@ -977,7 +977,7 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
 			
-			if(YoloEngine.multiActive)
+			if(YoloEngine.MULTI_ACTIVE)
 				YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
 		}
 		nextBullet--;
