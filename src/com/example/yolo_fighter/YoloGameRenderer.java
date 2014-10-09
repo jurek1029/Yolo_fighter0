@@ -1031,6 +1031,17 @@ public class YoloGameRenderer implements Renderer {
 	{
 		for(int i = 0; i < skillPlayerVe.size(); i++)
 		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+			gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(skillPlayerVe.elementAt(i).x_texture, skillPlayerVe.elementAt(i).y_texture, 0f);
+			btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
 			
 			switch (skillPlayerVe.elementAt(i).sprite)
 			{
@@ -1100,17 +1111,7 @@ public class YoloGameRenderer implements Renderer {
 			break;	
 			}
 			
-			gl.glMatrixMode(GL10.GL_MODELVIEW);
-			gl.glLoadIdentity();
-			gl.glPushMatrix();
-			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
-			gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
-			gl.glColor4f(1f,1f,1f,1f);
-			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(skillPlayerVe.elementAt(i).x_texture, skillPlayerVe.elementAt(i).y_texture, 0f);
-			btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
-			gl.glPopMatrix();
-			gl.glLoadIdentity();
+			
 		
 		}
 	}
@@ -1120,6 +1121,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		for (int i = 0;i<skillOponentVe.size();i++)
 		{
+			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
@@ -1140,6 +1142,8 @@ public class YoloGameRenderer implements Renderer {
 				skillOponentVe.remove(i);
 				i--;
 			}
+			else {
+
 			
 			switch (skillOponentVe.elementAt(i).sprite)
 			{
@@ -1154,6 +1158,7 @@ public class YoloGameRenderer implements Renderer {
 				if(IsCollided(skillOponentVe.elementAt(i)))
 					YoloEngine.PlayerLive -= 30;
 				break;
+			}
 			}
 		}
 	}
