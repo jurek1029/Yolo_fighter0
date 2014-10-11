@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_bg"
+    android:orientation="horizontal" >
 
     <!--
          <VideoView
@@ -14,39 +16,47 @@
         android:layout_alignParentTop="true" />
     -->
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="clip_vertical"
+    android:orientation="vertical" >
+
     <ImageButton
-        android:id="@+id/btnJoin"
+        android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="140dp"
         android:onClick="joinClick"
-        android:src="@drawable/joinbtn" />
-
-    <ImageButton
-        android:id="@+id/btnSW"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnJoin"
-        android:onClick="skillsClick"
-        android:src="@drawable/swbtn" />
-
-    <ImageButton
-        android:id="@+id/btnCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btnJoin"
-        android:onClick="createClick"
         android:src="@drawable/playbtn" />
+
+    <ImageButton
+        android:id="@+id/btnPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="skillsClick"
+        android:src="@drawable/playermenubtn" />
+
+    <ImageButton
+        android:id="@+id/btnOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="createClick"
+        android:src="@drawable/optionsbtn" />
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:orientation="vertical" >
 
     <Button
         android:id="@+id/sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/sign_in_button"
-        android:layout_below="@+id/sign_in_button"
+        android:layout_gravity="right"
         android:onClick="signOut"
         android:text="Sign Out" />
 
@@ -54,37 +64,34 @@
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/btnSW"
-        android:layout_marginTop="14dp"
+        android:layout_gravity="right"
         android:onClick="signIn"
         android:text="  Sign In " />
 
-        <Button
-            android:id="@+id/invite_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/sign_out_button"
-            android:layout_alignLeft="@+id/btnCreate"
-            android:onClick="invite"
-            android:text="Invite" />
+    <Button
+        android:id="@+id/invite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:onClick="invite"
+        android:text="Invite" />
 
-                <Button
-                    android:id="@+id/quick_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/invite_button"
-                    android:layout_below="@+id/invite_button"
-                    android:onClick="startQuickGame"
-                    android:text="Quick" />
+    <Button
+        android:id="@+id/quick_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:onClick="startQuickGame"
+        android:text="Quick" />
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/sign_in_button"
-                    android:layout_alignBottom="@+id/sign_in_button"
-                    android:layout_centerHorizontal="true"
-                    android:text="" />
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:textColor="#ff0000"
+        android:text="" />
 
-</RelativeLayout>
+</LinearLayout>
+
+</LinearLayout>

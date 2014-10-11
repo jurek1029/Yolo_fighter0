@@ -54,7 +54,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 	
 	
 	private static final String createTable =
-			"CREATE TABLE " + tbName + "( " +
+			"CREATE TABLE " + tbName + " ( " +
 	keyID + " " + IDOptions + ", " +
 	keyName + " " + nameOptions + ", " +
 	keyRace + " " + raceOptions + ", " +

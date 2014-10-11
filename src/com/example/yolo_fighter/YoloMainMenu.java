@@ -339,15 +339,17 @@ public class YoloMainMenu extends Activity
 		
 		
 		final Animation animMove = AnimationUtils.loadAnimation(this, R.layout.move);
+		final Animation animMove2 = AnimationUtils.loadAnimation(this, R.layout.move);
+		final Animation animMove3 = AnimationUtils.loadAnimation(this, R.layout.move);
 		
 		
-		ImageButton create = (ImageButton) findViewById(R.id.btnCreate);
-		ImageButton skills = (ImageButton) findViewById(R.id.btnSW);
-		ImageButton join = (ImageButton) findViewById(R.id.btnJoin);
+		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
+		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
+		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
 		
-		create.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		skills.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		join.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
 		
 	
 		
@@ -361,10 +363,12 @@ public class YoloMainMenu extends Activity
    //     bgVideo.requestFocus();
   //      bgVideo.start();
 		
+		animMove2.setStartOffset(500);
+		animMove3.setStartOffset(1000);
 		
-		join.startAnimation(animMove);
-		skills.startAnimation(animMove);
-		create.startAnimation(animMove);
+		playBtn.startAnimation(animMove);
+		skillsBtn.startAnimation(animMove2);
+		optionsBtn.startAnimation(animMove3);
 	}
 	
 	public void createClick(View v)
@@ -395,7 +399,7 @@ public class YoloMainMenu extends Activity
 	public void skillsClick(View v)
 	{
 		setContentView(R.layout.player_menu);
-		
+		YoloEngine.whichLayout = 1;
 	//	List<YoloPlayerInfo> plInfoList = new LinkedList<YoloPlayerInfo>();
 		plInfoList=dbm.getAll();
 	//	List<String> plNames = new ArrayList<String>(plInfoList.size());

@@ -127,7 +127,7 @@ public class YoloEngine {
 	
 	
 //-----------------------------------------------------------------------------------------------------------	
-
+   public static int whichLayout = 0;
 //-------------------Player Sats & Info-----------------------------------------------------------------	
 	public static YoloPlayerInfo currentPlayerInfo;	
 	
