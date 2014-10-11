@@ -1,8 +1,6 @@
 package com.example.yolo_fighter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +8,6 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
@@ -64,7 +60,7 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onRoomCreated(int arg0, Room arg1) {
-			YoloEngine.cRoom = arg1;
+			YoloEngine.mRoom = arg1;
 			System.out.println("Room created");
 			debug_textview.setText("Room created");
 		}
@@ -75,7 +71,7 @@ public class YoloMainMenu extends Activity
 			System.out.println("Room connected");
 			debug_textview.setText("Room connected");
 			
-			YoloEngine.cRoom = room;
+			YoloEngine.mRoom = room;
 
 			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.SkillSprite1+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.SkillSprite3).getBytes());
 			
@@ -90,7 +86,7 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onJoinedRoom(int arg0, Room arg1) {
-			YoloEngine.cRoom = arg1;
+			YoloEngine.mRoom = arg1;
 			System.out.println("Room joined code: " + arg0);
 			debug_textview.setText("Room joined code: " + arg0);
 		}
@@ -100,64 +96,57 @@ public class YoloMainMenu extends Activity
 		
 		@Override
 		public void onPeersDisconnected(Room arg0, List<String> arg1) {
-			// TODO Auto-generated method stub
 			
 			System.out.println("onPeersDisconnected");
 			
-
 		}
 		
 		@Override
 		public void onPeersConnected(Room arg0, List<String> arg1) {
-
-
-			
-			System.out.println("onPeersConnected");
-			
-
-			
+		
+			System.out.println("onPeersConnected");	
 
 		}
 
 		@Override
 		public void onConnectedToRoom(Room room) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onDisconnectedFromRoom(Room room) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onP2PConnected(String participantId) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onP2PDisconnected(String participantId) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onPeerDeclined(Room arg0, List<String> arg1) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onPeerInvitedToRoom(Room arg0, List<String> arg1) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onPeerJoined(Room arg0, List<String> arg1) {
-			// TODO Auto-generated method stub
+
 			for(int i = 0; i < arg1.size(); i++){
 				YoloEngine.opponents[i] = arg1.get(i);
 			}
@@ -169,52 +158,24 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onPeerLeft(Room arg0, List<String> arg1) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onRoomAutoMatching(Room room) {
-			// TODO Auto-generated method stub
+
 			
 		}
 
 		@Override
 		public void onRoomConnecting(Room room) {
-			// TODO Auto-generated method stub
+
 			
 		}
 	};
 	
-	RealTimeMessageReceivedListener mRTMreceiveList = new RealTimeMessageReceivedListener() {
-
-		@Override
-		public void onRealTimeMessageReceived(RealTimeMessage message) {
-
-			String[] MessString = new String(message.getMessageData()).split("\\|");
-			if (MessString.length == 4) {
-
-				int playerIDd = 0;
-				for (int i = 0; i < 4; i++)
-					if (YoloEngine.opponents[i].equals(message.getSenderParticipantId())) {
-						playerIDd = i;
-						break;
-					}
-
-				YoloEngine.mMultislayer.DataReceived(playerIDd, Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Integer.parseInt(MessString[3]));
-			} else if (MessString.length == 8)
-				YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Integer.parseInt(MessString[2]), Integer.parseInt(MessString[3]), Float
-						.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7])));
-			else if (MessString.length == 3) {
-				YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
-				YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;
-				YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
-			} else {
-				YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));
-			}
-
-		}
-	};
+	
 	
 // ------------------------- Multislayer END -------------------------
 	
@@ -225,10 +186,7 @@ public class YoloMainMenu extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-		YoloEngine.opponents[0] = "";
-		YoloEngine.opponents[1] = "";
-		YoloEngine.opponents[2] = "";
-		YoloEngine.opponents[3] = "";
+		
 
 		
 // ------------------------- Multislayer BEGIN -----------------------
@@ -242,7 +200,7 @@ public class YoloMainMenu extends Activity
 		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				System.out.println("Invitation accepted");
-				Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(false, IncomingInvitation));
+				Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(IncomingInvitation));
 			}
 		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
@@ -267,7 +225,7 @@ public class YoloMainMenu extends Activity
 				if (YoloEngine.mHelper.getInvitationId() != null) {
 					// accept invitation
 
-					Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(false, YoloEngine.mHelper.getInvitation()));
+					Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(YoloEngine.mHelper.getInvitation()));
 
 					// prevent screen from sleeping during handshake
 					getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -483,9 +441,9 @@ public class YoloMainMenu extends Activity
 	//	btn_invite.setEnabled(false);
 		
 		if (YoloEngine.mHelper.getApiClient().isConnected()) {
-			if (YoloEngine.cRoom != null)
-				if (YoloEngine.cRoom.getStatus() != 6)
-					Games.RealTimeMultiplayer.leave(YoloEngine.mHelper.getApiClient(), mRoomUpdateListener, YoloEngine.cRoom.getRoomId());
+			if (YoloEngine.mRoom != null)
+				if (YoloEngine.mRoom.getStatus() != 6)
+					Games.RealTimeMultiplayer.leave(YoloEngine.mHelper.getApiClient(), mRoomUpdateListener, YoloEngine.mRoom.getRoomId());
 
 			//YoloEngine.mHelper.signOut();
 			// mHelper.disconnect(); od³¹cza, nie wylogowuje
@@ -495,10 +453,9 @@ public class YoloMainMenu extends Activity
 	
 	
 	public void startQuickGame(View v) {
-		YoloEngine.multiActive = true;
-		//YoloEngine.opponentsNo = 1; // TODO
+		YoloEngine.MULTI_ACTIVE = true;
 		
-		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame(true, null));
+		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame());
 
 		// prevent screen from sleeping during handshake
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -507,7 +464,7 @@ public class YoloMainMenu extends Activity
 	}
 	
 	public void invite(View v) {
-		YoloEngine.multiActive = true;
+		YoloEngine.MULTI_ACTIVE = true;
 
 		// request code for the "select players" UI
 		// can be any number as long as it's unique
@@ -520,23 +477,31 @@ public class YoloMainMenu extends Activity
 	}
 	
 	
-	private RoomConfig prepareGame(boolean automatch, Invitation invitation)
+	private RoomConfig prepareGame()
 	{
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
 		roomConfigBuilder.setRoomStatusUpdateListener(mRoomStatusUpdateListener);
-		roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
+		roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
 		
-		if(automatch) {
-			// automatch criteria
-			Bundle am = RoomConfig.createAutoMatchCriteria(1, 2, 0);
-			roomConfigBuilder.setAutoMatchCriteria(am);
-		}
-		if(!(invitation == null)) {
-			roomConfigBuilder.setInvitationIdToAccept(invitation.getInvitationId());
-		}
+		// automatch criteria
+		Bundle am = RoomConfig.createAutoMatchCriteria(1, 2, 0);
+		roomConfigBuilder.setAutoMatchCriteria(am);
+		
 		RoomConfig roomConfig = roomConfigBuilder.build();	
 		return roomConfig;
 	}
+	
+	
+	private RoomConfig prepareGame(Invitation invitation) {
+		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
+		roomConfigBuilder.setRoomStatusUpdateListener(mRoomStatusUpdateListener);
+		roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
+		
+		roomConfigBuilder.setInvitationIdToAccept(invitation.getInvitationId());
+		RoomConfig roomConfig = roomConfigBuilder.build();	
+		return roomConfig;
+	}
+	
 	
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
@@ -569,7 +534,7 @@ public class YoloMainMenu extends Activity
 			// create the room and specify a variant if appropriate
 			RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);
 			
-			roomConfigBuilder.setMessageReceivedListener(mRTMreceiveList);
+			roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
 			
 			roomConfigBuilder.addPlayersToInvite(invitees);
 			if (autoMatchCriteria != null) {
