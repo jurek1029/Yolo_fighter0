@@ -24,7 +24,7 @@ class Skill
 	int ret,j=0;
 	int animation_slowdown;
 	int aniSlowCounter = -1;
-	int closest =0;
+	int closestP =0,closestS =0 ,closest =0;
 	
 	boolean isLeft = false,onGround = false ,haveXY = false;
 	boolean isUsed=false;
@@ -81,13 +81,28 @@ class Skill
 	
 	public void move ()
 	{
-		for(int x = 0;x<YoloEngine.mMultislayer.Opponents_x_last.length-1;x++)
-			if(Math.abs(x-YoloEngine.mMultislayer.Opponents_y_last[x]) < Math.abs(x-YoloEngine.mMultislayer.Opponents_y_last[x+1]))
-					closest = x;
+		if(ret == 100)
+		{
+			for(int x = 0;x<YoloEngine.mMultislayer.Opponents_x_last.length-1;x++)
+				if(Math.abs(this.x-YoloEngine.mMultislayer.Opponents_y_last[x]) < Math.abs(this.x-YoloEngine.mMultislayer.Opponents_y_last[x+1]))
+						closestP = x;
+				
+			for(int z = 0;z<YoloGameRenderer.skillOponentVe.size()-1;z++)
+				if(YoloGameRenderer.skillOponentVe.elementAt(z).sprite >= 6 && YoloGameRenderer.skillOponentVe.elementAt(z).sprite <= 9)
+					if(Math.abs(this.x - YoloGameRenderer.skillOponentVe.elementAt(z).x)<Math.abs(this.x - YoloGameRenderer.skillOponentVe.elementAt(z+1).x))
+							closestS = z;
 			
-		x_oponnent = YoloEngine.mMultislayer.Opponents_x_last[closest]; 
-		y_oponnent = YoloEngine.mMultislayer.Opponents_y_last[closest];
+			if(closestS > YoloGameRenderer.skillOponentVe.size())
+				if(Math.abs(this.x - YoloGameRenderer.skillOponentVe.elementAt(closestS).x)<Math.abs(this.x-YoloEngine.mMultislayer.Opponents_y_last[closestP]))
+					closest = closestS;
+				else
+					closest = closestP;
+			
+			x_oponnent = YoloEngine.mMultislayer.Opponents_x_last[closest]; 
+			y_oponnent = YoloEngine.mMultislayer.Opponents_y_last[closest];
 		 
+		}
+		
 		vy -= YoloEngine.GAME_ACCELERATION;
 		y += vy;
 		
@@ -1018,9 +1033,10 @@ public class YoloGameRenderer implements Renderer {
 	}
 	private boolean IsCollided(YoloWeapon bullet, YoloObject object)
 	{
-		if(object.max_x  < bullet.x || object.min_x > bullet.x + bullet.size)return false;
-		if(object.max_y  < bullet.y || object.min_y > bullet.y + bullet.size)return false;
 		
+		if(object.max_x  <= bullet.x || object.min_x >= bullet.x + bullet.size)return false;
+		if(object.max_y  <= bullet.y || object.min_y >= bullet.y + bullet.size)return false;
+
 		return true;
 	}
 	private boolean IsCollided(Skill skill)
@@ -1030,7 +1046,13 @@ public class YoloGameRenderer implements Renderer {
 		
 		return true;	
 	}
-	
+	private boolean IsCollided(YoloWeapon bullet , Skill skill)
+	{
+		if(bullet.x + bullet.size <= skill.x*4 || bullet.x >= skill.x*4 + 1f)return false;
+		if(bullet.y + bullet.size <= skill.y*4 || bullet.y >= skill.y*4 + 2f) return false;
+		
+		return true;
+	}
 	private void drawBullet(GL10 gl, YoloWeapon bullet)
 	{
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -1049,6 +1071,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void moveBullets(GL10 gl)
 	{
+		out:
 		for(int i = 0 ; i < Weapontab.size() ;i++)
 		{
 			if(Weapontab.get(i).isLeft) Weapontab.get(i).x -= Weapontab.get(i).bulletSpeed;
@@ -1056,7 +1079,7 @@ public class YoloGameRenderer implements Renderer {
 
 			drawBullet(gl, Weapontab.get(i));
 			
-			if(Weapontab.get(i).x < 0)
+			if(Weapontab.get(i).x + 1f < 0)
 			{
 				Weapontab.remove(i);
 				break;
@@ -1072,13 +1095,25 @@ public class YoloGameRenderer implements Renderer {
 				Weapontab.remove(i);
 				break;
 			}
-			else if(Weapontab.get(i).sprite != 6)
-					for (int j = 0 ; j< ObjectTab.length ; j++)
-						if (IsCollided(Weapontab.get(i), ObjectTab[j])) 
+			else 
+			{
+				for (int j = 0 ; j< ObjectTab.length ; j++)
+					if (IsCollided(Weapontab.get(i), ObjectTab[j])) 
+					{
+						Weapontab.remove(i);
+						break out;
+					}
+				if(!Weapontab.get(i).isMy)
+				for (int x =0 ;x < skillPlayerVe.size();x++)
+					if(skillPlayerVe.elementAt(x).sprite>=6 && skillPlayerVe.elementAt(x).sprite <= 9 )
+						if(IsCollided(Weapontab.get(i), skillPlayerVe.elementAt(x)))
 						{
 							Weapontab.remove(i);
+							skillPlayerVe.elementAt(x).damage_buffor += Weapontab.get(i).damage;
 							break;
 						}
+				
+			}
 			
 		}
 	}
@@ -1420,7 +1455,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.sprite = 6;
 		bullet.x_texture = 0f;
 		bullet.y_texture = 0.5f;
-		bullet.size = 0.25f;
+		bullet.size = 0.1f;
 		bullet.scale = 4f;
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
