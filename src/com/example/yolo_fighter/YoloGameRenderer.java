@@ -7,6 +7,20 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView.Renderer;
 
+class HitBox
+{
+	float x,y,x_radius,y_radius,damage;
+	
+	HitBox(float x ,float y, float x_radius ,float y_radius ,float damage)
+	{
+		this.x =x;
+		this.y =y;
+		this.x_radius = x_radius;
+		this.y_radius = y_radius;
+		this.damage = damage;
+	}
+}
+
 class Skill 
 {
 	float x=0,y=0;
@@ -25,9 +39,11 @@ class Skill
 	int animation_slowdown;
 	int aniSlowCounter = -1;
 	int closestP =0,closestS =0 ,closest =0;
+	int poison_duration = 0;
 	
 	boolean isLeft = false,onGround = false ,haveXY = false;
 	boolean isUsed=false;
+	boolean isPoisoned = false;
 	
 	public Skill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius) 
 	{
@@ -125,6 +141,11 @@ class Skill
 		switch(sprite)
 		{
 		case 6:
+			if(poison_duration > 0)
+			{
+				life -= 0.16f;
+				poison_duration--;
+			}
 			if(ret==YoloEngine.ARCHER_HURT)
 			{
 				if(isLeft)
@@ -260,6 +281,11 @@ class Skill
 			
 			break;
 		case 7:
+			if(poison_duration > 0)
+			{
+				life -= 0.16f;
+				poison_duration--;
+			}
 			if(ret==YoloEngine.WARRIOR_HURT)
 			{
 				if(isLeft)
@@ -398,6 +424,11 @@ class Skill
 			}
 			break;
 		case 8:
+			if(poison_duration > 0)
+			{
+				life -= 0.16f;
+				poison_duration--;
+			}
 			if(ret==YoloEngine.MUMMY_HURT)
 			{
 				if(isLeft)
@@ -534,6 +565,11 @@ class Skill
 			}
 			break;
 		case 9:
+			if(poison_duration > 0)
+			{
+				life -= 0.16f;
+				poison_duration--;
+			}
 			if(ret==YoloEngine.HAND_HURT)
 			{
 				if(isLeft)
@@ -636,6 +672,7 @@ public class YoloGameRenderer implements Renderer {
 	public static Skill[] skilltab = new Skill[3];
 	public static Vector<Skill> skillOponentVe = new Vector<Skill>();
 	public static Vector<Skill> skillPlayerVe = new Vector<Skill>();
+	public static Vector<HitBox> hitBoxs = new Vector<HitBox>();
 
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x;
@@ -968,6 +1005,7 @@ public class YoloGameRenderer implements Renderer {
 			drawPlayerSkills(gl);	
 			drawPlayer(gl);
 			drawOponentSkills(gl);
+			hitBox();
 
 
 			
@@ -1046,12 +1084,27 @@ public class YoloGameRenderer implements Renderer {
 		
 		return true;	
 	}
+	private boolean IsCollided(Skill skill ,Skill skill2)
+	{
+		if(skill2.x + 1  < skill.x || skill2.x > skill.x + skill.x_radius)return false;
+		if(skill2.y + 1 < skill.y || skill2.y > skill.y + skill.y_radius) return false;
+		
+		return true;	
+	}
+	
 	private boolean IsCollided(YoloWeapon bullet , Skill skill)
 	{
 		if(bullet.x + bullet.size <= skill.x*4 || bullet.x >= skill.x*4 + 1f)return false;
 		if(bullet.y + bullet.size <= skill.y*4 || bullet.y >= skill.y*4 + 2f) return false;
 		
 		return true;
+	}
+	private boolean IsCollided(float x ,float y ,float x_radius ,float y_radius)
+	{
+		if(YoloEngine.Player_x + 1 < x || YoloEngine.Player_x > x + x_radius)return false;
+		if(YoloEngine.Player_y + 1 < y || YoloEngine.Player_y > y + y_radius) return false;
+		
+		return true;	
 	}
 	private void drawBullet(GL10 gl, YoloWeapon bullet)
 	{
@@ -1520,7 +1573,22 @@ public class YoloGameRenderer implements Renderer {
 				gl.glTranslatef(skillPlayerVe.elementAt(i).x_texture, skillPlayerVe.elementAt(i).y_texture, 0f);
 				btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
 				gl.glPopMatrix();
-				gl.glLoadIdentity();	
+				gl.glLoadIdentity();
+				
+				if(skillPlayerVe.elementAt(i).isPoisoned)
+				{
+					gl.glMatrixMode(GL10.GL_MODELVIEW);
+					gl.glLoadIdentity();
+					gl.glPushMatrix();
+					gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+					gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
+					gl.glColor4f(1f,1f,1f,1f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glTranslatef(0.25f, 0.5f, 0f);
+					btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
+					gl.glPopMatrix();
+					gl.glLoadIdentity();
+				}
 				
 				break;
 			case 7:
@@ -1571,6 +1639,21 @@ public class YoloGameRenderer implements Renderer {
 				btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
 				gl.glPopMatrix();
 				gl.glLoadIdentity();	
+				
+				if(skillPlayerVe.elementAt(i).isPoisoned)
+				{
+					gl.glMatrixMode(GL10.GL_MODELVIEW);
+					gl.glLoadIdentity();
+					gl.glPushMatrix();
+					gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+					gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
+					gl.glColor4f(1f,1f,1f,1f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glTranslatef(0.5f, 0.375f, 0f);
+					btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
+					gl.glPopMatrix();
+					gl.glLoadIdentity();
+				}
 				break;
 			case 8:
 				if(!skillPlayerVe.elementAt(i).haveXY)
@@ -1620,6 +1703,21 @@ public class YoloGameRenderer implements Renderer {
 				btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
 				gl.glPopMatrix();
 				gl.glLoadIdentity();	
+				
+				if(skillPlayerVe.elementAt(i).isPoisoned)
+				{
+					gl.glMatrixMode(GL10.GL_MODELVIEW);
+					gl.glLoadIdentity();
+					gl.glPushMatrix();
+					gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+					gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
+					gl.glColor4f(1f,1f,1f,1f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glTranslatef(0.5f, 0.5f, 0f);
+					btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
+					gl.glPopMatrix();
+					gl.glLoadIdentity();
+				}
 				break;
 			case 9:
 				if(!skillPlayerVe.elementAt(i).haveXY)
@@ -1669,6 +1767,21 @@ public class YoloGameRenderer implements Renderer {
 				btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
 				gl.glPopMatrix();
 				gl.glLoadIdentity();	
+				
+				if(skillPlayerVe.elementAt(i).isPoisoned)
+				{
+					gl.glMatrixMode(GL10.GL_MODELVIEW);
+					gl.glLoadIdentity();
+					gl.glPushMatrix();
+					gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+					gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
+					gl.glColor4f(1f,1f,1f,1f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glTranslatef(0f, 0.375f, 0f);
+					btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
+					gl.glPopMatrix();
+					gl.glLoadIdentity();
+				}
 				break;
 					
 			default : 
@@ -1753,13 +1866,33 @@ public class YoloGameRenderer implements Renderer {
 					poisoned = 300;
 					YoloEngine.isPlayerPoisoned = true; 
 				}
+				else for(int j = 0;j<skillPlayerVe.size();j++)
+						if(IsCollided(skillOponentVe.elementAt(i), skillPlayerVe.elementAt(j)))
+						{
+							skillPlayerVe.elementAt(j).isPoisoned = true;
+							skillPlayerVe.elementAt(j).poison_duration = 300;
+						}
+				
 				break;
 			case 5:
 				if(IsCollided(skillOponentVe.elementAt(i)))
 					YoloEngine.PlayerLive -= 30;
+				else for(int j = 0;j<skillPlayerVe.size();j++)
+					if(IsCollided(skillOponentVe.elementAt(i), skillPlayerVe.elementAt(j)))
+						skillPlayerVe.elementAt(j).life -= 30;
+				
 				break;
 			}
 			}
+		}
+	}
+	
+	private void hitBox ()
+	{
+		for(int i = 0;i<hitBoxs.size();i++)
+		{
+			if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius))
+				YoloEngine.PlayerLive -= hitBoxs.elementAt(i).damage;
 		}
 	}
 	
