@@ -23,26 +23,26 @@
     android:orientation="vertical" >
 
     <ImageButton
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnIsClasic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
-        android:onClick="joinClick"
-        android:src="@drawable/playbtn" />
+        android:onClick="isClasicClick"
+        android:background="@drawable/classiccontrolsoffbtn" />
 
     <ImageButton
-        android:id="@+id/btnPM"
+        android:id="@+id/btnSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="skillsClick"
-        android:src="@drawable/playermenubtn" />
+        android:onClick="soundClick"
+        android:background="@drawable/soundonbtn" />
 
     <ImageButton
-        android:id="@+id/btnOptions"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="optionsClick"
-        android:src="@drawable/optionsbtn" />
+        android:onClick="backClick"
+        android:background="@drawable/backbtn" />
 
 </LinearLayout>
 

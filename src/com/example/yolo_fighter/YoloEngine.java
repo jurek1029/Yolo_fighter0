@@ -127,8 +127,9 @@ public class YoloEngine {
 	
 	
 	
-//-----------------------------------------------------------------------------------------------------------	
+//------------------------------Menu----------------------------------------------------------------------	
    public static int whichLayout = 0;
+   public static boolean enableSound = true;
 //-------------------Player Sats & Info-----------------------------------------------------------------	
 	public static YoloPlayerInfo currentPlayerInfo;	
 	

@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class YoloMainMenu extends Activity
 	List<YoloPlayerInfo> plInfoList = new LinkedList<YoloPlayerInfo>();
 	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
-	
+	String newPlayerRace = "angel";
 	
 // ------------------------- Multislayer BEGIN -----------------------
 	
@@ -329,12 +330,26 @@ public class YoloMainMenu extends Activity
 		optionsBtn.startAnimation(animMove3);
 	}
 	
-	public void createClick(View v)
+	
+//------------------------------------przyciski menu glowne----------------------
+	public void optionsClick(View v)
 	{
-		//TODO tu co siê ma staæ po klikniêciu create'a
-		Intent game = new Intent(getApplicationContext(),YoloGame.class);
-		YoloMainMenu.this.startActivity(game);
-		YoloEngine.context = getApplicationContext();
+		YoloEngine.whichLayout = 1;
+		setContentView(R.layout.options_menu);
+		ImageButton isClasicBtn = (ImageButton) findViewById(R.id.btnIsClasic);
+		if(YoloEngine.isClasic==true) {
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsoffbtn);
+		}
+		else {
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsonbtn);
+		}
+		ImageButton soundBtn = (ImageButton) findViewById(R.id.btnSound);
+		if(YoloEngine.enableSound==true) {
+			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
+		}
+		else {
+			soundBtn.setBackgroundResource(R.drawable.soundonbtn);
+		}
 	}
 	
 
@@ -348,7 +363,6 @@ public class YoloMainMenu extends Activity
 		
 		
 		
-		//TODO tu to co siê ma staæ po klikniêciu join'a
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
 		YoloMainMenu.this.startActivity(game);
 		YoloEngine.context = getApplicationContext();
@@ -362,7 +376,8 @@ public class YoloMainMenu extends Activity
 		plInfoList=dbm.getAll();
 	//	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	//	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
-			
+		plNames.clear();
+		plIDs.clear();
 		for(int i=0;i<plInfoList.size(); i++)
 		{
 			YoloPlayerInfo playerInfo = plInfoList.get(i);
@@ -396,7 +411,7 @@ public class YoloMainMenu extends Activity
 		
 		
 	}
-	
+//---------------------------------------------- przyciski player menu-------------------	
 	public void weaponClick(View v)
 	{
 		setContentView(R.layout.weapon_menu);
@@ -417,6 +432,80 @@ public class YoloMainMenu extends Activity
 		setContentView(R.layout.skill3_menu);
 	}
 	
+	public void addPlayerClick(View v)
+	{
+		setContentView(R.layout.addplayer_menu);
+	}
+	
+	//--------------------- add Player menu--------------------------
+	public void angelClick(View v)
+	{
+		newPlayerRace = "angel";
+	}
+	
+	public void devilClick(View v)
+	{
+		newPlayerRace = "devil";
+	}
+	
+	public void necromancerClick(View v)
+	{
+		newPlayerRace = "necromancer";
+	}
+	
+	public void addPlayerinAddMenuClick(View v)
+	{
+		EditText newPlayerNameTxt = (EditText) findViewById(R.id.addPlTxtBox);
+		YoloPlayerInfo newPlayerInfo = new YoloPlayerInfo();
+		String plName = newPlayerNameTxt.getText().toString();
+		newPlayerNameTxt.setText("");
+		newPlayerInfo.setName(plName);
+		newPlayerInfo.setRace("newPlayerRace");
+		dbm.addPlayer(newPlayerInfo);
+		
+		skillsClick(v);
+	}
+	
+	
+	//-------------------options menu-----------------------------------------
+	public void isClasicClick(View v)
+	{
+		ImageButton isClasicBtn = (ImageButton) findViewById(R.id.btnIsClasic);
+		if(YoloEngine.isClasic==true) {
+			YoloEngine.isClasic = false;
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsoffbtn);
+		}
+		else {
+			YoloEngine.isClasic = true;
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsonbtn);
+		}
+	}
+	
+	public void soundClick(View v)
+	{
+		ImageButton soundBtn = (ImageButton) findViewById(R.id.btnSound);
+		if(YoloEngine.enableSound==true) {
+			YoloEngine.enableSound = false;
+			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
+		}
+		else {
+			YoloEngine.enableSound = true;
+			soundBtn.setBackgroundResource(R.drawable.soundonbtn);
+		}
+	}
+	
+	public void backClick(View v)
+	{
+		YoloEngine.whichLayout = 0;
+		setContentView(R.layout.main_menu);
+		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
+		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
+		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
+		
+		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+	}
 	
 	
 	@Override
@@ -550,5 +639,26 @@ public class YoloMainMenu extends Activity
 	}
 	
 // ------------------------- Multislayer END -------------------------
-	
+
+public void onBackPressed() {
+	if(YoloEngine.whichLayout==1)
+	{
+		YoloEngine.whichLayout=0;
+		setContentView(R.layout.main_menu);
+		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
+		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
+		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
+		
+		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
+	}
+	else {   
+	Intent intent = new Intent(Intent.ACTION_MAIN);
+	   intent.addCategory(Intent.CATEGORY_HOME);
+	   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	   startActivity(intent);
+	 }	
 }
+}
+

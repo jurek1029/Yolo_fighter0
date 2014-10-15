@@ -154,7 +154,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 			playerInfo.setSK1EQ(kursor.getInt(14));
 			playerInfo.setSK2EQ(kursor.getInt(15));
 			playerInfo.setSK3EQ(kursor.getInt(16));
-			playerInfo.setWEQ(kursor.getInt(15));
+			playerInfo.setWEQ(kursor.getInt(17));
 		}
 		kursor.close();
 		db.close();
