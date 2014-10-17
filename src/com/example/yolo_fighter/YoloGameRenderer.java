@@ -673,7 +673,7 @@ public class YoloGameRenderer implements Renderer {
 	public static Vector<Skill> skillOponentVe = new Vector<Skill>();
 	public static Vector<Skill> skillPlayerVe = new Vector<Skill>();
 	public static Vector<HitBox> hitBoxs = new Vector<HitBox>();
-
+//DO TEGO DODAÆ PO ODEBRANIU XXX
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x;
 	private final float MOVE_SIZE_Y = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_y;
@@ -1617,7 +1617,7 @@ public class YoloGameRenderer implements Renderer {
 						
 						if(skillPlayerVe.elementAt(i).ret == YoloEngine.WARRIOR_ATTACK)
 						{
-							//TODO XXX wysy³anie hitboxa do przeciwników;
+							//TODO XXX wysy³anie hitboxa do przeciwników send: skillPlayerVe.elementAt(i).(x,y,x_rad,y_rad,damage);
 							skillPlayerVe.elementAt(i).ret = YoloEngine.WARRIOR_NULL;
 						}
 						
@@ -1681,7 +1681,7 @@ public class YoloGameRenderer implements Renderer {
 						
 						if(skillPlayerVe.elementAt(i).ret == YoloEngine.MUMMY_ATTACK)
 						{
-							//TODO XXX wysy³anie hitboxa do przeciwników;
+							//TODO XXX wysy³anie hitboxa do przeciwników; send: skillPlayerVe.elementAt(i).(x,y,x_rad,y_rad,damage);
 							skillPlayerVe.elementAt(i).ret = YoloEngine.MUMMY_NULL;
 						}
 						
@@ -1745,7 +1745,7 @@ public class YoloGameRenderer implements Renderer {
 						
 						if(skillPlayerVe.elementAt(i).ret == YoloEngine.HAND_ATTACK)
 						{
-							//TODO XXX wysy³anie hitboxa do przeciwników;
+							//TODO XXX wysy³anie hitboxa do przeciwników; send: skillPlayerVe.elementAt(i).(x,y,x_rad,y_rad,damage);
 							skillPlayerVe.elementAt(i).ret = YoloEngine.HAND_NULL;
 						}
 						
