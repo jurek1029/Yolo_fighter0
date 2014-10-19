@@ -1,17 +1,10 @@
 package com.example.yolo_fighter;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLUtils;
 
 public class YoloWeapon {
 
@@ -19,7 +12,6 @@ public class YoloWeapon {
 	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
 	
-	private int[] textures = new int[1];
 	
 	public float x,x_texture;
 	public float y,y_texture;

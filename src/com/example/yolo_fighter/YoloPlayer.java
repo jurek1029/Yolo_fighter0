@@ -1,25 +1,16 @@
 package com.example.yolo_fighter;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLUtils;
-
 public class YoloPlayer {
 	
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
-	
-	private int[] textures = new int[1];
 	
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,

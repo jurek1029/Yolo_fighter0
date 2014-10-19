@@ -1106,6 +1106,13 @@ public class YoloGameRenderer implements Renderer {
 		
 		return true;	
 	}
+	private boolean IsCollided(HitBox hitbox , Skill skill)
+	{
+		if(hitbox.x + hitbox.x_radius < skill.x || hitbox.x > skill.x + 1f)return false;
+		if(hitbox.y + hitbox.y_radius < skill.y || hitbox.y >= skill.y + 2f) return false;
+		
+		return true;
+	}
 	private void drawBullet(GL10 gl, YoloWeapon bullet)
 	{
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -1889,10 +1896,15 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void hitBox ()
 	{
-		for(int i = 0;i<hitBoxs.size();i++)
+		for(int i = 0;i<hitBoxs.size();hitBoxs.remove(i))
 		{
 			if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius))
 				YoloEngine.PlayerLive -= hitBoxs.elementAt(i).damage;
+			
+			for(int j = 0; j<skillPlayerVe.size();j++)
+				if(skillPlayerVe.elementAt(j).sprite >= 6 && skillPlayerVe.elementAt(j).sprite <= 9)
+					if(IsCollided(hitBoxs.elementAt(i),skillPlayerVe.elementAt(j)))
+						skillPlayerVe.elementAt(j).life -= hitBoxs.elementAt(i).damage;
 		}
 	}
 	

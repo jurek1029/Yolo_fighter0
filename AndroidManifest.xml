@@ -6,7 +6,7 @@
     android:installLocation="preferExternal">
 
     <uses-sdk
-        android:minSdkVersion="13"
+        android:minSdkVersion="8"
         android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
