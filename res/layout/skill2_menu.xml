@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
+       <Button
             android:id="@+id/playerBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -66,18 +66,102 @@
    		android:layout_height="match_parent"
     	android:orientation="horizontal" >
         
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="400dp"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
     		
-              <ImageView
-                  android:id="@+id/imageView1"
-                  android:layout_width="400dp"
-                  android:layout_height="match_parent"
-                  android:background="@drawable/crossbows" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/Skill2_1Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="1"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Skill2_2Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="2"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Skill2_3Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="3"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Skill2_4Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="4"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Skill2_5Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="5"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/Skill2_6Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:onClick="skills2BtnClick"
+                    android:text="6"
+                    android:textColor="#ffffff" />
+                <Button
+                    android:id="@+id/Skill2_7Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:text="7"
+                    android:textColor="#ffffff" />
+                <Button
+                    android:id="@+id/Skill2_8Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/skillimageblack"
+                    android:text="8"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,20 +177,71 @@
                 android:text="Tutaj będzie krótki opis broni/skilla," />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="cena i level, który trzeba mieć, żeby móc kupić" />
 
-            <Button
-                android:id="@+id/button1"
+            
+       <LinearLayout 
+    	android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:orientation="vertical" >
+
+                 <Button
+                android:id="@+id/currentSkill2"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="BUY/EQUIP" />
+                android:background="@drawable/skillimageblack"
+                android:text="1"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/Skill2EqBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="BUY/EQUIP"
+                android:onClick="skill2EqBtnClick" />
+
+           </LinearLayout>
+           
+              <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:orientation="vertical" >
+
+               <Button
+                android:id="@+id/currentSkill3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/skillimageblack"
+                android:text="1"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/Skill3EqBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="BUY/EQUIP"
+                android:onClick="skill3EqBtnClick" />
+
+           </LinearLayout>
+
+        </LinearLayout> 
+ 
         </LinearLayout>
           
     </LinearLayout>

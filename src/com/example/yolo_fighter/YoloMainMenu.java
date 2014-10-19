@@ -41,6 +41,8 @@ public class YoloMainMenu extends Activity
 	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
 	String newPlayerRace = "angel";
+	int currentSkill1Checked = 0;
+	int currentSkill2Checked = 0;
 	
 // ------------------------- Multislayer BEGIN -----------------------
 	
@@ -513,9 +515,87 @@ public class YoloMainMenu extends Activity
 	{
 		super.onResume();
 	}
+//------------------------skill 1 menu-------------------------------------
+	public void skills1BtnClick(View v) {
+		
+	      switch(v.getId()) {
+	        case R.id.Skill1_1Btn:
+	        	currentSkill1Checked = 1;
+	          break;
+	        case R.id.Skill1_2Btn:
+	        	currentSkill1Checked = 2;
+	          break;
+	        case R.id.Skill1_3Btn:
+	        	currentSkill1Checked = 3;
+	          break;
+	        case R.id.Skill1_4Btn:
+	        	currentSkill1Checked = 4;
+	          break;
+	        case R.id.Skill1_5Btn:
+	        	currentSkill1Checked = 5;
+	          break;
+	        case R.id.Skill1_6Btn:
+	        	currentSkill1Checked = 6;
+	          break;
+	        case R.id.Skill1_7Btn:
+	        	currentSkill1Checked = 7;
+	          break;
+	        case R.id.Skill1_8Btn:
+	        	currentSkill1Checked = 8;
+	          break;
+	      }
+	}
 	
+	public void skill1EqBtnClick(View v){
+		Button currentSkill = (Button) findViewById(R.id.currentSkill1);
+		String currentSkillTxt = Integer.toString(currentSkill1Checked);
+		currentSkill.setText(currentSkillTxt);
+		YoloEngine.SkillSprite1=currentSkill1Checked+3;
+	}
 	
+//------------------------skill 2 menu---------------------------------
+	public void skills2BtnClick(View v) {
+		
+	      switch(v.getId()) {
+	        case R.id.Skill2_1Btn:
+	        	currentSkill2Checked = 1;
+	          break;
+	        case R.id.Skill2_2Btn:
+	        	currentSkill2Checked = 2;
+	          break;
+	        case R.id.Skill2_3Btn:
+	        	currentSkill2Checked = 3;
+	          break;
+	        case R.id.Skill2_4Btn:
+	        	currentSkill2Checked = 4;
+	          break;
+	        case R.id.Skill2_5Btn:
+	        	currentSkill2Checked = 5;
+	          break;
+	        case R.id.Skill2_6Btn:
+	        	currentSkill2Checked = 6;
+	          break;
+	        case R.id.Skill2_7Btn:
+	        	currentSkill2Checked = 7;
+	          break;
+	        case R.id.Skill2_8Btn:
+	        	currentSkill2Checked = 8;
+	          break;
+	      }
+	}
 	
+	public void skill2EqBtnClick(View v){
+		Button currentSkill = (Button) findViewById(R.id.currentSkill2);
+		String currentSkillTxt = Integer.toString(currentSkill2Checked);
+		currentSkill.setText(currentSkillTxt);
+		YoloEngine.SkillSprite2=currentSkill2Checked+3;
+	}
+	public void skill3EqBtnClick(View v){
+		Button currentSkill = (Button) findViewById(R.id.currentSkill3);
+		String currentSkillTxt = Integer.toString(currentSkill2Checked);
+		currentSkill.setText(currentSkillTxt);
+		YoloEngine.SkillSprite3=currentSkill2Checked+3;
+	}
 // ------------------------- Multislayer BEGIN -----------------------
 	public void signIn(View v) {
 		System.out.println("Signing in");
