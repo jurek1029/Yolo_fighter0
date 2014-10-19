@@ -2,6 +2,7 @@ package com.example.yolo_fighter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 
 import android.view.MotionEvent;
@@ -21,8 +22,13 @@ public class YoloGame extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		YoloEngine.display_x = YoloEngine.display.getWidth();
-		YoloEngine.display_y = YoloEngine.display.getHeight();
+		Point size = new Point();
+	    YoloEngine.display.getSize(size);
+	    YoloEngine.display_x = size.x;
+	    YoloEngine.display_y = size.y;
+	    
+	//	YoloEngine.display_x = YoloEngine.display.getWidth();
+	//	YoloEngine.display_y = YoloEngine.display.getHeight();
 		
 		super.onCreate(savedInstanceState);
 		gameView = new YoloGameView(this);
