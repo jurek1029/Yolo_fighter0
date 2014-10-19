@@ -59,9 +59,15 @@ public class YoloMultislayer {
 					YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
 					YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;
 					YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
-				} else {
+				}
+				else if (MessString.length == 6) {
+					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]), Float.parseFloat(MessString[4])));
+				}
+				else {
 					YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));
 				}
+				
+				
 
 			}
 		};
@@ -123,6 +129,9 @@ public class YoloMultislayer {
 	 */
 	public void sendMessageToAllreliable(byte[] data)
 	{
+		if(!YoloEngine.MULTI_ACTIVE)
+			return;
+		
 		mMyId = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
 
 		mParticipants = YoloEngine.mRoom.getParticipants();	
@@ -164,7 +173,18 @@ public class YoloMultislayer {
 		}
 	}
 	
+	
+	public byte[] generateMessageFromFloats(Float values[]) {
 
+		String output = "";
+		for(float value : values)
+		{
+			output += "|"+value;
+		}
+		
+		output += "|l";
+		return output.getBytes();
+	}
 
 
 
