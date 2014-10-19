@@ -2,6 +2,7 @@ package com.example.yolo_fighter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 
 import android.view.MotionEvent;
@@ -13,16 +14,190 @@ public class YoloGame extends Activity{
 	public static Context context ;
 	
 	public static float x=0,y=0, x_old=YoloEngine.MOVE_X,y_old,x2,y2,y_climb;
-	private int a=0,b=0,c;
+	private int c;
 	private float x_skill,y_skill;
 
 	private float buttonJumpX,buttonJumpY,buttonShotX,buttonShotY,buttonCrouchX,buttonCrouchY,buttonSkillX,buttonSkillY;
 	
+	private void ActionUp()
+	{
+		if(YoloEngine.canClimb)
+		{
+			if(!YoloEngine.isClimbing)
+			{
+				YoloEngine.canMove =  false;
+				YoloEngine.isClimbingUp = true;
+			}
+			YoloEngine.isClimbing = true;
+		}
+		if(!YoloEngine.isJumping)
+		{
+			YoloEngine.Player_vy = 0.25f;
+			YoloEngine.isJumping = true;
+			
+		}
+		YoloEngine.isCrouch = false;
+	}
+	
+	private void ActionDown()
+	{
+		if(YoloEngine.canClimb)
+		{
+			if(!YoloEngine.isClimbing)
+			{
+				YoloEngine.canMove =  false;
+				YoloEngine.isClimbingDown = true;
+			}
+			YoloEngine.isClimbing = true;
+		}
+		else
+		{
+			if(!YoloEngine.isCrouch_prest)
+				if(YoloEngine.isCrouch)
+					YoloEngine.isCrouch = false;
+				else
+					YoloEngine.isCrouch = true;
+			YoloEngine.isCrouch_prest = true;
+		}
+	}
+	
+	private void ActionMoveX()
+	{
+		if(YoloEngine.isCrouch)	
+		{
+			if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
+			{
+				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
+			}
+			else
+			{
+				YoloEngine.Player_vx = 0.08f*Math.signum(x2-x_old);
+				if(Math.signum(x2-x_old)>0) x2 = x_old + 50;
+				else x2 = x_old - 50;
+			}
+		}
+		else
+		{
+			if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED )
+			{
+				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
+			}
+			else
+			{
+				YoloEngine.Player_vx = 0.16f*Math.signum(x2-x_old);
+				if(Math.signum(x2-x_old)>0) x2 = x_old + 100;
+				else x2 = x_old - 100;
+			}
+		}
+	}
+	
+	private void ActionClick()
+	{
+		 if(x < 275)
+			{
+				y2=0;
+				YoloEngine.isMoving = true;
+			}
+			else
+				{
+					if(YoloEngine.isClasic)
+					{
+						if(x > buttonJumpX - 50 && x < buttonJumpX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
+							if(y < buttonJumpY + 50 && y > buttonJumpY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+							{
+								ActionUp();
+							}
+						
+						if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
+							if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
+							{
+								YoloEngine.isCrouch_prest = true;
+								if(YoloEngine.isCrouch)
+									YoloEngine.isCrouch = false;
+								else
+									YoloEngine.isCrouch = true;
+							}
+					}
+					if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
+						if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+						{
+							YoloEngine.isShoting = true;
+						}
+					if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
+						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+						{
+							if(!YoloEngine.isSkillPressed)
+							{
+								YoloEngine.canSkill1 = false;
+								YoloEngine.isSkillPressed = true;
+								YoloEngine.usedSkill = 0;
+								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+							}
+						}
+					if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
+						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+						{
+							if(!YoloEngine.isSkillPressed)
+							{
+								YoloEngine.canSkill2 = false;
+								YoloEngine.isSkillPressed = true;
+								YoloEngine.usedSkill = 1;
+								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+							}
+						}
+					if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
+						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+						{
+							if(!YoloEngine.isSkillPressed)
+							{
+								YoloEngine.canSkill3 = false;
+								YoloEngine.isSkillPressed = true;
+								YoloEngine.usedSkill = 2;
+								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+							}
+						}	
+				}
+		 if(YoloEngine.isUsingSkill) 
+			{
+			 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
+			 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+			 
+			 switch (YoloEngine.usedSkill)
+				{
+				case 0:
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
+					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
+					break;
+				case 1:
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,0,.125f, .375f,3f,3f));
+					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					break;
+				case 2:
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,10,0,0,14f,5f));		
+					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					break;
+				}
+				YoloEngine.isUsingSkill = false;			
+			}
+		
+	}
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		YoloEngine.display_x = YoloEngine.display.getWidth();
-		YoloEngine.display_y = YoloEngine.display.getHeight();
+		if (android.os.Build.VERSION.SDK_INT >= 13)
+		{
+			Point size = new Point();
+		    YoloEngine.display.getSize(size);
+		    YoloEngine.display_x = size.x;
+		    YoloEngine.display_y = size.y;
+		}
+		else
+		{
+			YoloEngine.display_x = YoloEngine.display.getWidth();
+			YoloEngine.display_y = YoloEngine.display.getHeight();
+		}
 		
 		super.onCreate(savedInstanceState);
 		gameView = new YoloGameView(this);
@@ -44,8 +219,8 @@ public class YoloGame extends Activity{
 		buttonSkillY = YoloEngine.display_y;
 		
 		if(YoloEngine.isClasic)	y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2;
-		else y_old=YoloEngine.display_y - 105;
-			
+		else y_old = YoloEngine.display_y - 105;
+		
 		x2=x_old;
 		
 	}
@@ -60,350 +235,68 @@ public class YoloGame extends Activity{
 
 		if(x < 275)
 			{
-				a = c;
-				x2 = event.getX(a);
-				y2 = event.getY(a);
+				x2 = x;
+				y2 = y;
 			}
-		else b = c;
-		
-		
 		
 		switch(event.getActionMasked())
 		{
-			case MotionEvent.ACTION_DOWN:
-				{
-				 if(x < 275)
-					{
-						y2=0;
-						YoloEngine.isMoving = true;
-					}
-					else
-						{
-							if(YoloEngine.isClasic)
-							{
-								if(x > buttonJumpX - 50 && x < buttonJumpX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
-									if(y < buttonJumpY + 50 && y > buttonJumpY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-									{
-										YoloEngine.Player_vy = 0.25f;
-										YoloEngine.isJumping = true;
-										YoloEngine.isCrouch = false;
-									}
-								
-								if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
-									if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
-									{
-										YoloEngine.isCrouch_prest = true;
-										if(YoloEngine.isCrouch)
-											YoloEngine.isCrouch = false;
-										else
-											YoloEngine.isCrouch = true;
-									}
-							}
-							if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-								if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-								{
-									YoloEngine.isShoting = true;
-								}
-							if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
-								if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-								{
-									if(!YoloEngine.isSkillPressed)
-									{
-										YoloEngine.canSkill1 = false;
-										YoloEngine.isSkillPressed = true;
-										YoloEngine.usedSkill = 0;
-										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-									}
-								}
-							if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
-								if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-								{
-									if(!YoloEngine.isSkillPressed)
-									{
-										YoloEngine.canSkill2 = false;
-										YoloEngine.isSkillPressed = true;
-										YoloEngine.usedSkill = 1;
-										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-									}
-								}
-							if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-								if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-								{
-									if(!YoloEngine.isSkillPressed)
-									{
-										YoloEngine.canSkill3 = false;
-										YoloEngine.isSkillPressed = true;
-										YoloEngine.usedSkill = 2;
-										if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-									}
-								}	
-						}
-				 if(YoloEngine.isUsingSkill) 
-					{
-					 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-					 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-					 
-					 switch (YoloEngine.usedSkill)
-						{
-						case 0:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
-							if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
-							break;
-						case 1:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,0,.125f, .375f,3f,3f));
-							if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
-							break;
-						case 2:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,10,0,0,14f,5f));		
-							if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
-							break;
-						}
-						YoloEngine.isUsingSkill = false;			
-					}
-				 
-					if(YoloEngine.canClimb)y_climb = y;
-					
-					
-					break;
-				}
-			case MotionEvent.ACTION_POINTER_DOWN:
-			{
-				
-				 if(x < 275)
-				{
-					y2=0;
-					YoloEngine.isMoving = true;
-				}
-				else
-					{
-						if(YoloEngine.isClasic)
-						{
-						if(x > buttonJumpX - 25 && x < buttonJumpX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonJumpY + 25 && y > buttonJumpY - 25 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								YoloEngine.Player_vy = 0.25f;
-								YoloEngine.isJumping = true;
-								YoloEngine.isCrouch = false;
-							}
-						
-						if(x > buttonCrouchX && x < buttonCrouchX + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								YoloEngine.isCrouch_prest = true;
-								if(YoloEngine.isCrouch)
-									YoloEngine.isCrouch = false;
-								else
-									YoloEngine.isCrouch = true;
-							}
-						}
-						if(x > buttonShotX - 25 && x < buttonShotX + 25 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonShotY + 25 && y > buttonShotY - 25 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								YoloEngine.isShoting = true;
-							}
-						if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								if(!YoloEngine.isSkillPressed)
-								{
-									YoloEngine.canSkill1 = false;
-									YoloEngine.isSkillPressed = true;
-									YoloEngine.usedSkill = 0;
-									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-								}
-							}
-						if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								if(!YoloEngine.isSkillPressed)
-								{
-									YoloEngine.canSkill2 = false;
-									YoloEngine.isSkillPressed = true;
-									YoloEngine.usedSkill = 1;
-									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-								}
-							}
-						if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-							if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
-							{
-								if(!YoloEngine.isSkillPressed)
-								{
-									YoloEngine.canSkill3 = false;
-									YoloEngine.isSkillPressed = true;
-									YoloEngine.usedSkill = 0;
-									if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
-								}
-							}
-					}
-				 if(YoloEngine.isUsingSkill) //TODO wysy³anie danych do przeciwników
-					{
-					 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-					 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
-					 
-						switch (YoloEngine.usedSkill)
-						{
-						case 0:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
-							break;
-						case 1:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,0,.125f, .375f,3f,3f));
-							break;
-						case 2:
-							YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,0,0,0,14f,5f));		
-							break;
-						}
-						YoloEngine.isUsingSkill = false;		
-						YoloEngine.is = true;
-						
-					}
-				if(YoloEngine.canClimb)y_climb = y;
-				
-				break;
-			}
+		
 			case MotionEvent.ACTION_MOVE:
+			{
+				if(x<275)
+				if(YoloEngine.isClasic)
+					ActionMoveX();
+				else
 				{
+					ActionMoveX();
 					
-					if(x2 < 275)
+					y2 = y_old-y2;
+						
+					if(y2 < 0)
 					{
-						if(YoloEngine.isClasic)
-						{
-							if(YoloEngine.isCrouch)	
-							{
-								if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
-								{
-									YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
-								}
-								else
-								{
-									YoloEngine.Player_vx = 0.08f*Math.signum(x2-x_old);
-									if(Math.signum(x2-x_old)>0) x2 = x_old + 50;
-									else x2 = x_old - 50;
-								}
-							}
-							else
-							{
-								if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED )
-								{
-									YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
-								}
-								else
-								{
-									YoloEngine.Player_vx = 0.16f*Math.signum(x2-x_old);
-									if(Math.signum(x2-x_old)>0) x2 = x_old + 100;
-									else x2 = x_old - 100;
-								}
-							}
-							if(YoloEngine.canClimb && Math.abs(y_climb-y)> YoloEngine.MIN_VALUE_TO_CLIMB)
-							{
-								YoloEngine.canMove =  false;
-								if(Math.signum(y_climb-y)>0)YoloEngine.isClimbingUp = true;
-								else YoloEngine.isClimbingDown = true;
-							}
-						}
+						if(y2 < - YoloEngine.MAX_VALUE_PLAYER_SPEED)
+							if(Math.sqrt(10000-(x2-x_old)*(x2-x_old)) < -y2)
+								y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
+							
+						if( y2 < -YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
+							ActionDown();	
 						else
 						{
-							if(YoloEngine.isCrouch)	
-							{
-								if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
-								{
-									YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
-								}
-								else
-								{
-									YoloEngine.Player_vx = 0.08f*Math.signum(x2-x_old);
-									if(Math.signum(x2-x_old)>0) x2 = x_old + 50;
-									else x2 = x_old - 50;
-								}
-							}
-							else
-							{
-								if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED )
-								{
-									YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
-								}
-								else
-								{
-									YoloEngine.Player_vx = 0.16f*Math.signum(x2-x_old);
-									if(Math.signum(x2-x_old)>0) x2 = x_old + 100;
-									else x2 = x_old - 100;
-								}
-							}
-							y2 = y_old-y2;
-							if(y2 < 0)
-							{
-								if(y2< - YoloEngine.MAX_VALUE_PLAYER_SPEED)
-									if(Math.sqrt(10000-(x2-x_old)*(x2-x_old))<-y2)
-									y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
-								
-								if( y2 < -YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
-									{
-									if(YoloEngine.canClimb)
-									{
-										if(!YoloEngine.isClimbing)
-										{
-											YoloEngine.canMove =  false;
-											YoloEngine.isClimbingDown = true;
-										}
-										YoloEngine.isClimbing = true;
-										break;
-									}
-									if(!YoloEngine.isCrouch_prest)
-									if(YoloEngine.isCrouch)
-										YoloEngine.isCrouch = false;
-									else
-										YoloEngine.isCrouch = true;
-									YoloEngine.isCrouch_prest = true;
-								}
-								else
-									{
-										YoloEngine.isCrouch_prest = false;
-										YoloEngine.isClimbing = false;
-									}
-							}
-							else
-							{
-								if(y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED)
-									if(Math.sqrt(10000-(x2-x_old)*(x2-x_old))<y2)
-										y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
-								if( y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
-								{
-									
-									if(YoloEngine.canClimb)
-									{
-										if(!YoloEngine.isClimbing)
-										{
-											YoloEngine.canMove =  false;
-											YoloEngine.isClimbingUp = true;
-										}
-										YoloEngine.isClimbing = true;
-									}
-									if(!YoloEngine.isJumping)
-									{
-										YoloEngine.Player_vy = 0.25f;
-										YoloEngine.isJumping = true;
-										
-									}
-									YoloEngine.isCrouch = false;
-								}
-								else 
-									{
-										YoloEngine.isJumping = false;
-										YoloEngine.isClimbing = false;
-									}
-							}
-							
+							YoloEngine.isCrouch_prest = false;
+							YoloEngine.isClimbing = false;
 						}
 					}
-				//	else if(Math.signum(x2-x_old)>0) x2 = x_old + 100;
-					//	 else x2 = x_old - 100;
-					
-					if(YoloEngine.Player_vx < 0) YoloEngine.isPlayerLeft = true;
-					else YoloEngine.isPlayerLeft = false;
-					
-					
-					
-					break;
+					else
+					{
+						if(y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED)
+							if(Math.sqrt(10000-(x2-x_old)*(x2-x_old))<y2)
+								y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
+							
+						if( y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
+							ActionUp();
+						else 
+						{
+							YoloEngine.isJumping = false;
+							YoloEngine.isClimbing = false;
+						}
+					}
 				}
+	
+				if(YoloEngine.Player_vx < 0) YoloEngine.isPlayerLeft = true;
+				else YoloEngine.isPlayerLeft = false;
+	
+				break;
+			}
+	
+			case MotionEvent.ACTION_DOWN:
+				ActionClick();
+				break;
+					
+			case MotionEvent.ACTION_POINTER_DOWN:
+				ActionClick();
+				break;
+					
 			
 			case MotionEvent.ACTION_UP:
 				{
@@ -419,20 +312,16 @@ public class YoloGame extends Activity{
 						YoloEngine.isUsingSkill = true;
 						YoloEngine.isSkillPressed = false;
 						
-					}
-						
-					
+					}		
 					break;
 				}
 			case MotionEvent.ACTION_POINTER_UP:
-				{
-				
-					
+				{					
 					if(x < 275)
 						YoloEngine.isMoving = false;
 					else
-					
 						YoloEngine.isShoting = false;
+					
 					YoloEngine.isJumping = false;
 					YoloEngine.isCrouch_prest= false;
 					
@@ -444,12 +333,9 @@ public class YoloGame extends Activity{
 						YoloEngine.isUsingSkill = true;
 						YoloEngine.isSkillPressed = false;
 					}
-					
 					break;
 				}
-				
 		}
-		
 		return false;
 	}
 	
