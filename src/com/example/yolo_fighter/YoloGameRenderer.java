@@ -135,9 +135,7 @@ class Skill
 			else onGround = false;
 				
 		}
-		
-		
-		
+			
 		switch(sprite)
 		{
 		case 6:
@@ -176,7 +174,6 @@ class Skill
 						x_texture = xStart = xEnd = 0.625f;
 						y_texture = yStart = yEnd = 0.375f;
 					}
-					
 				}
 			}
 			else if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)
@@ -862,7 +859,7 @@ public class YoloGameRenderer implements Renderer {
 						gl.glLoadIdentity();
 						gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
 						
-						XADD = 2f;
+						XADD = ((YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X)/YoloEngine.GAME_PROJECTION_X)-1f;
 						cameraPosX = -XADD;
 						BtnTX = XADD/ (MOVE_BALL_SIZE_X*2);
 						//joyBallTX = XADD /MOVE_BALL_SIZE_X;
@@ -946,8 +943,6 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.PlayerLive -= 0.16f;
 			}
 			
-				
-			
 	//----------------------------------------------------------------------------------------------------------------------------		
 	
 // ------------------------- Multislayer BEGIN -----------------------	
@@ -1007,8 +1002,6 @@ public class YoloGameRenderer implements Renderer {
 			drawOponentSkills(gl);
 			hitBox();
 
-
-			
 			
 // ------------------------- Multislayer BEGIN -----------------------
 			
@@ -1024,21 +1017,14 @@ public class YoloGameRenderer implements Renderer {
 			
 			drawControls(gl);
 			drawButtons(gl);
-			
-			
-
-			
-			
+	
 		}
 		
 		gl.glEnable(GL10.GL_BLEND);
 		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		loopEnd = System.currentTimeMillis();
 		loopRunTime = (loopEnd - loopStart);
-		
-		
-		
-		
+
 	}
 	private boolean IsCollidedTop(YoloObject object)
 	{
@@ -1479,9 +1465,6 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
 		}
 		nextBullet--;
-		//TODO pociski przeciwnika
-		
-		
 	}
 	
 	
@@ -1965,7 +1948,7 @@ public class YoloGameRenderer implements Renderer {
 //------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y; 
-		YoloEngine.GAME_PROJECTION_X = YoloEngine.GAME_PROJECTION_Y*YoloEngine.display_x/YoloEngine.display_y;
+		YoloEngine.GAME_PROJECTION_X = YoloEngine.GAME_PROJECTION_Y*15/9;
 		
 		
 		ObjectTab[0] = new YoloObject(0,1330,2400,110);
