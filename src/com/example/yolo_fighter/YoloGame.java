@@ -166,15 +166,15 @@ public class YoloGame extends Activity{
 				{
 				case 0:
 					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
-					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
 					break;
 				case 1:
 					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,0,.125f, .375f,3f,3f));
-					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
 					break;
 				case 2:
 					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,10,0,0,14f,5f));		
-					if(YoloEngine.MULTI_ACTIVE)	YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite3+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
 					break;
 				}
 				YoloEngine.isUsingSkill = false;			

@@ -1823,6 +1823,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		for (int i = 0;i<skillOponentVe.size();i++)
 		{
+		//TODO case 6-9
 			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
