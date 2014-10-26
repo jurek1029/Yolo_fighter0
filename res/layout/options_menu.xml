@@ -22,22 +22,22 @@
     android:layout_gravity="clip_vertical"
     android:orientation="vertical" >
 
-    <ImageButton
+    <Button
         android:id="@+id/btnIsClasic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
         android:onClick="isClasicClick"
-        android:background="@drawable/classiccontrolsoffbtn" />
+        android:background="@drawable/classiccontrolsbtnoff" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btnSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="soundClick"
-        android:background="@drawable/soundonbtn" />
+        android:background="@drawable/enablesoundbtnon" />
 
-    <ImageButton
+    <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

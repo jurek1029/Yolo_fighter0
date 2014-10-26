@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/stone" >
+    android:background="@drawable/menubgcolor" >
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,51 +14,45 @@
             android:id="@+id/playerBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
             android:layout_weight="1"
-            android:background="@drawable/tab"
-            android:text="@string/player_tab" 
-            android:textColor="@color/dark_tab"
-            android:onClick="skillsClick"/>
+            android:background="@drawable/playertab"
+            android:onClick="skillsClick" />
 
         <Button
             android:id="@+id/weaponBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
             android:layout_weight="1"
-            android:background="@drawable/tab2"
-            android:text="@string/weapon_tab"
-            android:textColor="@color/highlited_tab"
-            android:onClick="weaponClick"/>
+            android:background="@drawable/weapontab2"
+            android:onClick="weaponClick" />
 
         <Button
             android:id="@+id/skill1Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
             android:layout_weight="1"
-            android:background="@drawable/tab" 
-            android:text="@string/skill1_tab" 
-            android:textColor="@color/dark_tab"
-            android:onClick="skill1Click"/>
+            android:background="@drawable/skill1tab"
+            android:onClick="skill1Click" />
 
         <Button
             android:id="@+id/skill2Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
             android:layout_weight="1"
-            android:background="@drawable/tab" 
-            android:text="@string/skill2_tab" 
-            android:textColor="@color/dark_tab"
-            android:onClick="skill2Click"/>
+            android:background="@drawable/skill2tab"
+            android:onClick="skill2Click" />
 
         <Button
-            android:id="@+id/skill3Btn"
+            android:id="@+id/startBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/tab" 
-            android:text="@string/skill3_tab" 
-            android:textColor="@color/dark_tab"
-            android:onClick="skill3Click"/>
+            android:background="@drawable/starttab"
+            android:onClick="joinClick" />
     </LinearLayout>
     
     <LinearLayout 
@@ -93,7 +87,7 @@
                 android:text="Tutaj będzie krótki opis broni/skilla," />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"

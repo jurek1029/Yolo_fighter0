@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -304,15 +305,10 @@ public class YoloMainMenu extends Activity
 		final Animation animMove3 = AnimationUtils.loadAnimation(this, R.layout.move);
 		
 		
-		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
-		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
-		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
+		Button optionsBtn = (Button) findViewById(R.id.btnOptions);
+		Button skillsBtn = (Button) findViewById(R.id.btnPM);
+		Button playBtn = (Button) findViewById(R.id.btnPlay);
 		
-		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		
-	
 		
 		
 	//	VideoView bgVideo = (VideoView)findViewById(R.id.bgVideo);
@@ -337,21 +333,22 @@ public class YoloMainMenu extends Activity
 	public void optionsClick(View v)
 	{
 		YoloEngine.whichLayout = 1;
-		setContentView(R.layout.options_menu);
-		ImageButton isClasicBtn = (ImageButton) findViewById(R.id.btnIsClasic);
+		/*Button isClasicBtn = (Button) findViewById(R.id.btnIsClasic);
 		if(YoloEngine.isClasic==true) {
 			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsoffbtn);
 		}
 		else {
 			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsonbtn);
 		}
-		ImageButton soundBtn = (ImageButton) findViewById(R.id.btnSound);
+		Button soundBtn = (Button) findViewById(R.id.btnSound);
 		if(YoloEngine.enableSound==true) {
-			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
-		}
-		else {
 			soundBtn.setBackgroundResource(R.drawable.soundonbtn);
 		}
+		else {
+			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
+		}
+		*/
+		setContentView(R.layout.options_menu);
 	}
 	
 
@@ -429,10 +426,6 @@ public class YoloMainMenu extends Activity
 		setContentView(R.layout.skill2_menu);
 	}
 	
-	public void skill3Click(View v)
-	{
-		setContentView(R.layout.skill3_menu);
-	}
 	
 	public void addPlayerClick(View v)
 	{
@@ -472,27 +465,27 @@ public class YoloMainMenu extends Activity
 	//-------------------options menu-----------------------------------------
 	public void isClasicClick(View v)
 	{
-		ImageButton isClasicBtn = (ImageButton) findViewById(R.id.btnIsClasic);
+		Button isClasicBtn = (Button) findViewById(R.id.btnIsClasic);
 		if(YoloEngine.isClasic==true) {
 			YoloEngine.isClasic = false;
-			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsoffbtn);
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnoff);
 		}
 		else {
 			YoloEngine.isClasic = true;
-			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsonbtn);
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnon);
 		}
 	}
 	
 	public void soundClick(View v)
 	{
-		ImageButton soundBtn = (ImageButton) findViewById(R.id.btnSound);
+		Button soundBtn = (Button) findViewById(R.id.btnSound);
 		if(YoloEngine.enableSound==true) {
 			YoloEngine.enableSound = false;
-			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
+			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnoff);
 		}
 		else {
 			YoloEngine.enableSound = true;
-			soundBtn.setBackgroundResource(R.drawable.soundonbtn);
+			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnon);
 		}
 	}
 	
@@ -500,13 +493,6 @@ public class YoloMainMenu extends Activity
 	{
 		YoloEngine.whichLayout = 0;
 		setContentView(R.layout.main_menu);
-		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
-		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
-		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
-		
-		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
 	}
 	
 	
@@ -725,13 +711,7 @@ public void onBackPressed() {
 	{
 		YoloEngine.whichLayout=0;
 		setContentView(R.layout.main_menu);
-		ImageButton optionsBtn = (ImageButton) findViewById(R.id.btnOptions);
-		ImageButton skillsBtn = (ImageButton) findViewById(R.id.btnPM);
-		ImageButton playBtn = (ImageButton) findViewById(R.id.btnPlay);
 		
-		optionsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		skillsBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
-		playBtn.getBackground().setAlpha(YoloEngine.MENU_BUTTON_ALPAH);
 	}
 	else {   
 	Intent intent = new Intent(Intent.ACTION_MAIN);
