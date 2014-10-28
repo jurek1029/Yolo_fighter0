@@ -8,8 +8,9 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
 
 public class YoloMultislayer {
 
-	public float Opponents_x_last[] = new float[4];
-	public float Opponents_y_last[] = new float[4];
+	public float Opponents_x_last[] = { 1000f, 1000f, 1000f, 1000f };
+	public float Opponents_y_last[] = { 1000f, 1000f, 1000f, 1000f };
+	//new float[4];
 	
 	public float Opponents_x_lastX[] = new float[4];
 	public float Opponents_y_lastX[] = new float[4];
