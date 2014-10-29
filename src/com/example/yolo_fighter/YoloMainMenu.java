@@ -4,6 +4,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
@@ -14,25 +31,6 @@ import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListene
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 public class YoloMainMenu extends Activity 
 {
@@ -311,15 +309,6 @@ public class YoloMainMenu extends Activity
 		
 		
 		
-	//	VideoView bgVideo = (VideoView)findViewById(R.id.bgVideo);
-		
-		
-//        String uriPath = "android.resource://com.example.yolo_fighter/"+R.raw.blabla;
-  //      Uri uri = Uri.parse(uriPath);
-    //    bgVideo.setVideoURI(uri);
-   //     bgVideo.requestFocus();
-  //      bgVideo.start();
-		
 		animMove2.setStartOffset(500);
 		animMove3.setStartOffset(1000);
 		
@@ -349,6 +338,7 @@ public class YoloMainMenu extends Activity
 		}
 		*/
 		setContentView(R.layout.options_menu);
+		
 	}
 	
 
@@ -430,6 +420,12 @@ public class YoloMainMenu extends Activity
 	public void addPlayerClick(View v)
 	{
 		setContentView(R.layout.addplayer_menu);
+	}
+	
+	public void deletePlayerClick(View v)
+	{
+		dbm.deletePlayer(YoloEngine.currentPlayerInfo.getID());
+		skillsClick(v);
 	}
 	
 	//--------------------- add Player menu--------------------------

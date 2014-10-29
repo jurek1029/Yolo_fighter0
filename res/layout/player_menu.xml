@@ -166,9 +166,10 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="200dp"
-                android:layout_height="35dp"
+                android:layout_height="34dp"
                 android:layout_gravity="center"
-                android:drawSelectorOnTop="true"/>
+                android:drawSelectorOnTop="true" />
+
         		<!-- android:entries="@array/player_list"-->
         		 
 
@@ -193,6 +194,14 @@
                 android:layout_gravity="center"
                 android:background="@drawable/addplayerbtn"
                 android:onClick="addPlayerClick" />
+
+            <Button
+                android:id="@+id/deletePlayerBtn"
+                android:layout_width="132dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/deleteplayerbtn"
+                android:onClick="deletePlayerClick" />
 
     	</LinearLayout>
     </LinearLayout>
