@@ -13,10 +13,10 @@ public class YoloEngine {
 	public static final int BACKGROUND = R.drawable.level_01_1;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
 	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
-	public static final int MOVE_TEXTURE = R.drawable.move_1;
-	public static final int MOVE_BALL_TEXTURE =R.drawable.move_ball_1;
-	public static final int MOVE_TEXTURE_1 = R.drawable.back;
-	public static final int MOVE_BALL_TEXTURE_1 = R.drawable.ball;
+//	public static final int MOVE_TEXTURE = 
+//	public static final int MOVE_BALL_TEXTURE =
+//	public static final int MOVE_TEXTURE_1 =
+//	public static final  MOVE_BALL_TEXTURE_1 =
 	public static final int BUTTON_TEXTURE = R.drawable.button_sprite;
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
@@ -56,7 +56,7 @@ public class YoloEngine {
 	public static float WARRIOR_SPEED = 0.0625f;
 	public static final int MUMMY_STAND=0,MUMMY_WALK=1,MUMMY_ATTACK=2,MUMMY_HURT=3,MUMMY_DYING=4,MUMMY_NULL = 100;
 	public static float MUMMY_SPEED = 0.03125f;
-	public static final int HAND_STAND=0,HAND_ATTACK=1,HAND_HURT=2,HAND_DYING=3,HAND_NULL = 100;
+	public static final int HAND_STAND=0,HAND_ATTACK=1,HAND_HURT=2,HAND_DYING=4,HAND_NULL = 100;
 	//--------------------------------------------
 	
 	

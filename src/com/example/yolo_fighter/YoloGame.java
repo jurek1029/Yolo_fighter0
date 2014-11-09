@@ -65,28 +65,28 @@ public class YoloGame extends Activity{
 	{
 		if(YoloEngine.isCrouch)	
 		{
-			if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
+			if(Math.abs(x_old - x2) < 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
 			{
 				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
 			}
 			else
 			{
 				YoloEngine.Player_vx = 0.08f*Math.signum(x2-x_old);
-				if(Math.signum(x2-x_old)>0) x2 = x_old + 50;
-				else x2 = x_old - 50;
+				if(Math.signum(x2-x_old)>0) x2 = x_old + 40;
+				else x2 = x_old - 40;
 			}
 		}
 		else
 		{
-			if(Math.abs(x_old - x2) < YoloEngine.MAX_VALUE_PLAYER_SPEED )
+			if(Math.abs(x_old - x2) < 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED )
 			{
 				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
 			}
 			else
 			{
 				YoloEngine.Player_vx = 0.16f*Math.signum(x2-x_old);
-				if(Math.signum(x2-x_old)>0) x2 = x_old + 100;
-				else x2 = x_old - 100;
+				if(Math.signum(x2-x_old)>0) x2 = x_old + 40;
+				else x2 = x_old - 40;
 			}
 		}
 	}
@@ -255,11 +255,11 @@ public class YoloGame extends Activity{
 						
 					if(y2 < 0)
 					{
-						if(y2 < - YoloEngine.MAX_VALUE_PLAYER_SPEED)
-							if(Math.sqrt(10000-(x2-x_old)*(x2-x_old)) < -y2)
-								y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
+						if(y2 < - 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED)
+							if(Math.sqrt(1600-(x2-x_old)*(x2-x_old)) < -y2)
+								y2 = -(float)Math.sqrt(1600-(x2-x_old)*(x2-x_old));
 							
-						if( y2 < -YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
+						if( y2 < -20)//YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
 							ActionDown();	
 						else
 						{
@@ -269,11 +269,12 @@ public class YoloGame extends Activity{
 					}
 					else
 					{
-						if(y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED)
-							if(Math.sqrt(10000-(x2-x_old)*(x2-x_old))<y2)
-								y2 = (float)Math.sqrt(10000-(x2-x_old)*(x2-x_old));
+						System.out.println(x2);
+						if(y2 > 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED-80)
+							if(Math.sqrt(1600-(x2-x_old)*(x2-x_old))<y2)
+								y2 = (float)Math.sqrt(1600-(x2-x_old)*(x2-x_old));
 							
-						if( y2 > YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
+						if( y2 > 20)//YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
 							ActionUp();
 						else 
 						{
