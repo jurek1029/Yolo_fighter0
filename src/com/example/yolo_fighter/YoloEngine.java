@@ -140,6 +140,7 @@ public class YoloEngine {
    public static boolean enableSound = true;
 //-------------------Player Sats & Info-----------------------------------------------------------------	
 	public static YoloPlayerInfo currentPlayerInfo;	
+	public static int currentRace;
 	
 	public static Context context;
 	

@@ -393,6 +393,9 @@ public class YoloMainMenu extends Activity
 	        public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
 	        	int currentID = plIDs.get(position);
 	    		YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
+	    		if(YoloEngine.currentPlayerInfo.getRace()=="angel") YoloEngine.currentRace = 0;
+	    		else if (YoloEngine.currentPlayerInfo.getRace()=="devil") YoloEngine.currentRace = 1;
+	    		else YoloEngine.currentRace = 2;
 	    		//txtViewUnitsCounter.setText(YoloEngine.currentPlayerInfo.getUnits()); 
 	        }
 	        public void onNothingSelected(AdapterView<?> arg0) { }
@@ -413,7 +416,17 @@ public class YoloMainMenu extends Activity
 	
 	public void skill2Click(View v)
 	{
-		setContentView(R.layout.skill2_menu);
+		switch(YoloEngine.currentRace) {
+        case 0:
+        	setContentView(R.layout.skill2angel_menu);
+          break;
+        case 1:
+        	setContentView(R.layout.skill2devil_menu);
+        	break;
+        case 2:
+        	setContentView(R.layout.skill2necromancer_menu);
+        	break;
+		}
 	}
 	
 	
@@ -542,8 +555,8 @@ public class YoloMainMenu extends Activity
 	        case R.id.Skill2_1Btn:
 	        	currentSkill2Checked = 1;
 	          break;
-	        case R.id.Skill2_2Btn:
-	        	currentSkill2Checked = 2;
+	        case R.id.Skill2necromancer_6Btn:
+	        	currentSkill2Checked = 6;
 	          break;
 	        case R.id.Skill2_3Btn:
 	        	currentSkill2Checked = 3;
@@ -570,13 +583,13 @@ public class YoloMainMenu extends Activity
 		Button currentSkill = (Button) findViewById(R.id.currentSkill2);
 		String currentSkillTxt = Integer.toString(currentSkill2Checked);
 		currentSkill.setText(currentSkillTxt);
-		YoloEngine.SkillSprite2=currentSkill2Checked+3;
+		YoloEngine.SkillSprite2=currentSkill2Checked;
 	}
 	public void skill3EqBtnClick(View v){
 		Button currentSkill = (Button) findViewById(R.id.currentSkill3);
 		String currentSkillTxt = Integer.toString(currentSkill2Checked);
 		currentSkill.setText(currentSkillTxt);
-		YoloEngine.SkillSprite3=currentSkill2Checked+3;
+		YoloEngine.SkillSprite3=currentSkill2Checked;
 	}
 // ------------------------- Multislayer BEGIN -----------------------
 	public void signIn(View v) {
