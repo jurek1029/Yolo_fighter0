@@ -16,9 +16,9 @@
     
     <!-- Player Stats -->
     <string name="Stat1">Strength</string>
-    <string name="Stat2">Agility</string>
+    <string name="Stat2">Stamina</string>
     <string name="Stat3">Resistance</string>
-    <string name="Stat4">Vitality</string>
+    <string name="Stat4">Agility</string>
     <string name="Units">Units</string>
     
     <string-array name="player_list">

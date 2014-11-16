@@ -3,7 +3,7 @@ package com.example.yolo_fighter;
 public class YoloPlayerInfo {
 	private int ID;
 	private String name;
-	private String race;
+	private int race;
 	private int level;
 	private int XP;
 	private int coins;
@@ -12,8 +12,8 @@ public class YoloPlayerInfo {
 	private int ST2;
 	private int ST3;
 	private int ST4;
-	private int skill1;
-	private int skill2;
+	private String skill1;
+	private String skill2;
 	private int weapon;
 	private int SK1EQ;
 	private int SK2EQ;
@@ -56,16 +56,16 @@ public class YoloPlayerInfo {
 	public void setST4(int sT4) {
 		ST4 = sT4;
 	}
-	public int getSkill1() {
+	public String getSkill1() {
 		return skill1;
 	}
-	public void setSkill1(int skill1) {
+	public void setSkill1(String skill1) {
 		this.skill1 = skill1;
 	}
-	public int getSkill2() {
+	public String getSkill2() {
 		return skill2;
 	}
-	public void setSkill2(int skill2) {
+	public void setSkill2(String skill2) {
 		this.skill2 = skill2;
 	}
 	
@@ -111,10 +111,10 @@ public class YoloPlayerInfo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getRace() {
+	public int getRace() {
 		return race;
 	}
-	public void setRace(String race) {
+	public void setRace(int race) {
 		this.race = race;
 	}
 	public int getLevel() {

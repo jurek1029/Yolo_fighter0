@@ -148,7 +148,7 @@
                  android:text="@string/Units" />
 
             <TextView
-                android:id="@+id/unitsCounter"
+                android:id="@+id/coinsCounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

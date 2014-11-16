@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -39,7 +40,7 @@ public class YoloMainMenu extends Activity
 	List<YoloPlayerInfo> plInfoList = new LinkedList<YoloPlayerInfo>();
 	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
-	String newPlayerRace = "angel";
+	int newPlayerRace = 0;
 	int currentSkill1Checked = 0;
 	int currentSkill2Checked = 0;
 	
@@ -377,30 +378,37 @@ public class YoloMainMenu extends Activity
 		
 		Spinner spinner =  (Spinner) findViewById(R.id.spinner);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, plNames); 
-		/*TextView txtViewStatCounter1 = (TextView) findViewById(R.id.stat1Counter);
-		TextView txtViewStatCounter2 = (TextView) findViewById(R.id.stat2Counter);
-		TextView txtViewStatCounter3 = (TextView) findViewById(R.id.stat3Counter);
-		TextView txtViewStatCounter4 = (TextView) findViewById(R.id.stat4Counter);*/
-		TextView txtViewUnitsCounter = (TextView) findViewById(R.id.unitsCounter);
-		
+	
 		
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
-		
 		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 	        public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
 	        	int currentID = plIDs.get(position);
 	    		YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
-	    		if(YoloEngine.currentPlayerInfo.getRace()=="angel") YoloEngine.currentRace = 0;
-	    		else if (YoloEngine.currentPlayerInfo.getRace()=="devil") YoloEngine.currentRace = 1;
-	    		else YoloEngine.currentRace = 2;
 	    		//txtViewUnitsCounter.setText(YoloEngine.currentPlayerInfo.getUnits()); 
 	        }
 	        public void onNothingSelected(AdapterView<?> arg0) { }
 	    });
 		
+		TextView txtViewStatCounter1 = (TextView) findViewById(R.id.stat1Counter);
+		TextView txtViewStatCounter2 = (TextView) findViewById(R.id.stat2Counter);
+		TextView txtViewStatCounter3 = (TextView) findViewById(R.id.stat3Counter);
+		TextView txtViewStatCounter4 = (TextView) findViewById(R.id.stat4Counter);
+		TextView txtViewCoinsCounter = (TextView) findViewById(R.id.coinsCounter);
+		
+		/*Integer st1 = YoloEngine.currentPlayerInfo.getST1();
+		Integer st2 = YoloEngine.currentPlayerInfo.getST2();
+		Integer st3 = YoloEngine.currentPlayerInfo.getST3();
+		Integer st4 = YoloEngine.currentPlayerInfo.getST4();
+		Integer coins = YoloEngine.currentPlayerInfo.getCoins();
+		txtViewStatCounter1.setText(st1.toString());
+		txtViewStatCounter2.setText(st2.toString());
+		txtViewStatCounter3.setText(st3.toString());
+		txtViewStatCounter4.setText(st4.toString());
+		txtViewCoinsCounter.setText(coins.toString());*/
 		
 	}
 //---------------------------------------------- przyciski player menu-------------------	
@@ -416,7 +424,7 @@ public class YoloMainMenu extends Activity
 	
 	public void skill2Click(View v)
 	{
-		switch(YoloEngine.currentRace) {
+		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
           break;
@@ -444,17 +452,17 @@ public class YoloMainMenu extends Activity
 	//--------------------- add Player menu--------------------------
 	public void angelClick(View v)
 	{
-		newPlayerRace = "angel";
+		newPlayerRace = 0;
 	}
 	
 	public void devilClick(View v)
 	{
-		newPlayerRace = "devil";
+		newPlayerRace = 1;
 	}
 	
 	public void necromancerClick(View v)
 	{
-		newPlayerRace = "necromancer";
+		newPlayerRace = 2;
 	}
 	
 	public void addPlayerinAddMenuClick(View v)
@@ -464,7 +472,7 @@ public class YoloMainMenu extends Activity
 		String plName = newPlayerNameTxt.getText().toString();
 		newPlayerNameTxt.setText("");
 		newPlayerInfo.setName(plName);
-		newPlayerInfo.setRace("newPlayerRace");
+		newPlayerInfo.setRace(newPlayerRace);
 		dbm.addPlayer(newPlayerInfo);
 		
 		skillsClick(v);
@@ -555,9 +563,9 @@ public class YoloMainMenu extends Activity
 	        case R.id.Skill2_1Btn:
 	        	currentSkill2Checked = 1;
 	          break;
-	        case R.id.Skill2necromancer_6Btn:
-	        	currentSkill2Checked = 6;
-	          break;
+	      //  case R.id.Skill2necromancer_6Btn:
+	        //	currentSkill2Checked = 6;
+	          //break;
 	        case R.id.Skill2_3Btn:
 	        	currentSkill2Checked = 3;
 	          break;
@@ -579,10 +587,87 @@ public class YoloMainMenu extends Activity
 	      }
 	}
 	
+	public void skills2necromancerBtnClick(View v) {
+		
+	      switch(v.getId()) {
+	        case R.id.Skill2necromancer_handBtn:
+	        	currentSkill2Checked = 9;
+	          break;
+	        case R.id.Skill2necromancer_archerBtn:
+	        	currentSkill2Checked = 6;
+	          break;
+	        case R.id.Skill2necromancer_mummyBtn:
+	        	currentSkill2Checked = 8;
+	          break;
+	        case R.id.Skill2necromancer_warriorBtn:
+	        	currentSkill2Checked = 7;
+	          break;
+	        case R.id.Skill2necromancer_thunderBtn:
+	        	currentSkill2Checked = 5;
+	          break;
+	        case R.id.Skill2necromancer_poisonBtn:
+	        	currentSkill2Checked = 4;
+	          break;
+	        case R.id.Skill2_7Btn:
+	        	currentSkill2Checked = 7;
+	          break;
+	        case R.id.Skill2_8Btn:
+	        	currentSkill2Checked = 8;
+	          break;
+	      }
+	}
+	
+	public void skill2necromancerEqBtnClick(View v){
+		Button currentSkill = (Button) findViewById(R.id.currentSkillNecromancer2);
+		switch(currentSkill2Checked) {
+        case 9:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerhand1);
+          break;
+        case 6:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerarcher1);
+          break;
+        case 8:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancermummy1);
+          break;
+        case 7:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwarrior1);
+          break;
+        case 5:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+          break;
+        case 4:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerpoison1);
+          break;
+      }
+		YoloEngine.SkillSprite2=currentSkill2Checked;
+	}
+	public void skill3necromancerEqBtnClick(View v){
+		Button currentSkill = (Button) findViewById(R.id.currentSkillNecromancer3);
+		switch(currentSkill2Checked) {
+        case 9:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerhand1);
+          break;
+        case 6:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerarcher1);
+          break;
+        case 8:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancermummy1);
+          break;
+        case 7:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwarrior1);
+          break;
+        case 5:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+          break;
+        case 4:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerpoison1);
+          break;
+      }
+		YoloEngine.SkillSprite3=currentSkill2Checked;
+	}
+	
 	public void skill2EqBtnClick(View v){
 		Button currentSkill = (Button) findViewById(R.id.currentSkill2);
-		String currentSkillTxt = Integer.toString(currentSkill2Checked);
-		currentSkill.setText(currentSkillTxt);
 		YoloEngine.SkillSprite2=currentSkill2Checked;
 	}
 	public void skill3EqBtnClick(View v){
