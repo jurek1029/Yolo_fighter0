@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import com.example.yolo_fighter.R.drawable;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.example.games.basegameutils.GameHelper;
 
@@ -13,10 +14,6 @@ public class YoloEngine {
 	public static final int BACKGROUND = R.drawable.level_01_1;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
 	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
-//	public static final int MOVE_TEXTURE = 
-//	public static final int MOVE_BALL_TEXTURE =
-//	public static final int MOVE_TEXTURE_1 =
-//	public static final  MOVE_BALL_TEXTURE_1 =
 	public static final int BUTTON_TEXTURE = R.drawable.button_sprite;
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
@@ -27,7 +24,15 @@ public class YoloEngine {
 	public static final int WARRIOR_SPRITE = R.drawable.warrior_sprite;
 	public static final int MUMMY_SPRITE = R.drawable.mummy_sprite;
 	public static final int HAND_SPRITE = R.drawable.hand_sprite;
+	public static final int BARREL_SPRITE = R.drawable.barrel_sprite;
+	public static final int TOWER_SPRITE = R.drawable.tower_sprite;
+	public static final int WALL_SPRITE = R.drawable.wall_sprite;
+	public static final int LIVE_DRAIN_SPRITE = R.drawable.live_drain_sprite;
+	public static final int RESURECTION_SPRITE = R.drawable.resurection_sprite;
+	public static final int SPIKES_SPRITE = R.drawable.spikes_sprite;
+	public static final int SLOW_DOWN_SPRITE = R.drawable.slow_down_sprite;
 	
+
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
 	public static float MIN_VALUE_TO_CLIMB = 30;
 	public static float MOVE_SIZE_Y = 50;
@@ -57,6 +62,9 @@ public class YoloEngine {
 	public static final int MUMMY_STAND=0,MUMMY_WALK=1,MUMMY_ATTACK=2,MUMMY_HURT=3,MUMMY_DYING=4,MUMMY_NULL = 100;
 	public static float MUMMY_SPEED = 0.03125f;
 	public static final int HAND_STAND=0,HAND_ATTACK=1,HAND_HURT=2,HAND_DYING=4,HAND_NULL = 100;
+	public static final int BARREL_STAND=0,BARREL_WALK=1,BARREL_ATTACK = 4;
+	public static float BARREL_SPEED = 0.125f;
+	public static final int TOWER_STAND=0,TOWER_FIRE=2,TOWER_DYING =4;
 	//--------------------------------------------
 	
 	
