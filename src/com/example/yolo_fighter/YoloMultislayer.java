@@ -55,7 +55,7 @@ public class YoloMultislayer {
 							Integer.parseInt(MessString[3]));
 				} else if (MessString.length == 8)
 					YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Integer.parseInt(MessString[2]), Integer.parseInt(MessString[3]),
-							Float.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7])));
+							Float.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7]),Float.parseFloat(MessString[8])));
 				else if (MessString.length == 3) {
 					YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
 					YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;

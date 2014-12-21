@@ -114,7 +114,7 @@ public class YoloEngine {
 	
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 15; //MiHu baza danych
+	public static int SkillSprite1 = 4; //MiHu baza danych
 	public static int SkillSprite2 = 6; //MiHu baza danych
 	public static int SkillSprite3 = 11; //MiHu baza danych
 	
