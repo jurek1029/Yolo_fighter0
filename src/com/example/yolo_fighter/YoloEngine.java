@@ -64,7 +64,9 @@ public class YoloEngine {
 	public static final int HAND_STAND=0,HAND_ATTACK=1,HAND_HURT=2,HAND_DYING=4,HAND_NULL = 100;
 	public static final int BARREL_STAND=0,BARREL_WALK=1,BARREL_ATTACK = 4;
 	public static float BARREL_SPEED = 0.125f;
-	public static final int TOWER_STAND=0,TOWER_FIRE=2,TOWER_DYING =4;
+	public static final int TOWER_STAND=0,TOWER_NEW =1,TOWER_FIRE=2,TOWER_DYING =4,WALL_NEW =1,WALL_STAND =0;
+	
+	
 	//--------------------------------------------
 	
 	
@@ -112,9 +114,9 @@ public class YoloEngine {
 	
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 4; //MiHu baza danych
-	public static int SkillSprite2 = 5; //MiHu baza danych
-	public static int SkillSprite3 = 6; //MiHu baza danych
+	public static int SkillSprite1 = 15; //MiHu baza danych
+	public static int SkillSprite2 = 6; //MiHu baza danych
+	public static int SkillSprite3 = 11; //MiHu baza danych
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	

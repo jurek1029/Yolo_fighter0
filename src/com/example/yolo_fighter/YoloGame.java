@@ -165,15 +165,15 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,5f,4f));
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f));
 					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
 					break;
 				case 1:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,0,.125f, .375f,3f,3f));
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,10,.125f, .375f,3f,3f));
 					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
 					break;
 				case 2:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,10,0,0,14f,5f));		
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,10,0,0,20f,20f));		
 					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite3+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
 					break;
 				}
@@ -269,7 +269,7 @@ public class YoloGame extends Activity{
 					}
 					else
 					{
-						System.out.println(x2);
+						//System.out.println(x2);
 						if(y2 > 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED-80)
 							if(Math.sqrt(1600-(x2-x_old)*(x2-x_old))<y2)
 								y2 = (float)Math.sqrt(1600-(x2-x_old)*(x2-x_old));

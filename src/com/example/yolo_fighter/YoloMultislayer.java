@@ -62,7 +62,7 @@ public class YoloMultislayer {
 					YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
 				}
 				else if (MessString.length == 6) {
-					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]), Float.parseFloat(MessString[4])));
+					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]), Float.parseFloat(MessString[4]),Integer.parseInt(MessString[5])));//XXX Doda³em jeszcze jedn¹ zmienn¹
 				}
 				else {
 					YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));

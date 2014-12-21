@@ -11,14 +11,16 @@ import android.widget.SlidingDrawer;
 class HitBox
 {
 	float x,y,x_radius,y_radius,damage;
+	int duration;
 	
-	HitBox(float x ,float y, float x_radius ,float y_radius ,float damage)
+	HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,int duration)
 	{
 		this.x =x;
 		this.y =y;
 		this.x_radius = x_radius;
 		this.y_radius = y_radius;
 		this.damage = damage;
+		this.duration = duration;
 	}
 }
 
@@ -28,6 +30,7 @@ class Skill
 	float x_texture=0,y_texture=0,xEnd,yEnd,xStart,yStart;
 	float SkillADDX=0,SkillADDY = 0;
 	float x_radius,y_radius;
+	int frameCounter =0;
 	float damage,life=100f,damage_buffor =0f; //TODO XXX dodaæ to konstruktora i przes³aæ;
 	float  vy = 0;
 	
@@ -36,7 +39,7 @@ class Skill
 	//-------------------------------------------------------------
 	
 	int sprite;
-	int ret,j=0;
+	int ret=100,j=0;
 	int animation_slowdown;
 	int aniSlowCounter = -1;
 	int closestP =0,closestS =0 ,closest =0;
@@ -46,7 +49,7 @@ class Skill
 	
 	boolean isLeft = false,onGround = false ,haveXY = false;
 	boolean isUsed=false;
-	boolean isPoisoned = false;
+	boolean isPoisoned = false,isSlowDown = false;
 	
 	public Skill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius) 
 	{
@@ -73,6 +76,7 @@ class Skill
 
 	public void setX()
 	{
+		if(sprite != 13 && sprite != 14 && sprite != 16)
 		if(YoloEngine.Player_x > YoloEngine.GAME_PROJECTION_X/2 +.5f && YoloEngine.Player_x < YoloEngine.LEVEL_SIZE_X*YoloEngine.GAME_PROJECTION_X - YoloEngine.GAME_PROJECTION_X/2 - .5f)
 			SkillADDX = (((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f)*YoloEngine.GAME_PROJECTION_X;
 		else
@@ -86,7 +90,7 @@ class Skill
 	}
 	public void setY()
 	{
-		
+		if(sprite != 13 && sprite != 14 && sprite != 16)
 		if(YoloEngine.Player_y > YoloEngine.GAME_PROJECTION_Y/2 + .5f && YoloEngine.Player_y < YoloEngine.LEVEL_SIZE_Y*YoloEngine.GAME_PROJECTION_Y - YoloEngine.GAME_PROJECTION_Y/2 - .5f)
 			SkillADDY = (((YoloEngine.Player_y-.5f)/YoloEngine.GAME_PROJECTION_Y) - .5f)*YoloEngine.GAME_PROJECTION_Y;
 		else 
@@ -101,8 +105,22 @@ class Skill
 	
 	public void move ()
 	{
+//-------------------------------------------------------------------Szukanie najbli¿szego------------------------------		
 		if(ret == 100)
 		{
+			float minLenght = 10000f,temp;
+			
+			for(int i=0;i<YoloEngine.mMultislayer.Opponents_x_last.length;i++)
+			{
+				temp = Math.abs(x-YoloEngine.mMultislayer.Opponents_x_last[i])*Math.abs(x-YoloEngine.mMultislayer.Opponents_x_last[i]) +
+						Math.abs(y-YoloEngine.mMultislayer.Opponents_y_last[i])*Math.abs(y-YoloEngine.mMultislayer.Opponents_y_last[i]);
+				if(temp<minLenght)
+				{
+					minLenght = temp;
+					closest = i;
+				}
+			}
+			/*
 			for(int x = 0;x<YoloEngine.mMultislayer.Opponents_x_last.length-1;x++)
 				if(Math.abs(this.x-YoloEngine.mMultislayer.Opponents_y_last[x]) < Math.abs(this.x-YoloEngine.mMultislayer.Opponents_y_last[x+1]))
 						closestP = x;
@@ -117,15 +135,15 @@ class Skill
 					closest = closestS;
 				else
 					closest = closestP;
-			
+			*/
 			x_oponnent = YoloEngine.mMultislayer.Opponents_x_last[closest]; 
 			y_oponnent = YoloEngine.mMultislayer.Opponents_y_last[closest];
 		 
 		}
-		
+//--------------------------------------------------------------------GRAWITANCJA-------------------------------------------	
 		vy -= YoloEngine.GAME_ACCELERATION;
 		y += vy;
-		
+		if(sprite!=10)
 		for(int i = j; i < YoloGameRenderer.ObjectTab.length; i++)
 		{
 			if(YoloGameRenderer.IsCollidedTop(YoloGameRenderer.ObjectTab[i],x,y,vy))
@@ -136,10 +154,21 @@ class Skill
 					j=i;
 				break;
 			}
-			else onGround = false;
-				
+			else onGround = false;	
 		}
-			
+		else
+			for(int i = 0; i < YoloGameRenderer.ObjectTab.length; i++)
+			{
+				if(YoloGameRenderer.IsCollidedTop(YoloGameRenderer.ObjectTab[i],x-1.5f,y,vy))
+				{
+						y = YoloGameRenderer.ObjectTab[i].max_y;
+						vy = 0;
+						onGround = true;
+					break;
+				}
+				else onGround = false;	
+			}
+//--------------------------------------------------------------------------------------------------------------------------
 		switch(sprite)
 		{
 		case 6:
@@ -291,15 +320,16 @@ class Skill
 			{
 				if(isLeft)
 				{
-					x_texture = xStart = 0f;
-					y_texture = yStart = yEnd = 0.375f;
-					xEnd = 0.125f;
+					x_texture = xStart = 0.5f;
+					y_texture = yStart = yEnd = 0.25f;
+					xEnd = 0.625f;
 				}
 				else
 				{
-					x_texture = xStart = 0.5f;
+					
+					x_texture = xStart = 0f;
 					y_texture = yStart = yEnd = 0.375f;
-					xEnd = 0.625f;
+					xEnd = 0.125f;
 				}
 				
 				life -= damage_buffor;
@@ -311,15 +341,16 @@ class Skill
 					ret=YoloEngine.WARRIOR_DYING;
 					if(isLeft)
 					{
-						x_texture = xStart = 0f;
-						y_texture = yStart = yEnd = 0.375f;
-						xEnd = 0.25f;
+						x_texture = xStart = xEnd = 0.5f;
+						y_texture = yStart = yEnd = 0.25f;
+						xEnd = 0.75f;
+						
 					}
 					else
 					{
-						x_texture = xStart = xEnd = 0.5f;
+						x_texture = xStart = 0f;
 						y_texture = yStart = yEnd = 0.375f;
-						xEnd = 0.75f;
+						xEnd = 0.25f;
 					}
 					
 				}
@@ -330,18 +361,19 @@ class Skill
 				if(x<x_oponnent)
 				{
 					isLeft = false;
-					x_texture = xStart = 0.5f;
-					y_texture = yStart = 0.125f;
-					xEnd = .875f;
-					yEnd = 0.125f;
-				}
-				else
-				{
-					isLeft = true;
 					x_texture = xStart = 0;
 					y_texture = yStart = 0.25f;
 					xEnd = .375f;
 					yEnd = 0.25f;
+				}
+				else
+				{
+					isLeft = true;
+					x_texture = xStart = 0.5f;
+					y_texture = yStart = 0.125f;
+					xEnd = .875f;
+					yEnd = 0.125f;
+			
 				}
 				ret = YoloEngine.WARRIOR_ATTACK;
 			}
@@ -372,10 +404,11 @@ class Skill
 						isLeft = false;
 						if(x - YoloEngine.WARRIOR_SPEED > YoloGameRenderer.ObjectTab[j].min_x)
 						{
-							x_texture = xStart = 0f;
+						
+							x_texture = xStart = 0.75f;
 							y_texture = yStart = 0f;
-							xEnd = .625f;
-							yEnd = 0f;
+							xEnd = 0.375f;
+							yEnd = 0.125f;
 						}
 						
 					}
@@ -384,10 +417,10 @@ class Skill
 						isLeft = true;
 						if(x + YoloEngine.WARRIOR_SPEED<YoloGameRenderer.ObjectTab[j].max_x)
 						{
-							x_texture = xStart = 0.75f;
+							x_texture = xStart = 0f;
 							y_texture = yStart = 0f;
-							xEnd = 0.375f;
-							yEnd = 0.125f;
+							xEnd = .625f;
+							yEnd = 0f;
 						}
 						
 					}
@@ -404,17 +437,17 @@ class Skill
 								x -= YoloEngine.WARRIOR_SPEED;
 							else
 							{
-								x_texture = xStart = xEnd = 0.875f;
+								x_texture = xStart = xEnd = 0.375f;
 								y_texture = yStart = yEnd = 0.375f;
 								ret = YoloEngine.WARRIOR_STAND;
 							}
 						else
-							if(x + YoloEngine.WARRIOR_SPEED < YoloGameRenderer.ObjectTab[j].max_x)
+							if(x + YoloEngine.WARRIOR_SPEED +1f < YoloGameRenderer.ObjectTab[j].max_x)
 								x += YoloEngine.WARRIOR_SPEED;
 							else
 							{
-								x_texture = xStart = xEnd = 0.375f;
-								y_texture = yStart = yEnd = 0.375f;
+								x_texture = xStart = xEnd = 0.875f;
+								y_texture = yStart = yEnd = 0.25f;
 								ret = YoloEngine.WARRIOR_STAND;	
 							}
 						
@@ -514,9 +547,9 @@ class Skill
 						if(x - YoloEngine.MUMMY_SPEED > YoloGameRenderer.ObjectTab[j].min_x)
 						{
 							x_texture = xStart = 0f;
-							y_texture = yStart = 0f;
+							y_texture = yStart = 0.125f;
 							xEnd = .875f;
-							yEnd = 0f;
+							yEnd = 0.125f;
 						}
 						
 					}
@@ -526,9 +559,9 @@ class Skill
 						if(x + YoloEngine.MUMMY_SPEED<YoloGameRenderer.ObjectTab[j].max_x)
 						{
 							x_texture = xStart = 0f;
-							y_texture = yStart = 0.125f;
+							y_texture = yStart = 0f;
 							xEnd = 0.875f;
-							yEnd = 0.125f;
+							yEnd = 0f;
 						}
 						
 					}
@@ -550,7 +583,7 @@ class Skill
 								ret = YoloEngine.MUMMY_STAND;
 							}
 						else
-							if(x + YoloEngine.MUMMY_SPEED < YoloGameRenderer.ObjectTab[j].max_x)
+							if(x + YoloEngine.MUMMY_SPEED + 1f< YoloGameRenderer.ObjectTab[j].max_x)
 								x += YoloEngine.MUMMY_SPEED;
 							else
 							{
@@ -611,43 +644,40 @@ class Skill
 				if(x<x_oponnent)
 				{
 					isLeft = false;
-					x_texture = xStart = 0.5f;
+					x_texture = xStart = 0;
 					y_texture = yStart = 0.125f;
-					xEnd = .875f;
+					xEnd = 0.375f;
 					yEnd = 0.125f;
 				}
 				else
 				{
 					isLeft = true;
-					x_texture = xStart = 0;
+					x_texture = xStart = 0.5f;
 					y_texture = yStart = 0.125f;
-					xEnd = .375f;
+					xEnd = 0.875f;
 					yEnd = 0.125f;
 				}
 				ret = YoloEngine.HAND_ATTACK;
 			}
 			else
 			{
-				if(!onGround)
+				if(ret != YoloEngine.HAND_STAND && ret != YoloEngine.HAND_ATTACK)
+				if(x>x_oponnent)
 				{
-					if(ret != YoloEngine.HAND_STAND && ret != YoloEngine.HAND_ATTACK)
-					if(x>x_oponnent)
-					{
-						isLeft = true;
-						x_texture = xStart = 0f;
-						y_texture = yStart = yEnd = 0f;
-						xEnd = 0.375f;
-					}
-					else
-					{
-						isLeft = false;
-						x_texture = xStart = 0.5f;
-						y_texture = yStart = yEnd = 0f;
-						xEnd = 875f;
-					}
-					ret = YoloEngine.HAND_STAND;
-				}	
-				
+					isLeft = true;
+					x_texture = xStart = 0f;
+					y_texture = yStart = yEnd = 0f;
+					xEnd = 0.375f;
+				}
+				else
+				{
+					isLeft = false;
+					x_texture = xStart = 0.5f;
+					y_texture = yStart = yEnd = 0f;
+					xEnd = 0.875f;
+				}
+				ret = YoloEngine.HAND_STAND;
+					
 			}
 			break;
 		case 10:
@@ -655,20 +685,25 @@ class Skill
 			damage_buffor = 0f;
 			if(life<0)
 			{
-				x_texture = xStart = 0;
-				y_texture = yStart = 0.25f;
-				xEnd = .875f;
-				yEnd = 0.5f;
-				ret = YoloEngine.BARREL_ATTACK;
+				if(ret != YoloEngine.BARREL_ATTACK)
+				{
+					x_texture = xStart = 0;
+					y_texture = yStart = 0.25f;
+					xEnd = .875f;
+					yEnd = 0.5f;
+					ret = YoloEngine.BARREL_ATTACK;
+				}
 			}
-			else if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)
+			else if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)//czy dobre?
 			{
-				x_texture = xStart = 0;
-				y_texture = yStart = 0.25f;
-				xEnd = .875f;
-				yEnd = 0.5f;
-				
-				ret = YoloEngine.BARREL_ATTACK;
+				if(ret != YoloEngine.BARREL_ATTACK)
+				{
+					x_texture = xStart = 0;
+					y_texture = yStart = 0.25f;
+					xEnd = .875f;
+					yEnd = 0.5f;	
+					ret = YoloEngine.BARREL_ATTACK;
+				}
 			}
 			else
 			{
@@ -685,27 +720,29 @@ class Skill
 				{
 					if(isLeft)
 					{
-						if(ret!=YoloEngine.BARREL_WALK)
+						if(ret!=YoloEngine.BARREL_WALK && ret != YoloEngine.BARREL_ATTACK)
 						{
-							if(x - YoloEngine.BARREL_SPEED > 0)
+							if(x - YoloEngine.BARREL_SPEED -1f > 0)
 							{
 								x_texture = xStart = 0f;
-								y_texture = yStart = 0f;
+								y_texture = yStart = 0.125f;
 								xEnd = .875f;
-								yEnd = 0f;
+								yEnd = 0.125f;
 							}
 							ret = YoloEngine.ARCHER_WALK;
 						}
 						else
 						{
-							if(x - YoloEngine.BARREL_SPEED < 0)
+							if(x - YoloEngine.BARREL_SPEED -1f< 0)
 							{
-								x_texture = xStart = 0;
-								y_texture = yStart = 0.25f;
-								xEnd = .875f;
-								yEnd = 0.5f;
-								
-								ret = YoloEngine.BARREL_ATTACK;
+								if(ret != YoloEngine.BARREL_ATTACK)
+								{
+									x_texture = xStart = 0;
+									y_texture = yStart = 0.25f;
+									xEnd = .875f;
+									yEnd = 0.5f;
+									ret = YoloEngine.BARREL_ATTACK;
+								}
 							}
 							else
 								x -= YoloEngine.BARREL_SPEED; 
@@ -713,12 +750,12 @@ class Skill
 					}
 					else 
 					{
-						if(ret!=YoloEngine.BARREL_WALK)
+						if(ret!=YoloEngine.BARREL_WALK && ret != YoloEngine.BARREL_ATTACK)
 						{
 							if(x + YoloEngine.BARREL_SPEED + 1f < YoloEngine.LEVEL_SIZE_X * YoloEngine.GAME_PROJECTION_X )
 							{
 								x_texture = xStart = 0f;
-								y_texture = yStart = .125f;
+								y_texture = yStart = 0f;
 								xEnd = 0.875f;
 								yEnd = 0f;
 							}
@@ -728,12 +765,14 @@ class Skill
 						{
 							if(x + YoloEngine.BARREL_SPEED + 1f > YoloEngine.LEVEL_SIZE_X * YoloEngine.GAME_PROJECTION_X )
 							{
-								x_texture = xStart = 0;
-								y_texture = yStart = 0.25f;
-								xEnd = .875f;
-								yEnd = 0.5f;
-								
-								ret = YoloEngine.BARREL_ATTACK;
+								if(ret != YoloEngine.BARREL_ATTACK)
+								{
+									x_texture = xStart = 0;
+									y_texture = yStart = 0.25f;
+									xEnd = .875f;
+									yEnd = 0.5f;
+									ret = YoloEngine.BARREL_ATTACK;
+								}
 							}
 							else
 								x += YoloEngine.BARREL_SPEED; 
@@ -750,72 +789,83 @@ class Skill
 			if(life<0)
 			{
 				x_texture = xStart = xEnd = 0.875f;
-				y_texture = yStart = yEnd = 0f;
+				y_texture = yStart = yEnd = 0.125f;
 				ret = YoloEngine.TOWER_DYING;
 			}
-			else if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)
+			else 
 			{
-				if(ret != YoloEngine.TOWER_FIRE)
-				if(x<x_oponnent)
+				if(ret == 100)
 				{
-					isLeft = false;
-					x_texture = xStart = 0;
-					y_texture = yStart = 0.25f;
-					xEnd = .875f;
-					yEnd = 0.25f;
+					x_texture = xStart = 0f;
+					y_texture = yStart = yEnd = 0f;
+					xEnd = 0.875f;
+					ret = YoloEngine.TOWER_NEW;
+				}
+				if(ret != YoloEngine.TOWER_NEW)
+				if(y_oponnent + 1 >y-y_radius/2 && y_oponnent < y + y_radius/2 && x_oponnent + 1  > x-x_radius/2 && x_oponnent < x+x_radius/2)
+				{
+					if(ret != YoloEngine.TOWER_FIRE)
+					if(x<x_oponnent)
+						isLeft = false;
+					else
+						isLeft = true;
+					x_texture = xStart = xEnd = 0.875f;
+					y_texture = yStart = yEnd = 0f;
+					ret = YoloEngine.TOWER_FIRE;
 				}
 				else
 				{
-					isLeft = true;
-					x_texture = xStart = 0;
-					y_texture = yStart = 0.125f;
-					xEnd = .875f;
-					yEnd = 0.125f;
+					ret = YoloEngine.TOWER_STAND;
+					x_texture = xStart = xEnd = 0.875f;
+					y_texture = yStart = yEnd = 0f;
 				}
-				ret = YoloEngine.TOWER_FIRE;
-			}
-			else
-			{
-				ret = YoloEngine.TOWER_STAND;
 			}
 			break;
 		case 12:
 			life -= damage_buffor;
 			damage_buffor = 0f;
+			
+			if(ret != YoloEngine.WALL_NEW && ret != YoloEngine.WALL_STAND)
+			{
+				x_texture = xStart = 0f;
+				y_texture = yStart = yEnd = 0f;
+				xEnd = 0.875f;
+				ret = YoloEngine.WALL_NEW;
+			}
+			
+			if(ret == YoloEngine.WALL_STAND)
 			if(life>4*life/5)
 			{
-					x_texture = xStart = xEnd = 0.25f;
-					y_texture = yStart = yEnd = 0.375f;
+				x_texture = xStart = xEnd = 0.875f;
+				y_texture = yStart = yEnd = 0f;
 			}
 			else if(life>3*life/5)
-				{
-					x_texture = xStart = xEnd = 0.625f;
-					y_texture = yStart = yEnd = 0.375f;
-				}
+			{
+				x_texture = xStart = xEnd = 0f;
+				y_texture = yStart = yEnd = 0.125f;
+			}
 			else if(life>2*life/5)
 			{
-				x_texture = xStart = xEnd = 0.625f;
-				y_texture = yStart = yEnd = 0.375f;
+				x_texture = xStart = xEnd = 0.125f;
+				y_texture = yStart = yEnd = 0.125f;
 			}
 			else if(life>life/5)
 			{
-				x_texture = xStart = xEnd = 0.625f;
-				y_texture = yStart = yEnd = 0.375f;
+				x_texture = xStart = xEnd = 0.25f;
+				y_texture = yStart = yEnd = 0.125f;
 			}
 			else if(life>0)
 			{
-				x_texture = xStart = xEnd = 0.625f;
-				y_texture = yStart = yEnd = 0.375f;
+				x_texture = xStart = xEnd = 0.375f;
+				y_texture = yStart = yEnd = 0.125f;
 			}
 			else
 			{
-				x_texture = xStart = xEnd = 0.625f;
-				y_texture = yStart = yEnd = 0.375f;
+				x_texture = xStart = xEnd = 0.5f;
+				y_texture = yStart = yEnd = 0.125f;
 				ret = 4;
-			}
-			
+			}	
 			break;
-			
 		}
 	}	
 }
@@ -1509,7 +1559,7 @@ public class YoloGameRenderer implements Renderer {
 			bullet.x = x;
 		bullet.y = y; 
 		bullet.sprite = sprite;
-		bullet.x_texture = isLeft? x_texture : x_texture + .125f;
+		bullet.x_texture = x_texture ;
 		bullet.y_texture = y_texture;
 		bullet.size = 0.1f;
 		bullet.scale = 4f;
@@ -1526,9 +1576,9 @@ public class YoloGameRenderer implements Renderer {
 			if(!Ve.elementAt(i).haveXY)
 			{
 				if(YoloEngine.isPlayerLeft)
-					Ve.elementAt(i).x = YoloEngine.Player_x - 2f;
+					Ve.elementAt(i).x = YoloEngine.Player_x ;
 				else
-					Ve.elementAt(i).x = YoloEngine.Player_x + 2f;
+					Ve.elementAt(i).x = YoloEngine.Player_x + 1f;
 				if(sprite == 11 || sprite == 12)
 				{
 					float maxy=0;
@@ -1536,7 +1586,7 @@ public class YoloGameRenderer implements Renderer {
 					{
 						if(YoloEngine.Player_x>YoloGameRenderer.ObjectTab[q].min_x && YoloEngine.Player_x<YoloGameRenderer.ObjectTab[q].max_x)
 						{
-							if(YoloEngine.Player_y>YoloGameRenderer.ObjectTab[q].max_y)
+							if(YoloEngine.Player_y>=YoloGameRenderer.ObjectTab[q].max_y)
 								if(YoloGameRenderer.ObjectTab[q].max_y>maxy)
 									maxy = YoloGameRenderer.ObjectTab[q].max_y;
 						}
@@ -1546,7 +1596,10 @@ public class YoloGameRenderer implements Renderer {
 				else Ve.elementAt(i).y = YoloEngine.Player_y + 2f;
 				
 				if(sprite == 10)
+				{
 					Ve.elementAt(i).isLeft = YoloEngine.isPlayerLeft;
+					Ve.elementAt(i).x++;
+				}
 				
 		 		Ve.elementAt(i).haveXY = true;
 					
@@ -1570,6 +1623,7 @@ public class YoloGameRenderer implements Renderer {
 			
 			if(Ve.elementAt(i).y_texture == Ve.elementAt(i).yEnd && Ve.elementAt(i).x_texture == Ve.elementAt(i).xEnd)
 			{
+				
 				if(Ve.elementAt(i).ret==4)
 				{ 
 					Ve.remove(i);
@@ -1579,8 +1633,11 @@ public class YoloGameRenderer implements Renderer {
 				Ve.elementAt(i).x_texture = Ve.elementAt(i).xStart;
 				Ve.elementAt(i).y_texture = Ve.elementAt(i).yStart;
 				
+				
 				if(isMy)
 				{
+//-------------------------------------------------Tworzenie HitBoxów----------------------------------------------------------------------------
+					Ve.elementAt(i).frameCounter=0;
 					switch (sprite)
 					{
 					case 6:
@@ -1590,30 +1647,17 @@ public class YoloGameRenderer implements Renderer {
 							Ve.elementAt(i).ret = YoloEngine.ARCHER_NULL;
 						}
 						break;
-					case 7:
-						if(Ve.elementAt(i).ret == YoloEngine.WARRIOR_ATTACK)
-						{
-							YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
-							Ve.elementAt(i).ret = YoloEngine.WARRIOR_NULL;
-						}
-						break;
-					case 8:
-						if(Ve.elementAt(i).ret == YoloEngine.MUMMY_ATTACK)
-						{
-							YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
-							Ve.elementAt(i).ret = YoloEngine.MUMMY_NULL;
-						}
-						break;
-					case 9:
-						if(Ve.elementAt(i).ret == YoloEngine.HAND_ATTACK)
-						{
-							YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
-							Ve.elementAt(i).ret = YoloEngine.HAND_NULL;
-						}
-						break;
+						/*
 					case 10:
+						if(Ve.elementAt(i).ret == YoloEngine.BARREL_ATTACK)
+						{
+							Ve.remove(i);
+							return true;
+						}
 						Ve.elementAt(i).ret = YoloEngine.BARREL_STAND;
+						
 						break;
+						*/
 					case 11:
 						if(Ve.elementAt(i).ret == YoloEngine.TOWER_FIRE)
 						{
@@ -1624,21 +1668,61 @@ public class YoloGameRenderer implements Renderer {
 								Ve.elementAt(i).fireCounter =0;
 							}
 						}
+						else if(Ve.elementAt(i).ret == YoloEngine.TOWER_NEW)
+						{
+							Ve.elementAt(i).ret = YoloEngine.TOWER_STAND;
+							Ve.elementAt(i).x_texture = Ve.elementAt(i).xEnd;
+							Ve.elementAt(i).y_texture = Ve.elementAt(i).yEnd;
+						}
+						break;
+					case 12:
+						Ve.elementAt(i).ret = YoloEngine.WALL_STAND;
+						Ve.elementAt(i).x_texture = Ve.elementAt(i).xEnd;
+						Ve.elementAt(i).y_texture = Ve.elementAt(i).yEnd;
 						break;
 					}
-					
 				}
+				
 				break end;
 			}
+			if(isMy)
+			if(sprite == 7)
+			{
+				if(Ve.elementAt(i).frameCounter==2)
+					if(Ve.elementAt(i).ret == YoloEngine.WARRIOR_ATTACK)
+					{
+						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+						Ve.elementAt(i).ret = YoloEngine.WARRIOR_NULL;
+					}
+			}
+			else if(sprite == 9)
+			{
+				if(Ve.elementAt(i).frameCounter==2)
+					if(Ve.elementAt(i).ret == YoloEngine.HAND_ATTACK)
+					{
+						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+						Ve.elementAt(i).ret = YoloEngine.HAND_NULL;
+					}
+			}
+			else if(sprite == 15)
+			if(Ve.elementAt(i).frameCounter==3||Ve.elementAt(i).frameCounter == 6)
+				if(Ve.elementAt(i).ret == YoloEngine.MUMMY_ATTACK)
+				{
+					YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+					Ve.elementAt(i).ret = YoloEngine.MUMMY_NULL;
+				}
+//--------------------------------------------------------------------------------------------------------------------------------------------		
 		
+			Ve.elementAt(i).frameCounter++;
 			Ve.elementAt(i).x_texture+=0.125f; //kolejna klatka texturki;	
 			if(Ve.elementAt(i).x_texture >= 1){Ve.elementAt(i).y_texture+=0.125f; Ve.elementAt(i).x_texture=0f;}
+			
 		}
 						
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
-		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);//TODO zmieñiæ skalowanie na nie sta³e
+		gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
 		gl.glTranslatef(Ve.elementAt(i).x/4f-.5f, Ve.elementAt(i).y/4f-.25f, 0f);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
@@ -1656,7 +1740,21 @@ public class YoloGameRenderer implements Renderer {
 			gl.glTranslatef(Ve.elementAt(i).x/4f-.5f, Ve.elementAt(i).y/4f-.25f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0.25f, 0.5f, 0f);
+			gl.glTranslatef(0f, 0.875f, 0f);
+			btn.draw(gl, spriteSheets,Ve.elementAt(i).sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		if(Ve.elementAt(i).isSlowDown)
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
+			gl.glTranslatef(Ve.elementAt(i).x/4f-.5f, Ve.elementAt(i).y/4f-.25f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(0.125f, 0.875f, 0f);
 			btn.draw(gl, spriteSheets,Ve.elementAt(i).sprite);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
@@ -1666,28 +1764,30 @@ public class YoloGameRenderer implements Renderer {
 	
 	private boolean LinearSkillDraw(GL10 gl,Skill skill)
 	{
+		float scale = skill.sprite == 15?1.5f:4f;
+		
+		if(skill.y_texture == skill.yEnd && skill.x_texture == skill.xEnd)
+			return true;
+		else
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*scale, 1f);
+			gl.glTranslatef(skill.x/4f-.5f, skill.y/scale-.25f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(skill.x_texture, skill.y_texture, 0f);
+			btn.draw(gl, spriteSheets,skill.sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		
 		if(skill.aniSlowCounter++ == skill.animation_slowdown)
 		{
-			skill.aniSlowCounter = -1;
+			skill.aniSlowCounter = 0;
 			if(skill.x_texture<1)skill.x_texture+=0.125f;
 			else{skill.y_texture+=0.125f; skill.x_texture=0f;}
-				
-			if(skill.y_texture == skill.yEnd && skill.x_texture == skill.xEnd)
-				return true;
-			else
-			{
-				gl.glMatrixMode(GL10.GL_MODELVIEW);
-				gl.glLoadIdentity();
-				gl.glPushMatrix();
-				gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
-				gl.glTranslatef(skill.x/4f-.5f, skill.y/4f-.25f, 0f);
-				gl.glColor4f(1f,1f,1f,1f);
-				gl.glMatrixMode(GL10.GL_TEXTURE);
-				gl.glTranslatef(skill.x_texture, skill.y_texture, 0f);
-				btn.draw(gl, spriteSheets,skill.sprite);
-				gl.glPopMatrix();
-				gl.glLoadIdentity();
-			}
 		}	
 		return false;
 	}
@@ -1698,7 +1798,7 @@ public class YoloGameRenderer implements Renderer {
 		for(int i = 0; i < skillPlayerVe.size(); i++)
 		{
 			sprite = skillPlayerVe.elementAt(i).sprite;
-			if(sprite>5&&sprite<13)
+			if(sprite>5 && sprite<13)
 			{
 				if(AIDraw(gl, i, true, skillPlayerVe.elementAt(i).sprite))//Rysuje kolejne AI
 					{
@@ -1706,67 +1806,69 @@ public class YoloGameRenderer implements Renderer {
 					}
 			}
 			else//Pozosta³e skille
-			{	
-			//default : 
-				
+			{		
 				if(skillPlayerVe.elementAt(i).x_texture==0 && skillPlayerVe.elementAt(i).y_texture==0)
 				{
-					skillPlayerVe.elementAt(i).setX();
-					skillPlayerVe.elementAt(i).setY();
+					if(!skillPlayerVe.elementAt(i).haveXY)
+					{
+						skillPlayerVe.elementAt(i).setX();
+						if(sprite != 15)
+							skillPlayerVe.elementAt(i).setY();
+						else
+						{
+							float maxy=0;
+							for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
+							{
+								if(skillPlayerVe.elementAt(i).x>YoloGameRenderer.ObjectTab[q].min_x && skillPlayerVe.elementAt(i).x<YoloGameRenderer.ObjectTab[q].max_x)
+								{
+									if(skillPlayerVe.elementAt(i).y>=YoloGameRenderer.ObjectTab[q].max_y)
+										if(YoloGameRenderer.ObjectTab[q].max_y>maxy)
+											maxy = YoloGameRenderer.ObjectTab[q].max_y;
+								}
+							}
+							skillPlayerVe.elementAt(i).y = maxy;
+						}
+						skillPlayerVe.elementAt(i).haveXY = true;
+					}
 					
-					if(sprite == 13||sprite == 14||sprite == 16)
+					if(sprite == 100||sprite == 101||sprite == 103)
 					{
 						for(int j =0;j<YoloEngine.mMultislayer.Opponents_x_last.length;j++)
 						{
 							if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			//jeœli przeciwnik jest w zasiêgu skilla
 								if(Math.abs(YoloEngine.mMultislayer.Opponents_y_last[j]-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
 								{
-									Skill skill = skillPlayerVe.elementAt(i);
+									int slowD =0;
+									if(sprite==101)slowD = 2;
+									Skill skill = new Skill(0,0,sprite-87,slowD,0.875f,0.375f,0,0);
 									skill.x = YoloEngine.mMultislayer.Opponents_x_last[j];
 									skill.y = YoloEngine.mMultislayer.Opponents_y_last[j];
-									skill.x_texture = .125f;
 									skillPlayerVe.add(skill);
 								}
 						}
+						for(int j=0;j<skillOponentVe.size();j++)
+						{
+							if(Math.abs(skillOponentVe.elementAt(i).x-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			
+								if(Math.abs(skillOponentVe.elementAt(i).y-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
+								{
+									int slowD =0;
+									if(sprite==101)slowD = 2;
+									Skill skill = new Skill(0,0,sprite-87,slowD,0.875f,0.375f,0,0);
+									skill.x = YoloEngine.mMultislayer.Opponents_x_last[j];
+									skill.y = YoloEngine.mMultislayer.Opponents_y_last[j];
+									skillPlayerVe.add(skill);
+								}
+						}
+						
 						skillPlayerVe.remove(i--);
 						continue;
 					}
-							
 				}
 				
 				if(LinearSkillDraw(gl, skillPlayerVe.elementAt(i)))
 				{
 					skillPlayerVe.remove(i--);
 				}
-		/*
-				skillPlayerVe.elementAt(i).aniSlowCounter++;
-				if(skillPlayerVe.elementAt(i).aniSlowCounter == skillPlayerVe.elementAt(i).animation_slowdown)
-				{
-					skillPlayerVe.elementAt(i).aniSlowCounter = -1;
-					if(skillPlayerVe.elementAt(i).x_texture<1)skillPlayerVe.elementAt(i).x_texture+=0.125f;
-					else{skillPlayerVe.elementAt(i).y_texture+=0.125f; skillPlayerVe.elementAt(i).x_texture=0f;}
-						
-					if(skillPlayerVe.elementAt(i).y_texture == skillPlayerVe.elementAt(i).yEnd && skillPlayerVe.elementAt(i).x_texture == skillPlayerVe.elementAt(i).xEnd)
-					{
-						skillPlayerVe.remove(i);
-						i--;
-					}
-					else
-					{
-						gl.glMatrixMode(GL10.GL_MODELVIEW);
-						gl.glLoadIdentity();
-						gl.glPushMatrix();
-						gl.glScalef(1/YoloEngine.GAME_PROJECTION_X*4, 1/YoloEngine.GAME_PROJECTION_Y*4, 1f);
-						gl.glTranslatef(skillPlayerVe.elementAt(i).x/4f-.5f, skillPlayerVe.elementAt(i).y/4f-.25f, 0f);
-						gl.glColor4f(1f,1f,1f,1f);
-						gl.glMatrixMode(GL10.GL_TEXTURE);
-						gl.glTranslatef(skillPlayerVe.elementAt(i).x_texture, skillPlayerVe.elementAt(i).y_texture, 0f);
-						btn.draw(gl, spriteSheets,skillPlayerVe.elementAt(i).sprite);
-						gl.glPopMatrix();
-						gl.glLoadIdentity();
-					}
-				}
-				*/
 			}
 		}
 	}
@@ -1855,7 +1957,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void hitBox ()
 	{
-		for(int i = 0;i<hitBoxs.size();hitBoxs.remove(i))
+		for(int i = 0;i<hitBoxs.size();i++)
 		{
 			if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius))
 				YoloEngine.PlayerLive -= hitBoxs.elementAt(i).damage;
@@ -1956,10 +2058,16 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[3] = true;
 		
 		// Mulstislayer po otrzymaniu XXX
-		YoloEngine.sprite_load[YoloEngine.SkillSprite1] = true;//Zale¿y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite2] = true;//Zale¿y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite3] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1<30?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2<30?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3<30?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale¿y od playera
 		
+		YoloEngine.mMultislayer.Opponents_x_last[0]=15f;
+		YoloEngine.mMultislayer.Opponents_y_last[0]=3f;
+		YoloEngine.mMultislayer.Opponents_x_last[1]=10f;
+		YoloEngine.mMultislayer.Opponents_y_last[1]=5f;
+		YoloEngine.mMultislayer.Opponents_x_last[2]=20f;
+		YoloEngine.mMultislayer.Opponents_y_last[2]=3f;
 		
 		
 //-----------------------------------------------------------------------------------------------------------		
