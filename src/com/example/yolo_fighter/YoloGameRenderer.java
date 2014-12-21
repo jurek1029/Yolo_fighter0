@@ -43,7 +43,7 @@ class Skill
 	int animation_slowdown;
 	int aniSlowCounter = -1;
 	int closestP =0,closestS =0 ,closest =0;
-	int poison_duration = 0;
+	float poison_duration = 0;
 	int fire_rate = 10,fireCounter =0;
 	
 	
@@ -1691,7 +1691,7 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==2)
 					if(Ve.elementAt(i).ret == YoloEngine.WARRIOR_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).poison_duration}));
 						Ve.elementAt(i).ret = YoloEngine.WARRIOR_NULL;
 					}
 			}
@@ -1700,7 +1700,7 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==2)
 					if(Ve.elementAt(i).ret == YoloEngine.HAND_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).poison_duration}));
 						Ve.elementAt(i).ret = YoloEngine.HAND_NULL;
 					}
 			}
@@ -1708,7 +1708,7 @@ public class YoloGameRenderer implements Renderer {
 			if(Ve.elementAt(i).frameCounter==3||Ve.elementAt(i).frameCounter == 6)
 				if(Ve.elementAt(i).ret == YoloEngine.MUMMY_ATTACK)
 				{
-					YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage}));
+					YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).poison_duration}));
 					Ve.elementAt(i).ret = YoloEngine.MUMMY_NULL;
 				}
 //--------------------------------------------------------------------------------------------------------------------------------------------		

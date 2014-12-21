@@ -182,8 +182,7 @@ public class YoloMultislayer {
 		{
 			output += "|"+value;
 		}
-		
-		output += "|l";
+				
 		return output.getBytes();
 	}
 
