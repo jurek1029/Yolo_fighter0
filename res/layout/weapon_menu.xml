@@ -55,25 +55,18 @@
             android:onClick="joinClick" />
     </LinearLayout>
     
-    <LinearLayout 
-    	android:layout_width="match_parent"
-   		android:layout_height="match_parent"
-    	android:orientation="horizontal" >
-        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
         <LinearLayout
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="horizontal" >
-    		
-              <ImageView
-                  android:id="@+id/imageView1"
-                  android:layout_width="400dp"
-                  android:layout_height="match_parent"
-                  android:background="@drawable/crossbows" />
 
-        </LinearLayout>
-
-        <LinearLayout
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
@@ -81,28 +74,96 @@
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="Tutaj będzie krótki opis broni/skilla," />
-
+                android:layout_height="wrap_content"
+                android:text="OPIS BRONI I JEJ STATYSTYKI" />
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="cena i level, który trzeba mieć, żeby móc kupić" />
+                android:layout_height="wrap_content"
+                android:text="OPIS BRONI I JEJ STATYSTYKI" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OPIS BRONI I JEJ STATYSTYKI" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OPIS BRONI I JEJ STATYSTYKI" />
 
             <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="BUY/EQUIP" />
+                android:id="@+id/buyequipbtn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:background="@drawable/buyequipbtn" />
+
         </LinearLayout>
-          
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            
+            <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             >
+		<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            
+            <Button
+                android:id="@+id/Btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            <Button
+                android:id="@+id/Btn1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            <Button
+                android:id="@+id/Btn2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            <Button
+                android:id="@+id/Btn3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            <Button
+                android:id="@+id/Btn4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            <Button
+                android:id="@+id/Btn5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-5dp"
+                android:onClick="skillsClick" />
+            </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -360,12 +360,17 @@ public class YoloMainMenu extends Activity
 	
 	public void skillsClick(View v)
 	{
-		setContentView(R.layout.player_menu);
-		YoloEngine.whichLayout = 1;
-	//	List<YoloPlayerInfo> plInfoList = new LinkedList<YoloPlayerInfo>();
 		plInfoList=dbm.getAll();
+		YoloEngine.whichLayout = 1;
+		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
+		else
+		{
+		setContentView(R.layout.player_menu);
+	//	List<YoloPlayerInfo> plInfoList = new LinkedList<YoloPlayerInfo>();
+		
 	//	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	//	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
+		
 		plNames.clear();
 		plIDs.clear();
 		for(int i=0;i<plInfoList.size(); i++)
@@ -375,6 +380,10 @@ public class YoloMainMenu extends Activity
 			plIDs.add(playerInfo.getID());
 		}
 		
+		//int currentID = plIDs.get(YoloEngine.currentPlayerInfoPosition);
+		//YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
+		YoloEngine.currentPlayerInfo = plInfoList.get(YoloEngine.currentPlayerInfoPosition);
+		//System.out.println(YoloEngine.currentPlayerInfoPosition+"lojo");
 		
 		Spinner spinner =  (Spinner) findViewById(R.id.spinner);
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, plNames); 
@@ -382,34 +391,52 @@ public class YoloMainMenu extends Activity
 		
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
-		
+		spinner.setSelection(YoloEngine.currentPlayerInfoPosition);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 	        public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
 	        	int currentID = plIDs.get(position);
+	        	YoloEngine.currentPlayerInfoPosition = position;
+	        	//System.out.println(position+"!!!!!!!!!!!!!!!!!!");
 	    		YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
+	    		//skillsClick(view);
+	    		TextView txtViewStatCounter1 = (TextView) findViewById(R.id.stat1Counter);
+	    		TextView txtViewStatCounter2 = (TextView) findViewById(R.id.stat2Counter);
+	    		TextView txtViewStatCounter3 = (TextView) findViewById(R.id.stat3Counter);
+	    		TextView txtViewStatCounter4 = (TextView) findViewById(R.id.stat4Counter);
+	    		TextView txtViewCoinsCounter = (TextView) findViewById(R.id.coinsCounter);
+	    		TextView txtViewCoinsST1Counter = (TextView) findViewById(R.id.stat1coinsTxt);
+	    		TextView txtViewCoinsST2Counter = (TextView) findViewById(R.id.stat2coinsTxt);
+	    		TextView txtViewCoinsST3Counter = (TextView) findViewById(R.id.stat3coinsTxt);
+	    		TextView txtViewCoinsST4Counter = (TextView) findViewById(R.id.stat4coinsTxt);
+	    		
+	    		
+	    		Integer st1 = YoloEngine.currentPlayerInfo.getST1();
+	    		Integer st2 = YoloEngine.currentPlayerInfo.getST2();
+	    		Integer st3 = YoloEngine.currentPlayerInfo.getST3();
+	    		Integer st4 = YoloEngine.currentPlayerInfo.getST4();
+	    		Integer coins = YoloEngine.currentPlayerInfo.getCoins();
+	    		Integer st1Cost = YoloEngine.ST1Cost;
+	    		Integer st2Cost = YoloEngine.ST2Cost;
+	    		Integer st3Cost = YoloEngine.ST3Cost;
+	    		Integer st4Cost = YoloEngine.ST4Cost;
+	    		txtViewStatCounter1.setText(st1.toString());
+	    		txtViewStatCounter2.setText(st2.toString());
+	    		txtViewStatCounter3.setText(st3.toString());
+	    		txtViewStatCounter4.setText(st4.toString());
+	    		txtViewCoinsCounter.setText(coins.toString());
+	    		txtViewCoinsST1Counter.setText(st1Cost.toString());
+	    		txtViewCoinsST2Counter.setText(st2Cost.toString());
+	    		txtViewCoinsST3Counter.setText(st3Cost.toString());
+	    		txtViewCoinsST4Counter.setText(st4Cost.toString());
 	    		//txtViewUnitsCounter.setText(YoloEngine.currentPlayerInfo.getUnits()); 
 	        }
-	        public void onNothingSelected(AdapterView<?> arg0) { }
+	        public void onNothingSelected(AdapterView<?> arg0) {
+	        }
 	    });
 		
-		TextView txtViewStatCounter1 = (TextView) findViewById(R.id.stat1Counter);
-		TextView txtViewStatCounter2 = (TextView) findViewById(R.id.stat2Counter);
-		TextView txtViewStatCounter3 = (TextView) findViewById(R.id.stat3Counter);
-		TextView txtViewStatCounter4 = (TextView) findViewById(R.id.stat4Counter);
-		TextView txtViewCoinsCounter = (TextView) findViewById(R.id.coinsCounter);
 		
-		/*Integer st1 = YoloEngine.currentPlayerInfo.getST1();
-		Integer st2 = YoloEngine.currentPlayerInfo.getST2();
-		Integer st3 = YoloEngine.currentPlayerInfo.getST3();
-		Integer st4 = YoloEngine.currentPlayerInfo.getST4();
-		Integer coins = YoloEngine.currentPlayerInfo.getCoins();
-		txtViewStatCounter1.setText(st1.toString());
-		txtViewStatCounter2.setText(st2.toString());
-		txtViewStatCounter3.setText(st3.toString());
-		txtViewStatCounter4.setText(st4.toString());
-		txtViewCoinsCounter.setText(coins.toString());*/
-		
+		}
 	}
 //---------------------------------------------- przyciski player menu-------------------	
 	public void weaponClick(View v)
@@ -433,6 +460,10 @@ public class YoloMainMenu extends Activity
         	break;
         case 2:
         	setContentView(R.layout.skill2necromancer_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	skill2necromancerEqBtnClick(v);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	skill3necromancerEqBtnClick(v);
         	break;
 		}
 	}
@@ -446,6 +477,45 @@ public class YoloMainMenu extends Activity
 	public void deletePlayerClick(View v)
 	{
 		dbm.deletePlayer(YoloEngine.currentPlayerInfo.getID());
+		skillsClick(v);
+	}
+	//TODO do plusów trzeba dodaæ zmianê STcost
+	public void plusClick(View v)
+	{
+		switch(v.getId()) {
+        case R.id.buttonplus1:
+        	if(YoloEngine.ST1Cost<=YoloEngine.currentPlayerInfo.getCoins())
+        		{
+        		 YoloEngine.currentPlayerInfo.setCoins(YoloEngine.currentPlayerInfo.getCoins()-YoloEngine.ST1Cost);
+        		 YoloEngine.currentPlayerInfo.setST1(YoloEngine.currentPlayerInfo.getST1()+1);
+        		 dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+        		}
+          break;
+        case R.id.buttonplus2:
+        	if(YoloEngine.ST2Cost<=YoloEngine.currentPlayerInfo.getCoins())
+        		{
+        		 YoloEngine.currentPlayerInfo.setCoins(YoloEngine.currentPlayerInfo.getCoins()-YoloEngine.ST2Cost);
+        		 YoloEngine.currentPlayerInfo.setST2(YoloEngine.currentPlayerInfo.getST2()+1);
+        		 dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+        		}
+          break;
+        case R.id.buttonplus3:
+        	if(YoloEngine.ST3Cost<=YoloEngine.currentPlayerInfo.getCoins())
+        		{
+        		 YoloEngine.currentPlayerInfo.setCoins(YoloEngine.currentPlayerInfo.getCoins()-YoloEngine.ST3Cost);
+        		 YoloEngine.currentPlayerInfo.setST3(YoloEngine.currentPlayerInfo.getST3()+1);
+        		 dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+        		}
+          break;
+        case R.id.buttonplus4:
+        	if(YoloEngine.ST4Cost<=YoloEngine.currentPlayerInfo.getCoins())
+        		{
+        		 YoloEngine.currentPlayerInfo.setCoins(YoloEngine.currentPlayerInfo.getCoins()-YoloEngine.ST4Cost);
+        		 YoloEngine.currentPlayerInfo.setST4(YoloEngine.currentPlayerInfo.getST4()+1);
+        		 dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+        		}
+          break;
+		}
 		skillsClick(v);
 	}
 	
@@ -622,21 +692,33 @@ public class YoloMainMenu extends Activity
 		switch(currentSkill2Checked) {
         case 9:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerhand1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(9);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 6:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerarcher1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(6);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 8:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancermummy1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(8);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 7:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwarrior1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(7);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 5:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(5);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 4:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerpoison1);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(4);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
       }
 		YoloEngine.SkillSprite2=currentSkill2Checked;
@@ -646,21 +728,33 @@ public class YoloMainMenu extends Activity
 		switch(currentSkill2Checked) {
         case 9:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerhand1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(9);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 6:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerarcher1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(6);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 8:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancermummy1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(8);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 7:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwarrior1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(7);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 5:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(5);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
         case 4:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerpoison1);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(4);
+        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
           break;
       }
 		YoloEngine.SkillSprite3=currentSkill2Checked;

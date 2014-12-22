@@ -137,7 +137,37 @@
                         android:background="@drawable/skillnecromancerarcher1"
                         android:onClick="skills2necromancerBtnClick" />
                 </RelativeLayout>
-
+				
+                 <Button
+                    android:id="@+id/Skill2necromancer_skullBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillnecromancerlifesuck1"
+                    android:onClick="skills2necromancerBtnClick" />
+                
+                 <Button
+                    android:id="@+id/Skill2necromancer_resurrectionBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillnecromancerresurrection1"
+                    android:onClick="skills2necromancerBtnClick" />
+                 
+                 <Button
+                    android:id="@+id/Skill2necromancer_spikeBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillnecromancerspike1"
+                    android:onClick="skills2necromancerBtnClick" />
+                 
                 <Button
                     android:id="@+id/Skill2_5Btn"
                     android:layout_width="0dp"
