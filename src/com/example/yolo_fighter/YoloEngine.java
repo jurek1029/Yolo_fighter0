@@ -118,6 +118,11 @@ public class YoloEngine {
 	public static int SkillSprite2 = 6; //MiHu baza danych
 	public static int SkillSprite3 = 11; //MiHu baza danych
 	
+	public static int animationSlowdown2 = 10;
+	public static float animationDuration2 = 1f;
+	public static int animationSlowdown3 = 10;
+	public static float animationDuration3 = 1f;
+	
 	// ------------------------- Multislayer BEGIN -----------------------
 	
 	public static Room mRoom;

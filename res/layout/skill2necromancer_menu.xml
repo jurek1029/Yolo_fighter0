@@ -139,7 +139,7 @@
                 </RelativeLayout>
 				
                  <Button
-                    android:id="@+id/Skill2necromancer_skullBtn"
+                    android:id="@+id/Skill2necromancer_lifedrainBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -166,53 +166,56 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerspike1"
-                    android:onClick="skills2necromancerBtnClick" />
+                    android:onClick="skills2necromancerBtnClick" 
+                    />
                  
                 <Button
-                    android:id="@+id/Skill2_5Btn"
+                    android:id="@+id/Skill2necromancer_barrelBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="5"
-                    android:textColor="#ffffff" />
+                    android:text="Barrel"
+                    android:textColor="#ffffff" 
+                    android:onClick="skills2necromancerBtnClick" />
 
                 <Button
-                    android:id="@+id/Skill2_6Btn"
+                    android:id="@+id/Skill2necromancer_slowdownBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="6"
-                    android:textColor="#ffffff" />
+                    android:text="Slow down"
+                    android:textColor="#ffffff"
+                    android:onClick="skills2necromancerBtnClick"  />
 
                 <Button
-                    android:id="@+id/Skill2_7Btn"
+                    android:id="@+id/Skill2necromancer_towerBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillimageblack"
-                    android:text="7"
-                    android:textColor="#ffffff" />
+                    android:text="tower"
+                    android:textColor="#ffffff"
+                    android:onClick="skills2necromancerBtnClick"  />
 
                 <Button
-                    android:id="@+id/Skill2_8Btn"
+                    android:id="@+id/Skill2necromancer_wallBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillimageblack"
-                    android:text="8"
-                    android:textColor="#ffffff" />
+                    android:text="wall"
+                    android:textColor="#ffffff" 
+                    android:onClick="skills2necromancerBtnClick" />
             </LinearLayout>
 
         </HorizontalScrollView>
