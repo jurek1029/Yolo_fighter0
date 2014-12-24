@@ -1967,11 +1967,11 @@ public class YoloGameRenderer implements Renderer {
 		{
 			if(hitBoxs.elementAt(i).counter++ < hitBoxs.elementAt(i).duration)
 			{
-				if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius))
+				if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius)) //TODO switch(sprite)
 					YoloEngine.PlayerLive -= hitBoxs.elementAt(i).damage;
 				
 				for(int j = 0; j<skillPlayerVe.size();j++)
-					if(skillPlayerVe.elementAt(j).sprite >= 6 && skillPlayerVe.elementAt(j).sprite <= 12 && skillPlayerVe.elementAt(j).sprite !=10 )
+					if(skillPlayerVe.elementAt(j).sprite >= 6 && skillPlayerVe.elementAt(j).sprite <= 12 && skillPlayerVe.elementAt(j).sprite !=10 ) //TODO switch(sprite)
 						if(IsCollided(hitBoxs.elementAt(i),skillPlayerVe.elementAt(j)))
 						{
 							if(!hitBoxs.elementAt(i).hitAIs.contains(j))
