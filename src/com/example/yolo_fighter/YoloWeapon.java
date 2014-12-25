@@ -19,7 +19,7 @@ public class YoloWeapon {
 	public float damage;
 	public boolean isLeft,isMy;
 	public float bulletSpeed;
-	public int sprite;
+	public int sprite,count=0,couter=0;
 	public float scale = 1f;
 
 	private float vertices[] = {
@@ -59,6 +59,7 @@ public YoloWeapon(float bulletSpeed){
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 		 this.bulletSpeed = bulletSpeed;
+		 
 	}
 public YoloWeapon(){
 	

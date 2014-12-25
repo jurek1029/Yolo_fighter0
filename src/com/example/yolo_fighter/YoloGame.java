@@ -165,16 +165,18 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f,57f));
-					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f).getBytes());
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f,57f,100f));
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite1+"|"+0+"|"+.375f+"|"+.875f+"|"+5f+"|"+4f+"|"+0f+"|"+0f).getBytes());
 					break;
 				case 1:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,3f,3f,YoloEngine.animationDuration2));
-					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,0f));
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.animationSlowdown2+"|"+.125f+"|"+ .375f+"|"
+					+3f+"|"+3f+"|"+YoloEngine.animationDuration2+"|"+0f).getBytes());
 					break;
 				case 2:
-					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,0,0,20f,20f,YoloEngine.animationDuration3));		
-					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite3+"|"+0+"|"+.125f+"|"+ .375f+"|"+3f+"|"+3f).getBytes());
+					YoloGameRenderer.skillPlayerVe.add(new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,0f));		
+					YoloEngine.mMultislayer.sendMessageToAllreliable((x_skill+"|"+y_skill+"|"+YoloEngine.SkillSprite3+"|"+YoloEngine.animationSlowdown3+"|"+.125f+"|"+ .375f+"|"
+					+3f+"|"+3f+"|"+YoloEngine.animationDuration2+"|"+0f).getBytes());
 					break;
 				}
 				YoloEngine.isUsingSkill = false;			

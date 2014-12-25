@@ -53,16 +53,17 @@ public class YoloMultislayer {
 
 					YoloEngine.mMultislayer.positionDataReceived(playerIDd, Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]),
 							Integer.parseInt(MessString[3]));
-				} else if (MessString.length == 8)
+				} else if (MessString.length == 10)
 					YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Integer.parseInt(MessString[2]), Integer.parseInt(MessString[3]),
-							Float.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7]),Float.parseFloat(MessString[8])));
+							Float.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7]),Float.parseFloat(MessString[8]),Float.parseFloat(MessString[9])));
 				else if (MessString.length == 3) {
 					YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
 					YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;
 					YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
 				}
-				else if (MessString.length == 6) {
-					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]), Float.parseFloat(MessString[4]),Integer.parseInt(MessString[5])));//XXX Doda³em jeszcze jedn¹ zmienn¹
+				else if (MessString.length == 8) {
+					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]),
+							Float.parseFloat(MessString[4]),Float.parseFloat(MessString[5]),Float.parseFloat(MessString[6]),Float.parseFloat(MessString[7])));
 				}
 				else {
 					YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));

@@ -10,6 +10,7 @@ import android.view.Display;
 public class YoloEngine {
 
 	public static final int GAME_THREAD_FSP_SLEEP = (1000/60);
+	public static int GAME_SKIPED_FRAMES;
 	public static final int MENU_BUTTON_ALPAH = 0;
 	public static final int BACKGROUND = R.drawable.level_01_1;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
@@ -31,6 +32,10 @@ public class YoloEngine {
 	public static final int RESURECTION_SPRITE = R.drawable.resurection_sprite;
 	public static final int SPIKES_SPRITE = R.drawable.spikes_sprite;
 	public static final int SLOW_DOWN_SPRITE = R.drawable.slow_down_sprite;
+	public static final int HEAL_SPRITE = R.drawable.heal_sprite;
+	public static final int SHOCK_WAVE_SPRITE = R.drawable.shockwave_sprite;
+	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
+	public static final int FOG_SPRITE = R.drawable.fog_s;
 	
 
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
@@ -44,7 +49,9 @@ public class YoloEngine {
 	public static float LEVEL_Y = 1440;
 	public static float LEVEL_SIZE_X;
 	public static float LEVEL_SIZE_Y;
+	
 	//--------------------------------------------
+	public static int SKILL_ID = 0;
 	public static int SKILL1_COOLDOWN = 10;
 	public static int SKILL2_COOLDOWN = 100;
 	public static int SKILL3_COOLDOWN = 200;
@@ -107,6 +114,7 @@ public class YoloEngine {
 	public static float Player_vx = 0f;
 	public static float PlayerLive = 100;
 	public static boolean isPlayerPoisoned = false;
+	public static boolean isPlayerSlowDown = false;
 	
 	public static Display display;
 	public static int display_x; 
@@ -114,13 +122,13 @@ public class YoloEngine {
 	
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 4; //MiHu baza danych
-	public static int SkillSprite2 = 6; //MiHu baza danych
-	public static int SkillSprite3 = 11; //MiHu baza danych
+	public static int SkillSprite1 = 6; //MiHu baza danych
+	public static int SkillSprite2 = 19; //MiHu baza danych
+	public static int SkillSprite3 = 104; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 10;
 	public static float animationDuration2 = 1f;
-	public static int animationSlowdown3 = 10;
+	public static int animationSlowdown3 = 300;
 	public static float animationDuration3 = 1f;
 	
 	// ------------------------- Multislayer BEGIN -----------------------
