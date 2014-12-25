@@ -1625,7 +1625,7 @@ public class YoloGameRenderer implements Renderer {
 		}
 		nextBullet--;
 	}
-	private void playerFire(float bulletSpeed,int sprite,int count,float damage,boolean isleft)
+	private void playerFire(float bulletSpeed,int sprite,int count,float damage)
 	{
 		if(nextBullet == 0)
 		{
@@ -1639,7 +1639,7 @@ public class YoloGameRenderer implements Renderer {
 			if(!YoloEngine.isCrouch)	bullet.y = YoloEngine.Player_y + .5f; 
 			else bullet.y = YoloEngine.Player_y + .025f; 
 			bullet.size = 0.25f;
-			bullet.isLeft = isleft;
+			bullet.isLeft = YoloEngine.isPlayerLeft;
 			Weapontab.add(bullet);
 			
 			if(YoloEngine.MULTI_ACTIVE)
@@ -2045,7 +2045,7 @@ public class YoloGameRenderer implements Renderer {
 							}
 							else if(sprite==19)
 							{
-								playerFire(0.5f, 19, 8, skillPlayerVe.elementAt(i).damage, skillPlayerVe.elementAt(i).isLeft);
+								playerFire(0.5f, 19, 8, skillPlayerVe.elementAt(i).damage);
 								skillPlayerVe.remove(i);
 								continue;
 							}
@@ -2164,6 +2164,9 @@ public class YoloGameRenderer implements Renderer {
 						poisoned = 300;
 						YoloEngine.isPlayerPoisoned = true;
 						break;
+					case 18:
+						//TODO zamra¿anie
+						break;
 					case 101:
 						if(YoloEngine.PlayerLive<=0)
 							YoloEngine.PlayerLive = YoloEngine.PLAYER_LIVE_MAX/2;
@@ -2190,6 +2193,9 @@ public class YoloGameRenderer implements Renderer {
 								case 4:
 									skillPlayerVe.elementAt(j).poison_duration = 300;
 									skillPlayerVe.elementAt(j).isPoisoned =true;
+									break;
+								case 18:
+									//TODO zamra¿anie
 									break;
 								case 101://jak trzymac max ¿ycie dla skilli;
 									break;
