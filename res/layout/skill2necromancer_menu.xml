@@ -176,7 +176,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/skillimageblack"
+                    android:background="@drawable/skillnecromancerbarrel1"
                     android:text="Barrel"
                     android:textColor="#ffffff" 
                     android:onClick="skills2necromancerBtnClick" />
@@ -200,7 +200,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/skillimageblack"
+                    android:background="@drawable/skillnecromancertower1"
                     android:text="tower"
                     android:textColor="#ffffff"
                     android:onClick="skills2necromancerBtnClick"  />
@@ -212,7 +212,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/skillimageblack"
+                    android:background="@drawable/skillnecromancerwall1"
                     android:text="wall"
                     android:textColor="#ffffff" 
                     android:onClick="skills2necromancerBtnClick" />
@@ -226,20 +226,27 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/skill2necromancerdescription"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Tutaj będzie krótki opis broni/skilla," />
+                android:text="description" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/skill2necromancerlvlneeded"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="cena i level, który trzeba mieć, żeby móc kupić" />
+                android:text="lvl" />
+            <TextView
+                android:id="@+id/skill2necromancercost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="cost" />
 
             
        <LinearLayout 
