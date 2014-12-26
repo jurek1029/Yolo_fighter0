@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,9 +77,10 @@ public class YoloMainMenu extends Activity
 			
 			YoloEngine.mRoom = room;
 
-			YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.SkillSprite1+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.SkillSprite3).getBytes());
-			
-			// byte[] ff = "test".getBytes();
+			//YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.SkillSprite1+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.SkillSprite3).getBytes());
+            YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.serializeSpriteLoad(new int[] {YoloEngine.SkillSprite1,YoloEngine.SkillSprite2,YoloEngine.SkillSprite3}));
+
+
 		}
 
 		@Override
@@ -348,7 +350,7 @@ public class YoloMainMenu extends Activity
 	public void joinClick(View v)
 	{
 		
-		// Te dwie instrukcje warto wrzuciæ do jakiegoœ senwoengo eventu, ¿eby ci¹gle tego nie odœwie¿aæ XXX
+		// Te dwie instrukcje warto wrzuciï¿½ do jakiegoï¿½ senwoengo eventu, ï¿½eby ciï¿½gle tego nie odï¿½wieï¿½aï¿½ XXX
 						
 		
 		
@@ -479,7 +481,7 @@ public class YoloMainMenu extends Activity
 		dbm.deletePlayer(YoloEngine.currentPlayerInfo.getID());
 		skillsClick(v);
 	}
-	//TODO do plusów trzeba dodaæ zmianê STcost
+	//TODO do plusï¿½w trzeba dodaï¿½ zmianï¿½ STcost
 	public void plusClick(View v)
 	{
 		switch(v.getId()) {
@@ -970,7 +972,7 @@ public class YoloMainMenu extends Activity
 					Games.RealTimeMultiplayer.leave(YoloEngine.mHelper.getApiClient(), mRoomUpdateListener, YoloEngine.mRoom.getRoomId());
 
 			//YoloEngine.mHelper.signOut();
-			// mHelper.disconnect(); od³¹cza, nie wylogowuje
+			// mHelper.disconnect(); odï¿½ï¿½cza, nie wylogowuje
 		}
 		
 	}
@@ -1030,7 +1032,7 @@ public class YoloMainMenu extends Activity
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
 		
-		if(request == RC_SIGNIN) { // Wracamy z powrotem do gameHelpera, który otworzy³ okienko i chce wiedzieæ co siê sta³o
+		if(request == RC_SIGNIN) { // Wracamy z powrotem do gameHelpera, ktï¿½ry otworzyï¿½ okienko i chce wiedzieï¿½ co siï¿½ staï¿½o
 			YoloEngine.mHelper.onActivityResult(request, response, data);
 		}
 		

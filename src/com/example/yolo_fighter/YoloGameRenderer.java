@@ -13,7 +13,8 @@ class HitBox
 	int counter =0;
 	boolean isLeft;
 	Vector<Integer> hitAIs = new Vector<Integer>();
-	HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemiæ
+	//NSDAP HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemiï¿½
+	 HitBox(float x ,float y, float x_radius ,float y_radius, float damage, float duration, int sprite, boolean isLeft)
 	{
 		this.x =x;
 		this.y =y;
@@ -21,7 +22,8 @@ class HitBox
 		this.y_radius = y_radius;
 		this.damage = damage;
 		this.duration = duration;
-		this.isLeft = isLeft==1?true:false;
+		//NSDAP this.isLeft = isLeft==1?true:false;
+		this.isLeft = isLeft;
 		this.sprite = sprite;
 		
 	}
@@ -108,7 +110,7 @@ class Skill
 	
 	public void move ()
 	{
-//-------------------------------------------------------------------Szukanie najbli¿szego------------------------------		
+//-------------------------------------------------------------------Szukanie najbliï¿½szego------------------------------		
 		if(ret == 100)
 		{
 			float minLenght = 10000f,temp;
@@ -1506,7 +1508,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glMatrixMode(GL10.GL_PROJECTION);
 			gl.glLoadIdentity();
 			gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
-			XADD = ((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f;//taka sta³a
+			XADD = ((YoloEngine.Player_x-.5f)/YoloEngine.GAME_PROJECTION_X) - .5f;//taka staï¿½a
 			cameraPosX = -XADD;
 
 			gl.glTranslatef(cameraPosX,cameraPosY,0f);
@@ -1619,9 +1621,9 @@ public class YoloGameRenderer implements Renderer {
 			bullet.isLeft = YoloEngine.isPlayerLeft;
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
-			
-			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
+
+
+            YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
 		}
 		nextBullet--;
 	}
@@ -1747,7 +1749,7 @@ public class YoloGameRenderer implements Renderer {
 				
 				if(isMy)
 				{
-//-------------------------------------------------Tworzenie HitBoxów----------------------------------------------------------------------------
+//-------------------------------------------------Tworzenie HitBoxï¿½w----------------------------------------------------------------------------
 					Ve.elementAt(i).frameCounter=0;
 					switch (sprite)
 					{
@@ -1931,7 +1933,7 @@ public class YoloGameRenderer implements Renderer {
 						i--;continue;
 					}
 			}
-			else//Pozosta³e skille
+			else//Pozostaï¿½e skille
 			{		
 				if(skillPlayerVe.elementAt(i).x_texture==0 && skillPlayerVe.elementAt(i).y_texture==0)
 				{
@@ -1942,7 +1944,7 @@ public class YoloGameRenderer implements Renderer {
 						
 						for(int j =0;j<YoloEngine.mMultislayer.Opponents_x_last.length;j++)
 						{
-							if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			//TODO jeœli jest przeciwnikiem
+							if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			//TODO jeï¿½li jest przeciwnikiem
 								if(Math.abs(YoloEngine.mMultislayer.Opponents_y_last[j]-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
 								{
 									int slowD =0;																												
@@ -1981,14 +1983,14 @@ public class YoloGameRenderer implements Renderer {
 						
 						for(int j =0;j<YoloEngine.mMultislayer.Opponents_x_last.length;j++)
 						{
-							if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			//TODO jeœli nasz
+							if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			//TODO jeï¿½li nasz
 								if(Math.abs(YoloEngine.mMultislayer.Opponents_y_last[j]-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
 								{
 									Skill skill = new Skill(0,0,sprite-87,0,0.875f,0.375f,0,0,0,0);
 									skill.x = YoloEngine.mMultislayer.Opponents_x_last[j];
 									skill.y = YoloEngine.mMultislayer.Opponents_y_last[j];
 									skillPlayerVe.add(skill);
-									//TODO dodanie ¿ycia graczowi
+									//TODO dodanie ï¿½ycia graczowi
 								}
 						}
 						int k = skillPlayerVe.size();
@@ -2002,7 +2004,7 @@ public class YoloGameRenderer implements Renderer {
 									skill.x = skillPlayerVe.elementAt(j).x;
 									skill.y = skillPlayerVe.elementAt(j).y;
 									skillPlayerVe.add(skill);
-									skillPlayerVe.elementAt(j).life+=skillPlayerVe.elementAt(j).damage; // TODO sprawdziæ max ¿ycie
+									skillPlayerVe.elementAt(j).life+=skillPlayerVe.elementAt(j).damage; // TODO sprawdziï¿½ max ï¿½ycie
 								}
 						}
 						
@@ -2082,7 +2084,7 @@ public class YoloGameRenderer implements Renderer {
 					i--;continue;
 				}
 			}
-			else//Pozosta³e skille
+			else//Pozostaï¿½e skille
 			{	
 				if(skillOponentVe.elementAt(i).x_texture==0 && skillOponentVe.elementAt(i).y_texture==0) //XXX TODO WHAT???
 				{
@@ -2165,7 +2167,7 @@ public class YoloGameRenderer implements Renderer {
 						YoloEngine.isPlayerPoisoned = true;
 						break;
 					case 18:
-						//TODO zamra¿anie
+						//TODO zamraï¿½anie
 						break;
 					case 101:
 						if(YoloEngine.PlayerLive<=0)
@@ -2195,9 +2197,9 @@ public class YoloGameRenderer implements Renderer {
 									skillPlayerVe.elementAt(j).isPoisoned =true;
 									break;
 								case 18:
-									//TODO zamra¿anie
+									//TODO zamraï¿½anie
 									break;
-								case 101://jak trzymac max ¿ycie dla skilli;
+								case 101://jak trzymac max ï¿½ycie dla skilli;
 									break;
 								case 103:
 									skillPlayerVe.elementAt(j).slowDown_duration = 300;
@@ -2287,7 +2289,7 @@ public class YoloGameRenderer implements Renderer {
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
-//------------------------------------------INICJOWANIE OBIEKTÓW FIZYCZNYCH----------------------------------		
+//------------------------------------------INICJOWANIE OBIEKTï¿½W FIZYCZNYCH----------------------------------		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y; 
 		YoloEngine.GAME_PROJECTION_X = YoloEngine.GAME_PROJECTION_Y*15/9;
@@ -2322,9 +2324,9 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[3] = true;
 		
 		// Mulstislayer po otrzymaniu XXX
-		YoloEngine.sprite_load[YoloEngine.SkillSprite1<30?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale¿y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite2<30?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale¿y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite3<30?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale¿y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1<30?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2<30?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3<30?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zaleï¿½y od playera
 		
 		YoloEngine.mMultislayer.Opponents_x_last[0]=15f;
 		YoloEngine.mMultislayer.Opponents_y_last[0]=3f;
