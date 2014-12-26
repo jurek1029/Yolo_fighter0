@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import java.nio.ByteBuffer;
 import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -9,8 +10,8 @@ import android.opengl.GLSurfaceView.Renderer;
 
 class HitBox 
 {
-	float x,y,x_radius,y_radius,damage,duration,sprite;
-	int counter =0;
+	float x,y,x_radius,y_radius,damage,duration;
+	int counter =0, sprite;
 	boolean isLeft;
 	Vector<Integer> hitAIs = new Vector<Integer>();
 	//NSDAP HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemi�
@@ -27,6 +28,7 @@ class HitBox
 		this.sprite = sprite;
 		
 	}
+
 }
 
 class Skill 
@@ -910,7 +912,25 @@ class Skill
 			}	
 			break;
 		}
-	}	
+	}
+
+    public byte[] serializeSkill()
+    {
+        ByteBuffer bbf = ByteBuffer.allocate(50);
+        bbf.putChar('s');
+        bbf.putFloat(x);
+        bbf.putFloat(y);
+        bbf.putInt(sprite);
+        bbf.putInt(animation_slowdown);
+        bbf.putFloat(xEnd);
+        bbf.putFloat(yEnd);
+        bbf.putFloat(x_radius);
+        bbf.putFloat(y_radius);
+        bbf.putFloat(frameDuration);
+        bbf.putFloat(life);
+
+        return bbf.array();
+    }
 }
 
 public class YoloGameRenderer implements Renderer {
@@ -1211,8 +1231,7 @@ public class YoloGameRenderer implements Renderer {
 // ------------------------- Multislayer BEGIN -----------------------	
 
 			if (YoloEngine.MULTI_ACTIVE) {
-				
-				YoloEngine.mMultislayer.SendData(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);				
+                YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);
 				YoloEngine.opponentsNo = YoloEngine.mRoom.getParticipantIds().size()-1;		
 			}	
 			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
@@ -1622,8 +1641,8 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
 
-
-            YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
+            if(YoloEngine.MULTI_ACTIVE)
+                YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch);
 		}
 		nextBullet--;
 	}
@@ -1645,7 +1664,7 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			
 			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.Player_x+"|"+YoloEngine.Player_y+"|"+YoloEngine.isPlayerLeft+"|"+YoloEngine.isCrouch+"|"+"l").getBytes());
+				YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch, damage);
 		}
 		nextBullet--;
 	}
@@ -1686,7 +1705,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 		if(YoloEngine.MULTI_ACTIVE)
-			YoloEngine.mMultislayer.sendMessageToAllreliable((x+"|"+y+"|"+isLeft+"|"+false+"|"+"l").getBytes());
+            YoloEngine.mMultislayer.sendAIFire(x,y,isLeft);
 	}
 	
 	private boolean AIDraw(GL10 gl,int i,boolean isMy,int sprite)
@@ -1802,9 +1821,9 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==2)
 					if(Ve.elementAt(i).ret == YoloEngine.WARRIOR_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(Ve.elementAt(i).x,
 								Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).frameDuration,
-								(float)Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft?1f:0f}));
+								Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft);
 						Ve.elementAt(i).ret = YoloEngine.WARRIOR_NULL;
 					}
 			}
@@ -1813,9 +1832,9 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==2)
 					if(Ve.elementAt(i).ret == YoloEngine.HAND_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(Ve.elementAt(i).x,
 								Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).frameDuration,
-								(float)Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft?1f:0f}));
+								Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft);
 						Ve.elementAt(i).ret = YoloEngine.HAND_NULL;
 					}
 			}
@@ -1824,9 +1843,9 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==3||Ve.elementAt(i).frameCounter == 6)
 					if(Ve.elementAt(i).ret == YoloEngine.MUMMY_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(Ve.elementAt(i).x,
 								Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).frameDuration,
-								(float)Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft?1f:0f}));
+								Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft);
 						Ve.elementAt(i).ret = YoloEngine.MUMMY_NULL;
 					}
 			}
@@ -1834,9 +1853,9 @@ public class YoloGameRenderer implements Renderer {
 				if(Ve.elementAt(i).frameCounter==0)
 					if(Ve.elementAt(i).ret == YoloEngine.BARREL_ATTACK)
 					{
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{Ve.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(Ve.elementAt(i).x,
 								Ve.elementAt(i).y, Ve.elementAt(i).x_radius, Ve.elementAt(i).y_radius, Ve.elementAt(i).damage, Ve.elementAt(i).frameDuration,
-								(float)Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft?1f:0f}));
+								Ve.elementAt(i).sprite,Ve.elementAt(i).isLeft);
 					}
 //--------------------------------------------------------------------------------------------------------------------------------------------		
 		
@@ -1969,9 +1988,9 @@ public class YoloGameRenderer implements Renderer {
 								}
 						}
 						
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{skillPlayerVe.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(skillPlayerVe.elementAt(i).x,
 								skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).x_radius, skillPlayerVe.elementAt(i).y_radius, skillPlayerVe.elementAt(i).damage, 
-								skillPlayerVe.elementAt(i).frameDuration,(float)skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft?1f:0f}));
+								skillPlayerVe.elementAt(i).frameDuration,skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft);
 						
 						skillPlayerVe.remove(i--);
 						continue;
@@ -2008,9 +2027,9 @@ public class YoloGameRenderer implements Renderer {
 								}
 						}
 						
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{skillPlayerVe.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(skillPlayerVe.elementAt(i).x,
 								skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).x_radius, skillPlayerVe.elementAt(i).y_radius, skillPlayerVe.elementAt(i).damage, 
-								skillPlayerVe.elementAt(i).frameDuration,(float)skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft?1f:0f}));
+								skillPlayerVe.elementAt(i).frameDuration,skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft);
 						
 						skillPlayerVe.remove(i--);
 						continue;
@@ -2055,9 +2074,9 @@ public class YoloGameRenderer implements Renderer {
 							skillPlayerVe.elementAt(i).haveXY = true;
 						}
 						
-						YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.generateMessageFromFloats(new Float[]{skillPlayerVe.elementAt(i).x,
+						YoloEngine.mMultislayer.sendHitBox(skillPlayerVe.elementAt(i).x,
 								skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).x_radius, skillPlayerVe.elementAt(i).y_radius, skillPlayerVe.elementAt(i).damage, 
-								skillPlayerVe.elementAt(i).frameDuration,(float)skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft?1f:0f}));
+								skillPlayerVe.elementAt(i).frameDuration,skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft);
 					}
 				}
 				

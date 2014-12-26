@@ -41,9 +41,6 @@ public class YoloMultislayer {
 
 			@Override
 			public void onRealTimeMessageReceived(RealTimeMessage message) {
-			
-
-				//NEW CODE BEGIN
 				
 				ByteBuffer rcvData = ByteBuffer.wrap(message.getMessageData());
 				char messageCode = rcvData.getChar();
@@ -56,7 +53,7 @@ public class YoloMultislayer {
 							playerIDd = i;
 							break;
 						}
-                    //@TODO obsluga isLeft
+
 					YoloEngine.mMultislayer.positionDataReceived(playerIDd, rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, 0);
 					break;
 
@@ -69,6 +66,10 @@ public class YoloMultislayer {
 				case 'f':
 					YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false);
 					break;
+                case 'd':
+                    //@TODO damage (dodać na końcu rcvData.getFloat())
+                    YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false);
+                    break;
 
 				case 'h':
 					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false));
@@ -82,63 +83,12 @@ public class YoloMultislayer {
 				default:
 					System.out.println("message not recognized");
 					break;
-
 				}
-				
-				
-
-				// END
-/*
-				String[] MessString = new String(message.getMessageData()).split("\\|");
-				if (MessString.length == 4) {
-
-					int playerIDd = 0;
-					for (int i = 0; i < 4; i++)
-						if (YoloEngine.opponents[i].equals(message.getSenderParticipantId())) {
-							playerIDd = i;
-							break;
-						}
-
-					YoloEngine.mMultislayer.positionDataReceived(playerIDd, Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]),
-							Integer.parseInt(MessString[3]));
-				} else if (MessString.length == 10)
-					YoloGameRenderer.skillOponentVe.add(new Skill(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Integer.parseInt(MessString[2]), Integer.parseInt(MessString[3]),
-							Float.parseFloat(MessString[4]), Float.parseFloat(MessString[5]), Float.parseFloat(MessString[6]), Float.parseFloat(MessString[7]),Float.parseFloat(MessString[8]),Float.parseFloat(MessString[9])));
-				else if (MessString.length == 3) {
-					YoloEngine.sprite_load[Integer.parseInt(MessString[0])] = true;
-					YoloEngine.sprite_load[Integer.parseInt(MessString[1])] = true;
-					YoloEngine.sprite_load[Integer.parseInt(MessString[2])] = true;
-				}
-				else if (MessString.length == 8) {
-					YoloGameRenderer.hitBoxs.add(new HitBox(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Float.parseFloat(MessString[2]), Float.parseFloat(MessString[3]),
-							Float.parseFloat(MessString[4]),Float.parseFloat(MessString[5]),Float.parseFloat(MessString[6]),Float.parseFloat(MessString[7])));
-				}
-				else {
-					YoloGameRenderer.OpponentFire(Float.parseFloat(MessString[0]), Float.parseFloat(MessString[1]), Boolean.parseBoolean(MessString[2]), Boolean.parseBoolean(MessString[3]));
-				}
-				
-*/
-
 			}
 		};
 	}
 
-	/**
-	 * Wysyła dane o pozycji gracza, w odstępach YoloEngine.UPDATE_FREQ
-	 * 
-	 * @param x
-	 * @param y
-	 * @param isCrouch
-	 */
-	public void SendData(float x, float y, boolean isCrouch) {
-		if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
 
-			sentAt = System.currentTimeMillis();
-			
-			//sendMessageToAll((x + "|" + y + "|" + isCrouch + "|" + sentPackageId).toString().getBytes());
-            sendMessageToAll(serializePlayerPosition(x,y,isCrouch));
-		}
-	}
 
 
 	/**
@@ -207,6 +157,7 @@ public class YoloMultislayer {
 	 * @param data	Bytes array
 	 */
 	public void sendMessageToAll(byte[] data) {
+        /*
 		mMyId = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
 
 		mParticipants = YoloEngine.mRoom.getParticipants();	
@@ -221,37 +172,37 @@ public class YoloMultislayer {
 
 			}
 		}
-	}
-	
-	
-	public byte[] generateMessageFromFloats(Float values[]) {
-
-		String output = "";
-		for(float value : values)
-		{
-			output += "|"+value;
-		}
-				
-		return output.getBytes();
+		*/
+        Games.RealTimeMultiplayer.sendUnreliableMessageToOthers(YoloEngine.mHelper.getApiClient(), data,YoloEngine.mRoom.getRoomId().toString());
 	}
 
-
-	public byte[] serializePlayerPosition(float x, float y, boolean isCrouched) {
+    /**
+     * Wysyła dane o pozycji gracza, w odstępach YoloEngine.UPDATE_FREQ
+     *
+     * @param x
+     * @param y
+     * @param isCrouched
+     */
+	public void sendPlayerPosition(float x, float y, boolean isCrouched) {
 		// int 4, float 4, char 2 --> bajty
-		ByteBuffer bbf = ByteBuffer.allocate(12);
-		bbf.putChar('p');
-		bbf.putFloat(x);
-		bbf.putFloat(y);
-		if(isCrouched)
-			bbf.put((byte)1);
-		else
-			bbf.put((byte)0);
-		
-		return bbf.array();
+        if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
+            sentAt = System.currentTimeMillis();
+
+            ByteBuffer bbf = ByteBuffer.allocate(12);
+            bbf.putChar('p');
+            bbf.putFloat(x);
+            bbf.putFloat(y);
+            if(isCrouched)
+                bbf.put((byte)1);
+            else
+                bbf.put((byte)0);
+
+            sendMessageToAll(bbf.array());
+        }
 		
 	}
 	
-	public byte[] serializeSpriteLoad(int[] loadArray)
+	public byte[] sendSpriteLoad(int[] loadArray)
 	{
 		ByteBuffer bbf = ByteBuffer.allocate(2 + 4 * loadArray.length);
 		bbf.putChar('l');
@@ -261,9 +212,9 @@ public class YoloMultislayer {
 		return bbf.array();
 	}
 	
-	public byte[] serializeOpponentFire(float x, float y, boolean isLeft, boolean isCrouch)
+	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch)
 	{
-		ByteBuffer bbf = ByteBuffer.allocate(11);
+		ByteBuffer bbf = ByteBuffer.allocate(20);
 		bbf.putChar('f');
 		bbf.putFloat(x);
 		bbf.putFloat(y);
@@ -275,47 +226,65 @@ public class YoloMultislayer {
 			bbf.put((byte)1);
 		else
 			bbf.put((byte)0);
-		
-		return bbf.array();
-	}
-	
-	public byte[] serializeHitBox(float x, float y, float x_radius, float y_radius, float damage, float duration, int sprite, boolean isLeft)
-	{
-		ByteBuffer bbf = ByteBuffer.allocate(26); //NSDAP policzy�
-		bbf.putChar('h');
-		bbf.putFloat(x);
-		bbf.putFloat(y);
-		bbf.putFloat(x_radius);
-		bbf.putFloat(y_radius);
-		bbf.putFloat(damage);
-		bbf.putFloat(duration);
-		bbf.putInt(sprite);
-		if(isLeft)
-			bbf.put((byte)1);
-		else
-			bbf.put((byte)0);
-		
-		return bbf.array();
+
+        sendMessageToAll(bbf.array());
 	}
 
-	public byte[] serializeSkill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius,float frameDuration, float life)
+    public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, float damage)
+    {
+        // z damage
+        ByteBuffer bbf = ByteBuffer.allocate(25);
+        bbf.putChar('d');
+        bbf.putFloat(x);
+        bbf.putFloat(y);
+        if(isLeft)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        if(isCrouch)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        bbf.putFloat(damage);
+
+        sendMessageToAll(bbf.array());
+    }
+
+    public void sendAIFire(float x, float y, boolean isLeft)
+    {
+        ByteBuffer bbf = ByteBuffer.allocate(20);
+        bbf.putChar('f');
+        bbf.putFloat(x);
+        bbf.putFloat(y);
+        if(isLeft)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        sendMessageToAll(bbf.array());
+    }
+
+
+    public void sendHitBox(float x, float y, float x_radius, float y_radius, float damage, float duration, int sprite, boolean isLeft)
+    {
+        ByteBuffer bbf = ByteBuffer.allocate(40);
+        bbf.putChar('h');
+        bbf.putFloat(x);
+        bbf.putFloat(y);
+        bbf.putFloat(x_radius);
+        bbf.putFloat(y_radius);
+        bbf.putFloat(damage);
+        bbf.putFloat(duration);
+        bbf.putInt(sprite);
+        if(isLeft)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+
+        sendMessageToAllreliable(bbf.array());
+    }
 	
-	{
-		ByteBuffer bbf = ByteBuffer.allocate(40);
-		bbf.putChar('s');
-		bbf.putFloat(x);
-		bbf.putFloat(y);
-		bbf.putInt(sprite);
-		bbf.putInt(animation_slowdown);
-		bbf.putFloat(xEnd);
-		bbf.putFloat(yEnd);
-		bbf.putFloat(x_radius);
-		bbf.putFloat(y_radius);
-		bbf.putFloat(frameDuration);
-		bbf.putFloat(life);
-		
-		return bbf.array();
-	}
+
+
 
 
 

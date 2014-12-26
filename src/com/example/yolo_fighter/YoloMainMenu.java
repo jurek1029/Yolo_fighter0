@@ -1,6 +1,5 @@
 package com.example.yolo_fighter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +9,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -78,7 +76,7 @@ public class YoloMainMenu extends Activity
 			YoloEngine.mRoom = room;
 
 			//YoloEngine.mMultislayer.sendMessageToAllreliable((YoloEngine.SkillSprite1+"|"+YoloEngine.SkillSprite2+"|"+YoloEngine.SkillSprite3).getBytes());
-            YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.serializeSpriteLoad(new int[] {YoloEngine.SkillSprite1,YoloEngine.SkillSprite2,YoloEngine.SkillSprite3}));
+            YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3}));
 
 
 		}
