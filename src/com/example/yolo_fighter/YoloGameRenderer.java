@@ -1232,9 +1232,8 @@ public class YoloGameRenderer implements Renderer {
 
 			if (YoloEngine.MULTI_ACTIVE) {
                 YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isCrouch);
-				YoloEngine.opponentsNo = YoloEngine.mRoom.getParticipantIds().size()-1;		
 			}	
-			for(int i = 0; i < YoloEngine.opponentsNo; i++) { 
+			for(int i = 0; i < YoloEngine.opponents.size(); i++) {
 				
 				if(YoloEngine.changesMade[i] < YoloEngine.MULTI_STEPS) {
 					if(YoloEngine.changesMade[i] == 0)
@@ -1282,7 +1281,7 @@ public class YoloGameRenderer implements Renderer {
 			
 // ------------------------- Multislayer BEGIN -----------------------
 			
-			for(int i = 0; i < YoloEngine.opponentsNo; i++) 
+			for(int i = 0; i < YoloEngine.opponents.size(); i++)
 				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i],YoloEngine.Opponent_isCrouched[i], 3);
 		
 // ------------------------- Multislayer END -------------------------
