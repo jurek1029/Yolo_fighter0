@@ -59,8 +59,9 @@ class Skill
 	boolean isLeft = false,onGround = false ,haveXY = false;
 	boolean isUsed=false;
 	boolean isPoisoned = false,isSlowDown = false;
+    boolean team; //może tu od razu = YoloEngine.playerTeam? a dla odbieranych będą przydzielane odpowiednie w konstruktorze?
 	
-	public Skill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius,float frameDuration,float life) 
+	public Skill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius,float frameDuration,float life)
 	{
 		
 		this.x = x;
@@ -86,6 +87,35 @@ class Skill
 			
 		}
 	}
+
+    // Nowy konstruktor z teamem, bo ten bez teamu jest już gdzieś używany i nie chcę namieszać.
+    public Skill(float x, float y,int sprite , int animation_slowdown,float xEnd,float yEnd,float x_radius,float y_radius,float frameDuration,float life, boolean team)
+    {
+
+        this.x = x;
+        this.y = y;
+        this.sprite = sprite;
+        this.animation_slowdown = animation_slowdown;
+        this.xEnd = xEnd;
+        this.yEnd = yEnd;
+        this.x_radius = x_radius;
+        this.y_radius = y_radius;
+        this.frameDuration = frameDuration;
+        this.life = life;
+        this.team = team;
+
+        id = giveID();
+
+        if(sprite == 6)
+        {
+            if(YoloEngine.isPlayerLeft)
+                x = (YoloEngine.Player_x - 2f)/4f;
+            else
+                x = (YoloEngine.Player_x + 2f)/4f;
+            y = (YoloEngine.Player_y)/4f;
+
+        }
+    }
 
 	public void setX()
 	{
@@ -920,8 +950,8 @@ class Skill
 	private int giveID()
 	{
 		int ID = YoloEngine.IDTracer + YoloEngine.playerID;
-		YoloEngine.IDTracer+=4;//JBC 4 odpowiada ilo�ci graczy 
-		//XXX Info o zwi�kszeniu ID;
+		YoloEngine.IDTracer+=4;//JBC 4 odpowiada ilo�ci graczy 
+		//XXX Info o zwi�kszeniu ID;
 		return ID;
 	}
 
@@ -939,6 +969,10 @@ class Skill
         bbf.putFloat(y_radius);
         bbf.putFloat(frameDuration);
         bbf.putFloat(life);
+        if(team)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
 
         return bbf.array();
     }
