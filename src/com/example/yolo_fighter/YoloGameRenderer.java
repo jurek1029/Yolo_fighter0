@@ -870,15 +870,14 @@ class Skill
 			life -= damage_buffor;
 			damage_buffor = 0f;
 			
-			if(ret != YoloEngine.WALL_NEW && ret != YoloEngine.WALL_STAND)
+			if(ret ==100)
 			{
 				x_texture = xStart = 0f;
 				y_texture = yStart = yEnd = 0f;
 				xEnd = 0.875f;
 				ret = YoloEngine.WALL_NEW;
 			}
-			
-			if(ret == YoloEngine.WALL_STAND)
+			if(ret != YoloEngine.WALL_NEW)
 			if(life>4*life/5)
 			{
 				x_texture = xStart = xEnd = 0.875f;
@@ -1812,9 +1811,9 @@ public class YoloGameRenderer implements Renderer {
 						}
 						break;
 					case 12:
-						Ve.elementAt(i).ret = YoloEngine.WALL_STAND;
 						Ve.elementAt(i).x_texture = Ve.elementAt(i).xEnd;
 						Ve.elementAt(i).y_texture = Ve.elementAt(i).yEnd;
+						Ve.elementAt(i).ret = YoloEngine.WALL_STAND;
 						break;
 					}
 				}
@@ -2180,8 +2179,82 @@ public class YoloGameRenderer implements Renderer {
 	{
 		for(int i = 0;i<hitBoxs.size();i++)
 		{
-		
-			if(hitBoxs.elementAt(i).counter++ < hitBoxs.elementAt(i).duration)
+			if(hitBoxs.elementAt(i).counter == 0)
+			{
+				int sprite = hitBoxs.elementAt(i).sprite;
+				if(sprite == 100||sprite == 101||sprite == 103)
+				{
+					skillPlayerVe.elementAt(i).x = YoloEngine.Player_x;
+					skillPlayerVe.elementAt(i).y = YoloEngine.Player_y;
+					
+					for(int j =0;j<YoloEngine.mMultislayer.Opponents_x_last.length;j++)
+					{
+						if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)		
+							if(Math.abs(YoloEngine.mMultislayer.Opponents_y_last[j]-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
+							{
+								int slowD =0;																												
+								if(sprite==101)slowD = 2;
+								Skill skill = new Skill(0,0,sprite-87,slowD,0.875f,0.375f,0,0,0,0);
+								skill.x = YoloEngine.mMultislayer.Opponents_x_last[j];
+								skill.y = YoloEngine.mMultislayer.Opponents_y_last[j];
+								skillPlayerVe.add(skill);
+							}
+					}
+					for(int j=0;j<skillOponentVe.size();j++)
+					{
+						if(Math.abs(skillOponentVe.elementAt(j).x-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			
+							if(Math.abs(skillOponentVe.elementAt(j).y-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
+							{
+								int slowD =0;																												
+								if(sprite==101)slowD = 2;
+								Skill skill = new Skill(0,0,sprite-87,slowD,0.875f,0.375f,0,0,0,0);
+								skill.x = skillPlayerVe.elementAt(j).x;
+								skill.y = skillPlayerVe.elementAt(j).y;
+								skillPlayerVe.add(skill);
+							}
+					}
+					
+					YoloEngine.mMultislayer.sendHitBox(skillPlayerVe.elementAt(i).x,
+							skillPlayerVe.elementAt(i).y, skillPlayerVe.elementAt(i).x_radius, skillPlayerVe.elementAt(i).y_radius, skillPlayerVe.elementAt(i).damage, 
+							skillPlayerVe.elementAt(i).frameDuration,skillPlayerVe.elementAt(i).sprite,skillPlayerVe.elementAt(i).isLeft);
+					
+					skillPlayerVe.remove(i--);
+					continue;
+				}
+				else if(sprite == 104)
+				{
+					skillPlayerVe.elementAt(i).x = YoloEngine.Player_x;
+					skillPlayerVe.elementAt(i).y = YoloEngine.Player_y;
+					
+					for(int j =0;j<YoloEngine.mMultislayer.Opponents_x_last.length;j++)
+					{
+						if(Math.abs(YoloEngine.mMultislayer.Opponents_x_last[j]-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			
+							if(Math.abs(YoloEngine.mMultislayer.Opponents_y_last[j]-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
+							{
+								Skill skill = new Skill(0,0,sprite-87,0,0.875f,0.375f,0,0,0,0);
+								skill.x = YoloEngine.mMultislayer.Opponents_x_last[j];
+								skill.y = YoloEngine.mMultislayer.Opponents_y_last[j];
+								skillPlayerVe.add(skill);
+								//TODO dodanie �ycia graczowi
+							}
+					}
+					int k = skillPlayerVe.size();
+					for(int j=0;j<k;j++)
+					{	
+						if(j!=i)
+						if(Math.abs(skillPlayerVe.elementAt(j).x-skillPlayerVe.elementAt(i).x)<skillPlayerVe.elementAt(i).x_radius)			
+							if(Math.abs(skillPlayerVe.elementAt(j).y-skillPlayerVe.elementAt(i).y)<skillPlayerVe.elementAt(i).y_radius)
+							{
+								Skill skill = new Skill(0,0,sprite-87,0,0.875f,0.375f,0,0,0,0);
+								skill.x = skillPlayerVe.elementAt(j).x;
+								skill.y = skillPlayerVe.elementAt(j).y;
+								skillPlayerVe.add(skill);
+								skillPlayerVe.elementAt(j).life+=skillPlayerVe.elementAt(j).damage; // TODO sprawdzi� max �ycie
+							}
+					}
+				}
+			}
+			else if(hitBoxs.elementAt(i).counter++ < hitBoxs.elementAt(i).duration)
 			{
 				if(IsCollided(hitBoxs.elementAt(i).x, hitBoxs.elementAt(i).y, hitBoxs.elementAt(i).x_radius, hitBoxs.elementAt(i).y_radius))
 				{
@@ -2353,12 +2426,16 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[YoloEngine.SkillSprite2<30?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
 		YoloEngine.sprite_load[YoloEngine.SkillSprite3<30?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
 		
+		//test
 		YoloEngine.mMultislayer.Opponents_x_last[0]=15f;
 		YoloEngine.mMultislayer.Opponents_y_last[0]=3f;
 		YoloEngine.mMultislayer.Opponents_x_last[1]=10f;
 		YoloEngine.mMultislayer.Opponents_y_last[1]=5f;
 		YoloEngine.mMultislayer.Opponents_x_last[2]=20f;
 		YoloEngine.mMultislayer.Opponents_y_last[2]=3f;
+		//test
+		
+		//
 		
 		
 //-----------------------------------------------------------------------------------------------------------		
