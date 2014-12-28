@@ -12,10 +12,10 @@ class HitBox
 {
 	float x,y,x_radius,y_radius,damage,duration;
 	int counter =0, sprite;
-	boolean isLeft;
+	boolean isLeft, team; //teamA -> 0, teamB ->1
 	Vector<Integer> hitAIs = new Vector<Integer>();
 	//NSDAP HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemi�
-	 HitBox(float x ,float y, float x_radius ,float y_radius, float damage, float duration, int sprite, boolean isLeft)
+	 HitBox(float x ,float y, float x_radius ,float y_radius, float damage, float duration, int sprite, boolean isLeft, boolean team)
 	{
 		this.x =x;
 		this.y =y;
@@ -23,9 +23,9 @@ class HitBox
 		this.y_radius = y_radius;
 		this.damage = damage;
 		this.duration = duration;
-		//NSDAP this.isLeft = isLeft==1?true:false;
 		this.isLeft = isLeft;
 		this.sprite = sprite;
+        this.team = team;
 		
 	}
 

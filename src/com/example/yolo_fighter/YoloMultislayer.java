@@ -83,7 +83,7 @@ public class YoloMultislayer {
                     break;
 
 				case 'h':
-					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false));
+					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false));
 					break;
 
 				case 's':
@@ -263,6 +263,10 @@ public class YoloMultislayer {
         bbf.putFloat(duration);
         bbf.putInt(sprite);
         if(isLeft)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        if(YoloEngine.playerTeam)
             bbf.put((byte)1);
         else
             bbf.put((byte)0);
