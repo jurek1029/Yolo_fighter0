@@ -950,8 +950,9 @@ class Skill
 	private int giveID()
 	{
 		int ID = YoloEngine.IDTracer + YoloEngine.playerID;
-		YoloEngine.IDTracer+=4;//JBC 4 odpowiada ilo�ci graczy 
+		YoloEngine.IDTracer+=YoloEngine.opponents.size()+1; //JBC YoloEngine.opponents.size()+1 odpowiada ilo�ci graczy
 		//XXX Info o zwi�kszeniu ID;
+        YoloEngine.mMultislayer.sendTracerIncrease(YoloEngine.IDTracer);
 		return ID;
 	}
 
