@@ -104,8 +104,10 @@ public class YoloMultislayer {
 
 				case 's':
 					YoloGameRenderer.skillOponentVe.add(new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData
-							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat()));
+							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false));
 					break;
+                case 'i':
+                    YoloEngine.IDTracer = rcvData.getInt();
 
 				default:
 					System.out.println("message not recognized");
@@ -300,8 +302,13 @@ public class YoloMultislayer {
     }
 
 
+    public void sendTracerIncrease(int idTracer) {
+        ByteBuffer bbf = ByteBuffer.allocate(40);
+        bbf.putChar('i');
+        bbf.putInt(idTracer);
 
+        sendMessageToAllreliable(bbf.array());
 
-
+    }
 }
 
