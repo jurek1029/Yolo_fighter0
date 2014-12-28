@@ -1,11 +1,16 @@
 package com.example.yolo_fighter;
 
 import com.example.yolo_fighter.R.drawable;
+import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.example.games.basegameutils.GameHelper;
 
 import android.content.Context;
 import android.view.Display;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class YoloEngine {
 
@@ -137,20 +142,28 @@ public class YoloEngine {
 	public static GameHelper mHelper;
 	public static int changesMade[] = new int[4];
 
+    public static String playerParticipantID;
+
+    public static List<String> teamA = new ArrayList<String>(2);
+    public static List<String> teamB = new ArrayList<String>(2);
+
 	public static boolean MULTI_ACTIVE = false;
+
+    public static ArrayList<Participant> participants; // lista graczy, posortowana, ale może zawierać też nieaktywnych
 
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
 
-	public static int opponentsNo = 0;
-	public static String opponents[] = new String[4];
+    public static ArrayList<String> opponents = new ArrayList<String>(2);
 	
-	public static float Opponents_x[] = new float[4];
-	public static float Opponents_y[] = new float[4];
+	public static float Opponents_x[] = { 1000f, 1000f, 1000f, 1000f };
+	public static float Opponents_y[] = { 1000f, 1000f, 1000f, 1000f };
 
 	public static boolean Opponent_isCrouched[] = new boolean[4];
-	
-	public static boolean[] sprite_load = new boolean[30];
+
+    public static int PlayerHealth[] = new int[4];
+
+    public static boolean[] sprite_load = new boolean[30];
 	
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	
@@ -170,7 +183,10 @@ public class YoloEngine {
 	public static int ST3Cost = 0;
 	public static int ST4Cost = 0;
 	
-	
+
+
+
 	public static Context context;
-	
+
+
 }

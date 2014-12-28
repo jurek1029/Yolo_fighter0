@@ -1,11 +1,19 @@
 package com.example.yolo_fighter;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
+
+/* TODO
+ - Health (YoloEngine.PlayerHealth)
+  - jak grę opuści teamAssigner to raczej nie ma problemu, bo nowych graczy nie będzie
+ */
+
 
 public class YoloMultislayer {
 
@@ -18,8 +26,7 @@ public class YoloMultislayer {
 
 	public float Opponents_x_change[] = new float[4];
 	public float Opponents_y_change[] = new float[4];
-	
-	String mMyId;
+
 	ArrayList<Participant> mParticipants;
 	
 	private long sentAt;
@@ -32,10 +39,6 @@ public class YoloMultislayer {
 	
 	public YoloMultislayer() {
 
-		YoloEngine.opponents[0] = "";
-		YoloEngine.opponents[1] = "";
-		YoloEngine.opponents[2] = "";
-		YoloEngine.opponents[3] = "";
 
 		messageReceiver = new RealTimeMessageReceivedListener() {
 
@@ -44,17 +47,18 @@ public class YoloMultislayer {
 				
 				ByteBuffer rcvData = ByteBuffer.wrap(message.getMessageData());
 				char messageCode = rcvData.getChar();
-				
+
 				switch (messageCode) {
 				case 'p':
-					int playerIDd = 0;
-					for (int i = 0; i < 4; i++)
-						if (YoloEngine.opponents[i].equals(message.getSenderParticipantId())) {
+                    /*
+                    int playerIDd = 0;
+					for (int i = 0; i < YoloEngine.opponents.size(); i++)
+						if (YoloEngine.opponents.get(i).equals(message.getSenderParticipantId())) {
 							playerIDd = i;
 							break;
 						}
-
-					YoloEngine.mMultislayer.positionDataReceived(playerIDd, rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, 0);
+*/
+					YoloEngine.mMultislayer.positionDataReceived(Collections.binarySearch(YoloEngine.opponents,message.getSenderParticipantId()), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, 0);
 					break;
 
 				case 'l':
@@ -62,6 +66,18 @@ public class YoloMultislayer {
 					YoloEngine.sprite_load[rcvData.getInt()] = true;
 					YoloEngine.sprite_load[rcvData.getInt()] = true;
 					break;
+
+                case 't':
+                    String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
+                    for (int i = 0; i < pattern.length(); i++) {
+                        if(pattern.charAt(i) == '1') {
+                            YoloEngine.teamA.add(YoloEngine.participants.get(i).getParticipantId());
+                        }
+                        else {
+                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId());
+                        }
+                    }
+                    break;
 
 				case 'f':
 			//		YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false);
@@ -131,13 +147,12 @@ public class YoloMultislayer {
 	{
 		if(!YoloEngine.MULTI_ACTIVE)
 			return;
-		
-		mMyId = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
 
-		mParticipants = YoloEngine.mRoom.getParticipants();	
+		mParticipants = YoloEngine.mRoom.getParticipants();
+
 		
 		for (Participant p : mParticipants) {
-			if (p.getParticipantId().equals(mMyId))
+			if (p.getParticipantId().equals(YoloEngine.playerParticipantID))
 				continue;
 			if (p.getStatus() != Participant.STATUS_JOINED)
 				continue;
@@ -282,8 +297,15 @@ public class YoloMultislayer {
 
         sendMessageToAllreliable(bbf.array());
     }
-	
 
+
+    public void sendTeamAssignment(int assignPattern) {
+        ByteBuffer bbf = ByteBuffer.allocate(40);
+        bbf.putChar('t');
+        bbf.putInt(assignPattern);
+
+        sendMessageToAllreliable(bbf.array());
+    }
 
 
 
