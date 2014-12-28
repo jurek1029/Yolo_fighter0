@@ -1648,8 +1648,6 @@ public class YoloGameRenderer implements Renderer {
 	}
 	private void playerFire(float bulletSpeed,int sprite,int count,float damage)
 	{
-		if(nextBullet == 0)
-		{
 			bullet = new YoloWeapon(bulletSpeed);
 			bullet.damage = 1f;
 			bullet.isMy = true; 
@@ -1665,20 +1663,19 @@ public class YoloGameRenderer implements Renderer {
 			
 			if(YoloEngine.MULTI_ACTIVE)
 				YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch, damage);
-		}
-		nextBullet--;
 	}
 	
 	
-	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch)
+	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage)
 	{
 		bullet = new YoloWeapon(0.2f);
-		bullet.damage = 10f;
+		bullet.damage = damage;
+		bullet.count = count;
 		bullet.isMy = false; 
 		bullet.x = x;
 		if(!isCrouch)	bullet.y = y + .5f; 
 		else bullet.y = y + .025f; 
-		bullet.sprite = 0;
+		bullet.sprite = sprite;
 		bullet.x_texture = 0f;
 		bullet.y_texture = 0f;
 		bullet.size = 0.25f;
