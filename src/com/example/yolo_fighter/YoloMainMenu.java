@@ -79,6 +79,11 @@ public class YoloMainMenu extends Activity
                 debugLog("Room created");
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
+
+                YoloEngine.teamA.clear();
+                YoloEngine.teamB.clear();
+                YoloEngine.opponents.clear();
+                if(YoloEngine.participants != null) YoloEngine.participants.clear();
             }
             else
                debugLog("Error "+statusCode);
@@ -110,15 +115,17 @@ public class YoloMainMenu extends Activity
                 }
 
                 if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
-                    String teamAssignPattern = "1"; // y-dokąd {0-teamA, 1-teamB)
+                    String teamAssignPattern = "1";
 
-                    // Team assignment
+                    // Team assignment dokąd {0-teamA, 1-teamB}
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID);
+                        YoloEngine.playerTeam = false;
                         teamAssignPattern += "0";
                     }
                     else {
                         YoloEngine.teamB.add(YoloEngine.playerParticipantID);
+                        YoloEngine.playerTeam = true;
                         teamAssignPattern += "1";
                     }
 
@@ -155,17 +162,21 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onLeftRoom(int arg0, String arg1) {
-			debugLog("Room left");
+            debugLog("Room left");
 		}
 
 		@Override
 		public void onJoinedRoom(int statusCode, Room room) {
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("Room joined");
-
+/*
+                YoloEngine.teamA.clear();
+                YoloEngine.teamB.clear();
+                YoloEngine.opponents.clear();
+                YoloEngine.participants.clear();
+*/
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
-                YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3})); //@TODO czy to tutaj nie za wcześnie?
             }
 		}
 	};

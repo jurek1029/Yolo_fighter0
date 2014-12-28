@@ -966,6 +966,10 @@ public class YoloGameRenderer implements Renderer {
 	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x;
 	private float LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0;
 	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y;
+    private final float SMALL_LIVE_BAR_SIZE_X_0 = YoloEngine.SMALL_LIVE_BAR_SIZE/YoloEngine.display_x;
+    private float SMALL_LIVE_BAR_SIZE_X_1 = SMALL_LIVE_BAR_SIZE_X_0;
+    private final float SMALL_LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y; //@TODO BARTEK
+
 	
 	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
 			,jumpBtnX = 1-125f/YoloEngine.display_x // 1/(MOVE_BALL_SIZE_X*2)-1.5f
@@ -1281,8 +1285,13 @@ public class YoloGameRenderer implements Renderer {
 			
 // ------------------------- Multislayer BEGIN -----------------------
 			
-			for(int i = 0; i < YoloEngine.opponents.size(); i++)
-				drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i],YoloEngine.Opponent_isCrouched[i], 3);
+			for(int i = 0; i < YoloEngine.opponents.size(); i++) {
+                drawOponnent(gl, YoloEngine.Opponents_x[i], YoloEngine.Opponents_y[i], YoloEngine.Opponent_isCrouched[i], 3);
+                if(YoloEngine.teamA.contains(YoloEngine.opponents.get(i)))
+                    drawSt(gl, YoloEngine.Opponents_x[i]/YoloEngine.GAME_PROJECTION_X, YoloEngine.Opponents_y[i]/YoloEngine.GAME_PROJECTION_Y + (float)YoloEngine.display_y/5000, (YoloEngine.opponentsLife[i]/YoloEngine.PLAYER_LIVE_MAX)*SMALL_LIVE_BAR_SIZE_X_1,SMALL_LIVE_BAR_SIZE_Y, 0, .25f,false);
+                else
+                    drawSt(gl, YoloEngine.Opponents_x[i]/YoloEngine.GAME_PROJECTION_X, YoloEngine.Opponents_y[i]/YoloEngine.GAME_PROJECTION_Y + (float)YoloEngine.display_y/5000, (YoloEngine.opponentsLife[i]/YoloEngine.PLAYER_LIVE_MAX)*SMALL_LIVE_BAR_SIZE_X_1,SMALL_LIVE_BAR_SIZE_Y, .125f, .25f,false);
+            }
 		
 // ------------------------- Multislayer END -------------------------
 
@@ -1498,7 +1507,7 @@ public class YoloGameRenderer implements Renderer {
 			drawSt(gl, MOVE_POS_X1 + XADD, MOVE_POS_Y1 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
 			drawSt(gl, joyBallX1 + XADD, joyBallY1 + YADD, MOVE_SIZE_X1/2, MOVE_SIZE_Y1/2, .375f, .125f,true);
 		}
-		
+
 		LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0*YoloEngine.PlayerLive/YoloEngine.PLAYER_LIVE_MAX; // dobrze;
 		drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_0, LIVE_BAR_SIZE_Y, .75f, .125f,true);
 		drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_1,LIVE_BAR_SIZE_Y, .875f, .125f,false);
@@ -1641,7 +1650,7 @@ public class YoloGameRenderer implements Renderer {
 			nextBullet = YoloEngine.PLAYER_BULLET_FREQUENCY;
 
             if(YoloEngine.MULTI_ACTIVE)
-                YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch);
+                YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch, bullet.sprite, bullet.count, bullet.damage, YoloEngine.playerTeam);
 		}
 		nextBullet--;
 	}
@@ -1661,16 +1670,17 @@ public class YoloGameRenderer implements Renderer {
 			Weapontab.add(bullet);
 			
 			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch, damage);
+				YoloEngine.mMultislayer.sendOpponentFire(YoloEngine.Player_x, YoloEngine.Player_y, YoloEngine.isPlayerLeft, YoloEngine.isCrouch, sprite, count, damage, YoloEngine.playerTeam);
 	}
 	
 	
-	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage)
+	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team)
 	{
 		bullet = new YoloWeapon(0.2f);
 		bullet.damage = damage;
 		bullet.count = count;
-		bullet.isMy = false; 
+		if((team == YoloEngine.playerTeam)) bullet.isMy = true;
+        else bullet.isMy = false;
 		bullet.x = x;
 		if(!isCrouch)	bullet.y = y + .5f; 
 		else bullet.y = y + .025f; 
@@ -1683,7 +1693,7 @@ public class YoloGameRenderer implements Renderer {
 	}
 	
 	
-	private void AIFire(float x,float y,boolean isLeft,int sprite,float x_texture,float y_texture)
+	public static void AIFire(float x,float y,boolean isLeft,int sprite,float x_texture,float y_texture)
 	{
 		bullet = new YoloWeapon(0.2f);
 		bullet.damage = 10f;
@@ -1701,7 +1711,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 		if(YoloEngine.MULTI_ACTIVE)
-            YoloEngine.mMultislayer.sendAIFire(x,y,isLeft);
+            YoloEngine.mMultislayer.sendAIFire(x, y, isLeft, x_texture, y_texture);
 	}
 	
 	private boolean AIDraw(GL10 gl,int i,boolean isMy,int sprite)

@@ -1,7 +1,6 @@
 package com.example.yolo_fighter;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import com.google.android.gms.games.Games;
@@ -50,15 +49,7 @@ public class YoloMultislayer {
 
 				switch (messageCode) {
 				case 'p':
-                    /*
-                    int playerIDd = 0;
-					for (int i = 0; i < YoloEngine.opponents.size(); i++)
-						if (YoloEngine.opponents.get(i).equals(message.getSenderParticipantId())) {
-							playerIDd = i;
-							break;
-						}
-*/
-					YoloEngine.mMultislayer.positionDataReceived(Collections.binarySearch(YoloEngine.opponents,message.getSenderParticipantId()), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, 0);
+					YoloEngine.mMultislayer.positionDataReceived(Collections.binarySearch(YoloEngine.opponents,message.getSenderParticipantId()), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0);
 					break;
 
 				case 'l':
@@ -71,20 +62,24 @@ public class YoloMultislayer {
                     String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
                     for (int i = 0; i < pattern.length(); i++) {
                         if(pattern.charAt(i) == '1') {
-                            YoloEngine.teamA.add(YoloEngine.participants.get(i).getParticipantId());
+                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId()); //@TODO a kiedy kogoś pominęliśmy, to id już nie jest po kolei!!!
                         }
                         else {
-                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId());
+                            YoloEngine.teamA.add(YoloEngine.participants.get(i).getParticipantId());
                         }
                     }
+                    if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false;
+                    if(YoloEngine.teamB.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = true;
+
+                    System.out.println("team data received"+YoloEngine.playerTeam);
                     break;
 
 				case 'f':
-			//		YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false);
+					YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.get() == 1 ? true : false);
 					break;
-                case 'd':
-                    //@TODO damage (dodać na końcu rcvData.getFloat())
-             //       YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false);
+
+                case 'g':
+                    YoloGameRenderer.AIFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat());
                     break;
 
 				case 'h':
@@ -116,7 +111,7 @@ public class YoloMultislayer {
 	 * @param isCrouch
 	 * @param packageId
 	 */
-	public void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, int packageId) {
+	public void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId) {
 /*
 		if (packageId < receivedPackageId) {
 			System.out.println("old data");
@@ -133,6 +128,8 @@ public class YoloMultislayer {
 
 		Opponents_x_last[playerID] = x;
 		Opponents_y_last[playerID] = y;
+
+        YoloEngine.opponentsLife[playerID] = life;
 
 	}
 	
@@ -172,22 +169,6 @@ public class YoloMultislayer {
 	 * @param data	Bytes array
 	 */
 	public void sendMessageToAll(byte[] data) {
-        /*
-		mMyId = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
-
-		mParticipants = YoloEngine.mRoom.getParticipants();	
-		
-		for (Participant p : mParticipants) {
-			if (p.getParticipantId().equals(mMyId))
-				continue;
-			if (p.getStatus() != Participant.STATUS_JOINED)
-				continue;
-			else {
-				Games.RealTimeMultiplayer.sendUnreliableMessage(YoloEngine.mHelper.getApiClient(), data, YoloEngine.mRoom.getRoomId().toString(), p.getParticipantId());
-
-			}
-		}
-		*/
         Games.RealTimeMultiplayer.sendUnreliableMessageToOthers(YoloEngine.mHelper.getApiClient(), data,YoloEngine.mRoom.getRoomId().toString());
 	}
 
@@ -203,7 +184,7 @@ public class YoloMultislayer {
         if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
             sentAt = System.currentTimeMillis();
 
-            ByteBuffer bbf = ByteBuffer.allocate(12);
+            ByteBuffer bbf = ByteBuffer.allocate(16);
             bbf.putChar('p');
             bbf.putFloat(x);
             bbf.putFloat(y);
@@ -211,6 +192,7 @@ public class YoloMultislayer {
                 bbf.put((byte)1);
             else
                 bbf.put((byte)0);
+            bbf.putFloat(YoloEngine.PlayerLive);
 
             sendMessageToAll(bbf.array());
         }
@@ -227,9 +209,9 @@ public class YoloMultislayer {
 		return bbf.array();
 	}
 	
-	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch)
+	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, int sprite,int count, float damage, boolean team)
 	{
-		ByteBuffer bbf = ByteBuffer.allocate(20);
+		ByteBuffer bbf = ByteBuffer.allocate(30);
 		bbf.putChar('f');
 		bbf.putFloat(x);
 		bbf.putFloat(y);
@@ -241,40 +223,30 @@ public class YoloMultislayer {
 			bbf.put((byte)1);
 		else
 			bbf.put((byte)0);
+        bbf.putInt(sprite);
+        bbf.putInt(count);
+        bbf.putFloat(damage);
+        if(team)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
 
         sendMessageToAll(bbf.array());
 	}
 
-    public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, float damage)
-    {
-        // z damage
-        ByteBuffer bbf = ByteBuffer.allocate(25);
-        bbf.putChar('d');
-        bbf.putFloat(x);
-        bbf.putFloat(y);
-        if(isLeft)
-            bbf.put((byte)1);
-        else
-            bbf.put((byte)0);
-        if(isCrouch)
-            bbf.put((byte)1);
-        else
-            bbf.put((byte)0);
-        bbf.putFloat(damage);
-
-        sendMessageToAll(bbf.array());
-    }
-
-    public void sendAIFire(float x, float y, boolean isLeft)
+    public void sendAIFire(float x, float y, boolean isLeft, float x_texture, float y_texture)
     {
         ByteBuffer bbf = ByteBuffer.allocate(20);
-        bbf.putChar('f');
+        bbf.putChar('g');
         bbf.putFloat(x);
         bbf.putFloat(y);
         if(isLeft)
             bbf.put((byte)1);
         else
             bbf.put((byte)0);
+        bbf.putFloat(x_texture);
+        bbf.putFloat(y_texture);
+
         sendMessageToAll(bbf.array());
     }
 
