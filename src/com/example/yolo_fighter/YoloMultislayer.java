@@ -60,18 +60,34 @@ public class YoloMultislayer {
 
                 case 't':
                     String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
+/*
+                    //Działa ale nie uwzględnia nieaktywnych graczy
                     for (int i = 0; i < pattern.length(); i++) {
                         if(pattern.charAt(i) == '1') {
-                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId()); //@TODO a kiedy kogoś pominęliśmy, to id już nie jest po kolei!!!
+                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId());
                         }
                         else {
                             YoloEngine.teamA.add(YoloEngine.participants.get(i).getParticipantId());
                         }
                     }
-                    if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false;
-                    if(YoloEngine.teamB.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = true;
+*/
+                    int i = 0;
+                    for(Participant p : YoloEngine.participants) {
+                        if(p.getStatus() == Participant.STATUS_JOINED) {
+                            if(pattern.charAt(i) == '1') {
+                                YoloEngine.teamB.add(p.getParticipantId());
+                            }
+                            else {
+                                YoloEngine.teamA.add(p.getParticipantId());
+                            }
+                            i++;
+                        }
+                        if(i > pattern.length()) System.out.println("ERROR in assigning teams");
+                    }
 
-                    System.out.println("team data received"+YoloEngine.playerTeam);
+                    if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false;
+                    else YoloEngine.playerTeam = true;
+
                     break;
 
 				case 'f':

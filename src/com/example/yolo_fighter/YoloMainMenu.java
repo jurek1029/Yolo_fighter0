@@ -84,6 +84,9 @@ public class YoloMainMenu extends Activity
                 YoloEngine.teamB.clear();
                 YoloEngine.opponents.clear();
                 if(YoloEngine.participants != null) YoloEngine.participants.clear();
+
+                // @TODO temporarry
+                YoloEngine.teamA.add(YoloEngine.playerParticipantID);
             }
             else
                debugLog("Error "+statusCode);
@@ -93,6 +96,8 @@ public class YoloMainMenu extends Activity
 		public void onRoomConnected(int statusCode, Room room) {
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("All participants connected");
+
+                YoloEngine.teamA.clear(); //@TODO temporarry
 
                 YoloEngine.MULTI_ACTIVE = true;
 
@@ -118,6 +123,8 @@ public class YoloMainMenu extends Activity
                     String teamAssignPattern = "1";
 
                     // Team assignment dokąd {0-teamA, 1-teamB}
+
+                    // Przydzielamy nam
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID);
                         YoloEngine.playerTeam = false;
@@ -129,7 +136,8 @@ public class YoloMainMenu extends Activity
                         teamAssignPattern += "1";
                     }
 
-                    for (Participant p : YoloEngine.participants) { //
+                    // Przydzielamy reszcie graczy
+                    for (Participant p : YoloEngine.participants) {
                         if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu
                             if (YoloEngine.teamA.size() > YoloEngine.teamB.size()) {
                                 YoloEngine.teamB.add(p.getParticipantId());
@@ -163,18 +171,23 @@ public class YoloMainMenu extends Activity
 		@Override
 		public void onLeftRoom(int arg0, String arg1) {
             debugLog("Room left");
+
+            YoloEngine.teamA.clear();
+            YoloEngine.teamB.clear();
+            YoloEngine.opponents.clear();
+            if(YoloEngine.participants != null) YoloEngine.participants.clear();
 		}
 
 		@Override
 		public void onJoinedRoom(int statusCode, Room room) {
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("Room joined");
-/*
+
                 YoloEngine.teamA.clear();
                 YoloEngine.teamB.clear();
                 YoloEngine.opponents.clear();
-                YoloEngine.participants.clear();
-*/
+                if(YoloEngine.participants != null) YoloEngine.participants.clear();
+
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
             }
@@ -195,10 +208,6 @@ public class YoloMainMenu extends Activity
 
             YoloEngine.mRoom = room;
             System.out.println("onPeersConnected, ");
-
-
-
-
         }
 
         @Override
