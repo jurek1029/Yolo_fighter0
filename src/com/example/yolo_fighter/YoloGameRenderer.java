@@ -6,6 +6,8 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.google.android.gms.internal.gi;
+
 import android.opengl.GLSurfaceView.Renderer;
 
 class HitBox 
@@ -14,7 +16,7 @@ class HitBox
 	int counter =0, sprite;
 	boolean isLeft, team; //teamA -> 0, teamB ->1
 	Vector<Integer> hitAIs = new Vector<Integer>();
-	//NSDAP HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemiï¿½
+	//KGB HitBox(float x ,float y, float x_radius ,float y_radius ,float damage,float duration,float sprite,float isLeft)//TODO x,y skill zmiemiï¿½
 	 HitBox(float x ,float y, float x_radius ,float y_radius, float damage, float duration, int sprite, boolean isLeft, boolean team)
 	{
 		this.x =x;
@@ -71,6 +73,8 @@ class Skill
 		this.y_radius = y_radius;
 		this.frameDuration = frameDuration;
 		this.life = life;
+		
+		id = giveID();
 
 		if(sprite == 6)
 		{	
@@ -911,6 +915,14 @@ class Skill
 			}	
 			break;
 		}
+	}
+	
+	private int giveID()
+	{
+		int ID = YoloEngine.IDTracer + YoloEngine.playerID;
+		YoloEngine.IDTracer+=4;//JBC 4 odpowiada iloœci graczy 
+		//XXX Info o zwiêkszeniu ID;
+		return ID;
 	}
 
     public byte[] serializeSkill()
@@ -2332,6 +2344,21 @@ public class YoloGameRenderer implements Renderer {
 		}	
 		return i;
 	}
+	public static void givePlayerID()
+	{
+		try
+		{
+			if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID))
+				YoloEngine.playerID = YoloEngine.teamA.indexOf(YoloEngine.playerParticipantID);
+			else
+				YoloEngine.playerID = YoloEngine.teamB.indexOf(YoloEngine.playerParticipantID)+YoloEngine.teamB.size();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	private void drawOponnent(GL10 gl, float x, float y, boolean isCrouch, int sheetNo)
@@ -2391,6 +2418,15 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x; 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y; 
 		YoloEngine.GAME_PROJECTION_X = YoloEngine.GAME_PROJECTION_Y*15/9;
+		givePlayerID();
+		try
+		{
+			System.out.println(YoloEngine.teamA.get(0));
+		}
+		catch(Exception e)
+		{
+			
+		}
 		
 		
 		ObjectTab[0] = new YoloObject(0,1330,2400,110);

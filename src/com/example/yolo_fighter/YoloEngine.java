@@ -144,6 +144,8 @@ public class YoloEngine {
 	public static int changesMade[] = new int[4];
 
     public static String playerParticipantID;
+    public static int playerID=100;
+    public static int IDTracer =0;
     public static boolean playerTeam; // 0 - teamA, 1 - teamB
 
     public static List<String> teamA = new ArrayList<String>(2);
