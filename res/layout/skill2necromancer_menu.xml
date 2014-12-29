@@ -81,16 +81,6 @@
                     android:onClick="skills2necromancerBtnClick" />
 
                 <Button
-                    android:id="@+id/Skill2necromancer_thunderBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/skillnecromancerthunder1"
-                    android:onClick="skills2necromancerBtnClick" />
-
-                <Button
                     android:id="@+id/Skill2necromancer_handBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -177,8 +167,6 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerbarrel1"
-                    android:text="Barrel"
-                    android:textColor="#ffffff" 
                     android:onClick="skills2necromancerBtnClick" />
 
                 <Button
@@ -188,9 +176,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/skillimageblack"
-                    android:text="Slow down"
-                    android:textColor="#ffffff"
+                    android:background="@drawable/skillnecromancerslowdown1"
                     android:onClick="skills2necromancerBtnClick"  />
 
                 <Button
@@ -201,8 +187,6 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancertower1"
-                    android:text="tower"
-                    android:textColor="#ffffff"
                     android:onClick="skills2necromancerBtnClick"  />
 
                 <Button
@@ -213,8 +197,6 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerwall1"
-                    android:text="wall"
-                    android:textColor="#ffffff" 
                     android:onClick="skills2necromancerBtnClick" />
             </LinearLayout>
 

@@ -64,95 +64,62 @@
             android:layout_width="400dp"
             android:layout_height="match_parent"
             android:orientation="horizontal" >
-    		
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/Skill2_1Btn"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Skill2angel_icicleBtn"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="1"
-                    android:textColor="#ffffff" />
-
-                <Button
-                    android:id="@+id/Skill2_2Btn"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillangelicicle1"
+                    android:onClick="skills2angelBtnClick" />
+                
+				<Button
+                    android:id="@+id/Skill2angel_thunderBtn"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="2"
-                    android:textColor="#ffffff" />
-
-                <Button
-                    android:id="@+id/Skill2_3Btn"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillnecromancerthunder1"
+                    android:onClick="skills2angelBtnClick" />
+				
+				<Button
+                    android:id="@+id/Skill2angel_smokeBtn"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="3"
-                    android:textColor="#ffffff" />
-
-                <Button
-                    android:id="@+id/Skill2_4Btn"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillangelsmoke1"
+                    android:onClick="skills2angelBtnClick" />
+                
+				<Button
+                    android:id="@+id/Skill2angel_healBtn"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="4"
-                    android:textColor="#ffffff" />
-
-                <Button
-                    android:id="@+id/Skill2_5Btn"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/skillangelheal1"
+                    android:onClick="skills2angelBtnClick" />
+				
+				<Button
+                    android:id="@+id/Skill2angel_trapBtn"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="5"
-                    android:textColor="#ffffff" />
-
-                <Button
-                    android:id="@+id/Skill2_6Btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:onClick="skills2BtnClick"
-                    android:text="6"
-                    android:textColor="#ffffff" />
-                <Button
-                    android:id="@+id/Skill2_7Btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:text="7"
-                    android:textColor="#ffffff" />
-                <Button
-                    android:id="@+id/Skill2_8Btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/skillimageblack"
-                    android:text="8"
-                    android:textColor="#ffffff" />
+                    android:layout_weight="1"
+                    android:background="@drawable/skillangelcloud1"
+                    android:onClick="skills2angelBtnClick" />
+                
             </LinearLayout>
 
         </HorizontalScrollView>
@@ -163,20 +130,27 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/skill2angeldescription"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Tutaj będzie krótki opis broni/skilla," />
+                android:text="description" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/skill2angellvlneeded"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="cena i level, który trzeba mieć, żeby móc kupić" />
+                android:text="lvl" />
+            <TextView
+                android:id="@+id/skill2angelcost"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="cost" />
 
             
        <LinearLayout 
@@ -191,13 +165,12 @@
                android:orientation="vertical" >
 
                  <Button
-                android:id="@+id/currentSkill2"
+                android:id="@+id/currentSkillAngel2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/skillimageblack"
-                android:text="1"
-                android:textColor="#ffffff" />
+                android:background="@drawable/emptyslot"
+             />
 
             <Button
                 android:id="@+id/Skill2EqBtn"
@@ -205,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="BUY/EQUIP"
-                android:onClick="skill2EqBtnClick" />
+                android:onClick="skill2angelEqBtnClick" />
 
            </LinearLayout>
            
@@ -216,13 +189,12 @@
                android:orientation="vertical" >
 
                <Button
-                android:id="@+id/currentSkill3"
+                android:id="@+id/currentSkillAngel3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/skillimageblack"
-                android:text="1"
-                android:textColor="#ffffff" />
+                android:background="@drawable/emptyslot"
+               />
 
             <Button
                 android:id="@+id/Skill3EqBtn"
@@ -230,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="BUY/EQUIP"
-                android:onClick="skill3EqBtnClick" />
+                android:onClick="skill3angelEqBtnClick" />
 
            </LinearLayout>
 
