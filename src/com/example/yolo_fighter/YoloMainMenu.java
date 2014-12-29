@@ -79,6 +79,14 @@ public class YoloMainMenu extends Activity
                 debugLog("Room created");
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
+
+                YoloEngine.teamA.clear();
+                YoloEngine.teamB.clear();
+                YoloEngine.opponents.clear();
+                if(YoloEngine.participants != null) YoloEngine.participants.clear();
+
+                // @TODO temporarry
+                YoloEngine.teamA.add(YoloEngine.playerParticipantID);
             }
             else
                debugLog("Error "+statusCode);
@@ -88,6 +96,8 @@ public class YoloMainMenu extends Activity
 		public void onRoomConnected(int statusCode, Room room) {
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("All participants connected");
+
+                YoloEngine.teamA.clear(); //@TODO temporarry
 
                 YoloEngine.MULTI_ACTIVE = true;
 
@@ -110,19 +120,24 @@ public class YoloMainMenu extends Activity
                 }
 
                 if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
-                    String teamAssignPattern = "1"; // y-dokąd {0-teamA, 1-teamB)
+                    String teamAssignPattern = "1";
 
-                    // Team assignment
+                    // Team assignment dokąd {0-teamA, 1-teamB}
+
+                    // Przydzielamy nam
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID);
+                        YoloEngine.playerTeam = false;
                         teamAssignPattern += "0";
                     }
                     else {
                         YoloEngine.teamB.add(YoloEngine.playerParticipantID);
+                        YoloEngine.playerTeam = true;
                         teamAssignPattern += "1";
                     }
 
-                    for (Participant p : YoloEngine.participants) { //
+                    // Przydzielamy reszcie graczy
+                    for (Participant p : YoloEngine.participants) {
                         if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu
                             if (YoloEngine.teamA.size() > YoloEngine.teamB.size()) {
                                 YoloEngine.teamB.add(p.getParticipantId());
@@ -155,7 +170,12 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onLeftRoom(int arg0, String arg1) {
-			debugLog("Room left");
+            debugLog("Room left");
+
+            YoloEngine.teamA.clear();
+            YoloEngine.teamB.clear();
+            YoloEngine.opponents.clear();
+            if(YoloEngine.participants != null) YoloEngine.participants.clear();
 		}
 
 		@Override
@@ -163,9 +183,13 @@ public class YoloMainMenu extends Activity
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("Room joined");
 
+                YoloEngine.teamA.clear();
+                YoloEngine.teamB.clear();
+                YoloEngine.opponents.clear();
+                if(YoloEngine.participants != null) YoloEngine.participants.clear();
+
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
-                YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3})); //@TODO czy to tutaj nie za wcześnie?
             }
 		}
 	};
@@ -184,10 +208,6 @@ public class YoloMainMenu extends Activity
 
             YoloEngine.mRoom = room;
             System.out.println("onPeersConnected, ");
-
-
-
-
         }
 
         @Override

@@ -1,5 +1,8 @@
 package com.example.yolo_fighter;
 
+
+    //@TODO używanie getterów i setterów okazuje się być ~2x wolniejsze niż bezpośrednie odwołania --> http://blog.leocad.io/why-you-shouldnt-use-getters-and-setters-on-android/
+
 public class YoloPlayerInfo {
 	private int ID;
 	private String name;

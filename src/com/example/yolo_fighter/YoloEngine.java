@@ -50,6 +50,7 @@ public class YoloEngine {
 	public static float MOVE_Y = 50;
 	public static float BUTTON_JUMP_SIZE = 100;
 	public static float LIVE_BAR_SIZE = 350;
+    public static float SMALL_LIVE_BAR_SIZE = 100; //@TODO Bartek
 	public static float LEVEL_X = 2400;
 	public static float LEVEL_Y = 1440;
 	public static float LEVEL_SIZE_X;
@@ -143,13 +144,17 @@ public class YoloEngine {
 	public static int changesMade[] = new int[4];
 
     public static String playerParticipantID;
+    public static int playerID;
+    public static int IDTracer =0;
+    public static boolean playerTeam; // 0 - teamA, 1 - teamB
 
     public static List<String> teamA = new ArrayList<String>(2);
     public static List<String> teamB = new ArrayList<String>(2);
 
+
 	public static boolean MULTI_ACTIVE = false;
 
-    public static ArrayList<Participant> participants; // lista graczy, posortowana, ale może zawierać też nieaktywnych
+    public static ArrayList<Participant> participants = null; // lista graczy, posortowana, ale może zawierać też nieaktywnych
 
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
@@ -161,7 +166,7 @@ public class YoloEngine {
 
 	public static boolean Opponent_isCrouched[] = new boolean[4];
 
-    public static int PlayerHealth[] = new int[4];
+    public static float opponentsLife[] = new float[4];
 
     public static boolean[] sprite_load = new boolean[30];
 	
