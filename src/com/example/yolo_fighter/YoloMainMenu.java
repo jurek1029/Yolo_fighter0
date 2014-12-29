@@ -430,11 +430,16 @@ public class YoloMainMenu extends Activity
 		// Te dwie instrukcje warto wrzuci� do jakiego� senwoengo eventu, �eby ci�gle tego nie od�wie�a� XXX
 						
 		
-		
-		
+		plInfoList=dbm.getAll();
+		YoloEngine.whichLayout = 1;
+		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
+		else{
+		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ();
+		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
 		YoloMainMenu.this.startActivity(game);
 		YoloEngine.context = getApplicationContext();
+		}
 	}
 	
 	public void skillsClick(View v)
@@ -533,6 +538,10 @@ public class YoloMainMenu extends Activity
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	skill2angelEqBtnClick(v);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	skill3angelEqBtnClick(v);
           break;
         case 1:
         	setContentView(R.layout.skill2devil_menu);
@@ -749,12 +758,6 @@ public class YoloMainMenu extends Activity
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
-	        case R.id.Skill2necromancer_thunderBtn:
-	        	currentSkill2Checked = 5;
-	        	description.setText("thunder");
-	        	lvl.setText("10lvl");
-	        	cost.setText("400");
-	          break;
 	        case R.id.Skill2necromancer_archerBtn:
 	        	currentSkill2Checked = 6;
 	        	description.setText("archer");
@@ -798,13 +801,13 @@ public class YoloMainMenu extends Activity
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_lifedrainBtn:
-	        	currentSkill2Checked = 13;
+	        	currentSkill2Checked = 100;
 	        	description.setText("life drain");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_resurrectionBtn:
-	        	currentSkill2Checked = 14;
+	        	currentSkill2Checked = 101;
 	        	description.setText("resurrection");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -816,7 +819,7 @@ public class YoloMainMenu extends Activity
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_slowdownBtn:
-	        	currentSkill2Checked = 16;
+	        	currentSkill2Checked = 103;
 	        	description.setText("slowdown");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -891,14 +894,14 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown2 = 10;
         	YoloEngine.animationDuration2 = 0f;
           break;
-        case 13:
+        case 100:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerlifesuck1);
         	YoloEngine.currentPlayerInfo.setSK2EQ(13);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 0f;
           break;
-        case 14:
+        case 101:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
         	YoloEngine.currentPlayerInfo.setSK2EQ(14);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
@@ -912,8 +915,8 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 20f;
           break;
-        case 16:
-        	currentSkill.setBackgroundResource(R.drawable.skillimageblack);
+        case 103:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerslowdown1);
         	YoloEngine.currentPlayerInfo.setSK2EQ(16);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown2 = 0;
@@ -968,34 +971,34 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationDuration3 = 2f;
           break;
         case 10:
-        	currentSkill.setBackgroundResource(R.drawable.skillimageblack);
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerbarrel1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(10);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 5;
         	YoloEngine.animationDuration3 = 10f;
           break;
         case 11:
-        	currentSkill.setBackgroundResource(R.drawable.skillimageblack);
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancertower1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(11);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 10;
         	YoloEngine.animationDuration3 = 0f;
         	break;
         case 12:
-        	currentSkill.setBackgroundResource(R.drawable.skillimageblack);
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwall1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(12);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 10;
         	YoloEngine.animationDuration3 = 0f;
           break;
-        case 13:
+        case 100:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerlifesuck1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(13);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 0f;
           break;
-        case 14:
+        case 101:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(14);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
@@ -1009,8 +1012,8 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 20f;
           break;
-        case 16:
-        	currentSkill.setBackgroundResource(R.drawable.skillimageblack);
+        case 103:
+        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerslowdown1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(16);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 0;
@@ -1019,6 +1022,133 @@ public class YoloMainMenu extends Activity
       }
 		YoloEngine.SkillSprite3=currentSkill2Checked;
 	}
+	
+	
+public void skills2angelBtnClick(View v) {
+		
+		TextView description = (TextView) findViewById(R.id.skill2angeldescription);
+		TextView lvl = (TextView) findViewById(R.id.skill2angellvlneeded);
+		TextView cost = (TextView) findViewById(R.id.skill2angelcost);
+		
+	      switch(v.getId()) {
+	        case R.id.Skill2angel_icicleBtn:
+	        	currentSkill2Checked = 19;
+	        	description.setText("icicle");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
+	        case R.id.Skill2angel_thunderBtn:
+	        	currentSkill2Checked = 5;
+	        	description.setText("thunder");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
+	        case R.id.Skill2angel_healBtn:
+	        	currentSkill2Checked = 104;
+	        	description.setText("heal");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
+	        case R.id.Skill2angel_smokeBtn:
+	        	currentSkill2Checked = 20;
+	        	description.setText("smoke");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
+	        case R.id.Skill2angel_trapBtn:
+	        	currentSkill2Checked = 18;
+	        	description.setText("trap");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break; 
+	        
+	      }
+	}
+	
+public void skill2angelEqBtnClick(View v){
+	Button currentSkill = (Button) findViewById(R.id.currentSkillAngel2);
+	switch(currentSkill2Checked) {
+	case 18:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelcloud1);
+    	YoloEngine.currentPlayerInfo.setSK2EQ(18);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 19:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelicicle1);
+    	YoloEngine.currentPlayerInfo.setSK2EQ(19);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 5:
+    	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+    	YoloEngine.currentPlayerInfo.setSK2EQ(5);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 20:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelsmoke1);
+    	YoloEngine.currentPlayerInfo.setSK2EQ(20);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 301;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 104:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
+    	YoloEngine.currentPlayerInfo.setSK2EQ(104);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+  }
+	YoloEngine.SkillSprite2=currentSkill2Checked;
+}
+
+
+public void skill3angelEqBtnClick(View v){
+	Button currentSkill = (Button) findViewById(R.id.currentSkillAngel3);
+	switch(currentSkill2Checked) {
+	case 18:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelcloud1);
+    	YoloEngine.currentPlayerInfo.setSK3EQ(18);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 19:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelicicle1);
+    	YoloEngine.currentPlayerInfo.setSK3EQ(19);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 5:
+    	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
+    	YoloEngine.currentPlayerInfo.setSK3EQ(5);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 20:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelsmoke1);
+    	YoloEngine.currentPlayerInfo.setSK3EQ(20);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 301;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+	case 104:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
+    	YoloEngine.currentPlayerInfo.setSK3EQ(104);
+    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+    	YoloEngine.animationSlowdown2 = 0;
+    	//YoloEngine.animationDuration2 = 57f;
+      break;
+  }
+	YoloEngine.SkillSprite3=currentSkill2Checked;
+}
 	
 	public void skill2EqBtnClick(View v){
 		Button currentSkill = (Button) findViewById(R.id.currentSkill2);
