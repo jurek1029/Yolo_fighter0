@@ -79,7 +79,6 @@ public class YoloEngine {
 	public static float BARREL_SPEED = 0.125f;
 	public static final int TOWER_STAND=0,TOWER_NEW =1,TOWER_FIRE=2,TOWER_DYING =4,WALL_NEW =1,WALL_STAND =0;
 	
-	
 	//--------------------------------------------
 	
 	

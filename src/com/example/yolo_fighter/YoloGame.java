@@ -166,19 +166,19 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f,57f,100f);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f,57f,100f,true);
 					YoloGameRenderer.skillPlayerVe.add(newSkill);
-                    YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
+                    //YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
                     break;
 				case 1:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,0f);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,0f,true);
                     YoloGameRenderer.skillPlayerVe.add(newSkill);
-                    YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
+                   // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				case 2:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,0f);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,0f,true);
                     YoloGameRenderer.skillPlayerVe.add(newSkill);
-                    YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
+                   // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				}
 				YoloEngine.isUsingSkill = false;			
@@ -348,6 +348,8 @@ public class YoloGame extends Activity{
 	protected void onResume(){
 		YoloEngine.Player_x = 0;
 		YoloEngine.Player_y = 3f;
+		YoloGameRenderer.first = false;
+		YoloGameRenderer.toLoad = true;
 		super.onResume();
 		gameView.onResume();
 	}
@@ -356,6 +358,8 @@ public class YoloGame extends Activity{
 	{
 		YoloEngine.Player_x = 0;
 		YoloEngine.Player_y = 3f;
+		YoloGameRenderer.first = false;
+		YoloGameRenderer.toLoad = true;
 		super.onPause();
 		gameView.onPause();
 	}
