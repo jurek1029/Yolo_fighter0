@@ -823,7 +823,7 @@ public class YoloMainMenu extends Activity
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_lifedrainBtn:
-	        	currentSkill2Checked = 100;
+	        	currentSkill2Checked = 108;
 	        	description.setText("life drain");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -916,16 +916,16 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown2 = 10;
         	YoloEngine.animationDuration2 = 0f;
           break;
-        case 100:
+        case 108:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerlifesuck1);
-        	YoloEngine.currentPlayerInfo.setSK2EQ(13);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(108);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 0f;
           break;
         case 109:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
-        	YoloEngine.currentPlayerInfo.setSK2EQ(14);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(109);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 0f;
@@ -939,7 +939,7 @@ public class YoloMainMenu extends Activity
           break;
         case 103:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerslowdown1);
-        	YoloEngine.currentPlayerInfo.setSK2EQ(16);
+        	YoloEngine.currentPlayerInfo.setSK2EQ(103);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 0f;
@@ -1013,16 +1013,16 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown3 = 10;
         	YoloEngine.animationDuration3 = 0f;
           break;
-        case 100:
+        case 108:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerlifesuck1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(13);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(108);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 0f;
           break;
         case 109:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(14);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(109);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 0f;
@@ -1036,7 +1036,7 @@ public class YoloMainMenu extends Activity
           break;
         case 103:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerslowdown1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(16);
+        	YoloEngine.currentPlayerInfo.setSK3EQ(103);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 0f;
