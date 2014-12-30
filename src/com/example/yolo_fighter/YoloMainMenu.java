@@ -454,6 +454,7 @@ public class YoloMainMenu extends Activity
 		YoloEngine.whichLayout = 1;
 		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
 		else{
+		YoloEngine.currentPlayerInfo = plInfoList.get(YoloEngine.currentPlayerInfoPosition);
 		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ();
 		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
