@@ -60,17 +60,7 @@ public class YoloMultislayer {
 
                 case 't':
                     String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
-/*
-                    //Działa ale nie uwzględnia nieaktywnych graczy
-                    for (int i = 0; i < pattern.length(); i++) {
-                        if(pattern.charAt(i) == '1') {
-                            YoloEngine.teamB.add(YoloEngine.participants.get(i).getParticipantId());
-                        }
-                        else {
-                            YoloEngine.teamA.add(YoloEngine.participants.get(i).getParticipantId());
-                        }
-                    }
-*/
+
                     int i = 0;
                     for(Participant p : YoloEngine.participants) {
                         if(p.getStatus() == Participant.STATUS_JOINED) {
@@ -87,7 +77,8 @@ public class YoloMultislayer {
 
                     if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false;
                     else YoloEngine.playerTeam = true;
-
+                    
+                    YoloGameRenderer.givePlayerID();
                     break;
 
 				case 'f':
@@ -95,11 +86,11 @@ public class YoloMultislayer {
 					break;
 
                 case 'g':
-                    YoloGameRenderer.AIFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat());
+                    YoloGameRenderer.AIFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false);
                     break;
 
 				case 'h':
-					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false));
+					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.getInt()));
 					break;
 
 				case 's':
@@ -108,7 +99,7 @@ public class YoloMultislayer {
 					break;
                 case 'i':
                     YoloEngine.IDTracer = rcvData.getInt();
-
+                    break;	
 				default:
 					System.out.println("message not recognized");
 					break;
@@ -252,7 +243,7 @@ public class YoloMultislayer {
         sendMessageToAll(bbf.array());
 	}
 
-    public void sendAIFire(float x, float y, boolean isLeft, float x_texture, float y_texture)
+    public void sendAIFire(float x, float y, boolean isLeft, float x_texture, float y_texture, float damage, boolean team)
     {
         ByteBuffer bbf = ByteBuffer.allocate(20);
         bbf.putChar('g');
@@ -269,9 +260,10 @@ public class YoloMultislayer {
     }
 
 
-    public void sendHitBox(float x, float y, float x_radius, float y_radius, float damage, float duration, int sprite, boolean isLeft)
+    public void sendHitBox(float x, float y, float x_radius, float y_radius, float damage, float duration, int sprite, boolean isLeft, boolean efectOnMySkill, int ID)
     {
-        ByteBuffer bbf = ByteBuffer.allocate(40);
+    	// team też jest przesyłany, tylko nie z arg a z YoloEngine
+    	ByteBuffer bbf = ByteBuffer.allocate(42);
         bbf.putChar('h');
         bbf.putFloat(x);
         bbf.putFloat(y);
@@ -288,6 +280,11 @@ public class YoloMultislayer {
             bbf.put((byte)1);
         else
             bbf.put((byte)0);
+        if(efectOnMySkill)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        bbf.putInt(ID);
 
         sendMessageToAllreliable(bbf.array());
     }

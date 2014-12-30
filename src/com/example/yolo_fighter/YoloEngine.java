@@ -1,6 +1,5 @@
 package com.example.yolo_fighter;
 
-import com.example.yolo_fighter.R.drawable;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.example.games.basegameutils.GameHelper;
@@ -8,7 +7,6 @@ import com.google.example.games.basegameutils.GameHelper;
 import android.content.Context;
 import android.view.Display;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +31,8 @@ public class YoloEngine {
 	public static final int BARREL_SPRITE = R.drawable.barrel_sprite;
 	public static final int TOWER_SPRITE = R.drawable.tower_sprite;
 	public static final int WALL_SPRITE = R.drawable.wall_sprite;
+	public static final int TRAP_SPRITE = R.drawable.trap_sprite;
+	public static final int WARMTH_SPRITE = R.drawable.warmth_sprite;
 	public static final int LIVE_DRAIN_SPRITE = R.drawable.live_drain_sprite;
 	public static final int RESURECTION_SPRITE = R.drawable.resurection_sprite;
 	public static final int SPIKES_SPRITE = R.drawable.spikes_sprite;
@@ -68,16 +68,17 @@ public class YoloEngine {
 	public static boolean is = false;
 	public static int usedSkill;
 	
-	public static final int ARCHER_STAND=0,ARCHER_WALK=1,ARCHER_FIRE=2,ARCHER_HURT=3,ARCHER_DYING=4,ARCHER_NULL = 100;
+	public static final int ARCHER_STAND=0,	ARCHER_WALK=1,	ARCHER_FIRE=2,		ARCHER_HURT=3,	ARCHER_DYING=4,	ARCHER_NULL = 100;
+	public static final int WARRIOR_STAND=0,WARRIOR_WALK=1,	WARRIOR_ATTACK=2,	WARRIOR_HURT=3,	WARRIOR_DYING=4,WARRIOR_NULL = 100;
+	public static final int MUMMY_STAND=0,	MUMMY_WALK=1,	MUMMY_ATTACK=2,		MUMMY_HURT=3,	MUMMY_DYING=4,	MUMMY_NULL = 100;
+	public static final int HAND_STAND=0,	HAND_ATTACK=1,	HAND_HURT=2,		HAND_DYING=4,	HAND_NULL = 100;
+	public static final int BARREL_STAND=0,	BARREL_WALK=1,	BARREL_ATTACK = 4;
+	public static final int TOWER_STAND=0,	TOWER_NEW =1,	TOWER_FIRE=2,		TOWER_DYING =4,	WALL_NEW =1,	WALL_STAND =0;
+	public static final int TRAP_STAND=0,	TRAP_ATTACK = 4,WARMTH_STAND=1,		WARMTH_ATACK=2, WARMTH_DYING=4;
 	public static float ARCHER_SPEED = 0.0625f;
-	public static final int WARRIOR_STAND=0,WARRIOR_WALK=1,WARRIOR_ATTACK=2,WARRIOR_HURT=3,WARRIOR_DYING=4,WARRIOR_NULL = 100;
-	public static float WARRIOR_SPEED = 0.0625f;
-	public static final int MUMMY_STAND=0,MUMMY_WALK=1,MUMMY_ATTACK=2,MUMMY_HURT=3,MUMMY_DYING=4,MUMMY_NULL = 100;
-	public static float MUMMY_SPEED = 0.03125f;
-	public static final int HAND_STAND=0,HAND_ATTACK=1,HAND_HURT=2,HAND_DYING=4,HAND_NULL = 100;
-	public static final int BARREL_STAND=0,BARREL_WALK=1,BARREL_ATTACK = 4;
+	public static float WARRIOR_SPEED= 0.0625f;
+	public static float MUMMY_SPEED  = 0.03125f;
 	public static float BARREL_SPEED = 0.125f;
-	public static final int TOWER_STAND=0,TOWER_NEW =1,TOWER_FIRE=2,TOWER_DYING =4,WALL_NEW =1,WALL_STAND =0;
 	
 	//--------------------------------------------
 	
