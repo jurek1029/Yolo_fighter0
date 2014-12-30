@@ -828,7 +828,7 @@ public class YoloMainMenu extends Activity
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_resurrectionBtn:
-	        	currentSkill2Checked = 101;
+	        	currentSkill2Checked = 109;
 	        	description.setText("resurrection");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -922,7 +922,7 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown2 = 0;
         	YoloEngine.animationDuration2 = 0f;
           break;
-        case 101:
+        case 109:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
         	YoloEngine.currentPlayerInfo.setSK2EQ(14);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
@@ -1019,7 +1019,7 @@ public class YoloMainMenu extends Activity
         	YoloEngine.animationSlowdown3 = 0;
         	YoloEngine.animationDuration3 = 0f;
           break;
-        case 101:
+        case 109:
         	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
         	YoloEngine.currentPlayerInfo.setSK3EQ(14);
         	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
