@@ -160,6 +160,8 @@ public class YoloMainMenu extends Activity
                     YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
                     YoloGameRenderer.givePlayerID();
                 }
+                
+                YoloEngine.mMultislayer.sendMaxLife();
 
 
             }

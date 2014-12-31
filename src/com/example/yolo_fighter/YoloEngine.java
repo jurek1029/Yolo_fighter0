@@ -167,6 +167,7 @@ public class YoloEngine {
 	public static boolean Opponent_isCrouched[] = new boolean[4];
 
     public static float opponentsLife[] = new float[4];
+    public static float opponentsLifeMax[] = new float[4];
 
     public static boolean[] sprite_load = new boolean[30];
 	

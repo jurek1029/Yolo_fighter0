@@ -9,8 +9,9 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 
 /* TODO
- - Health (YoloEngine.PlayerHealth)
-  - jak grę opuści teamAssigner to raczej nie ma problemu, bo nowych graczy nie będzie
+  - Test - life max czy wysyła się 
+  - Pozycje w osobnych
+  - dodawanie skilli mojego teamu powinny byś dodawane do skillplayerve a przeciwnego do Opp
  */
 
 
@@ -99,7 +100,10 @@ public class YoloMultislayer {
 					break;
                 case 'i':
                     YoloEngine.IDTracer = rcvData.getInt();
-                    break;	
+                    break;
+                case 'm':
+                    YoloEngine.opponentsLifeMax[Collections.binarySearch(YoloEngine.opponents,message.getSenderParticipantId())] = rcvData.getFloat();
+                    break;
 				default:
 					System.out.println("message not recognized");
 					break;
@@ -306,6 +310,14 @@ public class YoloMultislayer {
 
         sendMessageToAllreliable(bbf.array());
 
+    }
+    
+    public void sendMaxLife() {
+    	ByteBuffer bbf = ByteBuffer.allocate(10);
+    	bbf.putChar('m');
+    	bbf.putFloat(YoloEngine.PLAYER_LIVE_MAX);
+    	
+    	sendMessageToAllreliable(bbf.array());
     }
 }
 
