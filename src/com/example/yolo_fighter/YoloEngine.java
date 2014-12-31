@@ -71,7 +71,7 @@ public class YoloEngine {
 	public static final int ARCHER_STAND=0,	ARCHER_WALK=1,	ARCHER_FIRE=2,		ARCHER_HURT=3,	ARCHER_DYING=4,	ARCHER_NULL = 100;
 	public static final int WARRIOR_STAND=0,WARRIOR_WALK=1,	WARRIOR_ATTACK=2,	WARRIOR_HURT=3,	WARRIOR_DYING=4,WARRIOR_NULL = 100;
 	public static final int MUMMY_STAND=0,	MUMMY_WALK=1,	MUMMY_ATTACK=2,		MUMMY_HURT=3,	MUMMY_DYING=4,	MUMMY_NULL = 100;
-	public static final int HAND_STAND=0,	HAND_ATTACK=1,	HAND_HURT=2,		HAND_DYING=4,	HAND_NULL = 100;
+	public static final int HAND_STAND=0,	HAND_ATTACK=1,	HAND_HURT=3,		HAND_DYING=4,	HAND_NULL = 100;
 	public static final int BARREL_STAND=0,	BARREL_WALK=1,	BARREL_ATTACK = 4;
 	public static final int TOWER_STAND=0,	TOWER_NEW =1,	TOWER_FIRE=2,		TOWER_DYING =4,	WALL_NEW =1,	WALL_STAND =0;
 	public static final int TRAP_STAND=0,	TRAP_ATTACK = 4,WARMTH_STAND=1,		WARMTH_ATACK=2, WARMTH_DYING=4;
@@ -128,13 +128,13 @@ public class YoloEngine {
 	
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 6; //MiHu baza danych
-	public static int SkillSprite2 = 19; //MiHu baza danych
-	public static int SkillSprite3 = 104; //MiHu baza danych
+	public static int SkillSprite1 = 109; //MiHu baza danych
+	public static int SkillSprite2 = 5; //MiHu baza danych
+	public static int SkillSprite3 = 6; //MiHu baza danych
 	
-	public static int animationSlowdown2 = 10;
-	public static float animationDuration2 = 1f;
-	public static int animationSlowdown3 = 300;
+	public static int animationSlowdown2 = 0;
+	public static float animationDuration2 = 0f;
+	public static int animationSlowdown3 = 10;
 	public static float animationDuration3 = 1f;
 	
 	// ------------------------- Multislayer BEGIN -----------------------
