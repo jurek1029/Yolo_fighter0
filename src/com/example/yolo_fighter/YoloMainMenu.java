@@ -482,6 +482,7 @@ public class YoloMainMenu extends Activity
 		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
 		YoloMainMenu.this.startActivity(game);
+		finish();
 		YoloEngine.context = getApplicationContext();
 		}
 	}
