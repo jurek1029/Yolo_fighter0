@@ -2,6 +2,7 @@ package com.example.yolo_fighter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 
@@ -368,5 +369,18 @@ public class YoloGame extends Activity{
 	protected void onDestroy()
 	{
 		super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+			YoloEngine.whichLayout=0;
+			YoloGameRenderer.skillOponentVe.clear();
+			YoloGameRenderer.skillPlayerVe.clear();
+			Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
+			YoloGame.this.startActivity(mainMenu);
+			YoloEngine.context = getApplicationContext();
+			YoloGame.this.finish();
+			setContentView(R.layout.main_menu);
 	}
 }

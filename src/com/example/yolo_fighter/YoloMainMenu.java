@@ -452,12 +452,32 @@ public class YoloMainMenu extends Activity
 		
 		// Te dwie instrukcje warto wrzuciï¿½ do jakiegoï¿½ senwoengo eventu, ï¿½eby ciï¿½gle tego nie odï¿½wieï¿½aï¿½ XXX
 						
-		
+		plInfoList.clear();
 		plInfoList=dbm.getAll();
 		YoloEngine.whichLayout = 1;
 		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
 		else{
 		YoloEngine.currentPlayerInfo = plInfoList.get(YoloEngine.currentPlayerInfoPosition);
+		switch(YoloEngine.currentPlayerInfo.getRace()) {
+        case 0:
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	setContentView(R.layout.skill2angel_menu);
+        	skill2angelEqBtnClick(v);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	skill3angelEqBtnClick(v);
+        	setContentView(R.layout.main_menu);
+          break;
+        case 1:
+        	break;
+        case 2:
+        	setContentView(R.layout.skill2necromancer_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	skill2necromancerEqBtnClick(v);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	skill3necromancerEqBtnClick(v);
+        	setContentView(R.layout.main_menu);
+        	break;
+		}
 		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ();
 		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
@@ -1317,18 +1337,22 @@ public void skill3angelEqBtnClick(View v){
 	
 // ------------------------- Multislayer END -------------------------
 
+@Override
 public void onBackPressed() {
 	if(YoloEngine.whichLayout==1)
 	{
 		YoloEngine.whichLayout=0;
 		setContentView(R.layout.main_menu);
-		
 	}
-	else {   
-	Intent intent = new Intent(Intent.ACTION_MAIN);
-	   intent.addCategory(Intent.CATEGORY_HOME);
-	   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	   startActivity(intent);
+	else {  
+		System.out.println("jestem w menu layout by³ 0");
+		YoloGameRenderer.skillOponentVe.clear();
+		YoloGameRenderer.skillPlayerVe.clear();
+		finish();
+	//Intent intent = new Intent(Intent.ACTION_MAIN);
+	 //  intent.addCategory(Intent.CATEGORY_HOME);
+	  // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	  // startActivity(intent);
 	 }	
 }
 }
