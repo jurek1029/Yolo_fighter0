@@ -164,6 +164,13 @@ public class YoloEngine {
 	public static float Opponents_x[] = { 1000f, 1000f, 1000f, 1000f };
 	public static float Opponents_y[] = { 1000f, 1000f, 1000f, 1000f };
 
+    public static float TeamA_x[] = { 1000f, 1000f, 1000f, 1000f };
+    public static float TeamA_y[] = { 1000f, 1000f, 1000f, 1000f };
+    public static float TeamB_x[] = { 1000f, 1000f, 1000f, 1000f };
+    public static float TeamB_y[] = { 1000f, 1000f, 1000f, 1000f };
+    public static boolean TeamA_isCrouched[] = new boolean[4];
+    public static boolean TeamB_isCrouched[] = new boolean[4];
+
 	public static boolean Opponent_isCrouched[] = new boolean[4];
 
     public static float opponentsLife[] = new float[4];
