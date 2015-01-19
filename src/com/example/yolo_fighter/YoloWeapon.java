@@ -15,12 +15,12 @@ public class YoloWeapon {
 	
 	public float x,x_texture;
 	public float y,y_texture;
-	public float size;
+	//public float size;
 	public float damage;
 	public boolean isLeft,isMy;
 	public float bulletSpeed;
 	public int sprite,count=0,couter=0;
-	public float scale = 1f;
+	//public float scale = 1f;
 
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,

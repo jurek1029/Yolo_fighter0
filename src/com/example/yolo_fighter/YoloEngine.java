@@ -42,7 +42,10 @@ public class YoloEngine {
 	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
 	public static final int FOG_SPRITE = R.drawable.fog_s;
 	
-
+	public static float TX = 100;//pixele
+	public static float TY = 100;
+	public static float TEXTURE_SIZE_X = TX;
+	public static float TEXTURE_SIZE_Y = TY;
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
 	public static float MIN_VALUE_TO_CLIMB = 30;
 	public static float MOVE_SIZE_Y = 50;
@@ -51,6 +54,7 @@ public class YoloEngine {
 	public static float BUTTON_JUMP_SIZE = 100;
 	public static float LIVE_BAR_SIZE = 350;
     public static float SMALL_LIVE_BAR_SIZE = 100; //@TODO Bartek
+    public static float LEVEL_scale =0.75f;
 	public static float LEVEL_X = 2400;
 	public static float LEVEL_Y = 1440;
 	public static float LEVEL_SIZE_X;
@@ -80,6 +84,16 @@ public class YoloEngine {
 	public static float MUMMY_SPEED  = 0.03125f;
 	public static float BARREL_SPEED = 0.125f;
 	
+	public static boolean isPlayerPoisoned = false;
+	public static boolean isPlayerSlowDown = false;
+	public static boolean isPlayerFlying = false;
+	public static boolean isPlayerDenialed = false;
+	public static boolean isPlayerInvincible = false;
+	public static boolean isPlayerDef = false;
+	public static float Player_Dmg_reduction = 1f;
+	public static int flyingDuration = 300;
+	public static int InvincibleDuration = 300;
+	public static int defDuration = 300;
 	//--------------------------------------------
 	
 	
@@ -101,13 +115,14 @@ public class YoloEngine {
 	public static boolean canClimb = false;
 	public static boolean canMove = true;
 	
-	public static final float GAME_PROJECTION_Y = 10f;
+	public static float GAME_PROJECTION_Y = 10f;
 	public static float GAME_PROJECTION_X;
 	public static final float GAME_METER = (1/GAME_PROJECTION_Y)/80;
 	public static final float GAME_ACCELERATION = 10 * GAME_METER;
 	public static final float GAME_GROUND_FRICTION = GAME_ACCELERATION;
 	public static final float GAME_AIR_FRICTION = GAME_ACCELERATION/4;
 	public static final float PLAYER_SIZE = 1;
+
 	
 	public static final int PLAYER_BULLET_FREQUENCY = 10; 
 	public static final float PLAYER_LIVE_MAX = 100;
@@ -119,18 +134,17 @@ public class YoloEngine {
 	public static float Player_vy =0;
 	public static float Player_vx = 0f;
 	public static float PlayerLive = 100;
-	public static boolean isPlayerPoisoned = false;
-	public static boolean isPlayerSlowDown = false;
+
 	
 	public static Display display;
-	public static int display_x; 
-	public static int display_y; 
+	public static float display_x; 
+	public static float display_y; 
 	
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 109; //MiHu baza danych
-	public static int SkillSprite2 = 5; //MiHu baza danych
-	public static int SkillSprite3 = 6; //MiHu baza danych
+	public static int SkillSprite1 = 24; //MiHu baza danych
+	public static int SkillSprite2 = 24; //MiHu baza danych
+	public static int SkillSprite3 = 25; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 0;
 	public static float animationDuration2 = 0f;

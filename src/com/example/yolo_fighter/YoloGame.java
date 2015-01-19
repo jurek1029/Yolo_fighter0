@@ -18,7 +18,7 @@ public class YoloGame extends Activity{
 	private int c;
 	private float x_skill,y_skill;
     private Skill newSkill;
-
+    public static int flying=2;
 	private float buttonJumpX,buttonJumpY,buttonShotX,buttonShotY,buttonCrouchX,buttonCrouchY,buttonSkillX,buttonSkillY;
 	
 	private void ActionUp()
@@ -34,9 +34,11 @@ public class YoloGame extends Activity{
 		}
 		if(!YoloEngine.isJumping)
 		{
-			YoloEngine.Player_vy = 0.25f;
-			YoloEngine.isJumping = true;
-			
+			if(flying-- > 0)
+			{
+				YoloEngine.Player_vy = 0.25f;
+				YoloEngine.isJumping = true;
+			}		
 		}
 		YoloEngine.isCrouch = false;
 	}
@@ -290,7 +292,7 @@ public class YoloGame extends Activity{
 				}
 	
 				if(YoloEngine.Player_vx < 0) YoloEngine.isPlayerLeft = true;
-				else YoloEngine.isPlayerLeft = false;
+				if(YoloEngine.Player_vx > 0) YoloEngine.isPlayerLeft = false;
 	
 				break;
 			}
