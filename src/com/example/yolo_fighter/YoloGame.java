@@ -27,20 +27,20 @@ public class YoloGame extends Activity{
 		{
 			if(!YoloEngine.isClimbing)
 			{
-				YoloEngine.canMove =  false;
-				YoloEngine.isClimbingUp = true;
+				YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
+				YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
 			}
 			YoloEngine.isClimbing = true;
 		}
-		if(!YoloEngine.isJumping)
+		if(!YoloEngine.TeamAB[YoloEngine.MyID].isJumping)
 		{
 			if(flying-- > 0)
 			{
-				YoloEngine.Player_vy = 0.25f;
-				YoloEngine.isJumping = true;
+				YoloEngine.TeamAB[YoloEngine.MyID].vy = 0.25f;
+				YoloEngine.TeamAB[YoloEngine.MyID].isJumping = true;
 			}		
 		}
-		YoloEngine.isCrouch = false;
+		YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
 	}
 	
 	private void ActionDown()
@@ -49,33 +49,33 @@ public class YoloGame extends Activity{
 		{
 			if(!YoloEngine.isClimbing)
 			{
-				YoloEngine.canMove =  false;
-				YoloEngine.isClimbingDown = true;
+				YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
+				YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
 			}
 			YoloEngine.isClimbing = true;
 		}
 		else
 		{
 			if(!YoloEngine.isCrouch_prest)
-				if(YoloEngine.isCrouch)
-					YoloEngine.isCrouch = false;
+				if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)
+					YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
 				else
-					YoloEngine.isCrouch = true;
+					YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = true;
 			YoloEngine.isCrouch_prest = true;
 		}
 	}
 	
 	private void ActionMoveX()
 	{
-		if(YoloEngine.isCrouch)	
+		if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)	
 		{
 			if(Math.abs(x_old - x2) < 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED/2 )
 			{
-				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
+				YoloEngine.TeamAB[YoloEngine.MyID].vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/60000;
 			}
 			else
 			{
-				YoloEngine.Player_vx = 0.08f*Math.signum(x2-x_old);
+				YoloEngine.TeamAB[YoloEngine.MyID].vx = 0.08f*Math.signum(x2-x_old);
 				if(Math.signum(x2-x_old)>0) x2 = x_old + 40;
 				else x2 = x_old - 40;
 			}
@@ -84,11 +84,11 @@ public class YoloGame extends Activity{
 		{
 			if(Math.abs(x_old - x2) < 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED )
 			{
-				YoloEngine.Player_vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
+				YoloEngine.TeamAB[YoloEngine.MyID].vx = ((x2-x_old)*(x2-x_old)*Math.signum(x2-x_old))/30000;
 			}
 			else
 			{
-				YoloEngine.Player_vx = 0.16f*Math.signum(x2-x_old);
+				YoloEngine.TeamAB[YoloEngine.MyID].vx = 0.16f*Math.signum(x2-x_old);
 				if(Math.signum(x2-x_old)>0) x2 = x_old + 40;
 				else x2 = x_old - 40;
 			}
@@ -100,7 +100,7 @@ public class YoloGame extends Activity{
 		 if(x < 275)
 			{
 				y2=0;
-				YoloEngine.isMoving = true;
+				YoloEngine.TeamAB[YoloEngine.MyID].isMoving = true;
 			}
 			else
 				{
@@ -116,16 +116,16 @@ public class YoloGame extends Activity{
 							if(y < buttonCrouchY && y > buttonCrouchY - YoloEngine.BUTTON_JUMP_SIZE )
 							{
 								YoloEngine.isCrouch_prest = true;
-								if(YoloEngine.isCrouch)
-									YoloEngine.isCrouch = false;
+								if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)
+									YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
 								else
-									YoloEngine.isCrouch = true;
+									YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = true;
 							}
 					}
 					if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							YoloEngine.isShoting = true;
+							YoloEngine.TeamAB[YoloEngine.MyID].isShoting = true;
 						}
 					if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
@@ -135,7 +135,7 @@ public class YoloGame extends Activity{
 								YoloEngine.canSkill1 = false;
 								YoloEngine.isSkillPressed = true;
 								YoloEngine.usedSkill = 0;
-								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+								if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 							}
 						}
 					if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -146,7 +146,7 @@ public class YoloGame extends Activity{
 								YoloEngine.canSkill2 = false;
 								YoloEngine.isSkillPressed = true;
 								YoloEngine.usedSkill = 1;
-								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+								if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 							}
 						}
 					if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
@@ -157,11 +157,11 @@ public class YoloGame extends Activity{
 								YoloEngine.canSkill3 = false;
 								YoloEngine.isSkillPressed = true;
 								YoloEngine.usedSkill = 2;
-								if(YoloEngine.isUsingSkill){YoloEngine.isUsingSkill = false;YoloEngine.isSkillPressed = false;}
+								if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 							}
 						}	
 				}
-		 if(YoloEngine.isUsingSkill) 
+		 if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill) 
 			{
 			 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
 			 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
@@ -169,22 +169,22 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,.875f,20f,20f,57f,100f,YoloEngine.playerTeam);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,0f,0f,20f,300f,100f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
 					YoloGameRenderer.skillPlayerVe.add(newSkill);
                     //YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
                     break;
 				case 1:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,4f,YoloEngine.playerTeam);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,4f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
                     YoloGameRenderer.skillPlayerVe.add(newSkill);
                    // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				case 2:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,8f,YoloEngine.playerTeam);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,8f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
                     YoloGameRenderer.skillPlayerVe.add(newSkill);
                    // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				}
-				YoloEngine.isUsingSkill = false;			
+			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;			
 			}
 		
 	}
@@ -205,6 +205,9 @@ public class YoloGame extends Activity{
 			YoloEngine.display_x = YoloEngine.display.getWidth();
 			YoloEngine.display_y = YoloEngine.display.getHeight();
 		}
+		
+		for(int i=0;i<YoloEngine.TeamAB.length;i++)
+			YoloEngine.TeamAB[i] = new YoloPlayer(3f,10f);
 		
 		super.onCreate(savedInstanceState);
 		gameView = new YoloGameView(this);
@@ -285,14 +288,14 @@ public class YoloGame extends Activity{
 							ActionUp();
 						else 
 						{
-							YoloEngine.isJumping = false;
+							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 							YoloEngine.isClimbing = false;
 						}
 					}
 				}
 	
-				if(YoloEngine.Player_vx < 0) YoloEngine.isPlayerLeft = true;
-				if(YoloEngine.Player_vx > 0) YoloEngine.isPlayerLeft = false;
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 	
 				break;
 			}
@@ -308,16 +311,16 @@ public class YoloGame extends Activity{
 			
 			case MotionEvent.ACTION_UP:
 				{
-					YoloEngine.isMoving = false;
-					YoloEngine.isJumping = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 					YoloEngine.isCrouch_prest = false;
 					if(x > 275)
-						YoloEngine.isShoting = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
 					x2=x_old;
 					y2=0;
 					if(YoloEngine.isSkillPressed)
 					{
-						YoloEngine.isUsingSkill = true;
+						YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = true;
 						YoloEngine.isSkillPressed = false;
 						
 					}		
@@ -326,11 +329,11 @@ public class YoloGame extends Activity{
 			case MotionEvent.ACTION_POINTER_UP:
 				{					
 					if(x < 275)
-						YoloEngine.isMoving = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
 					else
-						YoloEngine.isShoting = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
 					
-					YoloEngine.isJumping = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 					YoloEngine.isCrouch_prest= false;
 					
 					x2=x_old;
@@ -338,7 +341,7 @@ public class YoloGame extends Activity{
 					
 					if(YoloEngine.isSkillPressed)
 					{
-						YoloEngine.isUsingSkill = true;
+						YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = true;
 						YoloEngine.isSkillPressed = false;
 					}
 					break;
@@ -349,8 +352,8 @@ public class YoloGame extends Activity{
 	
 	@Override
 	protected void onResume(){
-		YoloEngine.Player_x = 0;
-		YoloEngine.Player_y = 3f;
+		YoloEngine.TeamAB[YoloEngine.MyID].x = 0;
+		YoloEngine.TeamAB[YoloEngine.MyID].y = 3f;
 		YoloGameRenderer.first = false;
 		YoloGameRenderer.toLoad = true;
 		super.onResume();
@@ -359,8 +362,8 @@ public class YoloGame extends Activity{
 	@Override
 	protected void onPause()
 	{
-		YoloEngine.Player_x = 0;
-		YoloEngine.Player_y = 3f;
+		YoloEngine.TeamAB[YoloEngine.MyID].x = 0;
+		YoloEngine.TeamAB[YoloEngine.MyID].y = 3f;
 		YoloGameRenderer.first = false;
 		YoloGameRenderer.toLoad = true;
 		super.onPause();

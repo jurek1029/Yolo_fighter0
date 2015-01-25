@@ -6,18 +6,18 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class YoloWeapon {
+public class YoloWeapon extends YoloObject {
 
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
 	
 	
-	public float x,x_texture;
-	public float y,y_texture;
+	//public float x,y;
+	public float x_texture,y_texture;
 	//public float size;
 	public float damage;
-	public boolean isLeft,isMy;
+	public boolean isLeft,team;
 	public float bulletSpeed;
 	public int sprite,count=0,couter=0;
 	//public float scale = 1f;
@@ -41,8 +41,9 @@ public class YoloWeapon {
 		0, 2, 3
 	};
 	
-public YoloWeapon(float bulletSpeed){
-		
+	public YoloWeapon(float x, float y,float bulletSpeed)
+	{
+		super(x,y,0.3f,0.15f,0.37f,0.43f);
 		ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuf.order(ByteOrder.nativeOrder());
 		vertexBuffer = byteBuf.asFloatBuffer();
@@ -61,24 +62,25 @@ public YoloWeapon(float bulletSpeed){
 		 this.bulletSpeed = bulletSpeed;
 		 
 	}
-public YoloWeapon(){
-	
-	ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
-	byteBuf.order(ByteOrder.nativeOrder());
-	vertexBuffer = byteBuf.asFloatBuffer();
-	vertexBuffer.put(vertices);
-	vertexBuffer.position(0);
-	
-	byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
-	byteBuf.order(ByteOrder.nativeOrder());
-	textureBuffer = byteBuf.asFloatBuffer();
-	textureBuffer.put(texture);
-	textureBuffer.position(0);
-	
-	indexBuffer = ByteBuffer.allocateDirect(indices.length);
-	indexBuffer.put(indices);
-	indexBuffer.position(0);
-}
+	public YoloWeapon(float x, float y)
+	{
+		super(x,y);
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuf.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+		
+		byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+		
+		indexBuffer = ByteBuffer.allocateDirect(indices.length);
+		indexBuffer.put(indices);
+		indexBuffer.position(0);
+	}
 	
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{

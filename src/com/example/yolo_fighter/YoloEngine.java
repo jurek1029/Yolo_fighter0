@@ -22,8 +22,15 @@ public class YoloEngine {
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
+	//public static YoloPlayer player = new YoloPlayer();
+	public static YoloPlayer[] TeamAB = new YoloPlayer[4];
+	//public static YoloPlayer[] TeamB = new YoloPlayer[2];
+	public static boolean TeamA = false, TeamB = true;
+	public static int MyID =0;
+	public static int TeamSize = 2;
+	//public static YoloObject[] ObjectTab = new YoloObject[17];
+	
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
-	public static final int THUNDER_SKILL = R.drawable.skill_sprite_tunder;
 	public static final int ARCHER_SPRITE = R.drawable.archer_sprite;
 	public static final int WARRIOR_SPRITE = R.drawable.warrior_sprite;
 	public static final int MUMMY_SPRITE = R.drawable.mummy_sprite;
@@ -31,17 +38,25 @@ public class YoloEngine {
 	public static final int BARREL_SPRITE = R.drawable.barrel_sprite;
 	public static final int TOWER_SPRITE = R.drawable.tower_sprite;
 	public static final int WALL_SPRITE = R.drawable.wall_sprite;
-	public static final int TRAP_SPRITE = R.drawable.trap_sprite;
-	public static final int WARMTH_SPRITE = R.drawable.warmth_sprite;
 	public static final int LIVE_DRAIN_SPRITE = R.drawable.live_drain_sprite;
 	public static final int RESURECTION_SPRITE = R.drawable.resurection_sprite;
 	public static final int SPIKES_SPRITE = R.drawable.spikes_sprite;
 	public static final int SLOW_DOWN_SPRITE = R.drawable.slow_down_sprite;
+	
+	public static final int TRAP_SPRITE = R.drawable.trap_sprite;
 	public static final int HEAL_SPRITE = R.drawable.heal_sprite;
+	public static final int HEAL_LONG_SPRITE = R.drawable.heal_long_sprite;
+	public static final int HEAL_LONG_RAD_SPRITE = R.drawable.heal_long_rad_sprite ;
 	public static final int SHOCK_WAVE_SPRITE = R.drawable.shockwave_sprite;
 	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
+	public static final int THUNDER_H_SPRITE = R.drawable.tunder_h_sprite;
+	public static final int THUNDER_V_SKILL = R.drawable.skill_sprite_tunder;
 	public static final int FOG_SPRITE = R.drawable.fog_s;
+	public static final int DENIAL_SPRITE = R.drawable.denial_sprite;
+	public static final int STAMINA_THIEF_SPRITE =0 ;
 	
+	public static int[] spriteSheets = new int[30];
+	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
 	public static float TEXTURE_SIZE_X = TX;
@@ -59,12 +74,30 @@ public class YoloEngine {
 	public static float LEVEL_Y = 1440;
 	public static float LEVEL_SIZE_X;
 	public static float LEVEL_SIZE_Y;
-	
+	public static float GAME_PROJECTION_Y = 10f;
+	public static float GAME_PROJECTION_X;
+	public static final float GAME_METER = (1/GAME_PROJECTION_Y)/80;
+	public static final float GAME_ACCELERATION = 10 * GAME_METER;
+	public static final float GAME_GROUND_FRICTION = GAME_ACCELERATION;
+	public static final float GAME_AIR_FRICTION = GAME_ACCELERATION/4;
+	public static float LIFE_BAR_Y = TY/10f;
+	//public static final float PLAYER_SIZE = 1;
 	//--------------------------------------------
+	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;
 	public static int SKILL1_COOLDOWN = 10;
 	public static int SKILL2_COOLDOWN = 100;
 	public static int SKILL3_COOLDOWN = 200;
+	
+	//Multislayer SEND XXX
+	public static int SkillSprite1 = 109; //MiHu baza danych
+	public static int SkillSprite2 = 24; //MiHu baza danych
+	public static int SkillSprite3 = 25; //MiHu baza danych
+	
+	public static int animationSlowdown2 = 0;
+	public static float animationDuration2 = 0f;
+	public static int animationSlowdown3 = 10;
+	public static float animationDuration3 = 1f;
 	
 	public static float SKILL_X;
 	public static float SKILL_Y;
@@ -84,49 +117,31 @@ public class YoloEngine {
 	public static float MUMMY_SPEED  = 0.03125f;
 	public static float BARREL_SPEED = 0.125f;
 	
+	
+	public static int flyingDuration = 300;
+	public static int InvincibleDuration = 300;
+	public static int defDuration = 300;
+	public static int denialDuration = 60;
+	//--------------------------------------------
+	
+	
+	/*-------------booleany do wysy³ania----------XXX to send
 	public static boolean isPlayerPoisoned = false;
 	public static boolean isPlayerSlowDown = false;
 	public static boolean isPlayerFlying = false;
 	public static boolean isPlayerDenialed = false;
 	public static boolean isPlayerInvincible = false;
 	public static boolean isPlayerDef = false;
-	public static float Player_Dmg_reduction = 1f;
-	public static int flyingDuration = 300;
-	public static int InvincibleDuration = 300;
-	public static int defDuration = 300;
-	//--------------------------------------------
-	
-	
-	public static boolean isClasic = false;
-	public static boolean isMoving = false;
 	public static boolean isShoting = false;
 	public static boolean isJumping = false;
 	public static boolean isPlayerLeft = false;
 	public static boolean isCrouch = false;
-	public static boolean isCrouch_prest = false;
+	public static boolean isUsingSkill = false;
 	public static boolean isClimbingUp = false;
 	public static boolean isClimbingDown = false;
-	public static boolean isClimbing = false;
-	public static boolean isUsingSkill = false;
-	public static boolean isSkillPressed = false;
-	public static boolean canSkill1 = true;
-	public static boolean canSkill2 = true;
-	public static boolean canSkill3 = true;
-	public static boolean canClimb = false;
+	public static boolean isMoving = false;
+	
 	public static boolean canMove = true;
-	
-	public static float GAME_PROJECTION_Y = 10f;
-	public static float GAME_PROJECTION_X;
-	public static final float GAME_METER = (1/GAME_PROJECTION_Y)/80;
-	public static final float GAME_ACCELERATION = 10 * GAME_METER;
-	public static final float GAME_GROUND_FRICTION = GAME_ACCELERATION;
-	public static final float GAME_AIR_FRICTION = GAME_ACCELERATION/4;
-	public static final float PLAYER_SIZE = 1;
-
-	
-	public static final int PLAYER_BULLET_FREQUENCY = 10; 
-	public static final float PLAYER_LIVE_MAX = 100;
-	public static final float PLAYER_CLIMBING_SPEED = 0.1f;
 	
 	public static float Player_x =3f;
 	public static float Player_y =5f;
@@ -134,22 +149,25 @@ public class YoloEngine {
 	public static float Player_vy =0;
 	public static float Player_vx = 0f;
 	public static float PlayerLive = 100;
-
+	public static final int PLAYER_BULLET_FREQUENCY = 10; 
+	public static final float PLAYER_LIVE_MAX = 100;
+	*///--------------------------------------------
+	public static boolean isClasic = false;
+	public static boolean isCrouch_prest = false;
+	public static boolean isClimbing = false;
+	public static boolean isSkillPressed = false;
+	public static boolean canSkill1 = true;
+	public static boolean canSkill2 = true;
+	public static boolean canSkill3 = true;
+	public static boolean canClimb = false;
+	
+	
+	public static final float PLAYER_CLIMBING_SPEED = 0.1f;
 	
 	public static Display display;
 	public static float display_x; 
 	public static float display_y; 
 	
-	
-	//Multislayer SEND XXX
-	public static int SkillSprite1 = 24; //MiHu baza danych
-	public static int SkillSprite2 = 24; //MiHu baza danych
-	public static int SkillSprite3 = 25; //MiHu baza danych
-	
-	public static int animationSlowdown2 = 0;
-	public static float animationDuration2 = 0f;
-	public static int animationSlowdown3 = 10;
-	public static float animationDuration3 = 1f;
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	
@@ -160,7 +178,7 @@ public class YoloEngine {
     public static String playerParticipantID;
     public static int playerID;
     public static int IDTracer =0;
-    public static boolean playerTeam; // 0 - teamA, 1 - teamB
+    public static boolean playerTeam = false; // 0 - teamA, 1 - teamB
 
     public static List<String> teamA = new ArrayList<String>(2);
     public static List<String> teamB = new ArrayList<String>(2);
