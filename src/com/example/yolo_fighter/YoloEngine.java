@@ -22,13 +22,10 @@ public class YoloEngine {
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
-	//public static YoloPlayer player = new YoloPlayer();
 	public static YoloPlayer[] TeamAB = new YoloPlayer[4];
-	//public static YoloPlayer[] TeamB = new YoloPlayer[2];
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
-	//public static YoloObject[] ObjectTab = new YoloObject[17];
 	
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
 	public static final int ARCHER_SPRITE = R.drawable.archer_sprite;
@@ -68,7 +65,6 @@ public class YoloEngine {
 	public static float MOVE_Y = 50;
 	public static float BUTTON_JUMP_SIZE = 100;
 	public static float LIVE_BAR_SIZE = 350;
-    public static float SMALL_LIVE_BAR_SIZE = 100; //@TODO Bartek
     public static float LEVEL_scale =0.75f;
 	public static float LEVEL_X = 2400;
 	public static float LEVEL_Y = 1440;
@@ -81,7 +77,6 @@ public class YoloEngine {
 	public static final float GAME_GROUND_FRICTION = GAME_ACCELERATION;
 	public static final float GAME_AIR_FRICTION = GAME_ACCELERATION/4;
 	public static float LIFE_BAR_Y = TY/10f;
-	//public static final float PLAYER_SIZE = 1;
 	//--------------------------------------------
 	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;
@@ -124,34 +119,6 @@ public class YoloEngine {
 	public static int denialDuration = 60;
 	//--------------------------------------------
 	
-	
-	/*-------------booleany do wysy³ania----------XXX to send
-	public static boolean isPlayerPoisoned = false;
-	public static boolean isPlayerSlowDown = false;
-	public static boolean isPlayerFlying = false;
-	public static boolean isPlayerDenialed = false;
-	public static boolean isPlayerInvincible = false;
-	public static boolean isPlayerDef = false;
-	public static boolean isShoting = false;
-	public static boolean isJumping = false;
-	public static boolean isPlayerLeft = false;
-	public static boolean isCrouch = false;
-	public static boolean isUsingSkill = false;
-	public static boolean isClimbingUp = false;
-	public static boolean isClimbingDown = false;
-	public static boolean isMoving = false;
-	
-	public static boolean canMove = true;
-	
-	public static float Player_x =3f;
-	public static float Player_y =5f;
-	
-	public static float Player_vy =0;
-	public static float Player_vx = 0f;
-	public static float PlayerLive = 100;
-	public static final int PLAYER_BULLET_FREQUENCY = 10; 
-	public static final float PLAYER_LIVE_MAX = 100;
-	*///--------------------------------------------
 	public static boolean isClasic = false;
 	public static boolean isCrouch_prest = false;
 	public static boolean isClimbing = false;
@@ -214,8 +181,6 @@ public class YoloEngine {
 	
 	// ------------------------- Multislayer END -------------------------
 	
-	
-	
 //------------------------------Menu----------------------------------------------------------------------	
    public static int whichLayout = 0;
    public static boolean enableSound = true;
@@ -228,9 +193,6 @@ public class YoloEngine {
 	public static int ST3Cost = 0;
 	public static int ST4Cost = 0;
 	
-
-
-
 	public static Context context;
 
 

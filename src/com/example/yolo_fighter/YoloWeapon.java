@@ -12,15 +12,11 @@ public class YoloWeapon extends YoloObject {
 	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
 	
-	
-	//public float x,y;
 	public float x_texture,y_texture;
-	//public float size;
 	public float damage;
 	public boolean isLeft,team;
 	public float bulletSpeed;
 	public int sprite,count=0,couter=0;
-	//public float scale = 1f;
 
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,
