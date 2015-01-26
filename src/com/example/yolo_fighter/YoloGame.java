@@ -352,8 +352,8 @@ public class YoloGame extends Activity{
 	
 	@Override
 	protected void onResume(){
-		YoloEngine.TeamAB[YoloEngine.MyID].x = 0;
-		YoloEngine.TeamAB[YoloEngine.MyID].y = 3f;
+		YoloEngine.TeamAB[YoloEngine.MyID].x = 3;
+		YoloEngine.TeamAB[YoloEngine.MyID].y = 5f;
 		YoloGameRenderer.first = false;
 		YoloGameRenderer.toLoad = true;
 		super.onResume();
@@ -362,8 +362,8 @@ public class YoloGame extends Activity{
 	@Override
 	protected void onPause()
 	{
-		YoloEngine.TeamAB[YoloEngine.MyID].x = 0;
-		YoloEngine.TeamAB[YoloEngine.MyID].y = 3f;
+		YoloEngine.TeamAB[YoloEngine.MyID].x = 3;
+		YoloEngine.TeamAB[YoloEngine.MyID].y = 5f;
 		YoloGameRenderer.first = false;
 		YoloGameRenderer.toLoad = true;
 		super.onPause();

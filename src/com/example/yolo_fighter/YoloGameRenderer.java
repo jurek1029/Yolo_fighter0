@@ -1071,7 +1071,7 @@ public class YoloGameRenderer implements Renderer {
 		//====================================================LOADING===============================================================
 		
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		
+
 		if(toLoad && first)
 			Load(gl);
 		else
@@ -1473,6 +1473,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void drawBackground(GL10 gl)
 	{
+		System.out.println(YoloEngine.TeamAB[0].x+" "+half_fx);
 		if(YoloEngine.TeamAB[YoloEngine.MyID].x > half_fx && YoloEngine.TeamAB[YoloEngine.MyID].x < YoloEngine.LEVEL_X/YoloEngine.TX -  half_bx  )
 		{
 			gl.glMatrixMode(GL10.GL_PROJECTION);
@@ -2864,7 +2865,15 @@ public class YoloGameRenderer implements Renderer {
 		gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
 		
 	}
-
+	public static void onResume(GL10 gl)
+	{
+		gl.glEnable(GL10.GL_TEXTURE_2D);
+		gl.glClearDepthf(1.0f);
+		gl.glEnable(GL10.GL_DEPTH_TEST);
+		gl.glDepthFunc(GL10.GL_LEQUAL);
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+	}
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
@@ -2888,14 +2897,16 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y*YoloEngine.LEVEL_scale; 
 		YoloEngine.GAME_PROJECTION_X = YoloEngine.display_x/YoloEngine.LEVEL_SIZE_X;
 		YoloEngine.GAME_PROJECTION_Y = YoloEngine.display_y/YoloEngine.LEVEL_SIZE_Y;
-		YoloEngine.TEXTURE_SIZE_X /=YoloEngine.display_x/YoloEngine.LEVEL_scale;
-		YoloEngine.TEXTURE_SIZE_Y /=YoloEngine.display_y/YoloEngine.LEVEL_scale;
-		YoloEngine.LIFE_BAR_Y/=YoloEngine.display_y/YoloEngine.LEVEL_scale;
+		YoloEngine.TEXTURE_SIZE_X = YoloEngine.TX/(YoloEngine.display_x/YoloEngine.LEVEL_scale);
+		YoloEngine.TEXTURE_SIZE_Y = YoloEngine.TY/(YoloEngine.display_y/YoloEngine.LEVEL_scale);
+		YoloEngine.LIFE_BAR_Y =YoloEngine.TY/10f/(YoloEngine.display_y/YoloEngine.LEVEL_scale);
 		half_fx = (1f/YoloEngine.TEXTURE_SIZE_X/2f -.5f);
 		half_bx = (1f/YoloEngine.TEXTURE_SIZE_X/2f +.5f);
 		half_fy = (1f/YoloEngine.TEXTURE_SIZE_Y/2f -.5f);
 		half_by = (1f/YoloEngine.TEXTURE_SIZE_Y/2f +.5f);
 		givePlayerID();
+		
+		System.out.println(YoloEngine.TeamAB[0].x+" "+YoloEngine.TeamAB[0].y);
 		
 		ObjectTab[0] = new YoloObject(0,1330,2400,110);
 		ObjectTab[1] = new YoloObject(37, 671, 2301, 115);
