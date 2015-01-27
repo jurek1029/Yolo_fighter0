@@ -1102,35 +1102,88 @@ public void skills2angelBtnClick(View v) {
 	      switch(v.getId()) {
 	        case R.id.Skill2angel_icicleBtn:
 	        	currentSkill2Checked = 19;
-	        	description.setText("icicle");
+	        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2angel_thunderBtn:
 	        	currentSkill2Checked = 5;
-	        	description.setText("thunder");
+	        	description.setText("Any enemy hiding somewhere? Flush him out with your lightning.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
+	        case R.id.Skill2angel_piorunBtn:
+	        	currentSkill2Checked = 26;
+	        	description.setText("Magic bullets forged by no one else but Zeus dazzle your enemies.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
 	        case R.id.Skill2angel_healBtn:
-	        	currentSkill2Checked = 104;
-	        	description.setText("heal");
+	        	currentSkill2Checked = 102;
+	        	description.setText("Everybody make mistakes. Heal yourself and forget about it.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
+	        case R.id.Skill2angel_heal2Btn:
+	        	currentSkill2Checked = 104;
+	        	description.setText("Heal yourself and your friends.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
+	        case R.id.Skill2angel_warmthBtn:
+	        	currentSkill2Checked = 14;
+	        	description.setText("Small aura following you heals you and your friends.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
+	        case R.id.Skill2angel_potionBtn:
+	        	currentSkill2Checked = 27;
+	        	description.setText("Long lasting, but effective healing.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;    
+	        case R.id.Skill2angel_shockwaveBtn:
+	        	currentSkill2Checked = 18;
+	        	description.setText("Freeze your enemies and leave them in the lurch. Or in the grace of your weapon.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
 	        case R.id.Skill2angel_smokeBtn:
 	        	currentSkill2Checked = 20;
-	        	description.setText("smoke");
+	        	description.setText("Smoke denudes sight of the battlefield.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;  
 	        case R.id.Skill2angel_trapBtn:
-	        	currentSkill2Checked = 18;
-	        	description.setText("trap");
+	        	currentSkill2Checked = 13;
+	        	description.setText("Lay a trap for all these fo(ol)es and freeze them.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break; 
-	        
+	        case R.id.Skill2angel_wingsBtn:
+	        	currentSkill2Checked = 23;
+	        	description.setText("What are these wings for? For flying of course.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
+	        case R.id.Skill2angel_denialBtn:
+	        	currentSkill2Checked = 28;
+	        	description.setText("Use their bullets against themselves. Return projectiles to sender.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
+	        case R.id.Skill2angel_defBtn:
+	        	currentSkill2Checked = 24;
+	        	description.setText("Decrease quantity of damage you receive by increasing your defence.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;  
+	        case R.id.Skill2angel_infinityBtn:
+	        	currentSkill2Checked = 25;
+	        	description.setText("They will run a mile. Become immortal for the short period of time.");
+	        	lvl.setText("10lvl");
+	        	cost.setText("400");
+	          break;
 	      }
 	}
 	
@@ -1147,30 +1200,76 @@ public void skill2angelEqBtnClick(View v){
 	float animationDuration = 0f;
 	switch(currentSkill2Checked) {
 	case 18:
-    	currentSkill.setBackgroundResource(R.drawable.skillangelcloud1);
+    	currentSkill.setBackgroundResource(R.drawable.skillangelshockwave1);
     	animationSlowdown = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+    	animationDuration = 0f;
       break;
 	case 19:
     	currentSkill.setBackgroundResource(R.drawable.skillangelicicle1);
     	animationSlowdown = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+    	animationDuration = 0f;
       break;
 	case 5:
     	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
     	animationSlowdown = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+    	animationDuration = 0f;
       break;
+	case 26:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelpiorun1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
+      break;
+
 	case 20:
     	currentSkill.setBackgroundResource(R.drawable.skillangelsmoke1);
     	animationSlowdown = 301;
-    	//YoloEngine.animationDuration2 = 57f;
+    	animationDuration = 0f;
+      break;
+	case 102:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
       break;
 	case 104:
     	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
     	animationSlowdown = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+    	animationDuration = 0f;
       break;
+	case 14:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelwarmth1);
+    	animationSlowdown = 6;
+    	animationDuration = 1f;
+      break;  
+	case 27:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelpotion1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
+      break;
+	case 13:
+    	currentSkill.setBackgroundResource(R.drawable.skillangeltrap1);
+    	animationSlowdown = 0;
+    	animationDuration = 32f;
+      break;  
+	case 23:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelwings1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
+      break;
+	case 25:
+    	currentSkill.setBackgroundResource(R.drawable.skillangelinfinity1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
+      break; 
+	case 28:
+    	currentSkill.setBackgroundResource(R.drawable.skillangeldenial1);
+    	animationSlowdown = 0;
+    	animationDuration = 60f;
+      break; 
+	case 24:
+    	currentSkill.setBackgroundResource(R.drawable.skillangeldef1);
+    	animationSlowdown = 0;
+    	animationDuration = 0f;
+      break; 
   }
 	if (v.getId()==R.id.Skill2EqBtn)
 	{
