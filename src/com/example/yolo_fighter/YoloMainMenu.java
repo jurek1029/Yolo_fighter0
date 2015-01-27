@@ -824,73 +824,73 @@ public class YoloMainMenu extends Activity
 	      switch(v.getId()) {
 	        case R.id.Skill2necromancer_poisonBtn:
 	        	currentSkill2Checked = 4;
-	        	description.setText("poison");
+	        	description.setText("Empoison your enemies with a cloud of toxic gas.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_archerBtn:
 	        	currentSkill2Checked = 6;
-	        	description.setText("archer");
+	        	description.setText("Summon a dangerous archer firing with a bow from a long distance.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_warriorBtn:
 	        	currentSkill2Checked = 7;
-	        	description.setText("warrior");
+	        	description.setText("Warrior will pursue enemies and bereave them of any chance of survival.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_mummyBtn:
 	        	currentSkill2Checked = 8;
-	        	description.setText("mummy");
+	        	description.setText("Dead mummy will be bane of your yet living enemies.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_handBtn:
 	        	currentSkill2Checked = 9;
-	        	description.setText("hand");
+	        	description.setText("Summon a rough hand striking out from a short distance.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_barrelBtn:
 	        	currentSkill2Checked = 10;
-	        	description.setText("barrel");
+	        	description.setText("Throw a rolling barrel filled with explosive materials.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_towerBtn:
 	        	currentSkill2Checked = 11;
-	        	description.setText("tower");
+	        	description.setText("Tower absorbs bullets and fires with bolts.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_wallBtn:
 	        	currentSkill2Checked = 12;
-	        	description.setText("wall");
+	        	description.setText("Build a defensive wall which absorbs deadly bullets.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_lifedrainBtn:
 	        	currentSkill2Checked = 108;
-	        	description.setText("life drain");
+	        	description.setText("Suck oomph of your enemies depriving them of grace of life.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	        	break;
 	        case R.id.Skill2necromancer_resurrectionBtn:
 	        	currentSkill2Checked = 109;
-	        	description.setText("resurrection");
+	        	description.setText("Raise your allies to reach ultimate success.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_spikeBtn:
 	        	currentSkill2Checked = 15;
-	        	description.setText("spikes");
+	        	description.setText("Exsert lethal spikes from the ground.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
 	        case R.id.Skill2necromancer_slowdownBtn:
 	        	currentSkill2Checked = 103;
-	        	description.setText("slowdown");
+	        	description.setText("Handicap your foes by inhibiting their movement.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
 	          break;
