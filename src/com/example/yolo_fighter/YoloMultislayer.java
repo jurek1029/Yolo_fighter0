@@ -205,7 +205,7 @@ public class YoloMultislayer {
                 bbf.put((byte)1);
             else
                 bbf.put((byte)0);
-            bbf.putFloat(YoloEngine.PlayerLive);
+            bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive);
 
             sendMessageToAll(bbf.array());
         }
@@ -315,7 +315,7 @@ public class YoloMultislayer {
     public void sendMaxLife() {
     	ByteBuffer bbf = ByteBuffer.allocate(10);
     	bbf.putChar('m');
-    	bbf.putFloat(YoloEngine.PLAYER_LIVE_MAX);
+    	bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX);
     	
     	sendMessageToAllreliable(bbf.array());
     }

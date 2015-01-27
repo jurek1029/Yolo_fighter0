@@ -14,5 +14,5 @@ public class YoloGameView extends GLSurfaceView{
 		this.setRenderer(renderer);
 		
 	}
-
+	
 }
