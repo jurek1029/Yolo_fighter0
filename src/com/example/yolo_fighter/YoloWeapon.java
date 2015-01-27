@@ -80,6 +80,7 @@ public class YoloWeapon extends YoloObject {
 	
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{
+		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, spriteSheet[number]);
 		gl.glFrontFace(GL10.GL_CCW);
 		gl.glEnable(GL10.GL_CULL_FACE);
@@ -92,6 +93,7 @@ public class YoloWeapon extends YoloObject {
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisable(GL10.GL_CULL_FACE);
+		gl.glDisable(GL10.GL_TEXTURE_2D);
 	}
 	
 }

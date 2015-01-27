@@ -80,9 +80,9 @@ public class YoloEngine {
 	//--------------------------------------------
 	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;
-	public static int SKILL1_COOLDOWN = 10;
-	public static int SKILL2_COOLDOWN = 100;
-	public static int SKILL3_COOLDOWN = 200;
+	public static int SKILL1_COOLDOWN = 16;
+	public static int SKILL2_COOLDOWN = 104;
+	public static int SKILL3_COOLDOWN = 208;
 	
 	//Multislayer SEND XXX
 	public static int SkillSprite1 = 109; //MiHu baza danych

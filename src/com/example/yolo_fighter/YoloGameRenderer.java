@@ -6,9 +6,8 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.google.android.gms.internal.in;
-
 import android.opengl.GLSurfaceView.Renderer;
+import android.opengl.GLU;
 
 class HitBox extends YoloObject
 {
@@ -1009,6 +1008,7 @@ public class YoloGameRenderer implements Renderer {
 	private YoloTexture TextureLoader ;
 	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground();
 	private YoloWeapon btn = new YoloWeapon(0,0);
+	private Triangle roti0,roti1,roti2;
 	
 	public static YoloObject[] ObjectTab = new YoloObject[17];
 	private YoloObject[] LaddreTab = new YoloObject[4];
@@ -1236,6 +1236,7 @@ public class YoloGameRenderer implements Renderer {
 			drawBackground(gl);
 			drawPlayerSkills(gl);	
 			moveBullets(gl);
+			
 			if(YoloEngine.playerTeam == YoloEngine.TeamA) 
 			{
 				YoloEngine.TeamAB[0].drawAlly(gl,YoloEngine.MyID==0?false:true);
@@ -1246,6 +1247,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[2].drawAlly(gl,YoloEngine.MyID==2?false:true);
 				YoloEngine.TeamAB[3].drawAlly(gl,YoloEngine.MyID==3?false:true);
 			}
+			
 			drawOponentSkills(gl);
 			hitBox();
 			if(YoloEngine.playerTeam == YoloEngine.TeamA)
@@ -1262,6 +1264,7 @@ public class YoloGameRenderer implements Renderer {
 			else nextBullet = 0;
 			drawControls(gl);
 			drawButtons(gl);
+			drawSkillCoolDown(gl);
 		}
 
 		gl.glEnable(GL10.GL_BLEND);
@@ -1466,14 +1469,13 @@ public class YoloGameRenderer implements Renderer {
 		}
 		drawSt(gl, shotBtnX + XADD, shotBtnY + YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.TeamAB[YoloEngine.MyID].isShoting? .25f : .375f , 0, true);
 
-		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.canSkill1? 0 : .125f, .125f, true);
-		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.canSkill2? 0 : .125f, .125f, true);
-		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.canSkill3? 0 : .125f, .125f, true);
+		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0 , .125f, true);
+		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0, .125f, true);
+		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0 , .125f, true);
 	}
 	
 	private void drawBackground(GL10 gl)
 	{
-		System.out.println(YoloEngine.TeamAB[0].x+" "+half_fx);
 		if(YoloEngine.TeamAB[YoloEngine.MyID].x > half_fx && YoloEngine.TeamAB[YoloEngine.MyID].x < YoloEngine.LEVEL_X/YoloEngine.TX -  half_bx  )
 		{
 			gl.glMatrixMode(GL10.GL_PROJECTION);
@@ -2838,6 +2840,43 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
+	private void drawSkillCoolDown(GL10 gl)
+	{
+		if(!YoloEngine.canSkill1)
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			roti0.draw(gl, S1cooldown);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		
+		if(!YoloEngine.canSkill2)
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			roti1.draw(gl, S2cooldown);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		
+		if(!YoloEngine.canSkill3)
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			roti2.draw(gl, S3cooldown);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		
+	}
+	
 	public static void givePlayerID()//wykonywane przy do�aczeniu gracza
 	{
 		try
@@ -2865,26 +2904,19 @@ public class YoloGameRenderer implements Renderer {
 		gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
 		
 	}
-	public static void onResume(GL10 gl)
-	{
-		gl.glEnable(GL10.GL_TEXTURE_2D);
-		gl.glClearDepthf(1.0f);
-		gl.glEnable(GL10.GL_DEPTH_TEST);
-		gl.glDepthFunc(GL10.GL_LEQUAL);
-		gl.glEnable(GL10.GL_BLEND);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-	}
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
-		gl.glEnable(GL10.GL_TEXTURE_2D);
-		gl.glClearDepthf(1.0f);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	    //gl.glEnable(GL10.GL_TEXTURE_2D);
+	    gl.glClearDepthf(1.0f);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL10.GL_LEQUAL);
-	//	gl.glEnable(GL10.GL_BLEND);
-	//	gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
 		gl.glEnable(GL10.GL_BLEND);
-		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
+			
+		//gl.glEnable(GL10.GL_BLEND);
+		//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 //-------------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
 		TextureLoader = new YoloTexture(gl,30);
@@ -2892,7 +2924,7 @@ public class YoloGameRenderer implements Renderer {
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
-//------------------------------------------INICJOWANIE OBIEKT�W FIZYCZNYCH----------------------------------		
+		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x*YoloEngine.LEVEL_scale; 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y*YoloEngine.LEVEL_scale; 
 		YoloEngine.GAME_PROJECTION_X = YoloEngine.display_x/YoloEngine.LEVEL_SIZE_X;
@@ -2904,10 +2936,15 @@ public class YoloGameRenderer implements Renderer {
 		half_bx = (1f/YoloEngine.TEXTURE_SIZE_X/2f +.5f);
 		half_fy = (1f/YoloEngine.TEXTURE_SIZE_Y/2f -.5f);
 		half_by = (1f/YoloEngine.TEXTURE_SIZE_Y/2f +.5f);
+
+		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL1_COOLDOWN);
+		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL2_COOLDOWN);
+		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL3_COOLDOWN);
 		givePlayerID();
 		
-		System.out.println(YoloEngine.TeamAB[0].x+" "+YoloEngine.TeamAB[0].y);
+		System.out.println(skillBtnX+" "+ 0+" "+ 100/YoloEngine.display_x+" "+ 100/YoloEngine.display_y);
 		
+//------------------------------------------INICJOWANIE OBIEKT�W FIZYCZNYCH----------------------------------		
 		ObjectTab[0] = new YoloObject(0,1330,2400,110);
 		ObjectTab[1] = new YoloObject(37, 671, 2301, 115);
 		ObjectTab[2] = new YoloObject(209,495,383,53);

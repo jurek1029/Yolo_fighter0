@@ -93,6 +93,7 @@ public YoloBackground(){
 	
 	public void draw(GL10 gl)
 	{
+		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 		gl.glFrontFace(GL10.GL_CCW);
 		gl.glEnable(GL10.GL_CULL_FACE);
@@ -105,6 +106,7 @@ public YoloBackground(){
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisable(GL10.GL_CULL_FACE);
+		gl.glDisable(GL10.GL_TEXTURE_2D);
 	}
 	
 }
