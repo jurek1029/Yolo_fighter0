@@ -55,14 +55,15 @@
             android:onClick="joinClick" />
     </LinearLayout>
     
-    <LinearLayout 
-    	android:layout_width="match_parent"
-   		android:layout_height="match_parent"
-    	android:orientation="horizontal" >
-        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
         <HorizontalScrollView
-            android:layout_width="400dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="75"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -127,8 +128,8 @@
                         android:background="@drawable/skillnecromancerarcher1"
                         android:onClick="skills2necromancerBtnClick" />
                 </RelativeLayout>
-				
-                 <Button
+
+                <Button
                     android:id="@+id/Skill2necromancer_lifedrainBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -137,8 +138,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerlifesuck1"
                     android:onClick="skills2necromancerBtnClick" />
-                
-                 <Button
+
+                <Button
                     android:id="@+id/Skill2necromancer_resurrectionBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -147,8 +148,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerresurrection1"
                     android:onClick="skills2necromancerBtnClick" />
-                 
-                 <Button
+
+                <Button
                     android:id="@+id/Skill2necromancer_spikeBtn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -156,9 +157,8 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerspike1"
-                    android:onClick="skills2necromancerBtnClick" 
-                    />
-                 
+                    android:onClick="skills2necromancerBtnClick" />
+
                 <Button
                     android:id="@+id/Skill2necromancer_barrelBtn"
                     android:layout_width="0dp"
@@ -177,7 +177,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancerslowdown1"
-                    android:onClick="skills2necromancerBtnClick"  />
+                    android:onClick="skills2necromancerBtnClick" />
 
                 <Button
                     android:id="@+id/Skill2necromancer_towerBtn"
@@ -187,7 +187,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/skillnecromancertower1"
-                    android:onClick="skills2necromancerBtnClick"  />
+                    android:onClick="skills2necromancerBtnClick" />
 
                 <Button
                     android:id="@+id/Skill2necromancer_wallBtn"
@@ -199,12 +199,12 @@
                     android:background="@drawable/skillnecromancerwall1"
                     android:onClick="skills2necromancerBtnClick" />
             </LinearLayout>
-
         </HorizontalScrollView>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="25"
             android:orientation="vertical" >
 
             <TextView
@@ -222,6 +222,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="lvl" />
+
             <TextView
                 android:id="@+id/skill2necromancercost"
                 android:layout_width="wrap_content"
@@ -230,64 +231,56 @@
                 android:layout_weight="1"
                 android:text="cost" />
 
-            
-       <LinearLayout 
-    	android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-    	android:orientation="horizontal" >
-
-           <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="match_parent"
-               android:layout_weight="1"
-               android:orientation="vertical" >
-
-                 <Button
-                android:id="@+id/currentSkillNecromancer2"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/emptyslot"
-             />
+                android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/Skill2EqBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="BUY/EQUIP"
-                android:onClick="skill2necromancerEqBtnClick" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
 
-           </LinearLayout>
-           
-              <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="match_parent"
-               android:layout_weight="1"
-               android:orientation="vertical" >
+                    <Button
+                        android:id="@+id/currentSkillNecromancer2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/emptyslot" />
 
-               <Button
-                android:id="@+id/currentSkillNecromancer3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/emptyslot"
-               />
+                    <Button
+                        android:id="@+id/Skill2EqBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="skill2necromancerEqBtnClick"
+                        android:text="BUY/EQUIP" />
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/Skill3EqBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="BUY/EQUIP"
-                android:onClick="skill3necromancerEqBtnClick" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
 
-           </LinearLayout>
+                    <Button
+                        android:id="@+id/currentSkillNecromancer3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/emptyslot" />
 
-        </LinearLayout> 
- 
+                    <Button
+                        android:id="@+id/Skill3EqBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="skill2necromancerEqBtnClick"
+                        android:text="BUY/EQUIP" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-          
     </LinearLayout>
 
 </LinearLayout>
