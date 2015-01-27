@@ -77,6 +77,9 @@ public class YoloEngine {
 	public static final float GAME_GROUND_FRICTION = GAME_ACCELERATION;
 	public static final float GAME_AIR_FRICTION = GAME_ACCELERATION/4;
 	public static float LIFE_BAR_Y = TY/10f;
+	public static float r1 =1;
+	public static float r2 =5;
+	public static float r3 =5;
 	//--------------------------------------------
 	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;

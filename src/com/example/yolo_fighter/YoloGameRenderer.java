@@ -1059,7 +1059,8 @@ public class YoloGameRenderer implements Renderer {
 	private int nextBullet = 0;
 	private boolean onGround = true;
 	private int ClimbingOn;
-	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0;
+	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,
+				s1=0,s2=0,s3=0;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -1223,14 +1224,29 @@ public class YoloGameRenderer implements Renderer {
 			//-------------------------------------------------------SKILLS------------------------------------------------------------
 			YoloEngine.GAME_SKIPED_FRAMES = (int) (loopRunTime/YoloEngine.GAME_THREAD_FSP_SLEEP + 1);
 			
-			if(YoloEngine.canSkill1 == false)S1cooldown++;
-			if(YoloEngine.canSkill2 == false)S2cooldown++;
-			if(YoloEngine.canSkill3 == false)S3cooldown++;
 			
-			if(YoloEngine.SKILL1_COOLDOWN == S1cooldown){S1cooldown = 0; YoloEngine.canSkill1 = true;}
-			if(YoloEngine.SKILL2_COOLDOWN == S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;}
-			if(YoloEngine.SKILL3_COOLDOWN == S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;}
+			if(YoloEngine.canSkill1 == false ){S1cooldown++;s1++;System.out.println(s1);}
+			if(YoloEngine.canSkill2 == false ){S2cooldown++;s2++;System.out.println(s2);}
+			if(YoloEngine.canSkill3 == false ){S3cooldown++;s3++;System.out.println(s3);}
+			
+			if(YoloEngine.SKILL1_COOLDOWN <= S1cooldown){S1cooldown = 0; YoloEngine.canSkill1 = true;s1=0;}
+			if(YoloEngine.SKILL2_COOLDOWN <= S2cooldown){S2cooldown = 0; YoloEngine.canSkill2 = true;s2=0;}
+			if(YoloEngine.SKILL3_COOLDOWN <= S3cooldown){S3cooldown = 0; YoloEngine.canSkill3 = true;s3=0;}
 		
+			if(s1 >= YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1 && s1 < YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1 + 30 )s1+=30/(2*YoloEngine.r1)-1;
+			else if(s1 >= 3*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 30 && s1 < 3*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 60 )s1+=30/(2*YoloEngine.r1)-1;
+			else if(s1 >= 5*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 60 && s1 < 5*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 90 )s1+=30/(2*YoloEngine.r1)-1;
+			else if(s1 >= 7*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 90 && s1 < 7*(YoloEngine.SKILL1_COOLDOWN/8-YoloEngine.r1) + 120 )s1+=30/(2*YoloEngine.r1)-1;
+			
+			if(s2 >= YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2 && s2 < (YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 30 )s2+=30/(2*YoloEngine.r2)-1;
+			else if(s2 >= 3*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 30 && s2 < 3*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 60 )s2+=30/(2*YoloEngine.r2)-1;
+			else if(s2 >= 5*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 60 && s2 < 5*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 90 )s2+=30/(2*YoloEngine.r2)-1;
+			else if(s2 >= 7*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 90 && s2 < 7*(YoloEngine.SKILL2_COOLDOWN/8-YoloEngine.r2) + 120 )s2+=30/(2*YoloEngine.r2)-1;
+			
+			if(s3 >= YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3 && s3 < (YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 30 )s3+=30/(2*YoloEngine.r3)-1;
+			else if(s3 >= 3*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 30 && s3 < 3*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 60 )s3+=30/(2*YoloEngine.r3)-1;
+			else if(s3 >= 5*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 60 && s3 < 5*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 90 )s3+=30/(2*YoloEngine.r3)-1;
+			else if(s3 >= 7*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 90 && s3 < 7*(YoloEngine.SKILL3_COOLDOWN/8-YoloEngine.r3) + 120 )s3+=30/(2*YoloEngine.r3)-1;
 			//--------------------------------------------------------------------------------------------------------------------------	
 			
 			drawBackground(gl);
@@ -2848,7 +2864,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glTranslatef(XADD, YADD, 0);
-			roti0.draw(gl, S1cooldown);
+			roti0.draw(gl, s1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
@@ -2859,7 +2875,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glTranslatef(XADD, YADD, 0);
-			roti1.draw(gl, S2cooldown);
+			roti1.draw(gl, s2);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
@@ -2870,7 +2886,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glTranslatef(XADD, YADD, 0);
-			roti2.draw(gl, S3cooldown);
+			roti2.draw(gl, s3);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
@@ -2937,9 +2953,9 @@ public class YoloGameRenderer implements Renderer {
 		half_fy = (1f/YoloEngine.TEXTURE_SIZE_Y/2f -.5f);
 		half_by = (1f/YoloEngine.TEXTURE_SIZE_Y/2f +.5f);
 
-		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL1_COOLDOWN);
-		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL2_COOLDOWN);
-		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL3_COOLDOWN);
+		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL1_COOLDOWN,YoloEngine.r1);
+		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL2_COOLDOWN,YoloEngine.r2);
+		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL3_COOLDOWN,YoloEngine.r3);
 		givePlayerID();
 		
 		System.out.println(skillBtnX+" "+ 0+" "+ 100/YoloEngine.display_x+" "+ 100/YoloEngine.display_y);
