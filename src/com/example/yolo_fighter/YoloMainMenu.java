@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -52,6 +53,7 @@ public class YoloMainMenu extends Activity
 	int newPlayerRace = 0;
 	int currentSkill1Checked = 0;
 	int currentSkill2Checked = 0;
+	private SharedPreferences preferences;
 	
 // ------------------------- Multislayer BEGIN -----------------------
 	
@@ -292,7 +294,8 @@ public class YoloMainMenu extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-
+		preferences=getSharedPreferences("daneGra", Activity.MODE_PRIVATE);
+		
         setMasterSyncAutomatically(true); // AUTO SYNC niezbędny dla wysyłania zaproszeń
 		
 // ------------------------- Multislayer BEGIN -----------------------
@@ -400,7 +403,7 @@ public class YoloMainMenu extends Activity
 		
 		dbm.close();
 		
-		
+		/*
 		final Animation animMove = AnimationUtils.loadAnimation(this, R.layout.move);
 		final Animation animMove2 = AnimationUtils.loadAnimation(this, R.layout.move);
 		final Animation animMove3 = AnimationUtils.loadAnimation(this, R.layout.move);
@@ -417,7 +420,7 @@ public class YoloMainMenu extends Activity
 		
 		playBtn.startAnimation(animMove);
 		skillsBtn.startAnimation(animMove2);
-		optionsBtn.startAnimation(animMove3);
+		optionsBtn.startAnimation(animMove3);*/
 	}
 	
 	
@@ -425,22 +428,25 @@ public class YoloMainMenu extends Activity
 	public void optionsClick(View v)
 	{
 		YoloEngine.whichLayout = 1;
-		/*Button isClasicBtn = (Button) findViewById(R.id.btnIsClasic);
-		if(YoloEngine.isClasic==true) {
-			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsoffbtn);
+		setContentView(R.layout.options_menu);
+		Button isClasicBtn = (Button) findViewById(R.id.btnIsClasic);
+		boolean isClasic =preferences.getBoolean("isClasic", false);
+		if(isClasic==true) {
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnon);
 		}
 		else {
-			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsonbtn);
+			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnoff);
 		}
 		Button soundBtn = (Button) findViewById(R.id.btnSound);
-		if(YoloEngine.enableSound==true) {
-			soundBtn.setBackgroundResource(R.drawable.soundonbtn);
+		boolean enableSound =preferences.getBoolean("enableSound", true);
+		if(enableSound==true) {
+			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnon);
 		}
 		else {
-			soundBtn.setBackgroundResource(R.drawable.soundoffbtn);
+			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnoff);
 		}
-		*/
-		setContentView(R.layout.options_menu);
+		
+		
 		
 	}
 	
@@ -456,7 +462,8 @@ public class YoloMainMenu extends Activity
 		YoloEngine.whichLayout = 1;
 		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
 		else{
-		YoloEngine.currentPlayerInfo = plInfoList.get(YoloEngine.currentPlayerInfoPosition);
+		int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
+		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
@@ -511,7 +518,7 @@ public class YoloMainMenu extends Activity
 		
 	//	List<String> plNames = new ArrayList<String>(plInfoList.size());
 	//	ArrayList<Integer> plIDs = new ArrayList<Integer>(plInfoList.size());
-		
+		//XXX
 		plNames.clear();
 		plIDs.clear();
 		for(int i=0;i<plInfoList.size(); i++)
@@ -523,7 +530,8 @@ public class YoloMainMenu extends Activity
 		
 		//int currentID = plIDs.get(YoloEngine.currentPlayerInfoPosition);
 		//YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
-		YoloEngine.currentPlayerInfo = plInfoList.get(YoloEngine.currentPlayerInfoPosition);
+		int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
+		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
 		//System.out.println(YoloEngine.currentPlayerInfoPosition+"lojo");
 		
 		Spinner spinner =  (Spinner) findViewById(R.id.spinner);
@@ -532,12 +540,15 @@ public class YoloMainMenu extends Activity
 		
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(spinnerArrayAdapter);
-		spinner.setSelection(YoloEngine.currentPlayerInfoPosition);
+		spinner.setSelection(currentPlayerInfoPosition);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 	        public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
 	        	int currentID = plIDs.get(position);
-	        	YoloEngine.currentPlayerInfoPosition = position;
+	        	SharedPreferences.Editor preferencesEditor = preferences.edit();
+	        	int currentPlayerInfoPosition = position;
+	        	preferencesEditor.putInt("currentPlInfPos", currentPlayerInfoPosition);
+	    		preferencesEditor.commit();
 	        	//System.out.println(position+"!!!!!!!!!!!!!!!!!!");
 	    		YoloEngine.currentPlayerInfo = dbm.getPlayerInfo(currentID);
 	    		//skillsClick(view);
@@ -635,6 +646,10 @@ public class YoloMainMenu extends Activity
 	public void deletePlayerClick(View v)
 	{
 		dbm.deletePlayer(YoloEngine.currentPlayerInfo.getID());
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+    	int currentPlayerInfoPosition = 0;
+    	preferencesEditor.putInt("currentPlInfPos", currentPlayerInfoPosition);
+		preferencesEditor.commit();
 		skillsClick(v);
 	}
 	//TODO do plus�w trzeba doda� zmian� STcost
@@ -702,7 +717,12 @@ public class YoloMainMenu extends Activity
 		newPlayerInfo.setName(plName);
 		newPlayerInfo.setRace(newPlayerRace);
 		dbm.addPlayer(newPlayerInfo);
-		
+		//TODO
+		plInfoList=dbm.getAll();
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+    	int currentPlayerInfoPosition = plInfoList.size()-1;
+    	preferencesEditor.putInt("currentPlInfPos", currentPlayerInfoPosition);
+		preferencesEditor.commit();
 		skillsClick(v);
 	}
 	
@@ -710,28 +730,36 @@ public class YoloMainMenu extends Activity
 	//-------------------options menu-----------------------------------------
 	public void isClasicClick(View v)
 	{
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+		boolean isClasic =preferences.getBoolean("isClasic", false);
 		Button isClasicBtn = (Button) findViewById(R.id.btnIsClasic);
-		if(YoloEngine.isClasic==true) {
-			YoloEngine.isClasic = false;
+		if(isClasic==true) {
+			isClasic = false;
 			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnoff);
 		}
 		else {
-			YoloEngine.isClasic = true;
+			isClasic = true;
 			isClasicBtn.setBackgroundResource(R.drawable.classiccontrolsbtnon);
 		}
+		preferencesEditor.putBoolean("isClasic", isClasic);
+		preferencesEditor.commit();
 	}
 	
 	public void soundClick(View v)
 	{
+		SharedPreferences.Editor preferencesEditor = preferences.edit();
+		boolean enableSound =preferences.getBoolean("enableSound", true);
 		Button soundBtn = (Button) findViewById(R.id.btnSound);
-		if(YoloEngine.enableSound==true) {
-			YoloEngine.enableSound = false;
+		if(enableSound==true) {
+			enableSound = false;
 			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnoff);
 		}
 		else {
-			YoloEngine.enableSound = true;
+			enableSound = true;
 			soundBtn.setBackgroundResource(R.drawable.enablesoundbtnon);
 		}
+		preferencesEditor.putBoolean("enableSound", enableSound);
+		preferencesEditor.commit();
 	}
 	
 	public void backClick(View v)

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/menubg"
+    android:background="@drawable/menubg2"
     android:orientation="horizontal" >
 
     <!--
@@ -16,16 +16,37 @@
         android:layout_alignParentTop="true" />
     -->
 
-<RelativeLayout
-    android:layout_width="wrap_content"
+<LinearLayout 
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="23"
+	>
+</LinearLayout>
+<LinearLayout 
+    android:layout_width="0dp"
     android:layout_height="match_parent"
-    android:gravity="center" >
+    android:layout_weight="47"
+    android:orientation="vertical"
+	>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="40"
+ >
+    </LinearLayout>
 
-    <Button
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_gravity="left"
+    android:layout_weight="40"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+   <Button
         android:id="@+id/btnIsClasic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:onClick="isClasicClick"
         android:background="@drawable/classiccontrolsbtnoff" />
 
@@ -33,10 +54,6 @@
         android:id="@+id/btnSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-       	android:layout_below="@+id/btnIsClasic"
-       	android:layout_marginTop="20dp"
-      	android:layout_gravity="center"
         android:background="@drawable/enablesoundbtnon"
         android:onClick="soundClick" />
 
@@ -44,20 +61,22 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentLeft="true"
-       	android:layout_below="@+id/btnSound"
-       	android:layout_gravity="center"
         android:background="@drawable/backbtn"
         android:onClick="backClick" />
 
-</RelativeLayout>
-
+</LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="10"
+ >
+    </LinearLayout>
+</LinearLayout>
+<LinearLayout
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_weight="30" >
 
     <Button
         android:id="@+id/sign_out_button"
@@ -96,10 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:textColor="#ff0000"
-        android:text="" />
-
+        android:textColor="#ff0000" />
 </LinearLayout>
-
 
 </LinearLayout>

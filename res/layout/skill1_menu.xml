@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/menubgcolor" >
+    android:background="@drawable/playermenubg" >
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,6 @@
             android:id="@+id/playerBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
             android:layout_weight="1"
             android:background="@drawable/playertab"
             android:onClick="skillsClick" />
@@ -23,7 +22,6 @@
             android:id="@+id/weaponBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
             android:layout_weight="1"
             android:background="@drawable/weapontab"
             android:onClick="weaponClick" />
@@ -32,7 +30,6 @@
             android:id="@+id/skill1Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
             android:layout_weight="1"
             android:background="@drawable/skill1tab2"
             android:onClick="skill1Click" />
@@ -41,7 +38,6 @@
             android:id="@+id/skill2Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
             android:layout_weight="1"
             android:background="@drawable/skill2tab"
             android:onClick="skill2Click" />
