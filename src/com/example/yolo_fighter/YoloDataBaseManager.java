@@ -161,6 +161,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 		return playerInfo;
 	}
 	
+	
 	public void updatePlayer(YoloPlayerInfo playerInfo)
 	{
 		SQLiteDatabase db = getReadableDatabase();

@@ -187,10 +187,8 @@ public class YoloEngine {
 	
 //------------------------------Menu----------------------------------------------------------------------	
    public static int whichLayout = 0;
-   public static boolean enableSound = true;
 //-------------------Player Sats & Info-----------------------------------------------------------------	
 	public static YoloPlayerInfo currentPlayerInfo;	
-	public static int currentPlayerInfoPosition = 0;
 	
 	public static int ST1Cost = 0;
 	public static int ST2Cost = 0;
