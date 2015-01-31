@@ -17,7 +17,7 @@ public class YoloEngine {
 	public static final int MENU_BUTTON_ALPAH = 0;
 	public static final int BACKGROUND = R.drawable.level_01_1;
 	public static final int PLAYER_TEXTURE = R.drawable.player_sprite;
-	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite; //	Multislayer ZMIENIĆ NA ODDZIELNĄ
+	public static final int OPPONENT_TEXTURE = R.drawable.opponent_sprite;
 	public static final int BUTTON_TEXTURE = R.drawable.button_sprite;
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
@@ -56,6 +56,7 @@ public class YoloEngine {
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
+	public static float Y_DDROP = 0.25f;
 	public static float TEXTURE_SIZE_X = TX;
 	public static float TEXTURE_SIZE_Y = TY;
 	public static float MAX_VALUE_PLAYER_SPEED = 100;
@@ -146,7 +147,7 @@ public class YoloEngine {
 	public static int changesMade[] = new int[4];
 
     public static String playerParticipantID;
-    public static int playerID;
+   // public static int playerID;
     public static int IDTracer =0;
     public static boolean playerTeam = false; // 0 - teamA, 1 - teamB
 

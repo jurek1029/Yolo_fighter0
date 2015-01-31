@@ -163,28 +163,34 @@ public class YoloGame extends Activity{
 				}
 		 if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill) 
 			{
-			 x_skill = (x/YoloEngine.display_x)*YoloEngine.GAME_PROJECTION_X ;
-			 y_skill = ((YoloEngine.display_y-y)/YoloEngine.display_y)*YoloEngine.GAME_PROJECTION_Y;
+			 x_skill = (x/YoloEngine.TX)/YoloEngine.LEVEL_scale ;
+			 y_skill = ((YoloEngine.display_y-y)/YoloEngine.TY)/YoloEngine.LEVEL_scale;
 			 
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,0,.375f,0f,0f,20f,300f,100f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-					YoloGameRenderer.skillPlayerVe.add(newSkill);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    	YoloGameRenderer.skillTeamAVe.add(newSkill);
+                    else
+                    	YoloGameRenderer.skillTeamBVe.add(newSkill);
 					YoloEngine.canSkill1 = false;
-                    //YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
                     break;
 				case 1:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.animationSlowdown2,.125f, .375f,5f,5f,YoloEngine.animationDuration2,4f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    YoloGameRenderer.skillPlayerVe.add(newSkill);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)//skill przeciwnika
+                    	YoloGameRenderer.skillTeamAVe.add(newSkill);
+                    else
+                    	YoloGameRenderer.skillTeamBVe.add(newSkill);
                     YoloEngine.canSkill2 = false;
-                   // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				case 2:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.animationSlowdown3,.125f,0f,5f,5f,YoloEngine.animationDuration3,8f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    YoloGameRenderer.skillPlayerVe.add(newSkill);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    	YoloGameRenderer.skillTeamAVe.add(newSkill);
+                    else
+                    	YoloGameRenderer.skillTeamBVe.add(newSkill);
                     YoloEngine.canSkill3 = false;
-                   // YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 					break;
 				}
 			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;			
@@ -209,8 +215,10 @@ public class YoloGame extends Activity{
 			YoloEngine.display_y = YoloEngine.display.getHeight();
 		}
 		
-		for(int i=0;i<YoloEngine.TeamAB.length;i++)
-			YoloEngine.TeamAB[i] = new YoloPlayer(3f,10f);
+		YoloEngine.TeamAB[0] = new YoloPlayer(3f,10f,YoloEngine.playerTeam,0);
+		YoloEngine.TeamAB[1] = new YoloPlayer(3f,10f,YoloEngine.playerTeam,1);
+		YoloEngine.TeamAB[2] = new YoloPlayer(10f,8f,!YoloEngine.playerTeam,2);
+		YoloEngine.TeamAB[3] = new YoloPlayer(9f,8f,!YoloEngine.playerTeam,3);
 		
 		super.onCreate(savedInstanceState);
 		gameView = new YoloGameView(this);
@@ -383,8 +391,8 @@ public class YoloGame extends Activity{
 	public void onBackPressed() {
 		
 			YoloEngine.whichLayout=0;
-			YoloGameRenderer.skillOponentVe.clear();
-			YoloGameRenderer.skillPlayerVe.clear();
+			YoloGameRenderer.skillTeamBVe.clear();
+			YoloGameRenderer.skillTeamAVe.clear();
 			Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
 			YoloGame.this.startActivity(mainMenu);
 			YoloEngine.context = getApplicationContext();
