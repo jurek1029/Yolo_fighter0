@@ -1440,6 +1440,7 @@ public class YoloGameRenderer implements Renderer {
 			,skillBtnX = .5f - 50f/YoloEngine.display_x //  1/(MOVE_BALL_SIZE_X*2)/2
 			,liveBarX_0 = 25f/YoloEngine.display_x //(0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
 			,joyBallX1
+			,joyBackX1
 			,XADD = 0; 
 
 	private float cameraPosY
@@ -1448,6 +1449,7 @@ public class YoloGameRenderer implements Renderer {
 			,crouchBtnY = 25f/YoloEngine.display_y
 			,liveBarY = 1-55f/YoloEngine.display_y // 1f/LIVE_BAR_SIZE_Y -1.75f;// 1-(25+30)/dis_x
 			,joyBallY1
+			,joyBackY1
 			,YADD = 0; 
 	
 	public static boolean toLoad = true,first = false;
@@ -1864,9 +1866,11 @@ public class YoloGameRenderer implements Renderer {
 		}
 		else
 		{
-			joyBallX1 = (YoloGame.x2-60f)/YoloEngine.display_x; // MOVE_POS_X1*2 + .5f - ((YoloGame.x_old-YoloGame.x2)/YoloEngine.display_x)/MOVE_SIZE_X1;//(x2+25-80)/dis_x
-			joyBallY1 = (YoloGame.y2+65f)/YoloEngine.display_y; // MOVE_SIZE_Y1 +.5f + YoloGame.y2/YoloEngine.display_y/MOVE_SIZE_Y1;// (y2+25+40)/dis_y
-			drawSt(gl, MOVE_POS_X1 + XADD, MOVE_POS_Y1 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
+			joyBallX1 = (YoloGame.x_old+YoloGame.x2-40f)/YoloEngine.display_x; // MOVE_POS_X1*2 + .5f - ((YoloGame.x_old-YoloGame.x2)/YoloEngine.display_x)/MOVE_SIZE_X1;//(x2+25-80)/dis_x
+			joyBallY1 = (YoloGame.y_old+YoloGame.y2-40f)/YoloEngine.display_y; // MOVE_SIZE_Y1 +.5f + YoloGame.y2/YoloEngine.display_y/MOVE_SIZE_Y1;// (y2+25+40)/dis_y
+			joyBackX1 = (YoloGame.x_old-80f)/YoloEngine.display_x; 
+			joyBackY1 = (YoloGame.y_old-80f)/YoloEngine.display_y;
+			drawSt(gl, joyBackX1 + XADD, joyBackY1 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
 			drawSt(gl, joyBallX1 + XADD, joyBallY1 + YADD, MOVE_SIZE_X1/2, MOVE_SIZE_Y1/2, .375f, .125f,true);
 		}
 

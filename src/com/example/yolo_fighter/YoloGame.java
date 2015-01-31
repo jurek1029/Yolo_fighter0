@@ -99,6 +99,8 @@ public class YoloGame extends Activity{
 	{
 		 if(x < 275)
 			{
+			    x_old = x; y_old = YoloEngine.display_y-y;
+			 	x2=YoloEngine.isClasic?x:0;
 				y2=0;
 				YoloEngine.TeamAB[YoloEngine.MyID].isMoving = true;
 			}
@@ -130,7 +132,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed)
+							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill1)
 							{
 								//YoloEngine.canSkill1 = false;
 								YoloEngine.isSkillPressed = true;
@@ -141,7 +143,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed)
+							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill2)
 							{
 								//YoloEngine.canSkill2 = false;
 								YoloEngine.isSkillPressed = true;
@@ -152,7 +154,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed)
+							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill3)
 							{
 								//YoloEngine.canSkill3 = false;
 								YoloEngine.isSkillPressed = true;
@@ -239,10 +241,9 @@ public class YoloGame extends Activity{
 		buttonSkillX = (1/(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)/2)*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)*YoloEngine.display_x;
 		buttonSkillY = YoloEngine.display_y;
 		
-		if(YoloEngine.isClasic)	y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2;
-		else y_old = YoloEngine.display_y - 105;
+		if(YoloEngine.isClasic){y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2; x = x_old;}
+		else{x2=-1000;y2 =-1000;x_old = -1000;y_old =-1000;}
 		
-		x2=x_old;
 		
 	}
 	
@@ -257,7 +258,7 @@ public class YoloGame extends Activity{
 		if(x < 275)
 			{
 				x2 = x;
-				y2 = y;
+				y2 = YoloEngine.display_y-y;
 			}
 		
 		switch(event.getActionMasked())
@@ -270,39 +271,31 @@ public class YoloGame extends Activity{
 					ActionMoveX();
 				else
 				{
-					ActionMoveX();
-					
-					y2 = y_old-y2;
-						
-					if(y2 < 0)
+					x2 = x2-x_old;
+					y2 = y2-y_old;
+					if(x2*x2 + y2*y2 >1600)
 					{
-						if(y2 < - 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED)
-							if(Math.sqrt(1600-(x2-x_old)*(x2-x_old)) < -y2)
-								y2 = -(float)Math.sqrt(1600-(x2-x_old)*(x2-x_old));
-							
-						if( y2 < -20)//YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
-							ActionDown();	
-						else
-						{
-							YoloEngine.isCrouch_prest = false;
-							YoloEngine.isClimbing = false;
-						}
+						x2 = (float) ((40*x2)/Math.sqrt(x2*x2+y2*y2));
+						y2 = (float) ((40*y2)/Math.sqrt(x2*x2+y2*y2));
 					}
+
+					if( y2 < -30)
+						ActionDown();	
 					else
 					{
-						//System.out.println(x2);
-						if(y2 > 40)//YoloEngine.MAX_VALUE_PLAYER_SPEED-80)
-							if(Math.sqrt(1600-(x2-x_old)*(x2-x_old))<y2)
-								y2 = (float)Math.sqrt(1600-(x2-x_old)*(x2-x_old));
-							
-						if( y2 > 20)//YoloEngine.MAX_VALUE_PLAYER_SPEED /2)
-							ActionUp();
-						else 
-						{
-							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
-							YoloEngine.isClimbing = false;
-						}
+						YoloEngine.isCrouch_prest = false;
+						YoloEngine.isClimbing = false;
 					}
+
+					if( y2 > 30)
+						ActionUp();
+					else 
+					{
+						YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
+						YoloEngine.isClimbing = false;
+					}
+					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?15000f:7500f);
+					
 				}
 	
 				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
@@ -327,8 +320,10 @@ public class YoloGame extends Activity{
 					YoloEngine.isCrouch_prest = false;
 					if(x > 275)
 						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
-					x2=x_old;
-					y2=0;
+					x2=-1000;
+					y2=-1000;
+					x_old = - 1000;
+					y_old = - 1000;
 					if(YoloEngine.isSkillPressed)
 					{
 						YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = true;
@@ -347,9 +342,10 @@ public class YoloGame extends Activity{
 					YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 					YoloEngine.isCrouch_prest= false;
 					
-					x2=x_old;
-					y2=0;
-					
+					x2=-1000;
+					y2=-1000;
+					x_old = - 1000;
+					y_old = - 1000;
 					if(YoloEngine.isSkillPressed)
 					{
 						YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = true;
