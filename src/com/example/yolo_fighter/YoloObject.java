@@ -20,7 +20,7 @@ public class YoloObject {
 		dx=1f;
 		dy=1f;
 	}
-	YoloObject(float x,float y,int dx,int dy)
+	YoloObject(float x,float y,float dx,float dy)
 	{
 		this.x = x;
 		this.y = y;

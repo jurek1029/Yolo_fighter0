@@ -79,7 +79,7 @@ public class YoloMultislayer {
                     if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false;
                     else YoloEngine.playerTeam = true;
                     
-                    YoloGameRenderer.givePlayerID();
+                  //  YoloGameRenderer.givePlayerID();
                     break;
 
 				case 'f':
@@ -95,8 +95,10 @@ public class YoloMultislayer {
 					break;
 
 				case 's':
-					YoloGameRenderer.skillOponentVe.add(new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData
-							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false));
+					/* W imieniu towarzysza Iosif Wissarionowicz Dzugaszwili Stalina anektujemy ten teren ku lepszemu Zwiaskowi Socjalistycznemu Republik Radzieckich 
+					YoloGameRenderer.skillOponentVe.add(new Skill(new SkillData(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData
+							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false,rcvData.getInt())));
+							*/
 					break;
                 case 'i':
                     YoloEngine.IDTracer = rcvData.getInt();

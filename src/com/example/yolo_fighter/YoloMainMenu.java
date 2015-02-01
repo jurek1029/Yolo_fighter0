@@ -160,7 +160,7 @@ public class YoloMainMenu extends Activity
                     }
 
                     YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
-                    YoloGameRenderer.givePlayerID();
+                  //  YoloGameRenderer.givePlayerID();
                 }
                 
                 YoloEngine.mMultislayer.sendMaxLife();
@@ -1511,8 +1511,8 @@ public void onBackPressed() {
 		setContentView(R.layout.main_menu);
 	}
 	else {  
-		YoloGameRenderer.skillOponentVe.clear();
-		YoloGameRenderer.skillPlayerVe.clear();
+		YoloGameRenderer.skillTeamBVe.clear();
+		YoloGameRenderer.skillTeamAVe.clear();
 		finish();
 	//Intent intent = new Intent(Intent.ACTION_MAIN);
 	 //  intent.addCategory(Intent.CATEGORY_HOME);
