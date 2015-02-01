@@ -23,13 +23,9 @@ public class YoloGame extends Activity{
 	
 	private void ActionUp()
 	{
-		if(YoloEngine.canClimb)
+		if(!YoloEngine.isClimbing)
 		{
-			if(!YoloEngine.isClimbing)
-			{
-				YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
-				YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
-			}
+			YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
 			YoloEngine.isClimbing = true;
 		}
 		if(!YoloEngine.TeamAB[YoloEngine.MyID].isJumping)
@@ -45,24 +41,19 @@ public class YoloGame extends Activity{
 	
 	private void ActionDown()
 	{
-		if(YoloEngine.canClimb)
+
+		if(!YoloEngine.isClimbing)
 		{
-			if(!YoloEngine.isClimbing)
-			{
-				YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
-				YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
-			}
+			YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
 			YoloEngine.isClimbing = true;
 		}
-		else
-		{
-			if(!YoloEngine.isCrouch_prest)
-				if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)
-					YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
-				else
-					YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = true;
-			YoloEngine.isCrouch_prest = true;
-		}
+		else	
+		if(!YoloEngine.isCrouch_prest)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)
+				YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
+			else
+				YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = true;
+		YoloEngine.isCrouch_prest = true;
 	}
 	
 	private void ActionMoveX()

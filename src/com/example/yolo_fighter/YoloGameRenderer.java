@@ -1426,8 +1426,8 @@ public class YoloGameRenderer implements Renderer {
 	private final float MOVE_BALL_SIZE_X = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_x; // 50/display_x
 	private final float MOVE_POS_X = 25f/YoloEngine.display_x;//(YoloEngine.MOVE_X/YoloEngine.display_x - MOVE_SIZE_X/2);// /MOVE_SIZE_X;  (125-100)/display_x
 	private final float MOVE_POS_Y = 50f/YoloEngine.display_y; //(YoloEngine.display_y - YoloEngine.MOVE_Y)/YoloEngine.display_y + MOVE_SIZE_Y/2; // 25/display_y == move_y/2/display_y
-	private final float MOVE_POS_X1= (25f/YoloEngine.display_x);// /MOVE_SIZE_X1 ;
-	private final float MOVE_POS_Y1= (25f/YoloEngine.display_y);// /MOVE_SIZE_Y1 ; 
+//	private final float MOVE_POS_X1= (25f/YoloEngine.display_x);// /MOVE_SIZE_X1 ;
+//	private final float MOVE_POS_Y1= (25f/YoloEngine.display_y);// /MOVE_SIZE_Y1 ; 
 	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x;
 	private float LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0;
 	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y;
@@ -1484,6 +1484,7 @@ public class YoloGameRenderer implements Renderer {
 			YoloEngine.TeamAB[YoloEngine.MyID].y += YoloEngine.TeamAB[YoloEngine.MyID].vy;
 			if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
 			{
+				
 				YoloEngine.TeamAB[YoloEngine.MyID].vy -= YoloEngine.GAME_ACCELERATION;
 				
 				for(int i = 0; i < ObjectTab.length; i++)
@@ -1534,31 +1535,50 @@ public class YoloGameRenderer implements Renderer {
 					YoloEngine.TeamAB[YoloEngine.MyID].x += YoloEngine.TeamAB[YoloEngine.MyID].vx;
 			
 			
-	//------------------------------------------------------DARBINY---------------------------------------------------------------FIXME Drabiny
+	//------------------------------------------------------DARBINY---------------------------------------------------------------
+			System.out.println(YoloEngine.TeamAB[YoloEngine.MyID].canMove);
 			for (int i = 0;i < LaddreTab.length;i++)
 			{
 				if(IsCollided(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[i]))
 				{
-					YoloEngine.canClimb = true;
+					
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp)
 					{
-						ClimbingOn = i;
-						YoloEngine.TeamAB[YoloEngine.MyID].vy = YoloEngine.PLAYER_CLIMBING_SPEED;
+						if(YoloEngine.TeamAB[YoloEngine.MyID].y+1 < LaddreTab[i].y + LaddreTab[i].dy )
+						{
+							ClimbingOn = i;
+							YoloEngine.TeamAB[YoloEngine.MyID].vy = YoloEngine.PLAYER_CLIMBING_SPEED;
+						//	YoloEngine.canClimb = false;
+							YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
+						}
 					}
 					else if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown)
 						{
 							ClimbingOn = i;
-							YoloEngine.TeamAB[YoloEngine.MyID].vy = -YoloEngine.PLAYER_CLIMBING_SPEED;
+							if(YoloEngine.TeamAB[YoloEngine.MyID].y > LaddreTab[i].y )
+								YoloEngine.TeamAB[YoloEngine.MyID].vy = -YoloEngine.PLAYER_CLIMBING_SPEED;
+						//	YoloEngine.canClimb = false;
+							YoloEngine.TeamAB[YoloEngine.MyID].canMove =  false;
 						}
 					
 					break;
 				}
-				YoloEngine.canClimb = false;
+				//YoloEngine.canClimb = true;
 				
 			}
-			if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown || YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp && YoloEngine.TeamAB[YoloEngine.MyID].canMove ==  false)
 			{
 				if(!IsCollided(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[ClimbingOn]))
+				{
+					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
+					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].vy = 0;
+				}
+			}
+			if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown  && YoloEngine.TeamAB[YoloEngine.MyID].canMove ==  false)
+			{
+				if(YoloEngine.TeamAB[YoloEngine.MyID].y < LaddreTab[ClimbingOn].y )
 				{
 					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
@@ -3129,10 +3149,10 @@ public class YoloGameRenderer implements Renderer {
 		ObjectTab[15] = new YoloObject(370, 990, 516, 96);
 		ObjectTab[16] = new YoloObject(1113, 990, 1020, 122);
 	
-		LaddreTab[0]= new YoloObject(552, 659, 81, 316);
-		LaddreTab[1]= new YoloObject(1388, 666, 85, 311);
-		LaddreTab[2]= new YoloObject(1808, 988, 82, 321);
-		LaddreTab[3]= new YoloObject(1876, 87, 81, 580);
+		LaddreTab[0]= new YoloObject(554, 616, 76, 331);
+		LaddreTab[1]= new YoloObject(1395, 621, 72, 326);
+		LaddreTab[2]= new YoloObject(1871, 947, 75, 340);
+		LaddreTab[3]= new YoloObject(1880, 40, 70, 595);
 		
 		YoloEngine.sprite_load[0] = true;
 		YoloEngine.sprite_load[1] = true;
