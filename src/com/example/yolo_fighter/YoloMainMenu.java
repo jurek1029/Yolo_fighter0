@@ -695,16 +695,35 @@ public class YoloMainMenu extends Activity
 	//--------------------- add Player menu--------------------------
 	public void angelClick(View v)
 	{
+		//TODO
+		Button buttonAng = (Button) findViewById(R.id.addAngelBtn);
+		Button buttonDev = (Button) findViewById(R.id.addDevilBtn);
+		Button buttonNecr = (Button) findViewById(R.id.addNecrBtn);
+		buttonAng.setBackgroundResource(R.drawable.angelbtn1);
+		buttonDev.setBackgroundResource(R.drawable.devilbtn2);
+		buttonNecr.setBackgroundResource(R.drawable.necromancerbtn2);
 		newPlayerRace = 0;
 	}
 	
 	public void devilClick(View v)
 	{
+		Button buttonAng = (Button) findViewById(R.id.addAngelBtn);
+		Button buttonDev = (Button) findViewById(R.id.addDevilBtn);
+		Button buttonNecr = (Button) findViewById(R.id.addNecrBtn);
+		buttonAng.setBackgroundResource(R.drawable.angelbtn2);
+		buttonDev.setBackgroundResource(R.drawable.devilbtn1);
+		buttonNecr.setBackgroundResource(R.drawable.necromancerbtn2);
 		newPlayerRace = 1;
 	}
 	
 	public void necromancerClick(View v)
 	{
+		Button buttonAng = (Button) findViewById(R.id.addAngelBtn);
+		Button buttonDev = (Button) findViewById(R.id.addDevilBtn);
+		Button buttonNecr = (Button) findViewById(R.id.addNecrBtn);
+		buttonAng.setBackgroundResource(R.drawable.angelbtn2);
+		buttonDev.setBackgroundResource(R.drawable.devilbtn2);
+		buttonNecr.setBackgroundResource(R.drawable.necromancerbtn1);
 		newPlayerRace = 2;
 	}
 	

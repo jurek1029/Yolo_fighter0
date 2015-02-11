@@ -358,7 +358,7 @@
                 android:layout_width="132dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:background="@drawable/addplayerbtn3"
+                android:background="@drawable/addplayerbtn"
                 android:onClick="addPlayerClick" />
 
             <Button
@@ -366,7 +366,7 @@
                 android:layout_width="132dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:background="@drawable/deleteplayerbtn3"
+                android:background="@drawable/deleteplayerbtn"
                 android:onClick="deletePlayerClick" />
         </LinearLayout>
     </LinearLayout>

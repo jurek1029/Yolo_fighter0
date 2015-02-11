@@ -44,16 +44,18 @@
     android:orientation="vertical" >
 
    <Button
-        android:id="@+id/btnIsClasic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="isClasicClick"
-        android:background="@drawable/classiccontrolsbtnoff" />
+       android:id="@+id/btnIsClasic"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="left"
+       android:background="@drawable/classiccontrolsbtnoff"
+       android:onClick="isClasicClick" />
 
     <Button
         android:id="@+id/btnSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:background="@drawable/enablesoundbtnon"
         android:onClick="soundClick" />
 
@@ -61,6 +63,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:background="@drawable/backbtn"
         android:onClick="backClick" />
 
