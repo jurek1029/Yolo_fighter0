@@ -163,7 +163,7 @@ public class YoloGame extends Activity{
 				{
 				case 0:
                     newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
@@ -289,29 +289,8 @@ public class YoloGame extends Activity{
 					
 				}
 	
-				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == false)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
-						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
-					}
-					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
-					YoloEngine.TeamAB[YoloEngine.MyID].setAction(2);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
-				}
-				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == true)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
-						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
-					}
-					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
-					YoloEngine.TeamAB[YoloEngine.MyID].setAction(3);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
-					
-				}
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 	
 				break;
 			}

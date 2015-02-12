@@ -43,7 +43,6 @@ public class YoloEngine {
 	public static final int TRAP_SPRITE = R.drawable.trap_sprite;
 	public static final int HEAL_SPRITE = R.drawable.heal_sprite;
 	public static final int HEAL_LONG_SPRITE = R.drawable.heal_long_sprite;
-	public static final int HEALLONG_SPRITE = R.drawable.heallong_sprite;
 	public static final int HEAL_LONG_RAD_SPRITE = R.drawable.heal_long_rad_sprite ;
 	public static final int SHOCK_WAVE_SPRITE = R.drawable.shockwave_sprite;
 	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
@@ -53,8 +52,7 @@ public class YoloEngine {
 	public static final int DENIAL_SPRITE = R.drawable.denial_sprite;
 	public static final int STAMINA_THIEF_SPRITE =0 ;
 	
-	public static int[] spriteSheets = new int[31];
-	 public static boolean[] sprite_load = new boolean[31];
+	public static int[] spriteSheets = new int[30];
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
@@ -91,7 +89,7 @@ public class YoloEngine {
 	public static int SKILL3_COOLDOWN = 208;
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 29; //MiHu baza danych
+	public static int SkillSprite1 = 109; //MiHu baza danych
 	public static int SkillSprite2 = 24; //MiHu baza danych
 	public static int SkillSprite3 = 25; //MiHu baza danych
 	
@@ -123,9 +121,6 @@ public class YoloEngine {
 	public static int InvincibleDuration = 300;
 	public static int defDuration = 300;
 	public static int denialDuration = 60;
-	public static int icicleDuration = 150;
-	public static int thunderDuration = 150;
-	public static int healingDuration = 300;
 	//--------------------------------------------
 	
 	public static boolean isClasic = false;
@@ -184,7 +179,7 @@ public class YoloEngine {
     public static float opponentsLife[] = new float[4];
     public static float opponentsLifeMax[] = new float[4];
 
-   
+    public static boolean[] sprite_load = new boolean[30];
 	
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	
