@@ -59,7 +59,7 @@ public class YoloEngine {
 	public static final int BUFF_EFFECE_SPRITE = R.drawable.buff_effect_sprite;
 	
 	public static int[] spriteSheets = new int[34];
-	 public static boolean[] sprite_load = new boolean[34];
+	public static boolean[] sprite_load = new boolean[40];
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
@@ -97,8 +97,8 @@ public class YoloEngine {
 	
 	//Multislayer SEND XXX
 	public static int SkillSprite1 = 33; //MiHu baza danych
-	public static int SkillSprite2 = 120; //MiHu baza danych
-	public static int SkillSprite3 = 33; //MiHu baza danych
+	public static int SkillSprite2 = 122; //MiHu baza danych
+	public static int SkillSprite3 = 119; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 0;
 	public static float animationDuration2 = 0f;
@@ -145,9 +145,7 @@ public class YoloEngine {
 	
 	
 	public static final float PLAYER_CLIMBING_SPEED = 0.1f;
-	public static final float PlayerMagCapasity = 30f;
-	public static float playerMag = PlayerMagCapasity;
-	public static int playerMagReloadTime = 100,reloading =0;
+	
 	public static Display display;
 	public static float display_x; 
 	public static float display_y; 
