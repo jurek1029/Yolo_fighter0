@@ -19,6 +19,7 @@ public class YoloPlayer extends YoloObject {
 	public boolean isPlayerInvincible = false;
 	public boolean isPlayerDef = false;
 	public boolean isPlayerFrozen = false;
+	public boolean isPlayerBuff = false;
 	public boolean isShoting = false;
 	public boolean isJumping = false;
 	public boolean isPlayerLeft = false;
@@ -40,14 +41,14 @@ public class YoloPlayer extends YoloObject {
 	public float PlayerLive = 100;
 	public final int PLAYER_BULLET_FREQUENCY = 10; 
 	public final float PLAYER_LIVE_MAX = 100;
-	public float Player_Dmg_reduction = 1f;
+	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0;
 	//public int ret=0;
-	int aniSlowCounter = 0, animation_slowdown = 0;
+	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0;
 	
-	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0;
-	public int fireSprite =0,firePause = 15;
-	public float fireDamage =1f;
+	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0;
+	public int fireSprite =0,fireCount = 0,firePause = 15;
+	public float fireDamage =1f,fireDamageBuff = fireDamage;
 	
 	private static float vertices[] = {
 			0.0f, 0.0f, 0.0f,
@@ -126,6 +127,7 @@ public class YoloPlayer extends YoloObject {
 		else
 		{
 			fireSprite =0;
+			fireCount =0;
 			fireDamage =1f;
 		}
 		
@@ -190,7 +192,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x + 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -206,7 +208,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.125f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -223,7 +225,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glColor4f(1f,1f,1f,1f);
 			gl.glTranslatef(0.375f,0.875f, 0f);
@@ -239,7 +241,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.25f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -257,7 +259,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.625f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -298,7 +300,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.5f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -306,6 +308,27 @@ public class YoloPlayer extends YoloObject {
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
+		if(isPlayerBuff)
+		{
+			fireDamage = fireDamageBuff * PlayerDmgBuff;
+			if(buffed--==0)
+			{
+				isPlayerBuff = false;
+				fireDamage = fireDamageBuff;
+			}
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(0.875f,0.875f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			draw(gl,YoloEngine.spriteSheets,1);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		iconcount =0;
 	}
 	public void drawOpponent(GL10 gl)
 	{
@@ -345,7 +368,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -361,7 +384,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.125f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -378,7 +401,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glColor4f(1f,1f,1f,1f);
 			gl.glTranslatef(0.375f,0.875f, 0f);
@@ -394,7 +417,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.25f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -412,7 +435,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.625f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -453,7 +476,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glTranslatef(0.5f,0.875f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
@@ -461,6 +484,27 @@ public class YoloPlayer extends YoloObject {
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
+		if(isPlayerBuff)
+		{
+			fireDamage = fireDamageBuff * PlayerDmgBuff;
+			if(buffed--==0)
+			{
+				isPlayerBuff = false;
+				fireDamage = fireDamageBuff;
+			}
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
+			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP+.25f, 0f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(0.875f,0.875f, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			draw(gl,YoloEngine.spriteSheets,1);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+		iconcount =0;
 	}
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{

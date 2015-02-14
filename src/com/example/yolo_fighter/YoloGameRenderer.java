@@ -7,6 +7,8 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.google.android.gms.internal.dp;
+
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 
@@ -43,7 +45,7 @@ class Skill extends YoloObject
 	int ret=100,j=0;
 	int animation_slowdown,aniSlowCounter = -1;
 	float scale_x=1f, scale_y=1f;
-	int poison_duration =0,slowDown_duration =0,frozen_duration =0;
+	int poison_duration =0,slowDown_duration =0,frozen_duration =0,lava_duration =0;
 	int fire_rate = 10,fireCounter =0;
 	int resurestion_count =0;
 	
@@ -280,6 +282,7 @@ class Skill extends YoloObject
     		setX();setY();
      		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
     		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
     		YoloEngine.TeamAB[YoloEngine.MyID].icice = YoloEngine.icicleDuration;
     		break;
     	case 20://Smoke weed everyday
@@ -330,6 +333,7 @@ class Skill extends YoloObject
     		damage = 5f;
     		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
     		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 4;
     		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
     		setX();setY();
     		break;
@@ -374,6 +378,87 @@ class Skill extends YoloObject
     		this.x = YoloEngine.TeamAB[YoloEngine.MyID].x;
     		this.y = YoloEngine.TeamAB[YoloEngine.MyID].y+.5f;
     		YoloEngine.TeamAB[YoloEngine.MyID].healing = YoloEngine.healingDuration; 
+    		break;
+    	case 30://Fire_ball
+    		xEnd = 0.875f;
+    		yEnd = 0f;
+    		x_radius = 1f;
+    		y_radius = 1f;
+    		frameDuration = 0;
+    		life = 0;MAXlife = life;
+    		animation_slowdown = 0;
+    		resurestion_count = 0;
+    		damage = 5f;
+    		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
+    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
+    		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
+    		setX();setY();
+    		break;
+    	case 31://Teleportacion
+    		xEnd = 0.375f;
+    		yEnd = 0.625f;
+    		x_radius = 0f;
+    		y_radius = 0f;
+    		frameDuration = 0;
+    		life = 0;MAXlife = life;
+    		animation_slowdown = 0;
+    		resurestion_count = 0;
+    		damage = 0f;
+    		setX();setY();
+    		if(team==YoloEngine.playerTeam)
+    		{
+	    		YoloEngine.TeamAB[YoloEngine.MyID].x = this.x;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].y = this.y;
+    		}
+    		break;
+    	case 32://Buff
+    		xEnd = 0.625f;
+    		yEnd = 0.375f;
+    		x_radius = 0.5f;
+    		y_radius = 0.5f;
+    		frameDuration = 0;
+    		life = 0;MAXlife = life;
+    		animation_slowdown = 0;
+    		resurestion_count = 0;
+    		damage = 3f;
+    		this.x = x;this.y =y;
+    		if(team==YoloEngine.playerTeam )
+    		{
+    			
+	    		  this.x =YoloEngine.TeamAB[YoloEngine.MyID].x;
+	    		  this.y =YoloEngine.TeamAB[YoloEngine.MyID].y+.25f;  
+    		}
+    		YoloGameRenderer.hitBoxs.add(new HitBox(this.x,this.y, x_radius, y_radius, damage,1,sprite,isLeft,team,true,id));
+    		
+    		break;
+    	case 33://Lava weed everyday
+    		xEnd = 0.125f;
+    		yEnd = 0.375f;
+    		x_radius = 10f;
+    		y_radius = 0.1f;
+    		frameDuration = lava_duration = 300;
+    		life = 0;MAXlife = life;
+    		animation_slowdown = 0;
+    		resurestion_count = 0;
+    		damage = 0.03f;
+    		scale_x = 15f;scale_y = 1f;
+    		setX();setY();
+    		float maxy=0;
+			for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
+			{
+				if(this.x+1f>YoloGameRenderer.ObjectTab[q].x && this.x<YoloGameRenderer.ObjectTab[q].x + YoloGameRenderer.ObjectTab[q].dx)
+				{
+					if(this.y>=YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy)
+						if(YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy>maxy)
+							maxy = YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy;
+				}
+			}
+			this.y = maxy;
+			this.x -= 7f;
+			YoloGameRenderer.hitBoxs.add(new HitBox(this.x,this.y, x_radius, y_radius, damage,frameDuration,sprite,isLeft,team,false,id));
+    		if(team == YoloEngine.playerTeam)
+    			YoloEngine.mMultislayer.sendHitBox(this.x,this.y, x_radius, y_radius, damage, frameDuration,sprite,isLeft,false,id);
     		break;
     	case 102://Heal
        		xEnd = 0.875f;
@@ -424,7 +509,30 @@ class Skill extends YoloObject
 			if(team == YoloEngine.playerTeam)
 				YoloEngine.mMultislayer.sendHitBox(this.x-x_radius/2f,this.y-y_radius/2f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,true,id);
     		break;
-    		
+    	case 119://buff_rad
+    		x_radius = 3f;
+    		y_radius = 3f;
+    		setX();setY();
+			YoloGameRenderer.hitBoxs.add(new HitBox(this.x-x_radius/2f,this.y-y_radius/2f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,true, id));
+			if(team == YoloEngine.playerTeam)
+				YoloEngine.mMultislayer.sendHitBox(this.x-x_radius/2f,this.y-y_radius/2f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,true,id);
+    		break;
+    	case 120://buff_team
+    		x_radius = 0.5f;
+    		y_radius = 0.5f;
+    		int p =(team == YoloEngine.TeamA?0:YoloEngine.TeamSize),k=YoloEngine.TeamSize + p;
+			for(int j =p;j<k;j++)
+			{
+				Skill skill = new Skill(YoloEngine.TeamAB[j].x,YoloEngine.TeamAB[j].y+0.25f,32,team);
+				skill.x = YoloEngine.TeamAB[j].x;
+				skill.y = YoloEngine.TeamAB[j].y+0.25f;
+				YoloGameRenderer.hitBoxs.add(new HitBox(skill.x,skill.y, x_radius, y_radius, damage,1,32,isLeft,team,true,id));
+				if(team == YoloEngine.TeamA)
+					YoloGameRenderer.skillTeamAVe.add(skill);
+				else
+					YoloGameRenderer.skillTeamBVe.add(skill);
+			}
+    		break;
     	}
     	YoloEngine.mMultislayer.sendMessageToAllreliable(this.serializeSkill());
     }
@@ -1431,7 +1539,7 @@ class Skill extends YoloObject
 public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
-	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground();
+	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground(),mag = new YoloBackground(YoloEngine.PlayerMagCapasity/30f);
 	private YoloWeapon btn = new YoloWeapon(0,0);
 	private Triangle roti0,roti1,roti2;
 	
@@ -1480,7 +1588,7 @@ public class YoloGameRenderer implements Renderer {
 			,YADD = 0; 
 	
 	public static boolean toLoad = true,first = false;
-	private int loading_faze=0,loadingStepsCout = 30;
+	private int loading_faze=0,loadingStepsCout = 33;
 	
 	
 	private int nextBullet = 1;
@@ -1711,7 +1819,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[3].drawAlly(gl,YoloEngine.MyID==3?false:true);
 			}
 			hitBox();
-			drawOponentSkills(gl);
+			
 			if(YoloEngine.playerTeam == YoloEngine.TeamA)
 			{
 				YoloEngine.TeamAB[2].drawOpponent(gl);
@@ -1722,14 +1830,22 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[0].drawOpponent(gl);
 				YoloEngine.TeamAB[1].drawOpponent(gl);
 			}
-			if(YoloEngine.TeamAB[YoloEngine.MyID].isShoting)nextBullet--;
-			if(nextBullet <= 0)
+			drawOponentSkills(gl);
+			if(nextBullet-- <= 0 && YoloEngine.TeamAB[YoloEngine.MyID].isShoting && YoloEngine.playerMag>0)
+			{
+				YoloEngine.playerMag--;
+				nextBullet = YoloEngine.TeamAB[YoloEngine.MyID].firePause;
+				playerFire(0.5f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,YoloEngine.TeamAB[YoloEngine.MyID].fireCount,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage);					
+			}
+			if(YoloEngine.playerMag==0)
+				if(YoloEngine.reloading++ == YoloEngine.playerMagReloadTime)
 				{
-					nextBullet = YoloEngine.TeamAB[YoloEngine.MyID].firePause;
-					playerFire(0.5f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,0,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage);
+					YoloEngine.reloading =0;
+					YoloEngine.playerMag = YoloEngine.PlayerMagCapasity;
 				}
 			drawPlayerSkills(gl);
 			drawControls(gl);
+			drawPlayerMag(gl);
 			drawButtons(gl);
 			drawSkillCoolDown(gl);
 		}
@@ -1750,7 +1866,7 @@ public class YoloGameRenderer implements Renderer {
 	private boolean IsCollided(YoloObject object1, YoloObject object2)
 	{
 		if(object1.x + object1.px + object1.dx < object2.x || object1.x + object1.px > object2.x + object2.dx)return false;
-		if(object1.y + object1.px + object1.dx < object2.y || object1.y + object1.px > object2.y + object2.dy)return false;
+		if(object1.y + object1.px + object1.dy < object2.y || object1.y + object1.px > object2.y + object2.dy)return false;
 		
 		return true;
 	}
@@ -1771,8 +1887,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
-		else
-			
+		else	
 		{
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
@@ -2168,9 +2283,29 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HEALLONG_SPRITE, YoloEngine.context, 29);
 				drawLoadingSrean(gl, 29f/loadingStepsCout);
 			break;
+		case 30:
+			if(YoloEngine.sprite_load[loading_faze])
+				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.FIRE_BALL_SPRITE, YoloEngine.context, 30);
+				drawLoadingSrean(gl, 30f/loadingStepsCout);
+			break;
+		case 31:
+			if(YoloEngine.sprite_load[loading_faze])
+				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.TELE_SPRITE, YoloEngine.context, 31);
+				drawLoadingSrean(gl, 31f/loadingStepsCout);
+			break;
+		case 32:
+			if(YoloEngine.sprite_load[loading_faze])
+				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUFF_EFFECE_SPRITE, YoloEngine.context, 32);
+				drawLoadingSrean(gl, 32f/loadingStepsCout);
+			break;
+		case 33:
+			if(YoloEngine.sprite_load[loading_faze])
+				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.LAVA_SPRITE, YoloEngine.context, 33);
+				drawLoadingSrean(gl, 33f/loadingStepsCout);
+			break;
 			//TODO Loading texturek skilli
 			
-		case 30:
+		case 34:
 			back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
 			toLoad = false;
 			break;
@@ -2178,7 +2313,7 @@ public class YoloGameRenderer implements Renderer {
 		loading_faze ++;
 	}
 	
-	private void playerFire(float bulletSpeed)
+	/*private void playerFire(float bulletSpeed)
 	{
 		if(nextBullet == 0)
 		{
@@ -2199,6 +2334,7 @@ public class YoloGameRenderer implements Renderer {
 		}
 		nextBullet--;
 	}
+	*/
 	public static void playerFire(float bulletSpeed,int sprite,int count,float damage)
 	{
 		bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
@@ -2208,6 +2344,7 @@ public class YoloGameRenderer implements Renderer {
 			bullet.sprite = sprite;
 			bullet.x_texture = 0f;
 			bullet.y_texture = 0f;
+			bullet.count = count;
 		//	bullet.size = 0.25f;
 			bullet.isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
 			Weapontab.add(bullet);
@@ -2650,6 +2787,8 @@ public class YoloGameRenderer implements Renderer {
 					}
 				}
 		}
+		if(sprite != 119)
+		{
 		int k = Team == YoloEngine.TeamB? skillTeamBVe.size():skillTeamAVe.size();
 		for(int j=0;j<k;j++)
 		{	
@@ -2719,6 +2858,7 @@ public class YoloGameRenderer implements Renderer {
 						}
 			}
 		}
+		}
 	}
 	
 	private void drawPlayerSkills(GL10 gl)
@@ -2763,6 +2903,15 @@ public class YoloGameRenderer implements Renderer {
 					continue;
 				}			
 			}
+			else if(sprite == 33)
+			{
+				LoopSkillDraw(gl, Ve.elementAt(i));
+				if(Ve.elementAt(i).lava_duration-- <= 0)
+				{
+					Ve.remove(i--);
+					continue;
+				}			
+			}
 			else
 			{		
 				if(Ve.elementAt(i).x_texture==0 && Ve.elementAt(i).y_texture==0)
@@ -2773,7 +2922,7 @@ public class YoloGameRenderer implements Renderer {
 						Ve.remove(i--);
 						continue;
 					}
-					else if(sprite == 104||sprite == 109)
+					else if(sprite == 104||sprite == 109||sprite == 119)
 					{
 						findingSkillinMy(i,YoloEngine.playerTeam);
 						Ve.remove(i--);
@@ -2789,8 +2938,11 @@ public class YoloGameRenderer implements Renderer {
 						Ve.remove(i);
 						continue;
 					}
-					else if(sprite == 102)
-						Ve.elementAt(i).sprite = 17;
+					else if(sprite == 120)
+					{
+						Ve.remove(i);
+						continue;
+					}
 
 				}
 					
@@ -2877,7 +3029,7 @@ public class YoloGameRenderer implements Renderer {
 						Ve.remove(i);
 						continue;
 					}
-					else if(sprite == 104||sprite == 109)
+					else if(sprite == 104||sprite == 109||sprite == 119)
 					{
 						findingSkillinMy(i,!YoloEngine.playerTeam);
 						Ve.remove(i);
@@ -2889,6 +3041,11 @@ public class YoloGameRenderer implements Renderer {
 						continue;
 					}
 					else if(sprite == 26)
+					{
+						Ve.remove(i);
+						continue;
+					}
+					else if(sprite == 120)
 					{
 						Ve.remove(i);
 						continue;
@@ -2979,6 +3136,11 @@ public class YoloGameRenderer implements Renderer {
 								YoloEngine.TeamAB[j].frozen = 100;
 								YoloEngine.TeamAB[j].isPlayerFrozen = true;
 								break;
+							case 32:
+								YoloEngine.TeamAB[j].buffed = YoloEngine.buffDuration;
+								YoloEngine.TeamAB[j].PlayerDmgBuff = hitBoxs.elementAt(i).damage;
+								YoloEngine.TeamAB[j].isPlayerBuff = true;
+								break;
 							case 109:
 								if(YoloEngine.TeamAB[j].PlayerLive<=0)
 									YoloEngine.TeamAB[j].PlayerLive = YoloEngine.TeamAB[j].PLAYER_LIVE_MAX/2;
@@ -2998,7 +3160,7 @@ public class YoloGameRenderer implements Renderer {
 								if(!YoloEngine.TeamAB[j].isPlayerInvincible)
 									YoloEngine.TeamAB[j].PlayerLive -= hitBoxs.elementAt(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
 							}
-							hitBoxs.elementAt(i).hitAIs.add(YoloEngine.TeamAB[j].playerID);
+							if(hitBoxs.elementAt(i).sprite!=33)hitBoxs.elementAt(i).hitAIs.add(YoloEngine.TeamAB[j].playerID);
 						}
 				
 				}
@@ -3034,6 +3196,8 @@ public class YoloGameRenderer implements Renderer {
 										case 18:
 											Ve.elementAt(j).frozen_duration = 100;
 											Ve.elementAt(j).isFrozen = true;
+											break;
+										case 32:
 											break;
 										case 103:
 											Ve.elementAt(j).slowDown_duration = 300;
@@ -3139,6 +3303,39 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void drawSkillCoolDown(GL10 gl)
 	{
+		if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill)
+		{
+			switch(YoloEngine.usedSkill)
+			{
+			case 0:
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glTranslatef(XADD, YADD, 0);
+				roti0.draw(gl, 0);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+				break;
+			case 1:
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glTranslatef(XADD, YADD, 0);
+				roti1.draw(gl, 0);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+				break;
+			case 2:
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glTranslatef(XADD, YADD, 0);
+				roti2.draw(gl, 0);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+				break;
+			}
+		}
 		if(!YoloEngine.canSkill1)
 		{
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -3172,6 +3369,20 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 		}
 		
+	}
+	private void drawPlayerMag(GL10 gl)
+	{
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef(25f/YoloEngine.display_x+XADD, 1-90f/YoloEngine.display_y+YADD, 0f);
+		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x)*(YoloEngine.playerMag/30f),LIVE_BAR_SIZE_Y, 1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glTranslatef(0f, 0.875f, 0f);
+		mag.drawPartial(gl,YoloEngine.playerMag/30f);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
 	}
 	
 	/*public static void givePlayerID()//wykonywane przy do�aczeniu gracza
@@ -3216,7 +3427,7 @@ public class YoloGameRenderer implements Renderer {
 		//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 //-------------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
-		TextureLoader = new YoloTexture(gl,31);
+		TextureLoader = new YoloTexture(gl,45);
 		back.loadTexture(gl, R.drawable.aniol_tlo_loading, YoloEngine.context);
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
@@ -3269,10 +3480,11 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[3] = true;
 		
 		// Mulstislayer po otrzymaniu XXX
-		YoloEngine.sprite_load[YoloEngine.SkillSprite1<30?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale�y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite2<30?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite3<30?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1<450?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale�y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
 		if(YoloEngine.SkillSprite3==14||YoloEngine.SkillSprite2==14||YoloEngine.SkillSprite1==14)YoloEngine.sprite_load[27]=true;
+		if(YoloEngine.SkillSprite3==120||YoloEngine.SkillSprite2==120||YoloEngine.SkillSprite1==120)YoloEngine.sprite_load[32]=true;
 		
 //-----------------------------------------------------------------------------------------------------------		
 	}

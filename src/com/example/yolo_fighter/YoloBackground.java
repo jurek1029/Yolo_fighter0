@@ -18,6 +18,7 @@ public class YoloBackground {
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer textureBuffer;
 	private ByteBuffer indexBuffer;
+	ByteBuffer byteBuf;
 	
 	private int[] textures = new int[1];
 	
@@ -58,6 +59,31 @@ public YoloBackground(){
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 	}
+public YoloBackground(float texPercent){
+	
+	texture = new float[] {
+			0.0f, 0.0f,
+			1f*texPercent, 0.0f,
+			1f*texPercent, 0.125f,
+			0.0f, 0.125f
+			};
+	
+	ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
+	byteBuf.order(ByteOrder.nativeOrder());
+	vertexBuffer = byteBuf.asFloatBuffer();
+	vertexBuffer.put(vertices);
+	vertexBuffer.position(0);
+	
+	byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
+	byteBuf.order(ByteOrder.nativeOrder());
+	textureBuffer = byteBuf.asFloatBuffer();
+	textureBuffer.put(texture);
+	textureBuffer.position(0);
+	
+	indexBuffer = ByteBuffer.allocateDirect(indices.length);
+	indexBuffer.put(indices);
+	indexBuffer.position(0);
+}
 	
 	public void loadTexture(GL10 gl, int texture, Context context)
 	{
@@ -95,6 +121,35 @@ public YoloBackground(){
 	{
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		gl.glFrontFace(GL10.GL_CCW);
+		gl.glEnable(GL10.GL_CULL_FACE);
+		gl.glCullFace(GL10.GL_BACK);
+		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+		gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
+		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		gl.glDisable(GL10.GL_CULL_FACE);
+		gl.glDisable(GL10.GL_TEXTURE_2D);
+	}
+	public void drawPartial(GL10 gl,float texPercent)
+	{
+		texture = new float[] {
+				0.0f, 0.0f,
+				1f*texPercent, 0.0f,
+				1f*texPercent, 0.125f,
+				0.0f, 0.125f
+				};
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+		
+		gl.glEnable(GL10.GL_TEXTURE_2D);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D,YoloEngine.spriteSheets[0]);
 		gl.glFrontFace(GL10.GL_CCW);
 		gl.glEnable(GL10.GL_CULL_FACE);
 		gl.glCullFace(GL10.GL_BACK);

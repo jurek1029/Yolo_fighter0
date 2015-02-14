@@ -464,6 +464,7 @@ public class YoloMainMenu extends Activity
 		else{
 		int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
 		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
+		
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
@@ -496,8 +497,9 @@ public class YoloMainMenu extends Activity
         	setContentView(R.layout.main_menu);
         	break;
 		}
-		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ();
+		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ(); 
 		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
+		
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
 		YoloMainMenu.this.startActivity(game);
 		finish();
