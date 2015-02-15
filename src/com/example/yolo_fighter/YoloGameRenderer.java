@@ -3195,32 +3195,8 @@ public class YoloGameRenderer implements Renderer {
 					}
 
 				}
-					
-				if(sprite == 23)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].flying == 0)
-					{
-						Ve.remove(i);
-						continue;
-					}
-				}
-				else if(sprite == 24)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].defed == 0)
-					{
-						Ve.remove(i);
-						continue;
-					}
-				}
-				else if(sprite == 25)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].invice == 0)
-					{
-						Ve.remove(i);
-						continue;
-					}
-				}
-				else if(sprite == 41)
+				
+				if(sprite == 41)
 					Ve.elementAt(i).x+=YoloEngine.WARRIOR_SPEED*2;
 				else if(sprite == 42)
 					Ve.elementAt(i).x-=YoloEngine.WARRIOR_SPEED*2;
@@ -3274,6 +3250,15 @@ public class YoloGameRenderer implements Renderer {
 					continue;
 				}			
 			}
+			else if(sprite == 33)
+			{
+				LoopSkillDraw(gl, Ve.elementAt(i));
+				if(Ve.elementAt(i).lava_duration-- <= 0)
+				{
+					Ve.remove(i--);
+					continue;
+				}			
+			}
 			else
 			{	
 				if(Ve.elementAt(i).x_texture==0 && Ve.elementAt(i).y_texture==0)
@@ -3305,33 +3290,10 @@ public class YoloGameRenderer implements Renderer {
 						continue;
 					}
 				
-				if(sprite == 23)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].flying-- == 0)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].isPlayerFlying = false;
-						Ve.remove(i);
-						continue;
-					}
-				}
-				else if(sprite == 24)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].defed-- == 0)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].isPlayerDef = false;
-						Ve.remove(i);
-						continue;
-					}
-				}
-				else if(sprite == 25)
-				{
-					if(YoloEngine.TeamAB[YoloEngine.MyID].invice-- == 0)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = false;
-						Ve.remove(i);
-						continue;
-					}
-				}
+				if(sprite == 41)
+					Ve.elementAt(i).x+=YoloEngine.WARRIOR_SPEED*2;
+				else if(sprite == 42)
+					Ve.elementAt(i).x-=YoloEngine.WARRIOR_SPEED*2;
 				
 				if(LinearSkillDraw(gl, Ve.elementAt(i)))
 				{

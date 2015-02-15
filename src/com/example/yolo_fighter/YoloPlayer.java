@@ -226,7 +226,10 @@ public class YoloPlayer extends YoloObject {
 		if(isPlayerFlying )
 		{
 			if(flying-- == 0)
+			{
 				isPlayerFlying = false;
+				YoloGame.flying =2;
+			}
 			
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
@@ -261,7 +264,10 @@ public class YoloPlayer extends YoloObject {
 		{
 			Player_Dmg_reduction = 0.5f;
 			if(defed-- == 0)
+			{
 				isPlayerDef = false;
+				Player_Dmg_reduction = 1;
+			}
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
