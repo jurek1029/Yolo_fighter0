@@ -57,9 +57,12 @@ public class YoloEngine {
 	public static final int TELE_SPRITE = R.drawable.teleportacja_sprite;
 	public static final int LAVA_SPRITE = R.drawable.lava_sprite;
 	public static final int BUFF_EFFECE_SPRITE = R.drawable.buff_effect_sprite;
+	public static final int THIEF_SPRITE = R.drawable.thief_sprite;
+	public static final int STAMINA_SPRITE  = R.drawable.stamina_sprite;
+	public static final int EARTHWAVE_SPRITE = R.drawable.earth_wave_sprite;
 	
-	public static int[] spriteSheets = new int[34];
-	public static boolean[] sprite_load = new boolean[40];
+	public static int[] spriteSheets = new int[42];
+	public static boolean[] sprite_load = new boolean[44];
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
@@ -97,8 +100,8 @@ public class YoloEngine {
 	
 	//Multislayer SEND XXX
 	public static int SkillSprite1 = 33; //MiHu baza danych
-	public static int SkillSprite2 = 122; //MiHu baza danych
-	public static int SkillSprite3 = 119; //MiHu baza danych
+	public static int SkillSprite2 = 127; //MiHu baza danych
+	public static int SkillSprite3 = 43; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 0;
 	public static float animationDuration2 = 0f;
@@ -138,9 +141,7 @@ public class YoloEngine {
 	public static boolean isCrouch_prest = false;
 	public static boolean isClimbing = false;
 	public static boolean isSkillPressed = false;
-	public static boolean canSkill1 = true;
-	public static boolean canSkill2 = true;
-	public static boolean canSkill3 = true;
+
 	public static boolean canClimb = false;
 	
 	

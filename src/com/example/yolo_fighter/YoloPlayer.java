@@ -27,6 +27,9 @@ public class YoloPlayer extends YoloObject {
 	public boolean isPlayerLeft = false;
 	public boolean isCrouch = false;
 	public boolean isUsingSkill = false;
+	public boolean canSkill1 = true;
+	public boolean canSkill2 = true;
+	public boolean canSkill3 = true;
 	public boolean isClimbingUp = false;
 	public boolean isClimbingDown = false;
 	public boolean isMoving = false;
@@ -45,7 +48,7 @@ public class YoloPlayer extends YoloObject {
 	public final float PLAYER_LIVE_MAX = 100;
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0;
-	//public int ret=0;
+	public int coin =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0;
 	
 	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0;
