@@ -43,6 +43,7 @@ public class YoloEngine {
 	public static final int TRAP_SPRITE = R.drawable.trap_sprite;
 	public static final int HEAL_SPRITE = R.drawable.heal_sprite;
 	public static final int HEAL_LONG_SPRITE = R.drawable.heal_long_sprite;
+	public static final int HEALLONG_SPRITE = R.drawable.heallong_sprite;
 	public static final int HEAL_LONG_RAD_SPRITE = R.drawable.heal_long_rad_sprite ;
 	public static final int SHOCK_WAVE_SPRITE = R.drawable.shockwave_sprite;
 	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
@@ -52,7 +53,16 @@ public class YoloEngine {
 	public static final int DENIAL_SPRITE = R.drawable.denial_sprite;
 	public static final int STAMINA_THIEF_SPRITE =0 ;
 	
-	public static int[] spriteSheets = new int[30];
+	public static final int FIRE_BALL_SPRITE = R.drawable.fireball_sprite;
+	public static final int TELE_SPRITE = R.drawable.teleportacja_sprite;
+	public static final int LAVA_SPRITE = R.drawable.lava_sprite;
+	public static final int BUFF_EFFECE_SPRITE = R.drawable.buff_effect_sprite;
+	public static final int THIEF_SPRITE = R.drawable.thief_sprite;
+	public static final int STAMINA_SPRITE  = R.drawable.stamina_sprite;
+	public static final int EARTHWAVE_SPRITE = R.drawable.earth_wave_sprite;
+	
+	public static int[] spriteSheets = new int[42];
+	public static boolean[] sprite_load = new boolean[44];
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
 	public static float TY = 100;
@@ -89,9 +99,9 @@ public class YoloEngine {
 	public static int SKILL3_COOLDOWN = 208;
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 109; //MiHu baza danych
-	public static int SkillSprite2 = 24; //MiHu baza danych
-	public static int SkillSprite3 = 25; //MiHu baza danych
+	public static int SkillSprite1 = 33; //MiHu baza danych
+	public static int SkillSprite2 = 127; //MiHu baza danych
+	public static int SkillSprite3 = 43; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 0;
 	public static float animationDuration2 = 0f;
@@ -121,15 +131,17 @@ public class YoloEngine {
 	public static int InvincibleDuration = 300;
 	public static int defDuration = 300;
 	public static int denialDuration = 60;
+	public static int icicleDuration = 150;
+	public static int thunderDuration = 150;
+	public static int healingDuration = 300;
+	public static int buffDuration = 300;
 	//--------------------------------------------
 	
 	public static boolean isClasic = false;
 	public static boolean isCrouch_prest = false;
 	public static boolean isClimbing = false;
 	public static boolean isSkillPressed = false;
-	public static boolean canSkill1 = true;
-	public static boolean canSkill2 = true;
-	public static boolean canSkill3 = true;
+
 	public static boolean canClimb = false;
 	
 	
@@ -179,7 +191,7 @@ public class YoloEngine {
     public static float opponentsLife[] = new float[4];
     public static float opponentsLifeMax[] = new float[4];
 
-    public static boolean[] sprite_load = new boolean[30];
+   
 	
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	

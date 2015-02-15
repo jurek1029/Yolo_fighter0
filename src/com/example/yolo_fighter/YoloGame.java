@@ -123,7 +123,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill1)
+							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
 							{
 								//YoloEngine.canSkill1 = false;
 								YoloEngine.isSkillPressed = true;
@@ -134,7 +134,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill2)
+							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill2)
 							{
 								//YoloEngine.canSkill2 = false;
 								YoloEngine.isSkillPressed = true;
@@ -145,7 +145,7 @@ public class YoloGame extends Activity{
 					if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
 						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
 						{
-							if(!YoloEngine.isSkillPressed && YoloEngine.canSkill3)
+							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill3)
 							{
 								//YoloEngine.canSkill3 = false;
 								YoloEngine.isSkillPressed = true;
@@ -163,11 +163,11 @@ public class YoloGame extends Activity{
 				{
 				case 0:
                     newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
-					YoloEngine.canSkill1 = false;
+                    YoloEngine.TeamAB[YoloEngine.MyID].canSkill1 = false;
                     break;
 				case 1:
                     newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
@@ -175,7 +175,7 @@ public class YoloGame extends Activity{
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
-                    YoloEngine.canSkill2 = false;
+                    YoloEngine.TeamAB[YoloEngine.MyID].canSkill2 = false;
 					break;
 				case 2:
                     newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
@@ -183,7 +183,7 @@ public class YoloGame extends Activity{
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
-                    YoloEngine.canSkill3 = false;
+                    YoloEngine.TeamAB[YoloEngine.MyID].canSkill3 = false;
 					break;
 				}
 			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;			
@@ -289,8 +289,29 @@ public class YoloGame extends Activity{
 					
 				}
 	
-				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
-				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0) YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0)
+				{
+					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == false)
+					{
+						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
+						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
+					}
+					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
+					YoloEngine.TeamAB[YoloEngine.MyID].setAction(2);
+					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
+				}
+				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0)
+				{
+					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == true)
+					{
+						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
+						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
+					}
+					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
+					YoloEngine.TeamAB[YoloEngine.MyID].setAction(3);
+					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
+					
+				}
 	
 				break;
 			}
@@ -384,6 +405,7 @@ public class YoloGame extends Activity{
 			YoloGame.this.startActivity(mainMenu);
 			YoloEngine.context = getApplicationContext();
 			YoloGame.this.finish();
+			//TODO MiHu path to variable YoloEngine.TeamAB[YoloEngine.MyID].coin TO JEST TYLKO ROZNICA NIE WARTOSC
 			setContentView(R.layout.main_menu);
 	}
 }
