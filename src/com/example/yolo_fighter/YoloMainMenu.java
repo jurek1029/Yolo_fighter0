@@ -481,6 +481,18 @@ public class YoloMainMenu extends Activity
         	setContentView(R.layout.main_menu);
           break;
         case 1:
+        	setContentView(R.layout.skill2devil_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	v.setId(R.id.Skill2EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	v.setId(R.id.Skill3EqBtn);
+        	System.out.println("powinien drugi");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite3);
+        	setContentView(R.layout.main_menu);
         	break;
         case 2:
         	setContentView(R.layout.skill2necromancer_menu);
@@ -608,7 +620,6 @@ public class YoloMainMenu extends Activity
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
-        	setContentView(R.layout.skill2angel_menu);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -622,6 +633,16 @@ public class YoloMainMenu extends Activity
           break;
         case 1:
         	setContentView(R.layout.skill2devil_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
+        	v.setId(R.id.Skill2EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK3EQ();
+        	v.setId(R.id.Skill3EqBtn);
+        	System.out.println("powinien drugi");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite3);
         	break;
         case 2:
         	setContentView(R.layout.skill2necromancer_menu);
@@ -1043,104 +1064,7 @@ public class YoloMainMenu extends Activity
 		dbm.updatePlayer(YoloEngine.currentPlayerInfo);
 		
 	}
-	/*public void skill3necromancerEqBtnClick(View v){
-		Button currentSkill = (Button) findViewById(R.id.currentSkillNecromancer3);
-		switch(currentSkill2Checked) {
-		case 4:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerpoison1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(4);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 57f;
-          break;
-		case 5:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(5);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 57f;
-          break;
-		case 6:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerarcher1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(6);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 10;
-        	YoloEngine.animationDuration3 = 0f;
-          break;
-        case 7:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwarrior1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(7);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 7;
-        	YoloEngine.animationDuration3 = 2f;
-          break;
-        case 8:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancermummy1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(8);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 15;
-        	YoloEngine.animationDuration3 = 2f;
-        break;
-        case 9:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerhand1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(9);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 10;
-        	YoloEngine.animationDuration3 = 2f;
-          break;
-        case 10:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerbarrel1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(10);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 5;
-        	YoloEngine.animationDuration3 = 10f;
-          break;
-        case 11:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancertower1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(11);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 10;
-        	YoloEngine.animationDuration3 = 0f;
-        	break;
-        case 12:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerwall1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(12);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 10;
-        	YoloEngine.animationDuration3 = 0f;
-          break;
-        case 108:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerlifesuck1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(108);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 0f;
-          break;
-        case 109:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerresurrection1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(109);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 0f;
-          break;
-        case 15:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerspike1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(15);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 20f;
-          break;
-        case 103:
-        	currentSkill.setBackgroundResource(R.drawable.skillnecromancerslowdown1);
-        	YoloEngine.currentPlayerInfo.setSK3EQ(103);
-        	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-        	YoloEngine.animationSlowdown3 = 0;
-        	YoloEngine.animationDuration3 = 0f;
-          break;
-      }
-		YoloEngine.SkillSprite3=currentSkill2Checked;
-	}
-	*/
+
 	
 public void skills2angelBtnClick(View v) {
 		
@@ -1338,59 +1262,178 @@ public void skill2angelEqBtnClick(View v){
 	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
 }
 
-/*
-public void skill3angelEqBtnClick(View v){
-	Button currentSkill = (Button) findViewById(R.id.currentSkillAngel3);
+
+public void skills2devilBtnClick(View v) {
+	
+	TextView description = (TextView) findViewById(R.id.skill2devildescription);
+	TextView lvl = (TextView) findViewById(R.id.skill2devillvlneeded);
+	TextView cost = (TextView) findViewById(R.id.skill2devilcost);
+	
+      switch(v.getId()) {
+        case R.id.Skill2devil_schockwaveBtn:
+        	currentSkill2Checked = 43;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_dmgSelfBtn:
+        	currentSkill2Checked = 36;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_dmgRadiusBtn:
+        	currentSkill2Checked = 119;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_dmgTeamBtn:
+        	currentSkill2Checked = 120;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_lavaBtn:
+        	currentSkill2Checked = 33;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_thiefBtn:
+        	currentSkill2Checked = 126;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_fireBallBtn:
+        	currentSkill2Checked = 30;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_teleportBtn:
+        	currentSkill2Checked = 31;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_staminaBtn:
+        	currentSkill2Checked = 127;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_frSelfBtn:
+        	currentSkill2Checked = 37;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_frRadiusBtn:
+        	currentSkill2Checked = 121;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_frTeamBtn:
+        	currentSkill2Checked = 123;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_rlSelfBtn:
+        	currentSkill2Checked = 38;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_rlRadiusBtn:
+        	currentSkill2Checked = 122;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;
+        case R.id.Skill2devil_rlTeamBtn:
+        	currentSkill2Checked = 124;
+        	description.setText("Turn your normal bullets into icicles and freeze your enemies.");
+        	lvl.setText("10lvl");
+        	cost.setText("400");
+          break;}
+}
+
+
+public void skill2devilEqBtnClick(View v){
+	Button currentSkill;
+	if (v.getId()==R.id.Skill2EqBtn)
+	{
+		currentSkill = (Button) findViewById(R.id.currentSkillDevil2);
+	}
+	else {
+		currentSkill = (Button) findViewById(R.id.currentSkillDevil3);
+	}
 	switch(currentSkill2Checked) {
-	case 18:
-    	currentSkill.setBackgroundResource(R.drawable.skillangelcloud1);
-    	YoloEngine.currentPlayerInfo.setSK3EQ(18);
-    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-    	YoloEngine.animationSlowdown2 = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+	case 43:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilschockwave1);
       break;
-	case 19:
-    	currentSkill.setBackgroundResource(R.drawable.skillangelicicle1);
-    	YoloEngine.currentPlayerInfo.setSK3EQ(19);
-    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-    	YoloEngine.animationSlowdown2 = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+	case 36:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevildmgself1);
       break;
-	case 5:
-    	currentSkill.setBackgroundResource(R.drawable.skillnecromancerthunder1);
-    	YoloEngine.currentPlayerInfo.setSK3EQ(5);
-    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-    	YoloEngine.animationSlowdown2 = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+	case 119:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevildmgradius1);
       break;
-	case 20:
-    	currentSkill.setBackgroundResource(R.drawable.skillangelsmoke1);
-    	YoloEngine.currentPlayerInfo.setSK3EQ(20);
-    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-    	YoloEngine.animationSlowdown2 = 301;
-    	//YoloEngine.animationDuration2 = 57f;
+	case 120:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevildmgteam1);
       break;
-	case 104:
-    	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
-    	YoloEngine.currentPlayerInfo.setSK3EQ(104);
-    	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
-    	YoloEngine.animationSlowdown2 = 0;
-    	//YoloEngine.animationDuration2 = 57f;
+	case 33:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevillava1);
+      break;
+	case 126:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilthief1);
+      break;
+	case 30:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilfireball1);
+      break;
+	case 31:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilteleport1);
+      break;
+	case 127:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilstamina1);
+      break;
+	case 37:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilfrself1);
+      break;
+	case 121:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilfrradius1);
+      break;
+	case 123:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilfrteam1);
+      break;
+	case 38:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilrl1);
+      break;
+	case 122:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilrlradius1);
+      break;
+	case 124:
+    	currentSkill.setBackgroundResource(R.drawable.skilldevilrlteam1);
       break;
   }
-	YoloEngine.SkillSprite3=currentSkill2Checked;
-}
-	
-	public void skill2EqBtnClick(View v){
-		Button currentSkill = (Button) findViewById(R.id.currentSkill2);
+	if (v.getId()==R.id.Skill2EqBtn)
+	{
+		YoloEngine.currentPlayerInfo.setSK2EQ(currentSkill2Checked);
 		YoloEngine.SkillSprite2=currentSkill2Checked;
+		System.out.println("pierwszy skill loaded "+YoloEngine.SkillSprite2);
 	}
-	public void skill3EqBtnClick(View v){
-		Button currentSkill = (Button) findViewById(R.id.currentSkill3);
-		String currentSkillTxt = Integer.toString(currentSkill2Checked);
-		currentSkill.setText(currentSkillTxt);
+	else {
+		YoloEngine.currentPlayerInfo.setSK3EQ(currentSkill2Checked);
 		YoloEngine.SkillSprite3=currentSkill2Checked;
-	}*/
+		System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
+	}
+	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+}
+
+
 // ------------------------- Multislayer BEGIN -----------------------
 	public void signIn(View v) {
 		System.out.println("Signing in");
