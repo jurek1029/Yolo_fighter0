@@ -3735,8 +3735,9 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
 		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
 		if(YoloEngine.SkillSprite3==14||YoloEngine.SkillSprite2==14||YoloEngine.SkillSprite1==14)YoloEngine.sprite_load[27]=true;
-		if(YoloEngine.SkillSprite3==34||YoloEngine.SkillSprite2==34||YoloEngine.SkillSprite1==34)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==35||YoloEngine.SkillSprite2==35||YoloEngine.SkillSprite1==35)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==36||YoloEngine.SkillSprite2==36||YoloEngine.SkillSprite1==36)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==37||YoloEngine.SkillSprite2==37||YoloEngine.SkillSprite1==37)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==38||YoloEngine.SkillSprite2==38||YoloEngine.SkillSprite1==38)YoloEngine.sprite_load[32]=true;
 		if(YoloEngine.SkillSprite3==43||YoloEngine.SkillSprite2==43||YoloEngine.SkillSprite1==43)YoloEngine.sprite_load[41]=true;
 		if(YoloEngine.SkillSprite3==120||YoloEngine.SkillSprite2==120||YoloEngine.SkillSprite1==120)YoloEngine.sprite_load[32]=true;
 		if(YoloEngine.SkillSprite3==121||YoloEngine.SkillSprite2==121||YoloEngine.SkillSprite1==121)YoloEngine.sprite_load[32]=true;
