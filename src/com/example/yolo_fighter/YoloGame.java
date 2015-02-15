@@ -163,7 +163,7 @@ public class YoloGame extends Activity{
 				{
 				case 0:
                     newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
