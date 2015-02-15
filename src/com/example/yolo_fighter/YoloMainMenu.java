@@ -468,6 +468,11 @@ public class YoloMainMenu extends Activity
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2angelEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -482,6 +487,11 @@ public class YoloMainMenu extends Activity
           break;
         case 1:
         	setContentView(R.layout.skill2devil_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -496,6 +506,11 @@ public class YoloMainMenu extends Activity
         	break;
         case 2:
         	setContentView(R.layout.skill2necromancer_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2necromancerEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -620,6 +635,11 @@ public class YoloMainMenu extends Activity
 		switch(YoloEngine.currentPlayerInfo.getRace()) {
         case 0:
         	setContentView(R.layout.skill2angel_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2angelEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite1);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -633,6 +653,11 @@ public class YoloMainMenu extends Activity
           break;
         case 1:
         	setContentView(R.layout.skill2devil_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2devilEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -646,6 +671,11 @@ public class YoloMainMenu extends Activity
         	break;
         case 2:
         	setContentView(R.layout.skill2necromancer_menu);
+        	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK1EQ();
+        	v.setId(R.id.Skill1EqBtn);
+        	System.out.println("powinien pierwszy");
+        	skill2necromancerEqBtnClick(v);
+        	System.out.println(YoloEngine.SkillSprite2);
         	currentSkill2Checked=YoloEngine.currentPlayerInfo.getSK2EQ();
         	v.setId(R.id.Skill2EqBtn);
         	System.out.println("powinien pierwszy");
@@ -974,9 +1004,10 @@ public class YoloMainMenu extends Activity
 		{
 			currentSkill = (Button) findViewById(R.id.currentSkillNecromancer2);
 		}
-		else {
+		else if (v.getId()==R.id.Skill3EqBtn){
 			currentSkill = (Button) findViewById(R.id.currentSkillNecromancer3);
 		}
+		else currentSkill = (Button) findViewById(R.id.currentSkillNecromancer1);
 		int animationSlowdown = 0;
 		float animationDuration = 0f;
 		switch(currentSkill2Checked) {
@@ -1054,11 +1085,16 @@ public class YoloMainMenu extends Activity
 			YoloEngine.SkillSprite2=currentSkill2Checked;
 			System.out.println("pierwszy skill loaded "+YoloEngine.SkillSprite2);
 		}
-		else {
+		else if (v.getId()==R.id.Skill3EqBtn){
 			YoloEngine.currentPlayerInfo.setSK3EQ(currentSkill2Checked);
 			YoloEngine.animationSlowdown3=animationSlowdown;
 			YoloEngine.animationDuration3=animationDuration;
 			YoloEngine.SkillSprite3=currentSkill2Checked;
+			System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
+		}
+		else {
+			YoloEngine.currentPlayerInfo.setSK1EQ(currentSkill2Checked);
+			YoloEngine.SkillSprite1=currentSkill2Checked;
 			System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
 		}
 		dbm.updatePlayer(YoloEngine.currentPlayerInfo);
@@ -1166,9 +1202,10 @@ public void skill2angelEqBtnClick(View v){
 	{
 		currentSkill = (Button) findViewById(R.id.currentSkillAngel2);
 	}
-	else {
+	else if (v.getId()==R.id.Skill3EqBtn) {
 		currentSkill = (Button) findViewById(R.id.currentSkillAngel3);
 	}
+	else currentSkill = (Button) findViewById(R.id.currentSkillAngel1);
 	int animationSlowdown = 0;
 	float animationDuration = 0f;
 	switch(currentSkill2Checked) {
@@ -1247,16 +1284,17 @@ public void skill2angelEqBtnClick(View v){
 	if (v.getId()==R.id.Skill2EqBtn)
 	{
 		YoloEngine.currentPlayerInfo.setSK2EQ(currentSkill2Checked);
-		YoloEngine.animationSlowdown2=animationSlowdown;
-		YoloEngine.animationDuration2=animationDuration;
 		YoloEngine.SkillSprite2=currentSkill2Checked;
 		System.out.println("pierwszy skill loaded "+YoloEngine.SkillSprite2);
 	}
-	else {
+	else if (v.getId()==R.id.Skill3EqBtn){
 		YoloEngine.currentPlayerInfo.setSK3EQ(currentSkill2Checked);
-		YoloEngine.animationSlowdown3=animationSlowdown;
-		YoloEngine.animationDuration3=animationDuration;
 		YoloEngine.SkillSprite3=currentSkill2Checked;
+		System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
+	}
+	else {
+		YoloEngine.currentPlayerInfo.setSK1EQ(currentSkill2Checked);
+		YoloEngine.SkillSprite1=currentSkill2Checked;
 		System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
 	}
 	dbm.updatePlayer(YoloEngine.currentPlayerInfo);
@@ -1369,9 +1407,10 @@ public void skill2devilEqBtnClick(View v){
 	{
 		currentSkill = (Button) findViewById(R.id.currentSkillDevil2);
 	}
-	else {
+	else if (v.getId()==R.id.Skill3EqBtn){
 		currentSkill = (Button) findViewById(R.id.currentSkillDevil3);
 	}
+	else currentSkill = (Button) findViewById(R.id.currentSkillDevil1);
 	switch(currentSkill2Checked) {
 	case 43:
     	currentSkill.setBackgroundResource(R.drawable.skilldevilschockwave1);
@@ -1425,9 +1464,14 @@ public void skill2devilEqBtnClick(View v){
 		YoloEngine.SkillSprite2=currentSkill2Checked;
 		System.out.println("pierwszy skill loaded "+YoloEngine.SkillSprite2);
 	}
-	else {
+	else if (v.getId()==R.id.Skill3EqBtn){
 		YoloEngine.currentPlayerInfo.setSK3EQ(currentSkill2Checked);
 		YoloEngine.SkillSprite3=currentSkill2Checked;
+		System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
+	}
+	else {
+		YoloEngine.currentPlayerInfo.setSK1EQ(currentSkill2Checked);
+		YoloEngine.SkillSprite1=currentSkill2Checked;
 		System.out.println("drugi skill loaded "+YoloEngine.SkillSprite3);
 	}
 	dbm.updatePlayer(YoloEngine.currentPlayerInfo);

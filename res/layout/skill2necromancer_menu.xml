@@ -519,7 +519,56 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
+                    android:layout_weight="33"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                	android:layout_width="match_parent"
+               		android:layout_height="0dp"
+               		android:orientation="horizontal"
+                	android:layout_weight="8" >
+            </LinearLayout>
+                    <Button
+                        android:id="@+id/currentSkillNecromancer1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="20"
+                        android:layout_gravity="center"
+                        android:background="@drawable/emptyslot" />
+
+                    
+                    <LinearLayout
+                	android:layout_width="match_parent"
+               		android:layout_height="0dp"
+               		android:orientation="horizontal"
+                	android:layout_weight="5" >
+            </LinearLayout>
+                    
+                    <Button
+                        android:id="@+id/Skill1EqBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="20"
+                        android:layout_gravity="center"
+                        android:onClick="skill2necromancerEqBtnClick"
+                        android:background="@drawable/buyequipbtn"/>
+                    <LinearLayout
+                	android:layout_width="match_parent"
+               		android:layout_height="0dp"
+               		android:orientation="horizontal"
+                	android:layout_weight="8" >
+            </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:orientation="vertical" >
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="33"
                     android:orientation="vertical" >
 
                     <LinearLayout
@@ -569,7 +618,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
+                    android:layout_weight="33"
                     android:orientation="vertical" >
 
                     <LinearLayout
@@ -609,6 +658,12 @@
                 	android:layout_weight="8" >
             </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical" >
+                    </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
