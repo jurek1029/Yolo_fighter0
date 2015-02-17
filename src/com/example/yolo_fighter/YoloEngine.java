@@ -164,7 +164,6 @@ public class YoloEngine {
     public static String playerParticipantID;
 
     public static int IDTracer =0;
-    public static boolean playerTeam = false; // 0 - teamA, 1 - teamB
 
     public static List<String> teamA = new ArrayList<String>(2);
     public static List<String> teamB = new ArrayList<String>(2);

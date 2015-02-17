@@ -65,46 +65,32 @@ public class YoloMultislayer {
                 case 't':
                     String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
 
-                    int i = 0, j = 0;
+                    int i=0,a=0,b=YoloEngine.TeamSize;
                     for(Participant p : YoloEngine.participants) {
                         if(p.getStatus() == Participant.STATUS_JOINED) {
                         	
-                            if(pattern.charAt(i) == '0') {                            	
+                            if (pattern.charAt(i) == '0') {                            	
                                 YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
-                                YoloEngine.TeamAB[j].playerTeam = YoloEngine.TeamA;
-                                YoloEngine.TeamAB[j].ParticipantId = p.getParticipantId();
+                                YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+                                YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                 if(p.getParticipantId().equals(YoloEngine.playerParticipantID))
-                                	YoloEngine.MyID = j;
-                                j++;
+                                	YoloEngine.MyID = a;
+                                a++;
                             }
+                            if (pattern.charAt(i) == '1') {								
+								YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
+								YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+								YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();	
+								if(p.getParticipantId().equals(YoloEngine.playerParticipantID)) 
+									YoloEngine.MyID = b;
+								b++;
+							}
                             i++;
                         }
                     }
-                    j=2; // teamB
-                    i = 0;
-					for (Participant p : YoloEngine.participants) {
-						if (p.getStatus() == Participant.STATUS_JOINED) {
-							if (pattern.charAt(i) == '1') {								
-								YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
-								YoloEngine.TeamAB[j].playerTeam = YoloEngine.TeamB;
-								YoloEngine.TeamAB[j].ParticipantId = p.getParticipantId();	
-								if(p.getParticipantId().equals(YoloEngine.playerParticipantID)) 
-									YoloEngine.MyID = j;
-								j++;
-							}
-							i++;
-
-						}
-					}
-					YoloEngine.MyID = 2; //@TODO tymczaoswo 
-                    
-                    if(j > pattern.length()) System.out.println("ERROR in assigning teams");
+                                                          
                     prepareMatchArray();
-                   
-/*
-                    if(YoloEngine.teamA.contains(YoloEngine.playerParticipantID)) YoloEngine.playerTeam = false; //@REMOVE
-                    else YoloEngine.playerTeam = true; //@REMOVE
-      */              
+                               
                     YoloEngine.mMultislayer.sendMaxLife();
                   //  YoloGameRenderer.givePlayerID();
                     break;
@@ -311,7 +297,7 @@ public class YoloMultislayer {
             bbf.put((byte)1);
         else
             bbf.put((byte)0);
-        if(YoloEngine.playerTeam)
+        if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
             bbf.put((byte)1);
         else
             bbf.put((byte)0);

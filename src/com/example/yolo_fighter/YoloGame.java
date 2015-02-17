@@ -209,10 +209,10 @@ public class YoloGame extends Activity{
 		}
 		
 		if(YoloEngine.test) {
-			YoloEngine.TeamAB[0] = new YoloPlayer(3f,10f,YoloEngine.playerTeam,0);
-			YoloEngine.TeamAB[1] = new YoloPlayer(3f,10f,YoloEngine.playerTeam,1);
-			YoloEngine.TeamAB[2] = new YoloPlayer(10f,8f,!YoloEngine.playerTeam,2);
-			YoloEngine.TeamAB[3] = new YoloPlayer(9f,8f,!YoloEngine.playerTeam,3);
+			YoloEngine.TeamAB[0] = new YoloPlayer(3f,10f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,0);
+			YoloEngine.TeamAB[1] = new YoloPlayer(3f,10f,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,1);
+			YoloEngine.TeamAB[2] = new YoloPlayer(10f,8f,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,2);
+			YoloEngine.TeamAB[3] = new YoloPlayer(9f,8f,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,3);
 		}
 		super.onCreate(savedInstanceState);
 		gameView = new YoloGameView(this);

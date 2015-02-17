@@ -131,17 +131,15 @@ public class YoloMainMenu extends Activity
                     // Przydzielamy nam
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID); //@REMOVE
-                        YoloEngine.playerTeam = false; //@REMOVE
                         YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamA;
                         teamAssignPattern += "0";
                     }
                     else {
                         YoloEngine.teamB.add(YoloEngine.playerParticipantID); //@REMOVE
-                        YoloEngine.playerTeam = true; //@REMOVE
                         YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamB;
                         teamAssignPattern += "1";
                     }
-                    int i = 1,a=0,b=2;
+                    int i = 1,a=0,b=YoloEngine.TeamSize;
                     // Przydzielamy reszcie graczy
                     for (Participant p : YoloEngine.participants) {
                         if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu

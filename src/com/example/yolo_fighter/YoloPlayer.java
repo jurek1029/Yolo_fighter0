@@ -617,5 +617,10 @@ public class YoloPlayer extends YoloObject {
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
 	}
+	
+	public void moveAway() {
+		this.x = 1000f;
+		this.y = 1000f;
+	}
 
 }
