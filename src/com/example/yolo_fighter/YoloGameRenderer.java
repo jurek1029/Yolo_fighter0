@@ -1964,36 +1964,22 @@ public class YoloGameRenderer implements Renderer {
 			if (YoloEngine.MULTI_ACTIVE) {
                 YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.TeamAB[YoloEngine.MyID].x, YoloEngine.TeamAB[YoloEngine.MyID].y, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch);
 			}	
-			for(int i = 0; i < YoloEngine.opponents.size(); i++) {
-
+			for(int i = 0; i < YoloEngine.TeamSize*2; i++) {
+				if(i == YoloEngine.MyID) continue; //skippujemy jesli dotyczy 'naszego' gracza
 				if(YoloEngine.changesMade[i] < YoloEngine.MULTI_STEPS) {
 					if(YoloEngine.changesMade[i] == 0)
 					{
-						YoloEngine.Opponents_x[i] = YoloEngine.mMultislayer.Opponents_x_lastX[i];
-						YoloEngine.Opponents_y[i] = YoloEngine.mMultislayer.Opponents_y_lastX[i];
+						YoloEngine.TeamAB[i].x = YoloEngine.mMultislayer.Opponents_x_lastX[i];
+						YoloEngine.TeamAB[i].y = YoloEngine.mMultislayer.Opponents_y_lastX[i];
 
 						YoloEngine.mMultislayer.Opponents_x_lastX[i] = YoloEngine.mMultislayer.Opponents_x_last[i];
 						YoloEngine.mMultislayer.Opponents_y_lastX[i] = YoloEngine.mMultislayer.Opponents_y_last[i];
 					}
-					YoloEngine.Opponents_x[i] += YoloEngine.mMultislayer.Opponents_x_change[i];
-					YoloEngine.Opponents_y[i] += YoloEngine.mMultislayer.Opponents_y_change[i];
 
-                    if(YoloEngine.teamA.contains(YoloEngine.opponents.get(i))) {
-                        YoloEngine.TeamA_x[YoloEngine.teamA.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponents_x[i];
-                        YoloEngine.TeamA_y[YoloEngine.teamA.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponents_y[i];
-                        YoloEngine.TeamA_isCrouched[YoloEngine.teamA.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponent_isCrouched[i];
-                    }
-                    else {
-                        YoloEngine.TeamB_x[YoloEngine.teamB.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponents_x[i];
-                        YoloEngine.TeamB_y[YoloEngine.teamB.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponents_y[i];
-                        YoloEngine.TeamB_isCrouched[YoloEngine.teamB.indexOf(YoloEngine.opponents.get(i))] = YoloEngine.Opponent_isCrouched[i];
-                    }
+					YoloEngine.TeamAB[i].x += YoloEngine.mMultislayer.Opponents_x_change[i];
+					YoloEngine.TeamAB[i].y += YoloEngine.mMultislayer.Opponents_y_change[i];
 
 					YoloEngine.changesMade[i]++;
-					//if(YoloEngine.changesMade == 5) System.out.println(YoloEngine.mMultislayer.Opponents_x_last[i] - YoloEngine.Opponents_x[i]);
-					//System.out.println(YoloEngine.changesMade);
-
-
 				}
 				else
 					;//System.out.println("no new data");
@@ -2045,7 +2031,7 @@ public class YoloGameRenderer implements Renderer {
 
 			moveBullets(gl);
 			
-			if(YoloEngine.playerTeam == YoloEngine.TeamA) 
+			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA) 
 			{
 				YoloEngine.TeamAB[0].drawAlly(gl,YoloEngine.MyID==0?false:true);
 				YoloEngine.TeamAB[1].drawAlly(gl,YoloEngine.MyID==1?false:true);
@@ -2057,7 +2043,7 @@ public class YoloGameRenderer implements Renderer {
 			}
 			hitBox();
 			
-			if(YoloEngine.playerTeam == YoloEngine.TeamA)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA)
 			{
 				YoloEngine.TeamAB[2].drawOpponent(gl);
 				YoloEngine.TeamAB[3].drawOpponent(gl);
@@ -2590,7 +2576,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
 				!YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?YoloEngine.TeamAB[YoloEngine.MyID].y+0.2f:YoloEngine.TeamAB[YoloEngine.MyID].y - .1f,bulletSpeed);
 			bullet.damage = damage;
-			bullet.team = YoloEngine.playerTeam; 
+			bullet.team = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam; 
 			bullet.sprite = sprite;
 			bullet.x_texture = 0f;
 			bullet.y_texture = 0f;

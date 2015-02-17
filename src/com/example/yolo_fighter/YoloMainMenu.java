@@ -122,38 +122,59 @@ public class YoloMainMenu extends Activity
                 }
 
                 if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
+                	YoloEngine.MyID = 0;
+                	YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
                     String teamAssignPattern = "1";
 
                     // Team assignment dokÄ…d {0-teamA, 1-teamB}
 
                     // Przydzielamy nam
                     if (new Random().nextBoolean()) {
-                        YoloEngine.teamA.add(YoloEngine.playerParticipantID);
-                        YoloEngine.playerTeam = false;
+                        YoloEngine.teamA.add(YoloEngine.playerParticipantID); //@REMOVE
+                        YoloEngine.playerTeam = false; //@REMOVE
+                        YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamA;
                         teamAssignPattern += "0";
                     }
                     else {
-                        YoloEngine.teamB.add(YoloEngine.playerParticipantID);
-                        YoloEngine.playerTeam = true;
+                        YoloEngine.teamB.add(YoloEngine.playerParticipantID); //@REMOVE
+                        YoloEngine.playerTeam = true; //@REMOVE
+                        YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamB;
                         teamAssignPattern += "1";
                     }
-
+                    int i = 1,a=0,b=2;
                     // Przydzielamy reszcie graczy
                     for (Participant p : YoloEngine.participants) {
                         if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteÅ›my to my, gracz nie naleÅ¼y jeszcze do Å¼adnego teamu
-                            if (YoloEngine.teamA.size() > YoloEngine.teamB.size()) {
-                                YoloEngine.teamB.add(p.getParticipantId());
+                            // @TODO sprawdzenie, czy gracz nie ma ju¿ przydzielonego teamu?
+                        	if (YoloEngine.teamA.size() > YoloEngine.teamB.size()) {
+                                YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
+                                YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+                                YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "1";
+                                b++;
+                                i++;
                             } else if (YoloEngine.teamA.size() < YoloEngine.teamB.size()) {
-                                YoloEngine.teamA.add(p.getParticipantId());
+                                YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
+                                YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+                                YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "0";
+                                a++;
+                                i++;
                             } else {
                                 if (new Random().nextBoolean()) {
-                                    YoloEngine.teamA.add(p.getParticipantId());
+                                    YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
+                                    YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+                                    YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "0";
+                                    a++;
+                                    i++;
                                 } else {
-                                    YoloEngine.teamB.add(p.getParticipantId());
+                                    YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
+                                    YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+                                    YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "1";
+                                    b++;
+                                    i++;
                                 }
                             }
                         }
@@ -161,9 +182,11 @@ public class YoloMainMenu extends Activity
 
                     YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
                   //  YoloGameRenderer.givePlayerID();
+                    YoloEngine.mMultislayer.prepareMatchArray();
+                    YoloEngine.mMultislayer.sendMaxLife(); //@TODO to powinno byæ póŸniej, ¿eby by³a pwenoœæ, czy TeamAB jest dobrze usuzp³enione
                 }
                 
-                YoloEngine.mMultislayer.sendMaxLife();
+                
 
 
             }
