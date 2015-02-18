@@ -186,6 +186,7 @@ public class YoloGame extends Activity{
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill3 = false;
 					break;
 				}
+			 YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
 			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;			
 			}
 		

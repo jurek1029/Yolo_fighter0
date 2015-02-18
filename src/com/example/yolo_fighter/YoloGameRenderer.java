@@ -772,7 +772,7 @@ class Skill extends YoloObject
 				YoloEngine.mMultislayer.sendHitBox(this.x-x_radius/2f,this.y-y_radius/2f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,false,id);
     		break;
     	}
-    	YoloEngine.mMultislayer.sendMessageToAllreliable(this.serializeSkill());
+    	//YoloEngine.mMultislayer.sendMessageToAllreliable(this.serializeSkill());
     }
 
 	public void setX()
