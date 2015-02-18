@@ -1772,6 +1772,19 @@ class Skill extends YoloObject
 
         return bbf.array();
     }
+    
+    public byte[] serializeSkillNew() {
+    	ByteBuffer bbf = ByteBuffer.allocate(20);
+        bbf.putChar('s');
+        bbf.putFloat(x);
+        bbf.putFloat(y);
+        bbf.putInt(sprite);
+        if(team)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
+        return bbf.array();
+    }
 }
 
 public class YoloGameRenderer implements Renderer {

@@ -12,6 +12,12 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
   - Test - life max czy wysyÅ‚a siÄ™ 
   - Pozycje w osobnych
   - dodawanie skilli mojego teamu powinny byÅ› dodawane do skillplayerve a przeciwnego do Opp
+  
+  • gdy ktoœ siê roz³¹czy
+  • przy przydziale - sprawdzenie
+  • bardziej racjonalne wysy³anie rzeczy typu max life - moment wysy³ania
+  • sprawdziæ dla wiêcej graczy
+  
  */
 
 
@@ -112,6 +118,12 @@ public class YoloMultislayer {
 					YoloGameRenderer.skillOponentVe.add(new Skill(new SkillData(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData
 							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false,rcvData.getInt())));
 							*/
+					Skill tSkill = new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false);
+					if(tSkill.team == YoloEngine.TeamA)
+						YoloGameRenderer.skillTeamAVe.add(tSkill);
+					else
+						YoloGameRenderer.skillTeamBVe.add(tSkill);
+					
 					break;
                 case 'i':
                     YoloEngine.IDTracer = rcvData.getInt();
