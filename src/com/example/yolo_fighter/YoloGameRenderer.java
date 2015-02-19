@@ -1812,6 +1812,7 @@ public class YoloGameRenderer implements Renderer {
 	private final float MOVE_BALL_SIZE_X = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_x; // 50/display_x
 	private final float MOVE_POS_X = 25f/YoloEngine.display_x;//(YoloEngine.MOVE_X/YoloEngine.display_x - MOVE_SIZE_X/2);// /MOVE_SIZE_X;  (125-100)/display_x
 	private final float MOVE_POS_Y = 50f/YoloEngine.display_y; //(YoloEngine.display_y - YoloEngine.MOVE_Y)/YoloEngine.display_y + MOVE_SIZE_Y/2; // 25/display_y == move_y/2/display_y
+	private float Skill1BtnTx,Skill1BtnTy,Skill2BtnTx,Skill2BtnTy,Skill3BtnTx,Skill3BtnTy;
 //	private final float MOVE_POS_X1= (25f/YoloEngine.display_x);// /MOVE_SIZE_X1 ;
 //	private final float MOVE_POS_Y1= (25f/YoloEngine.display_y);// /MOVE_SIZE_Y1 ; 
 	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x;
@@ -2291,9 +2292,9 @@ public class YoloGameRenderer implements Renderer {
 		}
 		drawSt(gl, shotBtnX + XADD, shotBtnY + YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.TeamAB[YoloEngine.MyID].isShoting? .25f : .375f , 0, true);
 
-		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0 , .125f, true);
-		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0, .125f, true);
-		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  0 , .125f, true);
+		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill1BtnTx , Skill1BtnTy, true);
+		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill2BtnTx , Skill2BtnTy, true);
+		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, Skill3BtnTx , Skill3BtnTy, true);
 	}
 	
 	private void drawBackground(GL10 gl)
@@ -3743,7 +3744,496 @@ public class YoloGameRenderer implements Renderer {
 		if(YoloEngine.SkillSprite3==122||YoloEngine.SkillSprite2==122||YoloEngine.SkillSprite1==122)YoloEngine.sprite_load[32]=true;
 		if(YoloEngine.SkillSprite3==123||YoloEngine.SkillSprite2==123||YoloEngine.SkillSprite1==123)YoloEngine.sprite_load[32]=true;
 		if(YoloEngine.SkillSprite3==124||YoloEngine.SkillSprite2==124||YoloEngine.SkillSprite1==124)YoloEngine.sprite_load[32]=true;
-
+		
+		switch(YoloEngine.SkillSprite1)
+		{
+		case 4:
+			Skill1BtnTx = 0.625f;
+			Skill1BtnTy = 0.25f;
+			break;
+		case 5:
+			Skill1BtnTx = 0f;
+			Skill1BtnTy = 0.625f;
+			break;	
+		case 6:
+			Skill1BtnTx = 0f;
+			Skill1BtnTy = 0.25f;
+			break;	
+		case 7:
+			Skill1BtnTx = 0.375f;
+			Skill1BtnTy = 0.375f;
+			break;	
+		case 8:
+			Skill1BtnTx = 0.5f;
+			Skill1BtnTy = 0.25f;
+			break;	
+		case 9:
+			Skill1BtnTx = 0.25f;
+			Skill1BtnTy = 0.25f;
+			break;	
+		case 10:
+			Skill1BtnTx = 0.125f;
+			Skill1BtnTy = 0.25f;
+			break;	
+		case 11:
+			Skill1BtnTx = 0.125f;
+			Skill1BtnTy = 0.375f;
+			break;	
+		case 12:
+			Skill1BtnTx = 0.25f;
+			Skill1BtnTy = 0.375f;
+			break;	
+		case 13:
+			Skill1BtnTx = 0.625f;
+			Skill1BtnTy = 0.5f;
+			break;	
+		case 14:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.5f;
+			break;	
+		case 15:
+			Skill1BtnTx = 0f;
+			Skill1BtnTy = 0.375f;
+			break;
+		case 17:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.375f;
+			break;
+		case 18:
+			Skill1BtnTx = 0.375f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 19:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.375f;
+			break;
+		case 20:
+			Skill1BtnTx = 0.5f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 23:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 24:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 25:
+			Skill1BtnTx = 0.5f;
+			Skill1BtnTy = 0.375f;
+			break;
+		case 26:
+			Skill1BtnTx = 0.125f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 29:
+			Skill1BtnTx = 0.25f;
+			Skill1BtnTy = 0.5f;
+			break;
+		case 30:
+			Skill1BtnTx = 0.5f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 31:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 33:
+			Skill1BtnTx = 0.0f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 36:
+			Skill1BtnTx = 0.25f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 37:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 38:
+			Skill1BtnTx = 0.125f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 43:
+			Skill1BtnTx = 0.5f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 103:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.25f;
+			break;
+		case 104:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.375f;
+			break;
+		case 108:
+			Skill1BtnTx = 0.375f;
+			Skill1BtnTy = 0.25f;
+			break;
+		case 109:
+			Skill1BtnTx = 0.75f;
+			Skill1BtnTy = 0.25f;
+			break;
+		case 119:
+			Skill1BtnTx = 0.125f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 120:
+			Skill1BtnTx = 0.375f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 121:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 122:
+			Skill1BtnTx = 0.25f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 123:
+			Skill1BtnTx = 0.625f;
+			Skill1BtnTy = 0.625f;
+			break;
+		case 124:
+			Skill1BtnTx = 0.375f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 126:
+			Skill1BtnTx = 0.875f;
+			Skill1BtnTy = 0.75f;
+			break;
+		case 127:
+			Skill1BtnTx = 0.625f;
+			Skill1BtnTy = 0.75f;
+			break;
+		}
+		switch(YoloEngine.SkillSprite2)
+		{
+		case 4:
+			Skill2BtnTx = 0.625f;
+			Skill2BtnTy = 0.25f;
+			break;
+		case 5:
+			Skill2BtnTx = 0f;
+			Skill2BtnTy = 0.625f;
+			break;	
+		case 6:
+			Skill2BtnTx = 0f;
+			Skill2BtnTy = 0.25f;
+			break;	
+		case 7:
+			Skill2BtnTx = 0.375f;
+			Skill2BtnTy = 0.375f;
+			break;	
+		case 8:
+			Skill2BtnTx = 0.5f;
+			Skill2BtnTy = 0.25f;
+			break;	
+		case 9:
+			Skill2BtnTx = 0.25f;
+			Skill2BtnTy = 0.25f;
+			break;	
+		case 10:
+			Skill2BtnTx = 0.125f;
+			Skill2BtnTy = 0.25f;
+			break;	
+		case 11:
+			Skill2BtnTx = 0.125f;
+			Skill2BtnTy = 0.375f;
+			break;	
+		case 12:
+			Skill2BtnTx = 0.25f;
+			Skill2BtnTy = 0.375f;
+			break;	
+		case 13:
+			Skill2BtnTx = 0.625f;
+			Skill2BtnTy = 0.5f;
+			break;	
+		case 14:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.5f;
+			break;	
+		case 15:
+			Skill2BtnTx = 0f;
+			Skill2BtnTy = 0.375f;
+			break;
+		case 17:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.375f;
+			break;
+		case 18:
+			Skill2BtnTx = 0.375f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 19:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.375f;
+			break;
+		case 20:
+			Skill2BtnTx = 0.5f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 23:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 24:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 25:
+			Skill2BtnTx = 0.5f;
+			Skill2BtnTy = 0.375f;
+			break;
+		case 26:
+			Skill2BtnTx = 0.125f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 29:
+			Skill2BtnTx = 0.25f;
+			Skill2BtnTy = 0.5f;
+			break;
+		case 30:
+			Skill2BtnTx = 0.5f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 31:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 33:
+			Skill2BtnTx = 0.0f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 36:
+			Skill2BtnTx = 0.25f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 37:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 38:
+			Skill2BtnTx = 0.125f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 43:
+			Skill2BtnTx = 0.5f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 103:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.25f;
+			break;
+		case 104:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.375f;
+			break;
+		case 108:
+			Skill2BtnTx = 0.375f;
+			Skill2BtnTy = 0.25f;
+			break;
+		case 109:
+			Skill2BtnTx = 0.75f;
+			Skill2BtnTy = 0.25f;
+			break;
+		case 119:
+			Skill2BtnTx = 0.125f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 120:
+			Skill2BtnTx = 0.375f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 121:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 122:
+			Skill2BtnTx = 0.25f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 123:
+			Skill2BtnTx = 0.625f;
+			Skill2BtnTy = 0.625f;
+			break;
+		case 124:
+			Skill2BtnTx = 0.375f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 126:
+			Skill2BtnTx = 0.875f;
+			Skill2BtnTy = 0.75f;
+			break;
+		case 127:
+			Skill2BtnTx = 0.625f;
+			Skill2BtnTy = 0.75f;
+			break;
+		}
+		switch(YoloEngine.SkillSprite3)
+		{
+		case 4:
+			Skill3BtnTx = 0.625f;
+			Skill3BtnTy = 0.25f;
+			break;
+		case 5:
+			Skill3BtnTx = 0f;
+			Skill3BtnTy = 0.625f;
+			break;	
+		case 6:
+			Skill3BtnTx = 0f;
+			Skill3BtnTy = 0.25f;
+			break;	
+		case 7:
+			Skill3BtnTx = 0.375f;
+			Skill3BtnTy = 0.375f;
+			break;	
+		case 8:
+			Skill3BtnTx = 0.5f;
+			Skill3BtnTy = 0.25f;
+			break;	
+		case 9:
+			Skill3BtnTx = 0.25f;
+			Skill3BtnTy = 0.25f;
+			break;	
+		case 10:
+			Skill3BtnTx = 0.125f;
+			Skill3BtnTy = 0.25f;
+			break;	
+		case 11:
+			Skill3BtnTx = 0.125f;
+			Skill3BtnTy = 0.375f;
+			break;	
+		case 12:
+			Skill3BtnTx = 0.25f;
+			Skill3BtnTy = 0.375f;
+			break;	
+		case 13:
+			Skill3BtnTx = 0.625f;
+			Skill3BtnTy = 0.5f;
+			break;	
+		case 14:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.5f;
+			break;	
+		case 15:
+			Skill3BtnTx = 0f;
+			Skill3BtnTy = 0.375f;
+			break;
+		case 17:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.375f;
+			break;
+		case 18:
+			Skill3BtnTx = 0.375f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 19:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.375f;
+			break;
+		case 20:
+			Skill3BtnTx = 0.5f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 23:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 24:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 25:
+			Skill3BtnTx = 0.5f;
+			Skill3BtnTy = 0.375f;
+			break;
+		case 26:
+			Skill3BtnTx = 0.125f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 29:
+			Skill3BtnTx = 0.25f;
+			Skill3BtnTy = 0.5f;
+			break;
+		case 30:
+			Skill3BtnTx = 0.5f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 31:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 33:
+			Skill3BtnTx = 0.0f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 36:
+			Skill3BtnTx = 0.25f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 37:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 38:
+			Skill3BtnTx = 0.125f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 43:
+			Skill3BtnTx = 0.5f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 103:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.25f;
+			break;
+		case 104:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.375f;
+			break;
+		case 108:
+			Skill3BtnTx = 0.375f;
+			Skill3BtnTy = 0.25f;
+			break;
+		case 109:
+			Skill3BtnTx = 0.75f;
+			Skill3BtnTy = 0.25f;
+			break;
+		case 119:
+			Skill3BtnTx = 0.125f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 120:
+			Skill3BtnTx = 0.375f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 121:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 122:
+			Skill3BtnTx = 0.25f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 123:
+			Skill3BtnTx = 0.625f;
+			Skill3BtnTy = 0.625f;
+			break;
+		case 124:
+			Skill3BtnTx = 0.375f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 126:
+			Skill3BtnTx = 0.875f;
+			Skill3BtnTy = 0.75f;
+			break;
+		case 127:
+			Skill3BtnTx = 0.625f;
+			Skill3BtnTy = 0.75f;
+			break;
+		}
 //-----------------------------------------------------------------------------------------------------------		
 	}
 }
