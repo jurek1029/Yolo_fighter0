@@ -27,14 +27,6 @@
             android:onClick="weaponClick" />
 
         <Button
-            android:id="@+id/skill1Btn"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/skill1tab"
-            android:onClick="skill1Click" />
-
-        <Button
             android:id="@+id/skill2Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -56,109 +48,307 @@
         android:layout_height="match_parent"
         android:orientation="horizontal" >
 
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <Button
+                    android:id="@+id/mediumweapon1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="60"
+                    android:background="@drawable/mediumweapon2"
+                    android:onClick="weaponClick" />
+
+				<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/padlock10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:src="@drawable/padlock" />
+
+            </LinearLayout>    
+                
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <Button
+                    android:id="@+id/shortweapon1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="60"
+                    android:background="@drawable/shortweapon1"
+                    android:onClick="weaponClick" />
+
+				<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/padlock7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:src="@drawable/padlock" />
+
+            </LinearLayout>
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <Button
+                    android:id="@+id/shortweapon2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="60"
+                    android:background="@drawable/shortweapon2"
+                    android:onClick="weaponClick" />
+
+				<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/padlock8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:src="@drawable/padlock" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <Button
+                    android:id="@+id/shortweapon3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="60"
+                    android:background="@drawable/shortweapon3"
+                    android:onClick="weaponClick" />
+
+				<LinearLayout
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="15" >
+
+                 </LinearLayout>
+                <ImageView
+                    android:id="@+id/padlock9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:src="@drawable/padlock" />
+
+            </LinearLayout>
+           
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:adjustViewBounds="true" 
+            android:background="@drawable/longweapon1"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>   
+            
+             
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:background="@drawable/longweapon3"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>
+                
+                
+            
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:background="@drawable/longweapon4"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>
+            
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:background="@drawable/longweapon5"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:background="@drawable/longweapon6"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>   
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <Button
+            android:id="@+id/longweapon7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="90"
+            android:background="@drawable/longweapon7"
+            android:onClick="weaponClick" />
+                
+                
+            <ImageView
+                android:id="@+id/padlock6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/padlock"
+                android:layout_weight="10" />
+                
+            </LinearLayout>   
+              <!-- Tuuu -->  
+            </LinearLayout>
+        </ScrollView>
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal" >
 
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OPIS BRONI I JEJ STATYSTYKI" />
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OPIS BRONI I JEJ STATYSTYKI" />
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OPIS BRONI I JEJ STATYSTYKI" />
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OPIS BRONI I JEJ STATYSTYKI" />
-
-            <Button
-                android:id="@+id/buyequipbtn"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:background="@drawable/buyequipbtn" />
-
-        </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-            
-            <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             >
-		<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-            
-            <Button
-                android:id="@+id/Btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            <Button
-                android:id="@+id/Btn1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            <Button
-                android:id="@+id/Btn2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            <Button
-                android:id="@+id/Btn3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            <Button
-                android:id="@+id/Btn4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            <Button
-                android:id="@+id/Btn5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-5dp"
-                android:onClick="skillsClick" />
-            </LinearLayout>
-            </ScrollView>
         </LinearLayout>
     </LinearLayout>
 

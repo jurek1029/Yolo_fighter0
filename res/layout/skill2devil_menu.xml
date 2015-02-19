@@ -124,7 +124,7 @@
                 android:layout_weight="40" >    
              </LinearLayout>
              <ImageView
-                android:id="@+id/branch1"
+                android:id="@+id/branch1a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/branch_norm"
@@ -145,13 +145,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                  >
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="40" >    
-             </LinearLayout>
+           <ImageView
+                 android:id="@+id/branch2a"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="@integer/skillweighs"
+                 android:src="@drawable/branch_lwd" />
                
+           <ImageView
+                 android:id="@+id/branch2b"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="@integer/skillweighs"
+                 android:src="@drawable/branch_poz" />
                 
              <Button
                     android:id="@+id/Skill2devil_schockwaveBtn"
@@ -163,12 +169,18 @@
                     android:onClick="skills2devilBtnClick" />
              
              
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="40" >    
-             </LinearLayout>   
+            <ImageView
+                 android:id="@+id/branch2c"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="@integer/skillweighs"
+                 android:src="@drawable/branch_poz" />
+            <ImageView
+                 android:id="@+id/branch2d"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="@integer/skillweighs"
+                 android:src="@drawable/branch_pwd" />
             </LinearLayout>   
             
 			
@@ -178,6 +190,13 @@
                 android:orientation="horizontal"
                  >
                 
+             <ImageView
+                 android:id="@+id/branch3a"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="@integer/skillweighs"
+                 android:src="@drawable/branch_norm" />   
+                
              <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -185,32 +204,30 @@
                 android:layout_weight="@integer/skillweighs" >    
              </LinearLayout>   
                 
-             <ImageView
-                 android:id="@+id/branch2"
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="@integer/skillweighs"
-                 android:src="@drawable/branch_uklewo" />
+             
 
              <ImageView
-                android:id="@+id/branch3"
+                android:id="@+id/branch3b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/branch_norm"
                 android:layout_weight="@integer/skillweighs" />
-             <ImageView
-                android:id="@+id/branch4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/branch_ukprawo"
-                android:layout_weight="@integer/skillweighs" />
+             
              
              <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="@integer/skillweighs" >    
-             </LinearLayout> 
+                android:layout_weight="@integer/skillweighs" >  
+ 				</LinearLayout> 
+ 				
+                <ImageView
+                android:id="@+id/branch3c"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/branch_norm"
+                android:layout_weight="@integer/skillweighs" />
+             
              
             </LinearLayout>
             
@@ -505,17 +522,17 @@
                     android:onClick="skills2devilBtnClick" />
             
               <ImageView
-                android:id="@+id/branch15"
+                android:id="@+id/branch7a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" />
               
                 <ImageView
-                android:id="@+id/branch16"
+                android:id="@+id/branch7b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_ukpollewo2"
+                android:src="@drawable/branch_pwg"
                 android:layout_weight="@integer/skillweighs" />
             
               

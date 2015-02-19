@@ -148,24 +148,45 @@
                  >
             
              <RelativeLayout
-                 android:layout_width="match_parent"
+                 android:layout_width="0dp"
                  android:layout_height="wrap_content"
-                 android:gravity="center" >
+                 android:layout_weight="40"
+                 android:gravity="right" >
 
             <ImageView
                 android:id="@+id/branch2a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/branch2b"
                 android:src="@drawable/branch_lwd"
                 />
+         
+                  
+            <ImageView
+                android:id="@+id/branch2b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/branch_poz"
+                android:layout_toRightOf="@+id/branch2a" />
+                </RelativeLayout>
 
-             
+             <Button
+                 android:id="@+id/Skill2angel_wingsBtn"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="top"
+                 android:layout_weight="@integer/skillweighs"
+                 android:background="@drawable/skillangelwings1"
+                 android:onClick="skills2angelBtnClick" />
+
+              <RelativeLayout
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="40"
+                 android:gravity="left" >
              <ImageView
                 android:id="@+id/branch2c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/Skill2angel_wingsBtn"
                 android:src="@drawable/branch_poz"/>
              
             <ImageView
@@ -174,24 +195,6 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/branch2c"
                 android:src="@drawable/branch_pwd" />
-
-            <ImageView
-                android:id="@+id/branch2b"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/Skill2angel_wingsBtn"
-                android:src="@drawable/branch_poz" />
-
-            <Button
-                android:id="@+id/Skill2angel_wingsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/skillangelwings1"
-                android:onClick="skills2angelBtnClick" />
-
             </RelativeLayout>
             </LinearLayout>   
             
@@ -201,31 +204,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                  >
-             <RelativeLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:gravity="center" >
                 
              <Button
                     android:id="@+id/Skill2angel_shockwaveBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                     android:layout_alignParentLeft="true"
-                      android:layout_alignParentTop="true"
                     android:layout_gravity="center"
+                    android:layout_weight="@integer/skillweighs"
                     android:background="@drawable/skillangelshockwave1"
                     android:onClick="skills2angelBtnClick" />
-
+             
+               
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="60" > 
+             </LinearLayout>   
               <Button
-                  android:id="@+id/Skill2angel_healBtn"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_alignParentRight="true"
-                  android:layout_alignParentTop="true"
-                  android:background="@drawable/skillangelheal1"
-                  android:onClick="skills2angelBtnClick" />
-   
-           </RelativeLayout>     
+                    android:id="@+id/Skill2angel_healBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="@integer/skillweighs"
+                    android:background="@drawable/skillangelheal1"
+                    android:onClick="skills2angelBtnClick" />   
+                
             
             </LinearLayout>
             

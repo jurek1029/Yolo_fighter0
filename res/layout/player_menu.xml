@@ -27,14 +27,6 @@
             android:onClick="weaponClick" />
 
         <Button
-            android:id="@+id/skill1Btn"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/skill1tab"
-            android:onClick="skill1Click" />
-
-        <Button
             android:id="@+id/skill2Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

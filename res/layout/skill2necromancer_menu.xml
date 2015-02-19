@@ -86,17 +86,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                  >
-            <LinearLayout
+            <ImageView
+                android:id="@+id/branch1a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="@integer/skillweighs" >    
-             </LinearLayout>
+                android:src="@drawable/branch_lwd"
+                android:layout_weight="@integer/skillweighs" />
              <ImageView
-                android:id="@+id/branch1"
+                android:id="@+id/branch1b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_uklewo"
+                android:src="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" />   
                 
              <Button
@@ -109,17 +109,17 @@
                     android:onClick="skills2necromancerBtnClick" />
              
                 <ImageView
-                android:id="@+id/branch2"
+                android:id="@+id/branch1c"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_ukprawo"
-                android:layout_weight="@integer/skillweighs"/> 
-            <LinearLayout
+                android:src="@drawable/branch_poz"
+                android:layout_weight="@integer/skillweighs" /> 
+            <ImageView
+                android:id="@+id/branch1d"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="@integer/skillweighs" >    
-             </LinearLayout>   
+                android:src="@drawable/branch_pwd"
+                android:layout_weight="@integer/skillweighs" /> 
             </LinearLayout>   
             
             
