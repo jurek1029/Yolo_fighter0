@@ -6,6 +6,7 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+
 public class YoloPlayer extends YoloObject {
 	
 	private static FloatBuffer vertexBuffer;
@@ -36,16 +37,18 @@ public class YoloPlayer extends YoloObject {
 	public boolean onGround = false;
 	public boolean canMove = true;
 	
-	//public float x =3f;
-	//public float y =5f;
 	
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
 	public int playerID;
+	
+	public String ParticipantId;
+	public boolean isPlayerActive; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
+	
 	//public float vy =0;
 	public float vx = 0f;
 	public float PlayerLive = 100;
 	public final int PLAYER_BULLET_FREQUENCY = 10; 
-	public final float PLAYER_LIVE_MAX = 100;
+	public float PLAYER_LIVE_MAX = 100;
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0;
 	public int coin =0;
@@ -355,7 +358,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
 			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0f,0.75f, 0f);
+			gl.glTranslatef(0f,0.125f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
@@ -375,7 +378,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
 			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0.125f,0.75f, 0f);
+			gl.glTranslatef(0.125f,0.125f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
@@ -570,7 +573,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
 			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0f,0.75f, 0f);
+			gl.glTranslatef(0f,0.125f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
@@ -589,7 +592,7 @@ public class YoloPlayer extends YoloObject {
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
 			gl.glTranslatef(x+ 0.25f*iconcount++, y-YoloEngine.Y_DDROP, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0.125f,0.75f, 0f);
+			gl.glTranslatef(0.125f,0.125f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
@@ -613,6 +616,11 @@ public class YoloPlayer extends YoloObject {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
+	}
+	
+	public void moveAway() {
+		this.x = 1000f;
+		this.y = 1000f;
 	}
 
 }

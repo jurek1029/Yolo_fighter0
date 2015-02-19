@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YoloEngine {
+	
+	public static boolean test = false;
+	
 
 	public static final int GAME_THREAD_FSP_SLEEP = (1000/60);
 	public static int GAME_SKIPED_FRAMES;
@@ -22,7 +25,7 @@ public class YoloEngine {
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
-	public static YoloPlayer[] TeamAB = new YoloPlayer[4];
+	public static YoloPlayer[] TeamAB = {new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666)};//new YoloPlayer[4];
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
@@ -159,9 +162,8 @@ public class YoloEngine {
 	public static int changesMade[] = new int[4];
 
     public static String playerParticipantID;
-   // public static int playerID;
+
     public static int IDTracer =0;
-    public static boolean playerTeam = false; // 0 - teamA, 1 - teamB
 
     public static List<String> teamA = new ArrayList<String>(2);
     public static List<String> teamB = new ArrayList<String>(2);
@@ -175,24 +177,8 @@ public class YoloEngine {
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;
 
     public static ArrayList<String> opponents = new ArrayList<String>(2);
-	
-	public static float Opponents_x[] = { 1000f, 1000f, 1000f, 1000f };
-	public static float Opponents_y[] = { 1000f, 1000f, 1000f, 1000f };
 
-    public static float TeamA_x[] = { 1000f, 1000f, 1000f, 1000f };
-    public static float TeamA_y[] = { 1000f, 1000f, 1000f, 1000f };
-    public static float TeamB_x[] = { 1000f, 1000f, 1000f, 1000f };
-    public static float TeamB_y[] = { 1000f, 1000f, 1000f, 1000f };
-    public static boolean TeamA_isCrouched[] = new boolean[4];
-    public static boolean TeamB_isCrouched[] = new boolean[4];
-
-	public static boolean Opponent_isCrouched[] = new boolean[4];
-
-    public static float opponentsLife[] = new float[4];
-    public static float opponentsLifeMax[] = new float[4];
-
-   
-	
+   	
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	
 	// ------------------------- Multislayer END -------------------------
@@ -208,6 +194,7 @@ public class YoloEngine {
 	public static int ST4Cost = 0;
 	
 	public static Context context;
+
 
 
 }
