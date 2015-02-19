@@ -1149,7 +1149,7 @@ public void skills2angelBtnClick(View v) {
 	        	cost.setText("400");
 	          break;  
 	        case R.id.Skill2angel_healBtn:
-	        	currentSkill2Checked = 102;
+	        	currentSkill2Checked = 17;
 	        	description.setText("Everybody make mistakes. Heal yourself and forget about it.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -1167,7 +1167,7 @@ public void skills2angelBtnClick(View v) {
 	        	cost.setText("400");
 	          break;  
 	        case R.id.Skill2angel_potionBtn:
-	        	currentSkill2Checked = 27;
+	        	currentSkill2Checked = 29;
 	        	description.setText("Long lasting, but effective healing.");
 	        	lvl.setText("10lvl");
 	        	cost.setText("400");
@@ -1256,7 +1256,7 @@ public void skill2angelEqBtnClick(View v){
     	animationSlowdown = 301;
     	animationDuration = 0f;
       break;
-	case 102:
+	case 17:
     	currentSkill.setBackgroundResource(R.drawable.skillangelheal1);
     	animationSlowdown = 0;
     	animationDuration = 0f;
@@ -1271,7 +1271,7 @@ public void skill2angelEqBtnClick(View v){
     	animationSlowdown = 6;
     	animationDuration = 1f;
       break;  
-	case 27:
+	case 29:
     	currentSkill.setBackgroundResource(R.drawable.skillangelpotion1);
     	animationSlowdown = 0;
     	animationDuration = 0f;
