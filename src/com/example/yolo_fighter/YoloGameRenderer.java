@@ -1,16 +1,12 @@
 package com.example.yolo_fighter;
 
 import java.nio.ByteBuffer;
-import java.util.Scanner;
 import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.google.android.gms.internal.dp;
-
 import android.opengl.GLSurfaceView.Renderer;
-import android.opengl.GLU;
 
 class HitBox extends YoloObject
 {
@@ -453,22 +449,27 @@ class Skill extends YoloObject
     		setX();setY();
     		break;
     	case 31://Teleportacion
+    	{
     		xEnd = 0.375f;
     		yEnd = 0.625f;
-    		x_radius = 0f;
-    		y_radius = 0f;
-    		frameDuration = 0;
-    		life = 0;MAXlife = life;
-    		animation_slowdown = 0;
-    		resurestion_count = 0;
-    		damage = 0f;
-    		setX();setY();
-    		if(team==YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
+    		boolean My = false;
+    		if(team == YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
     		{
-	    		YoloEngine.TeamAB[YoloEngine.MyID].x = this.x;
+    			if(YoloEngine.SkillSprite1 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
+    				My = true;
+    			else if(YoloEngine.SkillSprite2 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill2)
+    				My = true;
+    			else if(YoloEngine.SkillSprite3 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill3)
+    				My = true;
+    		}
+    		if(My)
+    		{
+    			setX();setY();
+    			YoloEngine.TeamAB[YoloEngine.MyID].x = this.x;
 	    		YoloEngine.TeamAB[YoloEngine.MyID].y = this.y;
     		}
     		break;
+    	}
     	case 32://Buff
     		xEnd = 0.625f;
     		yEnd = 0.375f;
