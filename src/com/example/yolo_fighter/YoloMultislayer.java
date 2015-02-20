@@ -13,7 +13,8 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
   - Pozycje w osobnych
   - dodawanie skilli mojego teamu powinny byÅ› dodawane do skillplayerve a przeciwnego do Opp
   
-  • gdy ktoœ siê roz³¹czy
+  • fixed? bug zalezny od losowego rpzydzielania teamu
+  • gdy ktoœ siê roz³¹czy - chyba reaguje ale nie usuwa gracza, bo trzbe cos wiecej zmienic typu x_change albo changes made
   • przy przydziale - sprawdzenie
   • bardziej racjonalne wysy³anie rzeczy typu max life - moment wysy³ania
   • sprawdziæ dla wiêcej graczy
@@ -33,7 +34,7 @@ public class YoloMultislayer {
 	public float Opponents_x_change[] = new float[4];
 	public float Opponents_y_change[] = new float[4];
 
-	ArrayList<String> TeamAB_Participants;
+	public ArrayList<String> TeamAB_Participants = new ArrayList<String>(2);
 	ArrayList<Participant> mParticipants;
 	
 	private long sentAt;
@@ -95,8 +96,7 @@ public class YoloMultislayer {
                         }
                     }
                                                           
-                    prepareMatchArray();
-                               
+                    prepareMatchArray();                              
                     YoloEngine.mMultislayer.sendMaxLife();
                   //  YoloGameRenderer.givePlayerID();
                     break;
@@ -351,8 +351,9 @@ public class YoloMultislayer {
     }
     
     public void prepareMatchArray() {
-    //	for(YoloPlayer p : YoloEngine.TeamAB)
-    //		TeamAB_Participants.add(p.ParticipantId);
+    	for(YoloPlayer p : YoloEngine.TeamAB)
+    		if(p.ParticipantId != "") 
+    			TeamAB_Participants.add(p.ParticipantId);
     }
 }
 

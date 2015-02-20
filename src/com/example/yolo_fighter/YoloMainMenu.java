@@ -85,10 +85,11 @@ public class YoloMainMenu extends Activity
                 YoloEngine.teamA.clear();
                 YoloEngine.teamB.clear();
                 YoloEngine.opponents.clear();
+                for(YoloPlayer p : YoloEngine.TeamAB) p = new YoloPlayer(1000f, 1000f, false, 666);
                 if(YoloEngine.participants != null) YoloEngine.participants.clear();
 
                 // @TODO temporarry
-                YoloEngine.teamA.add(YoloEngine.playerParticipantID);
+                //YoloEngine.teamA.add(YoloEngine.playerParticipantID);
             }
             else
                debugLog("Error "+statusCode);
@@ -99,7 +100,7 @@ public class YoloMainMenu extends Activity
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("All participants connected");
 
-                YoloEngine.teamA.clear(); //@TODO temporarry
+                //YoloEngine.teamA.clear(); //@TODO temporarry
 
                 YoloEngine.MULTI_ACTIVE = true;
 
@@ -122,7 +123,6 @@ public class YoloMainMenu extends Activity
                 }
 
                 if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
-                	YoloEngine.MyID = 0;
                 	YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
                     String teamAssignPattern = "1";
 
@@ -132,11 +132,13 @@ public class YoloMainMenu extends Activity
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID); //@REMOVE
                         YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamA;
+                        YoloEngine.MyID = 0;
                         teamAssignPattern += "0";
                     }
                     else {
                         YoloEngine.teamB.add(YoloEngine.playerParticipantID); //@REMOVE
                         YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamB;
+                        YoloEngine.MyID = 2;
                         teamAssignPattern += "1";
                     }
                     int i = 1,a=0,b=YoloEngine.TeamSize;
@@ -246,8 +248,14 @@ public class YoloMainMenu extends Activity
                 YoloEngine.teamA.remove(p);
                 YoloEngine.teamB.remove(p);
                 YoloEngine.opponents.remove(p);
+                try {
+                	YoloEngine.TeamAB[Collections.binarySearch(YoloEngine.mMultislayer.TeamAB_Participants, p)].moveAway();
+				} catch (Exception e) {
+					System.out.println("exception w usuwaniu gracza");
+				}
             }
-
+            
+            
             if(YoloEngine.opponents.size() == 0)
                 debugLog("No other players left");
         }

@@ -41,7 +41,7 @@ public class YoloPlayer extends YoloObject {
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
 	public int playerID;
 	
-	public String ParticipantId;
+	public String ParticipantId = "";
 	public boolean isPlayerActive; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
 	
 	//public float vy =0;
