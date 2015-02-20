@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import java.lang.ref.Reference;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -13,17 +14,19 @@ public class YoloPlayer extends YoloObject {
 	private static FloatBuffer textureBuffer;
 	private static ByteBuffer indexBuffer;
 	
-	public boolean isPlayerPoisoned = false;
-	public boolean isPlayerSlowDown = false;
+	public boolean isPlayerPoisoned = false; //nie trzeba przesy³aæ 
+	public boolean isPlayerSlowDown = false; //nie trzeba przesy³aæ 
 	public boolean isPlayerFlying = false;
 	public boolean isPlayerDenialed = false;
 	public boolean isPlayerInvincible = false;
 	public boolean isPlayerDef = false;
-	public boolean isPlayerFrozen = false;
+	public boolean isPlayerFrozen = false; //nie trzeba przesy³aæ 
 	public boolean isPlayerBuff = false;
 	public boolean isPlayerFireRateBuff = false;
 	public boolean isPlayerMagReloadBuff = false;
-	public boolean isShoting = false;
+	public boolean isBeingHealed = false;
+	
+	public boolean isShoting = false; 
 	public boolean isJumping = false;
 	public boolean isPlayerLeft = false;
 	public boolean isCrouch = false;
@@ -36,6 +39,7 @@ public class YoloPlayer extends YoloObject {
 	public boolean isMoving = false;
 	public boolean onGround = false;
 	public boolean canMove = true;
+	private boolean a=true,b=true,c=true;
 	
 	
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
@@ -50,7 +54,7 @@ public class YoloPlayer extends YoloObject {
 	public final int PLAYER_BULLET_FREQUENCY = 10; 
 	public float PLAYER_LIVE_MAX = 100;
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
-	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0;
+	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
 	public int coin =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0;
 	
@@ -59,6 +63,7 @@ public class YoloPlayer extends YoloObject {
 	public float fireDamage =1f,fireDamageBuff = fireDamage;
 	public float PlayerMagCapasity = 30f,playerMag = PlayerMagCapasity;
 	public int playerMagReloadTime = 100,reloading =0,baseMagReloadtime = playerMagReloadTime;
+	public int healBuffer =0;
 	
 	private static float vertices[] = {
 			0.0f, 0.0f, 0.0f,
@@ -305,6 +310,13 @@ public class YoloPlayer extends YoloObject {
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
+		if(isPlayerDenialed)
+		{
+			if(deniled-- == 0)
+				isPlayerDenialed = false;
+
+			LinearDraw(gl,5, 0.5f, 0, 28,-0.5f,-0.5f,2f,2f);
+		}
 		if(healing>0)
 		{
 			healing--;
@@ -323,6 +335,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			LinearDraw(gl,4, 0.5f, 0.75f, 29,0,0,1,1);
 		}
 		if(isPlayerBuff)
 		{
@@ -343,6 +357,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(c)c=LinearDraw(gl,3, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		if(isPlayerFireRateBuff)
 		{
@@ -363,6 +379,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(b)b=LinearDraw(gl,2, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		if(isPlayerMagReloadBuff)
 		{
@@ -383,8 +401,21 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(a)a=LinearDraw(gl,1, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		iconcount =0;
+		if(isBeingHealed)
+		{
+			if(PlayerLive+20 < PLAYER_LIVE_MAX)
+			{
+    			PlayerLive += healBuffer;
+    			healBuffer =0;
+			}
+    		else
+    			PlayerLive = PLAYER_LIVE_MAX;
+			isBeingHealed =	LinearDraw(gl,0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
+		}
 	}
 	public void drawOpponent(GL10 gl)
 	{
@@ -521,6 +552,13 @@ public class YoloPlayer extends YoloObject {
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 		}
+		if(isPlayerDenialed)
+		{
+			if(deniled-- == 0)
+				isPlayerDenialed = false;
+			
+			LinearDraw(gl,5, 0.375f, 0f, 28,-0.5f,-0.5f,2f,2f);
+		}
 		if(healing>0)
 		{
 			healing--;
@@ -539,6 +577,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+
+    		LinearDraw(gl,4, 0.5f, 0.75f, 29,0,0,1,1);
 		}
 		if(isPlayerBuff)
 		{
@@ -559,6 +599,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(c)c=LinearDraw(gl,3, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		if(isPlayerFireRateBuff)
 		{
@@ -578,6 +620,8 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(b)b=LinearDraw(gl,2, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		if(isPlayerMagReloadBuff)
 		{
@@ -597,8 +641,22 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			if(a)a=LinearDraw(gl,1, 0.625f, 0.375f, 32,0,0,1,1);
 		}
 		iconcount =0;
+		if(isBeingHealed)
+		{
+			if(PlayerLive+20 < PLAYER_LIVE_MAX)
+			{
+    			PlayerLive += healBuffer;
+    			healBuffer =0;
+			}
+    		else
+    			PlayerLive = PLAYER_LIVE_MAX;
+			
+			isBeingHealed = LinearDraw(gl, 0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
+		}
 	}
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{
@@ -616,6 +674,33 @@ public class YoloPlayer extends YoloObject {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
+	}
+	
+	public boolean LinearDraw(GL10 gl,int i,float xEnd,float yEnd,int sprite,float xMove,float yMove,float xScale,float yScale)
+	{
+		if(xTx[i] >= xEnd && yTx[i] >= yEnd)
+		{
+			yTx[i]=0;xTx[i]=0;
+			if(sprite != 28)return false;
+		}
+		else
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X*xScale, YoloEngine.TEXTURE_SIZE_Y*yScale, 1f);
+			gl.glTranslatef((x + xMove)/xScale, (y + yMove)/yScale, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(xTx[i], yTx[i], 0f);
+			draw(gl, YoloEngine.spriteSheets,sprite);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+
+		if(xTx[i]<1f)xTx[i]+=0.125f;
+		else{yTx[i]+=0.125f; xTx[i]=0f;}
+		return true;
 	}
 	
 	public void moveAway() {

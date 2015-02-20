@@ -66,6 +66,16 @@ public class YoloMultislayer {
 					for(int i = 0; i < 3; i++) {
 						spriteLoad = rcvData.getInt();
 						YoloEngine.sprite_load[spriteLoad<45?spriteLoad : spriteLoad-87] = true;
+						if(spriteLoad==14)YoloEngine.sprite_load[27]=true;
+						if(spriteLoad==36)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==37)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==38)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==43)YoloEngine.sprite_load[41]=true;
+						if(spriteLoad==120)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==121)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==122)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==123)YoloEngine.sprite_load[32]=true;
+						if(spriteLoad==124)YoloEngine.sprite_load[32]=true;
 					}
 					break;
 
