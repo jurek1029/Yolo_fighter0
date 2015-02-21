@@ -1968,9 +1968,9 @@ public class YoloGameRenderer implements Renderer {
 			
 			for (int i = 0;i < LaddreTab.length;i++)
 			{
-				if(IsCollided(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[i]))
+				if(IsIn(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[i]))
 				{
-					
+					System.out.println(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp+" "+YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown);
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp)
 					{
 						if(YoloEngine.TeamAB[YoloEngine.MyID].y+1 < LaddreTab[i].y + LaddreTab[i].dy )
@@ -1997,7 +1997,7 @@ public class YoloGameRenderer implements Renderer {
 			}
 			if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp && YoloEngine.TeamAB[YoloEngine.MyID].canMove ==  false)
 			{
-				if(!IsCollided(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[ClimbingOn]))
+				if(!IsIn(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[ClimbingOn]))
 				{
 					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
@@ -2146,7 +2146,14 @@ public class YoloGameRenderer implements Renderer {
 	private boolean IsCollided(YoloObject object1, YoloObject object2)
 	{
 		if(object1.x + object1.px + object1.dx < object2.x || object1.x + object1.px > object2.x + object2.dx)return false;
-		if(object1.y + object1.px + object1.dy < object2.y || object1.y + object1.px > object2.y + object2.dy)return false;
+		if(object1.y + object1.py + object1.dy < object2.y || object1.y + object1.py > object2.y + object2.dy)return false;
+		
+		return true;
+	}
+	private boolean IsIn(YoloObject object1, YoloObject object2)
+	{
+		if(object1.x <= object2.x || object1.x + object1.dx >= object2.x + object2.dx)return false;
+		if(object1.y + object1.dy < object2.y || object1.y > object2.y + object2.dy)return false;
 		
 		return true;
 	}
@@ -3728,10 +3735,10 @@ public class YoloGameRenderer implements Renderer {
 		ObjectTab[15] = new YoloObject(370, 990, 516, 96);
 		ObjectTab[16] = new YoloObject(1113, 990, 1020, 122);
 	
-		LaddreTab[0]= new YoloObject(554, 616, 76, 331);
-		LaddreTab[1]= new YoloObject(1395, 621, 72, 326);
-		LaddreTab[2]= new YoloObject(1871, 947, 75, 340);
-		LaddreTab[3]= new YoloObject(1880, 40, 70, 595);
+		LaddreTab[0]= new YoloObject(542, 616, 105, 331);
+		LaddreTab[1]= new YoloObject(1381, 621, 105, 326);
+		LaddreTab[2]= new YoloObject(1859, 947, 105, 340);
+		LaddreTab[3]= new YoloObject(1865, 40, 105, 595);
 		
 		YoloEngine.sprite_load[0] = true;
 		YoloEngine.sprite_load[1] = true;

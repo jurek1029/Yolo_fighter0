@@ -42,13 +42,11 @@ public class YoloGame extends Activity{
 	
 	private void ActionDown()
 	{
-
 		if(!YoloEngine.isClimbing)
 		{
 			YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
 			YoloEngine.isClimbing = true;
 		}
-		else	
 		if(!YoloEngine.isCrouch_prest)
 			if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)
 				YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
@@ -276,21 +274,21 @@ public class YoloGame extends Activity{
 						x2 = (float) ((40*x2)/Math.sqrt(x2*x2+y2*y2));
 						y2 = (float) ((40*y2)/Math.sqrt(x2*x2+y2*y2));
 					}
-
+					
 					if( y2 < -30)
 						ActionDown();	
 					else
 					{
 						YoloEngine.isCrouch_prest = false;
-						YoloEngine.isClimbing = false;
-					}
-
-					if( y2 > 30)
-						ActionUp();
-					else 
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
-						YoloEngine.isClimbing = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
+						if( y2 > 30)
+							ActionUp();
+						else 
+						{
+							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
+							YoloEngine.isClimbing = false;
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
+						}
 					}
 					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?15000f:7500f);
 					
