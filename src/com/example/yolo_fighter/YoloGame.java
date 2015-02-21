@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 public class YoloGame extends Activity{
@@ -200,8 +201,12 @@ public class YoloGame extends Activity{
 		{
 			Point size = new Point();
 		    YoloEngine.display.getSize(size);
+		    DisplayMetrics metrics = getResources().getDisplayMetrics();
 		    YoloEngine.display_x = size.x;
 		    YoloEngine.display_y = size.y;
+		    YoloEngine.xdpi = 210f/metrics.xdpi;
+		    YoloEngine.ydpi = 210f/metrics.ydpi;
+		    YoloEngine.LEVEL_scale *=YoloEngine.xdpi;
 		}
 		else
 		{
