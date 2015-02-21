@@ -481,7 +481,7 @@ public class YoloMainMenu extends Activity
 		plInfoList.clear();
 		plInfoList=dbm.getAll();
 		YoloEngine.whichLayout = 1;
-		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
+		if (plInfoList.size()==0) {setContentView(R.layout.addplayer_menu); newPlayerRace=0;}
 		else{
 		int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
 		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
@@ -560,7 +560,7 @@ public class YoloMainMenu extends Activity
 	{
 		plInfoList=dbm.getAll();
 		YoloEngine.whichLayout = 1;
-		if (plInfoList.size()==0) setContentView(R.layout.addplayer_menu);
+		if (plInfoList.size()==0) {setContentView(R.layout.addplayer_menu); newPlayerRace=0;}
 		else
 		{
 		setContentView(R.layout.player_menu);
@@ -715,6 +715,7 @@ public class YoloMainMenu extends Activity
 	public void addPlayerClick(View v)
 	{
 		setContentView(R.layout.addplayer_menu);
+		newPlayerRace=0;
 	}
 	
 	public void deletePlayerClick(View v)
