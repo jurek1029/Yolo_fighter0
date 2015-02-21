@@ -151,8 +151,9 @@ public class YoloEngine {
 	public static final float PLAYER_CLIMBING_SPEED = 0.1f;
 	
 	public static Display display;
-	public static float display_x; 
-	public static float display_y; 
+	public static float display_x,xdpi; 
+	public static float display_y,ydpi; 
+
 	
 	
 	// ------------------------- Multislayer BEGIN -----------------------
