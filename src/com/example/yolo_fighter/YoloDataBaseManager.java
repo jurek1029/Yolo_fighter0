@@ -100,12 +100,12 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 		wartosciDoBazy.put(keyLevel, 1);
 		wartosciDoBazy.put(keyXP, 0);
 		wartosciDoBazy.put(keyCoins, 0);
-		wartosciDoBazy.put(keyUnits, 0);
+		wartosciDoBazy.put(keyUnits, 15);
 		wartosciDoBazy.put(keyST1, 0);
 		wartosciDoBazy.put(keyST2, 0);
 		wartosciDoBazy.put(keyST3, 0);
 		wartosciDoBazy.put(keyST4, 0);
-		wartosciDoBazy.put(keySkill1, "1000000000");
+		wartosciDoBazy.put(keySkill1, playerInfo.getSkill1());
 		wartosciDoBazy.put(keySkill2, "1000000000");
 		//wartosciDoBazy.put(keySkill3, 1000000000);
 		wartosciDoBazy.put(keyWeapon, 1000000000);

@@ -27,14 +27,6 @@
             android:onClick="weaponClick" />
 
         <Button
-            android:id="@+id/skill1Btn"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/skill1tab"
-            android:onClick="skill1Click" />
-
-        <Button
             android:id="@+id/skill2Btn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -81,6 +73,13 @@
                 android:orientation="vertical"
                 android:layout_weight="92" >
 			
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="horizontal"
+                 >
+                 </LinearLayout>   
+                
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,13 +89,13 @@
                 android:id="@+id/branch1a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_lwd"
+                android:background="@drawable/branch_lwd1"
                 android:layout_weight="@integer/skillweighs" />
              <ImageView
                 android:id="@+id/branch1b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:background="@drawable/branch_poz1"
                 android:layout_weight="@integer/skillweighs" />   
                 
              <Button
@@ -112,13 +111,13 @@
                 android:id="@+id/branch1c"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:background="@drawable/branch_poz1"
                 android:layout_weight="@integer/skillweighs" /> 
             <ImageView
                 android:id="@+id/branch1d"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_pwd"
+                android:background="@drawable/branch_pwd1"
                 android:layout_weight="@integer/skillweighs" /> 
             </LinearLayout>   
             
@@ -142,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerhand1"
+                    android:background="@drawable/skillnecromancerhand2"
                     android:onClick="skills2necromancerBtnClick" />
              
                
@@ -158,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerspike1"
+                    android:background="@drawable/skillnecromancerspike2"
                     android:onClick="skills2necromancerBtnClick" />   
                 
              </LinearLayout> 
@@ -176,11 +175,11 @@
                  >
                 
              <ImageView
-                 android:id="@+id/branch4"
+                 android:id="@+id/branch2a"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
                  android:layout_weight="@integer/skillweighs"
-                 android:src="@drawable/branch_norm" />
+                 android:background="@drawable/branch_norm" />
                
             <LinearLayout
                 android:layout_width="0dp"
@@ -190,10 +189,10 @@
              </LinearLayout>   
                
             <ImageView
-                android:id="@+id/branch5"
+                android:id="@+id/branch2b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_norm"
+                android:background="@drawable/branch_norm"
                 android:layout_weight="@integer/skillweighs" /> 
                 
              </LinearLayout> 
@@ -211,14 +210,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancermummy1"
+                    android:background="@drawable/skillnecromancermummy2"
                     android:onClick="skills2necromancerBtnClick" />
              
                 <ImageView
-                android:id="@+id/branch6"
+                android:id="@+id/branch3a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:background="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" /> 
               
               <Button
@@ -227,14 +226,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerslowdown1"
+                    android:background="@drawable/skillnecromancerslowdown2"
                     android:onClick="skills2necromancerBtnClick" />  
                     
               <ImageView
-                android:id="@+id/branch7"
+                android:id="@+id/branch3b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:background="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" /> 
              
              <Button
@@ -243,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerbarrel1"
+                    android:background="@drawable/skillnecromancerbarrel2"
                     android:onClick="skills2necromancerBtnClick" /> 
               
              </LinearLayout>    
@@ -256,11 +255,11 @@
                  >
                 
              <ImageView
-                 android:id="@+id/branch8"
+                 android:id="@+id/branch4a"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
                  android:layout_weight="@integer/skillweighs"
-                 android:src="@drawable/branch_norm" />
+                 android:background="@drawable/branch_norm" />
                
             <LinearLayout
                 android:layout_width="0dp"
@@ -270,10 +269,10 @@
              </LinearLayout>   
                
             <ImageView
-                android:id="@+id/branch9"
+                android:id="@+id/branch4b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_norm"
+                android:background="@drawable/branch_norm"
                 android:layout_weight="@integer/skillweighs" /> 
                 
              </LinearLayout> 
@@ -290,7 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerwarrior1"
+                    android:background="@drawable/skillnecromancerwarrior2"
                     android:onClick="skills2necromancerBtnClick" />
              
                
@@ -306,7 +305,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerwall1"
+                    android:background="@drawable/skillnecromancerwall2"
                     android:onClick="skills2necromancerBtnClick" />   
                 
              </LinearLayout> 
@@ -319,11 +318,11 @@
                  >
                 
              <ImageView
-                 android:id="@+id/branch10"
+                 android:id="@+id/branch5a"
                  android:layout_width="0dp"
                  android:layout_height="wrap_content"
                  android:layout_weight="@integer/skillweighs"
-                 android:src="@drawable/branch_norm" />
+                 android:background="@drawable/branch_norm" />
                
             <LinearLayout
                 android:layout_width="0dp"
@@ -333,10 +332,10 @@
              </LinearLayout>   
                
             <ImageView
-                android:id="@+id/branch11"
+                android:id="@+id/branch5b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_norm"
+                android:background="@drawable/branch_norm"
                 android:layout_weight="@integer/skillweighs" /> 
                 
              </LinearLayout> 
@@ -354,14 +353,44 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerarcher1"
+                    android:background="@drawable/skillnecromancerarcher2"
                     android:onClick="skills2necromancerBtnClick" />
              
-                <ImageView
-                android:id="@+id/branch12"
+               <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:orientation="horizontal"
+                android:layout_weight="60"
+                 >
+              </LinearLayout> 
+             
+             <Button
+                    android:id="@+id/Skill2necromancer_towerBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="@integer/skillweighs"
+                    android:background="@drawable/skillnecromancertower2"
+                    android:onClick="skills2necromancerBtnClick" /> 
+              
+             </LinearLayout>    
+            
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                 >
+              <ImageView
+                android:id="@+id/branch6aa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/branch_lwg"
+                android:layout_weight="@integer/skillweighs" />
+             <ImageView
+                android:id="@+id/branch6a"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" /> 
               
               <Button
@@ -370,26 +399,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerlifesuck1"
+                    android:background="@drawable/skillnecromancerlifesuck2"
                     android:onClick="skills2necromancerBtnClick" />  
                     
               <ImageView
-                android:id="@+id/branch13"
+                android:id="@+id/branch6b"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_poz"
+                android:background="@drawable/branch_poz"
                 android:layout_weight="@integer/skillweighs" /> 
-             
-             <Button
-                    android:id="@+id/Skill2necromancer_towerBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancertower1"
-                    android:onClick="skills2necromancerBtnClick" /> 
-              
-             </LinearLayout>    
+                <ImageView
+                android:id="@+id/branch6bb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/branch_pwg"
+                android:layout_weight="@integer/skillweighs" />
+            </LinearLayout>
             
             
             <LinearLayout
@@ -404,10 +429,10 @@
                 android:layout_weight="40" >    
              </LinearLayout>
              <ImageView
-                android:id="@+id/branch14"
+                android:id="@+id/branch7a"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/branch_norm"
+                android:background="@drawable/branch_norm"
                 android:layout_weight="@integer/skillweighs" />   
                 
              
@@ -437,7 +462,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="@integer/skillweighs"
-                    android:background="@drawable/skillnecromancerresurrection1"
+                    android:background="@drawable/skillnecromancerresurrection2"
                     android:onClick="skills2necromancerBtnClick" />   
                 
              
@@ -448,6 +473,13 @@
                 android:layout_weight="40" >    
              </LinearLayout>   
             </LinearLayout>   
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="horizontal"
+                 >
+                 </LinearLayout>
             
             <!-- Tuu -->
             </LinearLayout>
@@ -475,7 +507,7 @@
             <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="10"
             android:orientation="vertical" >
             </LinearLayout> 
             
@@ -490,7 +522,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="left"
-                    android:layout_weight="33"
+                    android:layout_weight="40"
                     android:text="description" />
 
                 <TextView
@@ -498,7 +530,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="left"
-                    android:layout_weight="33"
+                    android:layout_weight="20"
                     android:text="lvl" />
 
                 <TextView
@@ -506,8 +538,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="left"
-                    android:layout_weight="33"
+                    android:layout_weight="20"
                     android:text="cost" />
+                <TextView
+                    android:id="@+id/skill2necromancerunits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="your units" />
             </LinearLayout>
 
             <LinearLayout
