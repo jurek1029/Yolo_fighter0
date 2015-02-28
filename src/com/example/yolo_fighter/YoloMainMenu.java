@@ -627,13 +627,17 @@ public class YoloMainMenu extends Activity
 	    		TextView txtViewCoinsST2Counter = (TextView) findViewById(R.id.stat2coinsTxt);
 	    		TextView txtViewCoinsST3Counter = (TextView) findViewById(R.id.stat3coinsTxt);
 	    		TextView txtViewCoinsST4Counter = (TextView) findViewById(R.id.stat4coinsTxt);
-	    		
+	    		TextView txtViewLevelCounter = (TextView) findViewById(R.id.levelCounter);
+	    		TextView txtViewUnitsCounter = (TextView) findViewById(R.id.unitsCounter);
+	    		ImageView playerImage = (ImageView) findViewById(R.id.playerImage);
 	    		
 	    		Integer st1 = YoloEngine.currentPlayerInfo.getST1();
 	    		Integer st2 = YoloEngine.currentPlayerInfo.getST2();
 	    		Integer st3 = YoloEngine.currentPlayerInfo.getST3();
 	    		Integer st4 = YoloEngine.currentPlayerInfo.getST4();
 	    		Integer coins = YoloEngine.currentPlayerInfo.getCoins();
+	    		Integer units = YoloEngine.currentPlayerInfo.getUnits();
+	    		Integer level = YoloEngine.currentPlayerInfo.getLevel();
 	    		Integer st1Cost = YoloEngine.ST1Cost;
 	    		Integer st2Cost = YoloEngine.ST2Cost;
 	    		Integer st3Cost = YoloEngine.ST3Cost;
@@ -647,7 +651,16 @@ public class YoloMainMenu extends Activity
 	    		txtViewCoinsST2Counter.setText(st2Cost.toString());
 	    		txtViewCoinsST3Counter.setText(st3Cost.toString());
 	    		txtViewCoinsST4Counter.setText(st4Cost.toString());
-	    		//txtViewUnitsCounter.setText(YoloEngine.currentPlayerInfo.getUnits()); 
+	    		txtViewUnitsCounter.setText(units.toString());
+	    		txtViewLevelCounter.setText(level.toString()); 
+	    		switch(YoloEngine.currentPlayerInfo.getRace()){
+	    		case 0: playerImage.setBackgroundResource(R.drawable.addangel);
+	    			break;
+	    		case 1: playerImage.setBackgroundResource(R.drawable.adddevil);
+    			break;
+	    		case 2: playerImage.setBackgroundResource(R.drawable.addnecromancer);
+    			break;
+	    		}
 	        }
 	        public void onNothingSelected(AdapterView<?> arg0) {
 	        }

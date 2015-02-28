@@ -655,7 +655,8 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="33"
                     android:orientation="vertical" >
 
@@ -676,7 +677,7 @@
                     
                     <LinearLayout
                 	android:layout_width="match_parent"
-               		android:layout_height="0dp"
+               		android:layout_height="5dp"
                		android:orientation="horizontal"
                 	android:layout_weight="5" >
             </LinearLayout>
@@ -704,7 +705,8 @@
                     </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="33"
                     android:orientation="vertical" >
 
@@ -725,7 +727,7 @@
                     
                     <LinearLayout
                 	android:layout_width="match_parent"
-               		android:layout_height="0dp"
+               		android:layout_height="5dp"
                		android:orientation="horizontal"
                 	android:layout_weight="5" >
             </LinearLayout>
@@ -754,7 +756,8 @@
                     </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="33"
                     android:orientation="vertical" >
 
@@ -775,7 +778,7 @@
                     
                     <LinearLayout
                 	android:layout_width="match_parent"
-               		android:layout_height="0dp"
+               		android:layout_height="5dp"
                		android:orientation="horizontal"
                 	android:layout_weight="5" >
             </LinearLayout>
