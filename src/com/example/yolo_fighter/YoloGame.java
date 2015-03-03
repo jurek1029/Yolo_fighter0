@@ -203,8 +203,8 @@ public class YoloGame extends Activity{
 		    YoloEngine.display_x = size.x;
 		    YoloEngine.display_y = size.y;
 		    YoloEngine.xdpi = 210f/metrics.xdpi;
-		    YoloEngine.ydpi = 210f/metrics.ydpi;
-		    YoloEngine.LEVEL_scale *=YoloEngine.xdpi;
+		    
+		    YoloEngine.LEVEL_scale =YoloEngine.ydpi/YoloEngine.xdpi;
 		}
 		else
 		{

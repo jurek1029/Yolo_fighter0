@@ -152,7 +152,7 @@ public class YoloEngine {
 	
 	public static Display display;
 	public static float display_x,xdpi; 
-	public static float display_y,ydpi; 
+	public static float display_y,ydpi=LEVEL_scale; 
 
 	
 	

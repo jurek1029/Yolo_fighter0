@@ -428,6 +428,7 @@ class Skill extends YoloObject
 	    		if(My)
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].healing = YoloEngine.healingDuration; 
+	    			YoloEngine.TeamAB[YoloEngine.MyID].isHealing = true;
 		    		//TODO XXX wysy³anie
 	    		}
 	    	}

@@ -24,6 +24,7 @@ public class YoloPlayer extends YoloObject {
 	public boolean isPlayerFireRateBuff = false;
 	public boolean isPlayerMagReloadBuff = false;
 	public boolean isBeingHealed = false;
+	public boolean isHealing = false;
 	
 	public boolean isShoting = false; 
 	public boolean isJumping = false;
@@ -316,9 +317,11 @@ public class YoloPlayer extends YoloObject {
 
 			LinearDraw(gl,5, 0.5f, 0, 28,-0.5f,-0.5f,2f,2f);
 		}
-		if(healing>0)
+		if(isHealing)
 		{
-			healing--;
+			if(healing-- == 0)
+				isHealing = false;
+			
 			if(PlayerLive + 0.05f < PLAYER_LIVE_MAX)
 				PlayerLive += 0.05f;
 			else

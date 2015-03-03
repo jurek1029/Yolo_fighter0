@@ -11,6 +11,7 @@ public class YoloGameView extends GLSurfaceView{
 		super(context);
 		
 		renderer = new YoloGameRenderer();
+		//this.setEGLConfigChooser(true);
 		this.setRenderer(renderer);
 		
 	}
