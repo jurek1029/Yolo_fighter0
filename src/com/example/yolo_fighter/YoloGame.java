@@ -271,8 +271,8 @@ public class YoloGame extends Activity{
 					y2 = y2-y_old;
 					if(x2*x2 + y2*y2 >1600)
 					{
-						x2 = (float) ((40*x2)/Math.sqrt(x2*x2+y2*y2));
-						y2 = (float) ((40*y2)/Math.sqrt(x2*x2+y2*y2));
+						x2 = (float) ((40*YoloEngine.LEVEL_scale*x2)/Math.sqrt(x2*x2+y2*y2));
+						y2 = (float) ((40*YoloEngine.LEVEL_scale*y2)/Math.sqrt(x2*x2+y2*y2));
 					}
 					
 					if( y2 < -30)
@@ -290,7 +290,7 @@ public class YoloGame extends Activity{
 							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
 						}
 					}
-					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?15000f:7500f);
+					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?(15000f*YoloEngine.LEVEL_scale*YoloEngine.LEVEL_scale):(7500f*YoloEngine.LEVEL_scale*YoloEngine.LEVEL_scale));
 					
 				}
 	
