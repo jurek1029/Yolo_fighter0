@@ -108,7 +108,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 		wartosciDoBazy.put(keySkill1, playerInfo.getSkill1());
 		wartosciDoBazy.put(keySkill2, "1000000000");
 		//wartosciDoBazy.put(keySkill3, 1000000000);
-		wartosciDoBazy.put(keyWeapon, 1000000000);
+		wartosciDoBazy.put(keyWeapon, "1000000000");
 		wartosciDoBazy.put(keySK1EQ, 0);
 		wartosciDoBazy.put(keySK2EQ, 0);
 		wartosciDoBazy.put(keySK3EQ, 0);
@@ -150,7 +150,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 			playerInfo.setST4(kursor.getInt(10));
 			playerInfo.setSkill1(kursor.getString(11));
 			playerInfo.setSkill2(kursor.getString(12));
-			playerInfo.setWeapon(kursor.getInt(13));
+			playerInfo.setWeapon(kursor.getString(13));
 			playerInfo.setSK1EQ(kursor.getInt(14));
 			playerInfo.setSK2EQ(kursor.getInt(15));
 			playerInfo.setSK3EQ(kursor.getInt(16));
@@ -210,7 +210,7 @@ public class YoloDataBaseManager extends SQLiteOpenHelper {
 			playerInfo.setST4(kursor.getInt(10));
 			playerInfo.setSkill1(kursor.getString(11));
 			playerInfo.setSkill2(kursor.getString(12));
-			playerInfo.setWeapon(kursor.getInt(13));
+			playerInfo.setWeapon(kursor.getString(13));
 			playerInfo.setSK1EQ(kursor.getInt(14));
 			playerInfo.setSK2EQ(kursor.getInt(15));
 			playerInfo.setSK3EQ(kursor.getInt(16));

@@ -1,25 +1,23 @@
 package com.example.yolo_fighter;
 
-import java.lang.reflect.Array;
+import static android.content.ContentResolver.setMasterSyncAutomatically;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -30,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
@@ -40,11 +40,8 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.google.android.gms.internal.lw;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
-
-import static android.content.ContentResolver.*;
 
 public class YoloMainMenu extends Activity 
 {
@@ -57,8 +54,13 @@ public class YoloMainMenu extends Activity
 	int currentSkill1Checked = 0;
 	int currentSkill2Checked = 0;
 	int skillPointer = 0;
+	int weaponPointer = 0;
+	int weaponCost = 0;
+	int amountNeeded = 0;
+	int amountHad[] = {0,0,0,0,0,0,0,0,0,0}; 
 	int unitsNeeded = 0;
 	int lvlNeeded = 0;
+	int barSize = 0;
 	boolean buying = false;
 	private SharedPreferences preferences;
 	
@@ -330,6 +332,16 @@ public class YoloMainMenu extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+		AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+        .addTestDevice("TEST_DEVICE_ID")
+        .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        .addTestDevice("CF95DC53F383F9A836FD749F3EF439CD")
+        .addTestDevice("9DD069C33472A87E86FEFBDA78B1AB1C")
+        .build();
+        mAdView.loadAd(adRequest);
+		
+
 		preferences=getSharedPreferences("daneGra", Activity.MODE_PRIVATE);
 		
         setMasterSyncAutomatically(true); // AUTO SYNC niezbędny dla wysyłania zaproszeń
@@ -673,6 +685,8 @@ public class YoloMainMenu extends Activity
 	public void weaponClick(View v)
 	{
 		setContentView(R.layout.weapon_menu);
+		weaponDraw();
+		
 	}
 	
 	public void skill1Click(View v)
@@ -800,6 +814,204 @@ public class YoloMainMenu extends Activity
 		}
 		skillsClick(v);
 	}
+	//--------------------- weapon menu----------------------
+	public void weaponDraw()
+	{
+		TextView coinsTxt = (TextView) findViewById(R.id.coinsTxt);
+		Integer coinsAmount = YoloEngine.currentPlayerInfo.getCoins();
+		coinsTxt.setText("coins: "+coinsAmount.toString());
+		String weaponTab = YoloEngine.currentPlayerInfo.getWeapon();
+		ImageView padlock0 = (ImageView) findViewById(R.id.padlock0);
+		ImageView padlock1 = (ImageView) findViewById(R.id.padlock1);
+		ImageView padlock2 = (ImageView) findViewById(R.id.padlock2);
+		//ImageView padlock3 = (ImageView) findViewById(R.id.padlock3);
+		ImageView padlock4 = (ImageView) findViewById(R.id.padlock4);
+		ImageView padlock5 = (ImageView) findViewById(R.id.padlock5);
+		ImageView padlock6 = (ImageView) findViewById(R.id.padlock6);
+		ImageView padlock7 = (ImageView) findViewById(R.id.padlock7);
+		ImageView padlock8 = (ImageView) findViewById(R.id.padlock8);
+		ImageView padlock9 = (ImageView) findViewById(R.id.padlock9);
+		if (weaponTab.charAt(0)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=0) padlock0.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==0) {padlock0.setImageResource(R.drawable.bag);padlock0.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(1)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=1) padlock1.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==1) {padlock1.setImageResource(R.drawable.bag);padlock1.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(2)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=2) padlock2.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==2) {padlock2.setImageResource(R.drawable.bag);padlock2.setVisibility(ImageView.VISIBLE);}
+		//if (weaponTab.charAt(3)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=3) padlock3.setVisibility(ImageView.INVISIBLE);
+		//else if (YoloEngine.currentPlayerInfo.getWEQ()==3) {padlock3.setImageResource(R.drawable.bag);padlock3.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(4)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=4) padlock4.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==4) {padlock4.setImageResource(R.drawable.bag);padlock4.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(5)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=5) padlock5.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==5) {padlock5.setImageResource(R.drawable.bag);padlock5.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(6)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=6) padlock6.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==6) {padlock6.setImageResource(R.drawable.bag);padlock6.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(7)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=7) padlock7.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==7) {padlock7.setImageResource(R.drawable.bag);padlock7.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(8)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=8) padlock8.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==8) {padlock8.setImageResource(R.drawable.bag);padlock8.setVisibility(ImageView.VISIBLE);}
+		if (weaponTab.charAt(9)=='1' && YoloEngine.currentPlayerInfo.getWEQ()!=9) padlock9.setVisibility(ImageView.INVISIBLE);
+		else if (YoloEngine.currentPlayerInfo.getWEQ()==9) {padlock9.setImageResource(R.drawable.bag);padlock9.setVisibility(ImageView.VISIBLE);}
+	}
+	public void gunClick(View v)
+	{
+		ImageView barDamage = (ImageView) findViewById(R.id.barDamageFilling);
+		ImageView barCapacity = (ImageView) findViewById(R.id.barCapacityFilling);
+		ImageView barFireRate = (ImageView) findViewById(R.id.barFireRateFilling);
+		ImageView barReloadTime = (ImageView) findViewById(R.id.barReloadTimeFilling);
+		String amountNeededtxt=null;
+		float damage = 0f;
+		float capacity = 0f;
+		float fireRate = 0f;
+		float reloadTime = 0f;
+		switch(v.getId()) {
+        case R.id.weapon0:
+        	weaponPointer=0;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+        case R.id.weapon1:
+        	weaponPointer=1;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.1f;
+        	capacity = 0.6f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.2f;
+          break;
+        case R.id.weapon2:
+        	weaponPointer=2;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.3f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.2f;
+          break;
+       /* case R.id.weapon3:
+        	weaponPointer=3;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.8f;
+        	capacity = 0.2f;
+    		fireRate = 0.7f;
+    		reloadTime = 0.9f;
+          break;*/
+        case R.id.weapon4:
+        	weaponPointer=4;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.2f;
+        	capacity = 0.2f;
+    		fireRate = 0.4f;
+    		reloadTime = 0.1f;
+          break;
+        case R.id.weapon5:
+        	weaponPointer=5;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+        case R.id.weapon6:
+        	weaponPointer=6;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+        case R.id.weapon7:
+        	weaponPointer=7;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+        case R.id.weapon8:
+        	weaponPointer=8;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+        case R.id.weapon9:
+        	weaponPointer=9;
+        	weaponCost = 0;
+        	amountNeeded = 0;
+        	amountNeededtxt="kill 10 people, you killed: ";
+        	damage= 0.5f;
+        	capacity = 0.2f;
+    		fireRate = 0.5f;
+    		reloadTime = 0.8f;
+          break;
+		}
+		ScaleAnimation scAnim = new ScaleAnimation(0.0f, damage, 1.0f, 1.0f);
+		ScaleAnimation scAnim2 = new ScaleAnimation(0.0f, capacity, 1.0f, 1.0f);
+		ScaleAnimation scAnim3 = new ScaleAnimation(0.0f, fireRate, 1.0f, 1.0f);
+		ScaleAnimation scAnim4 = new ScaleAnimation(0.0f, reloadTime, 1.0f, 1.0f);
+    	scAnim.setDuration(1000);
+    	scAnim.setFillAfter(true);
+    	scAnim2.setDuration(1000);
+    	scAnim2.setFillAfter(true);
+    	scAnim3.setDuration(1000);
+    	scAnim3.setFillAfter(true);
+    	scAnim4.setDuration(1000);
+    	scAnim4.setFillAfter(true);
+    	barDamage.startAnimation(scAnim);
+    	barCapacity.startAnimation(scAnim2);
+    	barFireRate.startAnimation(scAnim3);
+    	barReloadTime.startAnimation(scAnim4);
+    	TextView weaponCostTxt = (TextView) findViewById(R.id.weaponCost);
+    	TextView amountNeededTxtView = (TextView) findViewById(R.id.amountNeeded);
+    	amountNeededTxtView.setText(amountNeededtxt+amountHad[weaponPointer]);
+    	weaponCostTxt.setText("cost: "+weaponCost);
+	}
+	
+	public void weaponEquipClick(View v)
+	{
+		String weaponTab = YoloEngine.currentPlayerInfo.getWeapon();
+		String newWeaponTab;
+		boolean bought = false;
+		if (weaponTab.charAt(weaponPointer)==1) bought = true;
+		else if (amountNeeded<=amountHad[weaponPointer] && YoloEngine.currentPlayerInfo.getCoins()>=weaponCost)
+		{
+			newWeaponTab = weaponTab.substring(0, weaponPointer)+"1"+weaponTab.substring(weaponPointer+1);
+			YoloEngine.currentPlayerInfo.setWeapon(newWeaponTab);
+			YoloEngine.currentPlayerInfo.setCoins(YoloEngine.currentPlayerInfo.getCoins()-weaponCost);
+			bought = true;
+			System.out.println(newWeaponTab);
+		}
+		if (bought == true) {
+			YoloEngine.currentPlayerInfo.setWEQ(weaponPointer);
+		}
+		else { 
+			 Toast.makeText(getApplicationContext(), 
+                   "Fight Harder!", Toast.LENGTH_LONG).show();
+		}
+		dbm.updatePlayer(YoloEngine.currentPlayerInfo);
+		weaponDraw();
+	}
+	
 	
 	//--------------------- add Player menu--------------------------
 	public void angelClick(View v)

@@ -17,7 +17,7 @@ public class YoloPlayerInfo {
 	private int ST4;
 	private String skill1;
 	private String skill2;
-	private int weapon;
+	private String weapon;
 	private int SK1EQ;
 	private int SK2EQ;
 	private int SK3EQ;
@@ -72,10 +72,10 @@ public class YoloPlayerInfo {
 		this.skill2 = skill2;
 	}
 	
-	public int getWeapon() {
+	public String getWeapon() {
 		return weapon;
 	}
-	public void setWeapon(int weapon) {
+	public void setWeapon(String weapon) {
 		this.weapon = weapon;
 	}
 	public int getSK1EQ() {

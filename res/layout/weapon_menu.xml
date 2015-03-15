@@ -58,287 +58,249 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/weapon0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="15" >
-
-                 </LinearLayout>
-                <Button
-                    android:id="@+id/mediumweapon1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="60"
-                    android:background="@drawable/mediumweapon2"
-                    android:onClick="weaponClick" />
-
-				<LinearLayout
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="15" >
-
-                 </LinearLayout>
-                <ImageView
-                    android:id="@+id/padlock10"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:src="@drawable/padlock" />
-
-            </LinearLayout>    
-                
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="15" >
-
-                 </LinearLayout>
-                <Button
-                    android:id="@+id/shortweapon1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="60"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/shortweapon1"
-                    android:onClick="weaponClick" />
+                    android:onClick="gunClick" />
 
-				<LinearLayout
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="15" >
-
-                 </LinearLayout>
                 <ImageView
-                    android:id="@+id/padlock7"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:src="@drawable/padlock" />
+                    android:id="@+id/padlock0"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/bag" />
 
-            </LinearLayout>
-                <LinearLayout
+            </RelativeLayout>
+                <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/weapon1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="15" >
-
-                 </LinearLayout>
-                <Button
-                    android:id="@+id/shortweapon2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="60"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/shortweapon2"
-                    android:onClick="weaponClick" />
+                    android:onClick="gunClick" />
 
-				<LinearLayout
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="15" >
-
-                 </LinearLayout>
                 <ImageView
-                    android:id="@+id/padlock8"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
+                    android:id="@+id/padlock1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/padlock" />
 
-            </LinearLayout>
-            <LinearLayout
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/weapon2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="15" >
-
-                 </LinearLayout>
-                <Button
-                    android:id="@+id/shortweapon3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="60"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/shortweapon3"
-                    android:onClick="weaponClick" />
+                    android:onClick="gunClick" />
 
-				<LinearLayout
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_weight="15" >
-
-                 </LinearLayout>
                 <ImageView
-                    android:id="@+id/padlock9"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
+                    android:id="@+id/padlock2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/padlock" />
 
-            </LinearLayout>
-           
-            <LinearLayout
+            </RelativeLayout>
+           <!-- <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:adjustViewBounds="true" 
-            android:background="@drawable/longweapon1"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock1"
-                android:layout_width="0dp"
+                    android:id="@+id/weapon3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/mediumweapon2"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout> -->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>   
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/weapon4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon1"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
             
              
-            <LinearLayout
+           <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@drawable/longweapon3"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>
-                
-                
+                    android:id="@+id/weapon5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon3"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
             
-             <LinearLayout
+             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@drawable/longweapon4"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>
-            
-              <LinearLayout
+                    android:id="@+id/weapon6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon4"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock6"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
+              <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@drawable/longweapon5"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>
-            <LinearLayout
+                    android:id="@+id/weapon7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon5"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock7"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@drawable/longweapon6"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>   
-            <LinearLayout
+                    android:id="@+id/weapon8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon6"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock8"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
-                
+
                 <Button
-            android:id="@+id/longweapon7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="90"
-            android:background="@drawable/longweapon7"
-            android:onClick="weaponClick" />
-                
-                
-            <ImageView
-                android:id="@+id/padlock6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/padlock"
-                android:layout_weight="10" />
-                
-            </LinearLayout>   
+                    android:id="@+id/weapon9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/longweapon7"
+                    android:onClick="gunClick" />
+
+                <ImageView
+                    android:id="@+id/padlock9"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/padlock" />
+
+            </RelativeLayout>
               <!-- Tuuu -->  
             </LinearLayout>
         </ScrollView>
@@ -347,8 +309,176 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal" >
-
+            android:orientation="vertical" >
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical" >
+		 </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal" > 
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" > 
+		 <TextView
+                    android:id="@+id/weaponDamage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="damage" />
+		 <TextView
+                    android:id="@+id/weaponCapacity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="capacity" />
+		 <TextView
+                    android:id="@+id/weaponFireRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="fire rate" />
+		 <TextView
+                    android:id="@+id/weaponReloadTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="reload time" />
+		 </LinearLayout>
+		 <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" > 
+            
+		     
+		     <RelativeLayout
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_weight="20">
+                <ImageView
+                    android:id="@+id/barDamage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/emptybar" />
+                <ImageView
+                    android:id="@+id/barDamageFilling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/barfilling" />
+            </RelativeLayout>
+            
+		     <RelativeLayout
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="20" >
+                <ImageView
+                    android:id="@+id/barCapacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/emptybar" />
+                <ImageView
+                    android:id="@+id/barCapacityFilling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/barfilling" />
+            </RelativeLayout>
+            
+		     <RelativeLayout
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="20" >
+                <ImageView
+                    android:id="@+id/barFireRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/emptybar" />
+                <ImageView
+                    android:id="@+id/barFireRateFilling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/barfilling" />
+            </RelativeLayout>
+            
+		     <RelativeLayout
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="20" >
+                <ImageView
+                    android:id="@+id/barReloadTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/emptybar" />
+                <ImageView
+                    android:id="@+id/barReloadTimeFilling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/barfilling" />
+            </RelativeLayout>
+            
+		     
+            </LinearLayout>
+            
+        </LinearLayout>
+         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="vertical" >
+		 <TextView
+                    android:id="@+id/coinsTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="coins" />
+		 <TextView
+                    android:id="@+id/weaponCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="cost" />
+		 <TextView
+                    android:id="@+id/amountNeeded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="left"
+                    android:layout_weight="20"
+                    android:text="achievement to unlock weapon" />
+		 <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:orientation="vertical" >
+		 </LinearLayout>
+		 <Button
+                    android:id="@+id/weaponEquipBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/buyequipbtn"
+                    android:onClick="weaponEquipClick" />
+		 </LinearLayout>
+		 <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical" >
+		 </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
