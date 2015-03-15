@@ -102,9 +102,9 @@ public class YoloEngine {
 	public static int SKILL3_COOLDOWN = 208;
 	
 	//Multislayer SEND XXX
-	public static int SkillSprite1 = 33; //MiHu baza danych
-	public static int SkillSprite2 = 127; //MiHu baza danych
-	public static int SkillSprite3 = 43; //MiHu baza danych
+	public static int SkillSprite1 = 0; //MiHu baza danych
+	public static int SkillSprite2 = 0; //MiHu baza danych
+	public static int SkillSprite3 = 0; //MiHu baza danych
 	
 	public static int animationSlowdown2 = 0;
 	public static float animationDuration2 = 0f;
@@ -152,7 +152,7 @@ public class YoloEngine {
 	
 	public static Display display;
 	public static float display_x,xdpi; 
-	public static float display_y,ydpi; 
+	public static float display_y,ydpi=LEVEL_scale; 
 
 	
 	

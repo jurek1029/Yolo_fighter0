@@ -428,6 +428,7 @@ class Skill extends YoloObject
 	    		if(My)
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].healing = YoloEngine.healingDuration; 
+	    			YoloEngine.TeamAB[YoloEngine.MyID].isHealing = true;
 		    		//TODO XXX wysy³anie
 	    		}
 	    	}
@@ -1848,36 +1849,36 @@ public class YoloGameRenderer implements Renderer {
 	public static Vector<Skill> skillTeamAVe = new Vector<Skill>();
 	public static Vector<HitBox> hitBoxs = new Vector<HitBox>();
 	
-	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x; // 200/display_x
-	private final float MOVE_SIZE_Y = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_y; // 50/display_y
-	private final float MOVE_SIZE_X1 = 160f/YoloEngine.display_x;
-	private final float MOVE_SIZE_Y1 = 160f/YoloEngine.display_y;
-	private final float MOVE_BALL_SIZE_X = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_x; // 50/display_x
-	private final float MOVE_POS_X = 25f/YoloEngine.display_x;//(YoloEngine.MOVE_X/YoloEngine.display_x - MOVE_SIZE_X/2);// /MOVE_SIZE_X;  (125-100)/display_x
-	private final float MOVE_POS_Y = 50f/YoloEngine.display_y; //(YoloEngine.display_y - YoloEngine.MOVE_Y)/YoloEngine.display_y + MOVE_SIZE_Y/2; // 25/display_y == move_y/2/display_y
+	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x/YoloEngine.xdpi; // 200/display_x
+	private final float MOVE_SIZE_Y = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_y/YoloEngine.xdpi; // 50/display_y
+	private final float MOVE_SIZE_X1 = 160f/YoloEngine.display_x/YoloEngine.xdpi;
+	private final float MOVE_SIZE_Y1 = 160f/YoloEngine.display_y/YoloEngine.xdpi;
+	private final float MOVE_BALL_SIZE_X = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_x/YoloEngine.xdpi; // 50/display_x
+	private final float MOVE_POS_X = 25f/YoloEngine.display_x/YoloEngine.xdpi;//(YoloEngine.MOVE_X/YoloEngine.display_x - MOVE_SIZE_X/2);// /MOVE_SIZE_X;  (125-100)/display_x
+	private final float MOVE_POS_Y = 50f/YoloEngine.display_y/YoloEngine.xdpi; //(YoloEngine.display_y - YoloEngine.MOVE_Y)/YoloEngine.display_y + MOVE_SIZE_Y/2; // 25/display_y == move_y/2/display_y
 	private float Skill1BtnTx,Skill1BtnTy,Skill2BtnTx,Skill2BtnTy,Skill3BtnTx,Skill3BtnTy;
 //	private final float MOVE_POS_X1= (25f/YoloEngine.display_x);// /MOVE_SIZE_X1 ;
 //	private final float MOVE_POS_Y1= (25f/YoloEngine.display_y);// /MOVE_SIZE_Y1 ; 
-	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x;
+	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x/YoloEngine.xdpi;
 	private float LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0;
-	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y;
+	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y/YoloEngine.xdpi;
     public static float half_fx,half_bx,half_fy,half_by ;
 	
-	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
-			,jumpBtnX = 1-125f/YoloEngine.display_x // 1/(MOVE_BALL_SIZE_X*2)-1.5f
+	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
+			,jumpBtnX = 1-125f/YoloEngine.display_x/YoloEngine.xdpi // 1/(MOVE_BALL_SIZE_X*2)-1.5f
 			,shotBtnX = jumpBtnX
-			,crouchBtnX = 250f/YoloEngine.display_x //2.75f
-			,skillBtnX = .5f - 50f/YoloEngine.display_x //  1/(MOVE_BALL_SIZE_X*2)/2
-			,liveBarX_0 = 25f/YoloEngine.display_x //(0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
+			,crouchBtnX = 250f/YoloEngine.display_x/YoloEngine.xdpi //2.75f
+			,skillBtnX = .5f - 50f/YoloEngine.display_x/YoloEngine.xdpi //  1/(MOVE_BALL_SIZE_X*2)/2
+			,liveBarX_0 = 25f/YoloEngine.display_x/YoloEngine.xdpi //(0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
 			,joyBallX1
 			,joyBackX1
 			,XADD = 0; 
 
 	private float cameraPosY
-			,jumpBtnY = 150f/YoloEngine.display_y
-			,shotBtnY = 25f/YoloEngine.display_y
-			,crouchBtnY = 25f/YoloEngine.display_y
-			,liveBarY = 1-55f/YoloEngine.display_y // 1f/LIVE_BAR_SIZE_Y -1.75f;// 1-(25+30)/dis_x
+			,jumpBtnY = 150f/YoloEngine.display_y/YoloEngine.xdpi
+			,shotBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
+			,crouchBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
+			,liveBarY = 1-55f/YoloEngine.display_y/YoloEngine.xdpi // 1f/LIVE_BAR_SIZE_Y -1.75f;// 1-(25+30)/dis_x
 			,joyBallY1
 			,joyBackY1
 			,YADD = 0; 
@@ -2319,10 +2320,10 @@ public class YoloGameRenderer implements Renderer {
 		}
 		else
 		{
-			joyBallX1 = (YoloGame.x_old+YoloGame.x2-40f)/YoloEngine.display_x; // MOVE_POS_X1*2 + .5f - ((YoloGame.x_old-YoloGame.x2)/YoloEngine.display_x)/MOVE_SIZE_X1;//(x2+25-80)/dis_x
-			joyBallY1 = (YoloGame.y_old+YoloGame.y2-40f)/YoloEngine.display_y; // MOVE_SIZE_Y1 +.5f + YoloGame.y2/YoloEngine.display_y/MOVE_SIZE_Y1;// (y2+25+40)/dis_y
-			joyBackX1 = (YoloGame.x_old-80f)/YoloEngine.display_x; 
-			joyBackY1 = (YoloGame.y_old-80f)/YoloEngine.display_y;
+			joyBallX1 = (YoloGame.x_old+YoloGame.x2-40/YoloEngine.xdpi)/YoloEngine.display_x; // MOVE_POS_X1*2 + .5f - ((YoloGame.x_old-YoloGame.x2)/YoloEngine.display_x)/MOVE_SIZE_X1;//(x2+25-80)/dis_x
+			joyBallY1 = (YoloGame.y_old+YoloGame.y2-40/YoloEngine.xdpi)/YoloEngine.display_y; // MOVE_SIZE_Y1 +.5f + YoloGame.y2/YoloEngine.display_y/MOVE_SIZE_Y1;// (y2+25+40)/dis_y
+			joyBackX1 = (YoloGame.x_old-80/YoloEngine.xdpi)/YoloEngine.display_x; 
+			joyBackY1 = (YoloGame.y_old-80/YoloEngine.xdpi)/YoloEngine.display_y;
 			drawSt(gl, joyBackX1 + XADD, joyBackY1 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
 			drawSt(gl, joyBallX1 + XADD, joyBallY1 + YADD, MOVE_SIZE_X1/2, MOVE_SIZE_Y1/2, .375f, .125f,true);
 		}
@@ -2342,9 +2343,9 @@ public class YoloGameRenderer implements Renderer {
 		}
 		drawSt(gl, shotBtnX + XADD, shotBtnY + YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.TeamAB[YoloEngine.MyID].isShoting? .25f : .375f , 0, true);
 
-		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill1BtnTx , Skill1BtnTy, true);
+		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x/YoloEngine.xdpi, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill1BtnTx , Skill1BtnTy, true);
 		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill2BtnTx , Skill2BtnTy, true);
-		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, Skill3BtnTx , Skill3BtnTy, true);
+		drawSt(gl, skillBtnX + XADD + 100f/YoloEngine.display_x/YoloEngine.xdpi, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, Skill3BtnTx , Skill3BtnTy, true);
 	}
 	
 	private void drawBackground(GL10 gl)
@@ -3641,8 +3642,8 @@ public class YoloGameRenderer implements Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
-		gl.glTranslatef(25f/YoloEngine.display_x+XADD, 1-90f/YoloEngine.display_y+YADD, 0f);
-		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y, 1f);
+		gl.glTranslatef(25f/YoloEngine.display_x/YoloEngine.xdpi+XADD, 1-90f/YoloEngine.display_y/YoloEngine.xdpi+YADD, 0f);
+		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x/YoloEngine.xdpi)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y, 1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glTranslatef(0f, 0.875f, 0f);

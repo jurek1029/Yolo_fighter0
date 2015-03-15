@@ -87,7 +87,7 @@ public class YoloGame extends Activity{
 	
 	private void ActionClick()
 	{
-		 if(x < 275)
+		 if(x < 275/YoloEngine.xdpi)
 			{
 			    x_old = x; y_old = YoloEngine.display_y-y;
 			 	x2=YoloEngine.isClasic?x:0;
@@ -114,13 +114,13 @@ public class YoloGame extends Activity{
 									YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = true;
 							}
 					}
-					if(x > buttonShotX - 50 && x < buttonShotX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-						if(y < buttonShotY + 50 && y > buttonShotY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+					if(x > buttonShotX - 10/YoloEngine.xdpi && x < buttonShotX + 10/YoloEngine.xdpi + YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
+						if(y < buttonShotY + 10/YoloEngine.xdpi && y > buttonShotY - 10/YoloEngine.xdpi - YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
 						{
 							YoloEngine.TeamAB[YoloEngine.MyID].isShoting = true;
 						}
-					if(x > buttonSkillX - 150 && x < buttonSkillX - 150 + YoloEngine.BUTTON_JUMP_SIZE )
-						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+					if(x > buttonSkillX - 150/YoloEngine.xdpi && x < buttonSkillX - 150/YoloEngine.xdpi + YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
+						if(y < buttonSkillY + 10/YoloEngine.xdpi && y > buttonSkillY - 50/YoloEngine.xdpi - YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
 						{
 							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
 							{
@@ -130,8 +130,8 @@ public class YoloGame extends Activity{
 								if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 							}
 						}
-					if(x > buttonSkillX - 50 && x < buttonSkillX - 50 + YoloEngine.BUTTON_JUMP_SIZE )
-						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+					if(x > buttonSkillX - 50/YoloEngine.xdpi && x < buttonSkillX - 50/YoloEngine.xdpi + YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
+						if(y < buttonSkillY + 10/YoloEngine.xdpi && y > buttonSkillY - 50/YoloEngine.xdpi - YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
 						{
 							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill2)
 							{
@@ -141,8 +141,8 @@ public class YoloGame extends Activity{
 								if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 							}
 						}
-					if(x > buttonSkillX + 50 && x < buttonSkillX + 50 + YoloEngine.BUTTON_JUMP_SIZE )
-						if(y < buttonSkillY + 50 && y > buttonSkillY - 50 - YoloEngine.BUTTON_JUMP_SIZE )
+					if(x > buttonSkillX + 50/YoloEngine.xdpi && x < buttonSkillX + 50/YoloEngine.xdpi + YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
+						if(y < buttonSkillY + 10/YoloEngine.xdpi && y > buttonSkillY - 50/YoloEngine.xdpi - YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi )
 						{
 							if(!YoloEngine.isSkillPressed && YoloEngine.TeamAB[YoloEngine.MyID].canSkill3)
 							{
@@ -203,8 +203,8 @@ public class YoloGame extends Activity{
 		    YoloEngine.display_x = size.x;
 		    YoloEngine.display_y = size.y;
 		    YoloEngine.xdpi = 210f/metrics.xdpi;
-		    YoloEngine.ydpi = 210f/metrics.ydpi;
-		    YoloEngine.LEVEL_scale *=YoloEngine.xdpi;
+		    
+		    YoloEngine.LEVEL_scale =YoloEngine.ydpi/YoloEngine.xdpi;
 		}
 		else
 		{
@@ -228,13 +228,13 @@ public class YoloGame extends Activity{
 		buttonJumpX = ((1/(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x))-1.5f)*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)*YoloEngine.display_x;
 		buttonJumpY = YoloEngine.display_y - 1.5f*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_y)*YoloEngine.display_y;
 		
-		buttonShotX = ((1/(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x))-1.5f)*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)*YoloEngine.display_x;
-		buttonShotY = YoloEngine.display_y - .25f*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_y)*YoloEngine.display_y;
+		buttonShotX = YoloEngine.display_x-YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi-25/YoloEngine.xdpi;
+		buttonShotY = YoloEngine.display_y - 25/YoloEngine.xdpi;
+
+		buttonCrouchX = 2.75f*YoloEngine.BUTTON_JUMP_SIZE;
+		buttonCrouchY = YoloEngine.display_y - .25f*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.xdpi);
 		
-		buttonCrouchX = (2.75f)*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)*YoloEngine.display_x;
-		buttonCrouchY = YoloEngine.display_y - .25f*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_y)*YoloEngine.display_y;
-		
-		buttonSkillX = (1/(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)/2)*(YoloEngine.BUTTON_JUMP_SIZE/YoloEngine.display_x)*YoloEngine.display_x;
+		buttonSkillX = (1/(YoloEngine.BUTTON_JUMP_SIZE*YoloEngine.xdpi/YoloEngine.display_x)/2)*(YoloEngine.BUTTON_JUMP_SIZE*YoloEngine.xdpi/YoloEngine.display_x)*YoloEngine.display_x;
 		buttonSkillY = YoloEngine.display_y;
 		
 		if(YoloEngine.isClasic){y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2; x = x_old;}
@@ -251,7 +251,7 @@ public class YoloGame extends Activity{
 		x = event.getX(c);
 		y = event.getY(c);
 
-		if(x < 275)
+		if(x < 275/YoloEngine.xdpi)
 			{
 				x2 = x;
 				y2 = YoloEngine.display_y-y;
@@ -262,26 +262,26 @@ public class YoloGame extends Activity{
 		
 			case MotionEvent.ACTION_MOVE:
 			{
-				if(x<275)
+				if(x<275/YoloEngine.xdpi)
 				if(YoloEngine.isClasic)
 					ActionMoveX();
 				else
 				{
 					x2 = x2-x_old;
 					y2 = y2-y_old;
-					if(x2*x2 + y2*y2 >1600)
+					if(x2*x2 + y2*y2 >1600/YoloEngine.xdpi/YoloEngine.xdpi)
 					{
-						x2 = (float) ((40*x2)/Math.sqrt(x2*x2+y2*y2));
-						y2 = (float) ((40*y2)/Math.sqrt(x2*x2+y2*y2));
+						x2 = (float) ((40/YoloEngine.xdpi*x2)/Math.sqrt(x2*x2+y2*y2));
+						y2 = (float) ((40/YoloEngine.xdpi*y2)/Math.sqrt(x2*x2+y2*y2));
 					}
 					
-					if( y2 < -30)
+					if( y2 < -30/YoloEngine.xdpi)
 						ActionDown();	
 					else
 					{
 						YoloEngine.isCrouch_prest = false;
 						YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
-						if( y2 > 30)
+						if( y2 > 30/YoloEngine.xdpi)
 							ActionUp();
 						else 
 						{
@@ -290,7 +290,7 @@ public class YoloGame extends Activity{
 							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
 						}
 					}
-					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?15000f:7500f);
+					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?(15000f/YoloEngine.xdpi/YoloEngine.xdpi):(7500f/YoloEngine.xdpi/YoloEngine.xdpi));
 					
 				}
 	
@@ -335,7 +335,7 @@ public class YoloGame extends Activity{
 					YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
 					YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 					YoloEngine.isCrouch_prest = false;
-					if(x > 275)
+					if(x > 275/YoloEngine.xdpi)
 						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
 					x2=-1000;
 					y2=-1000;
@@ -351,7 +351,7 @@ public class YoloGame extends Activity{
 				}
 			case MotionEvent.ACTION_POINTER_UP:
 				{					
-					if(x < 275)
+					if(x < 275/YoloEngine.xdpi)
 						YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
 					else
 						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
