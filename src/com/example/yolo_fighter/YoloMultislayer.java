@@ -118,7 +118,55 @@ public class YoloMultislayer {
                 case 'g':
                     YoloGameRenderer.AIFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false);
                     break;
-
+                    
+                case 'b':
+                	int id = rcvData.getInt();
+                	int boolId = rcvData.getInt();
+                	switch (boolId) {
+					case 17:
+						YoloEngine.TeamAB[id].isBeingHealed = true;
+						break;
+					case 23:
+						YoloEngine.TeamAB[id].isPlayerFlying = true;
+						break;
+					case 24:
+						YoloEngine.TeamAB[id].isPlayerDef = true;
+						break;
+					case 25:
+						YoloEngine.TeamAB[id].isPlayerInvincible = true;
+						break;
+					case 28:
+						YoloEngine.TeamAB[id].isPlayerDenialed = true;
+						break;
+					case 29:
+						YoloEngine.TeamAB[id].isHealing = true;
+						break;
+					case 36:
+						YoloEngine.TeamAB[id].isPlayerBuff = true;
+						break;
+					case 37:
+						YoloEngine.TeamAB[id].isPlayerFireRateBuff = true;
+						break;
+					case 38:
+						YoloEngine.TeamAB[id].isPlayerMagReloadBuff = true;
+						break;						
+					default:
+						System.out.println("Unrecognized bool id");
+						break;
+					}                
+                	/*
+                	17 isBeingHealed 
+                	23	isPlayerFlying
+                	24	isPlayerDef
+                	25 isPlayerInvincible
+                	28 isPlayerDenialed
+                	29 isHealing
+                	36 isPlayerBuff
+                	37 isPlayerFireRateBuff
+                	38 isPlayerMagReloadBuff
+                	*/
+                	break;
+                    
 				case 'h':
 					YoloGameRenderer.hitBoxs.add(new HitBox(rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.getInt()));
 					break;
@@ -286,9 +334,9 @@ public class YoloMultislayer {
         sendMessageToAll(bbf.array());
 	}
 
-    public void sendAIFire(float x, float y, boolean isLeft, float x_texture, float y_texture, float damage, boolean team)
+    public void sendAIFire(float x, float y, boolean isLeft, int sprite, float x_texture, float y_texture, float damage, boolean team)
     {
-        ByteBuffer bbf = ByteBuffer.allocate(20);
+        ByteBuffer bbf = ByteBuffer.allocate(30);
         bbf.putChar('g');
         bbf.putFloat(x);
         bbf.putFloat(y);
@@ -296,8 +344,14 @@ public class YoloMultislayer {
             bbf.put((byte)1);
         else
             bbf.put((byte)0);
+        bbf.putInt(sprite);
         bbf.putFloat(x_texture);
         bbf.putFloat(y_texture);
+        bbf.putFloat(damage);
+        if(team)
+            bbf.put((byte)1);
+        else
+            bbf.put((byte)0);
 
         sendMessageToAll(bbf.array());
     }
@@ -349,6 +403,26 @@ public class YoloMultislayer {
 
         sendMessageToAllreliable(bbf.array());
 
+    }
+    
+    public void SendSkillBool(int boolId) {
+    	/*
+    	17 isBeingHealed 
+    	23	isPlayerFlying
+    	24	isPlayerDef
+    	25 isPlayerInvincible
+    	28 isPlayerDenialed
+    	29 isHealing
+    	36 isPlayerBuff
+    	37 isPlayerFireRateBuff
+    	38 isPlayerMagReloadBuff
+    	*/
+    	ByteBuffer bbf = ByteBuffer.allocate(16);
+    	bbf.putChar('b');
+    	bbf.putInt(YoloEngine.MyID);
+    	bbf.putInt(boolId);
+    	
+    	sendMessageToAllreliable(bbf.array());
     }
     
     public void sendMaxLife() {

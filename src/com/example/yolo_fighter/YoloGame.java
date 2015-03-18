@@ -185,8 +185,9 @@ public class YoloGame extends Activity{
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill3 = false;
 					break;
 				}
-			 YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
-			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;			
+			 if(newSkill.sprite != 19 && newSkill.sprite != 26 && newSkill.sprite != 30)
+				 YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
+			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;
 			}
 		
 	}

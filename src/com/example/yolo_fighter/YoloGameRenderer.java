@@ -247,7 +247,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].healBuffer = 20;
 		    		YoloEngine.TeamAB[YoloEngine.MyID].isBeingHealed = true;
-		    		//TODO XXX wysy³anie
+		    		YoloEngine.mMultislayer.SendSkillBool(17);
 	    		}
 	    	}
     		break;
@@ -321,7 +321,7 @@ class Skill extends YoloObject
 	    			YoloGame.flying = 10;
 					YoloEngine.TeamAB[YoloEngine.MyID].flying = YoloEngine.flyingDuration;
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerFlying = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(23);
 	    		}
 	    	}
 			break;
@@ -341,7 +341,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].defed = YoloEngine.defDuration;
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerDef = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(24);
 	    		}
 	    	}
 			break;
@@ -361,7 +361,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].invice = YoloEngine.InvincibleDuration;	
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(25);
 	    		}
 	    	}
     		break;
@@ -409,7 +409,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].deniled = YoloEngine.denialDuration;
 	        		YoloEngine.TeamAB[YoloEngine.MyID].isPlayerDenialed = true;
-		    		//TODO XXX wysy³anie
+	        		YoloEngine.mMultislayer.SendSkillBool(28);
 	    		}
 	    	}
     		break;
@@ -429,7 +429,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].healing = YoloEngine.healingDuration; 
 	    			YoloEngine.TeamAB[YoloEngine.MyID].isHealing = true;
-		    		//TODO XXX wysy³anie
+	    			YoloEngine.mMultislayer.SendSkillBool(29);
 	    		}
 	    	}
     		break;
@@ -561,7 +561,7 @@ class Skill extends YoloObject
 	    			YoloEngine.TeamAB[YoloEngine.MyID].buffed = YoloEngine.buffDuration;
 					YoloEngine.TeamAB[YoloEngine.MyID].PlayerDmgBuff = damage;
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerBuff = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(36);
 	    		}
 	    	}
     		break;
@@ -582,7 +582,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].fireRated = YoloEngine.buffDuration;
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerFireRateBuff = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(37);
 	    		}
 	    	}
     		break;
@@ -603,7 +603,7 @@ class Skill extends YoloObject
 	    		{
 	    			YoloEngine.TeamAB[YoloEngine.MyID].reloadspeeded = YoloEngine.buffDuration;
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerMagReloadBuff = true;
-		    		//TODO XXX wysy³anie
+					YoloEngine.mMultislayer.SendSkillBool(38);
 	    		}
 	    	}
     		break;
@@ -2683,7 +2683,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 		if(YoloEngine.MULTI_ACTIVE)
-            YoloEngine.mMultislayer.sendAIFire(x, y, isLeft, x_texture, y_texture, damage, team);
+            YoloEngine.mMultislayer.sendAIFire(x, y, isLeft, sprite, x_texture, y_texture, damage, team);
 	}
 	
 	private boolean AIDraw(GL10 gl,int i,boolean Team,int sprite)
