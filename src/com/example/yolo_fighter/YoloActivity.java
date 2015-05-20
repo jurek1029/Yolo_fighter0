@@ -18,6 +18,7 @@ public class YoloActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_yolo);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		new Handler().postDelayed(new Thread() 
 		{

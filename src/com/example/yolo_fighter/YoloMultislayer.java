@@ -19,6 +19,13 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
   • bardziej racjonalne wysy³anie rzeczy typu max life - moment wysy³ania
   • sprawdziæ dla wiêcej graczy
   
+  
+  
+ NOWE TODO
+  • coœ dziwnego ze strzelaniem, œcina siê gra
+  • AI tworzone w z³ym miejscu?
+  • ³adowanie teksturek dzia³a dobrze dopiero przy drugim uruchomieniu 
+  
  */
 
 
@@ -77,6 +84,7 @@ public class YoloMultislayer {
 						if(spriteLoad==123)YoloEngine.sprite_load[32]=true;
 						if(spriteLoad==124)YoloEngine.sprite_load[32]=true;
 					}
+					System.out.println("otrzymane dane spriteload");
 					break;
 
                 case 't':

@@ -114,8 +114,14 @@ public class YoloMainMenu extends Activity
                 YoloEngine.MULTI_ACTIVE = true;
 
                 YoloEngine.mRoom = room;
-                YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3}));
-
+                
+                //YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3}));
+                plInfoList.clear();
+        		plInfoList=dbm.getAll();
+                int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
+        		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
+                YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(),YoloEngine.currentPlayerInfo.getSK3EQ()}));
+                
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
                 YoloEngine.participants = YoloEngine.mRoom.getParticipants();
                 Collections.sort(YoloEngine.participants, new Comparator<Participant>() {
@@ -131,26 +137,34 @@ public class YoloMainMenu extends Activity
                     }
                 }
 
-                if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
-                	YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
+                if(YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {    
+                	// My przedzielamy teamy
+                	System.out.println("przydzielam team");
+                	//@TODO czyszczenie listy teamAB, teamA, teamB ?                    
+                	
                     String teamAssignPattern = "1";
 
                     // Team assignment dokąd {0-teamA, 1-teamB}
-
+                    int a=0,b=YoloEngine.TeamSize;
                     // Przydzielamy nam
                     if (new Random().nextBoolean()) {
                         YoloEngine.teamA.add(YoloEngine.playerParticipantID); //@REMOVE
-                        YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamA;
-                        YoloEngine.MyID = 0;
+                        YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+                        YoloEngine.MyID = a;
                         teamAssignPattern += "0";
+                        a++;
                     }
                     else {
                         YoloEngine.teamB.add(YoloEngine.playerParticipantID); //@REMOVE
-                        YoloEngine.TeamAB[0].playerTeam = YoloEngine.TeamB;
-                        YoloEngine.MyID = 2;
+                        YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+                        YoloEngine.MyID = b;
                         teamAssignPattern += "1";
+                        b++;
                     }
-                    int i = 1,a=0,b=YoloEngine.TeamSize;
+                    YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
+                                    
+                    
+                    
                     // Przydzielamy reszcie graczy
                     for (Participant p : YoloEngine.participants) {
                         if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu
@@ -161,14 +175,14 @@ public class YoloMainMenu extends Activity
                                 YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "1";
                                 b++;
-                                i++;
+                               
                             } else if (YoloEngine.teamA.size() < YoloEngine.teamB.size()) {
                                 YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
                                 YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
                                 YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "0";
                                 a++;
-                                i++;
+                                
                             } else {
                                 if (new Random().nextBoolean()) {
                                     YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
@@ -176,14 +190,14 @@ public class YoloMainMenu extends Activity
                                     YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "0";
                                     a++;
-                                    i++;
+                                    
                                 } else {
                                     YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
                                     YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
                                     YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "1";
                                     b++;
-                                    i++;
+                                    
                                 }
                             }
                         }
@@ -575,6 +589,7 @@ public class YoloMainMenu extends Activity
 		buying = true;
 		YoloEngine.SkillSprite2 = YoloEngine.currentPlayerInfo.getSK2EQ(); 
 		YoloEngine.SkillSprite3 = YoloEngine.currentPlayerInfo.getSK3EQ();
+		        
 		
 		Intent game = new Intent(getApplicationContext(),YoloGame.class);
 		YoloMainMenu.this.startActivity(game);
@@ -2592,9 +2607,12 @@ public void skill2devilEqBtnClick(View v){
                     Games.RealTimeMultiplayer.leave(YoloEngine.mHelper.getApiClient(), mRoomUpdateListener, YoloEngine.mRoom.getRoomId());
         }
     }
-	
-	
+	   
+   
 	public void startQuickGame(View v) {
+		
+		
+		
 		YoloEngine.MULTI_ACTIVE = true;
 		
 		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame());
