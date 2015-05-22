@@ -45,6 +45,15 @@ public class YoloPlayer extends YoloObject {
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
 	public int playerID;
 	
+	public int changesMade;
+	public float x_change;
+	public float y_change;
+	public float x_last;
+	public float y_last;
+	public float x_lastX;
+	public float y_lastX;
+	
+	
 	public String ParticipantId = "";
 	public boolean isPlayerActive; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
 	
@@ -708,6 +717,11 @@ public class YoloPlayer extends YoloObject {
 	public void moveAway() {
 		this.x = 1000f;
 		this.y = 1000f;
+		this.x_lastX = 1000f;
+		this.y_lastX = 1000f;
+		this.x_last = 1000f;
+		this.y_last = 1000f;
+		
 	}
 
 }

@@ -10,39 +10,19 @@ import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceived
 
 /* TODO
   - Test - life max czy wysyÅ‚a siÄ™ 
-  - Pozycje w osobnych
-  - dodawanie skilli mojego teamu powinny byÅ› dodawane do skillplayerve a przeciwnego do Opp
+	
   
-  • fixed? bug zalezny od losowego rpzydzielania teamu
-  • gdy ktoœ siê roz³¹czy - chyba reaguje ale nie usuwa gracza, bo trzbe cos wiecej zmienic typu x_change albo changes made
-  • przy przydziale - sprawdzenie
+  
+  
   • bardziej racjonalne wysy³anie rzeczy typu max life - moment wysy³ania
   • sprawdziæ dla wiêcej graczy
   
-  
-  
- NOWE TODO
-  • coœ dziwnego ze strzelaniem, œcina siê gra
-  • AI tworzone w z³ym miejscu?
-  • ³adowanie teksturek dzia³a dobrze dopiero przy drugim uruchomieniu 
   
  */
 
 
 public class YoloMultislayer {
 
-	public float Opponents_x_last[] = { 1000f, 1000f, 1000f, 1000f };
-	public float Opponents_y_last[] = { 1000f, 1000f, 1000f, 1000f };
-	//new float[4];
-	
-	public float Opponents_x_lastX[] = { 1000f, 1000f, 1000f, 1000f };
-	public float Opponents_y_lastX[] = { 1000f, 1000f, 1000f, 1000f };
-
-	public float Opponents_x_change[] = new float[4];
-	public float Opponents_y_change[] = new float[4];
-
-	public ArrayList<String> TeamAB_Participants = new ArrayList<String>(2);
-	ArrayList<Participant> mParticipants;
 	
 	private long sentAt;
 
@@ -95,7 +75,6 @@ public class YoloMultislayer {
                         if(p.getStatus() == Participant.STATUS_JOINED) {
                         	
                             if (pattern.charAt(i) == '0') {                            	
-                                YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
                                 YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
                                 YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                 if(p.getParticipantId().equals(YoloEngine.playerParticipantID))
@@ -103,7 +82,6 @@ public class YoloMultislayer {
                                 a++;
                             }
                             if (pattern.charAt(i) == '1') {								
-								YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
 								YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
 								YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();	
 								if(p.getParticipantId().equals(YoloEngine.playerParticipantID)) 
@@ -113,8 +91,7 @@ public class YoloMultislayer {
                             i++;
                         }
                     }
-                                                          
-                    prepareMatchArray();                              
+                                                                                   
                     YoloEngine.mMultislayer.sendMaxLife();
                   //  YoloGameRenderer.givePlayerID();
                     break;
@@ -198,6 +175,12 @@ public class YoloMultislayer {
                 	int ind = rcvData.getInt();
                     YoloEngine.TeamAB[ind].PLAYER_LIVE_MAX = rcvData.getFloat();
                     break;
+                case 'q':
+                	int k = rcvData.getInt();
+                    YoloEngine.TeamAB[k].moveAway();
+                    YoloEngine.opponents.remove(YoloEngine.TeamAB[k].ParticipantId);
+                    System.out.println("Someone has just left");
+                    break;
 				default:
 					System.out.println("message not recognized");
 					break;
@@ -228,13 +211,14 @@ public class YoloMultislayer {
 											// skoï¿½czy siï¿½ zakres 
 */
 		YoloEngine.TeamAB[playerID].isCrouch = isCrouch;
-		Opponents_x_change[playerID] = ((x - Opponents_x_last[playerID]) / (float) YoloEngine.MULTI_STEPS);
-		Opponents_y_change[playerID] = ((y - Opponents_y_last[playerID]) / (float) YoloEngine.MULTI_STEPS);
 
-		YoloEngine.changesMade[playerID] = 0;
+		YoloEngine.TeamAB[playerID].x_change = ((x - YoloEngine.TeamAB[playerID].x_last) / (float) YoloEngine.MULTI_STEPS);
+		YoloEngine.TeamAB[playerID].y_change = ((y - YoloEngine.TeamAB[playerID].y_last) / (float) YoloEngine.MULTI_STEPS);
 
-		Opponents_x_last[playerID] = x;
-		Opponents_y_last[playerID] = y;
+		YoloEngine.TeamAB[playerID].changesMade = 0;
+
+		YoloEngine.TeamAB[playerID].x_last = x;
+		YoloEngine.TeamAB[playerID].y_last = y;
 
         YoloEngine.TeamAB[playerID].PlayerLive = life;
 
@@ -252,7 +236,7 @@ public class YoloMultislayer {
 		if(!YoloEngine.MULTI_ACTIVE)
 			return;
 
-		mParticipants = YoloEngine.mRoom.getParticipants();
+		ArrayList<Participant> mParticipants = YoloEngine.mRoom.getParticipants();
 
 		
 		for (Participant p : mParticipants) {
@@ -441,11 +425,13 @@ public class YoloMultislayer {
     	
     	sendMessageToAllreliable(bbf.array());
     }
-    
-    public void prepareMatchArray() {
-    	for(YoloPlayer p : YoloEngine.TeamAB)
-    		if(p.ParticipantId != "") 
-    			TeamAB_Participants.add(p.ParticipantId);
-    }
+
+	public void sendQuitInfo(int myID) {
+		ByteBuffer bbf = ByteBuffer.allocate(12);
+    	bbf.putChar('q');
+    	bbf.putInt(YoloEngine.MyID);
+    	
+    	sendMessageToAllreliable(bbf.array());		
+	}
 }
 

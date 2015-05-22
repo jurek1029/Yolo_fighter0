@@ -28,6 +28,14 @@
 	</string-array>
     <string name="app_id">1085495637692</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="return_main_menu">Main menu</string>
+    <string name="resume_game">Wróć do gry</string>
+    <string name="game_paused">Gra wstrzymana</string>
+    <string name="invitation_sent">Zaproszenie zostało wysłane</string>
+    <string name="new_invitation">Zaproszenie</string>
+    <string name="invitation_dialog">zaprasza Cię do gry</string>
+    <string name="yes">Akceptuj</string>
+    <string name="no">Odrzuć</string>
     
 
 </resources>

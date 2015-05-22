@@ -160,19 +160,15 @@ public class YoloEngine {
 	
 	public static Room mRoom;
 	public static GameHelper mHelper;
-	public static int changesMade[] = new int[4];
 
     public static String playerParticipantID;
 
     public static int IDTracer =0;
 
-    public static List<String> teamA = new ArrayList<String>(2);
-    public static List<String> teamB = new ArrayList<String>(2);
-
 
 	public static boolean MULTI_ACTIVE = false;
 
-    public static ArrayList<Participant> participants = null; // lista graczy, posortowana, ale może zawierać też nieaktywnych
+    public static ArrayList<Participant> participants = null; // lista graczy, posortowana, ale moze zawierac nieaktywnych
 
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;

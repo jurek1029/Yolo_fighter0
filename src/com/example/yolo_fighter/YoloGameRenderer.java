@@ -2024,20 +2024,20 @@ public class YoloGameRenderer implements Renderer {
 			}	
 			for(int i = 0; i < YoloEngine.TeamSize*2; i++) {
 				if(i == YoloEngine.MyID) continue; //skippujemy jesli dotyczy 'naszego' gracza
-				if(YoloEngine.changesMade[i] < YoloEngine.MULTI_STEPS) {
-					if(YoloEngine.changesMade[i] == 0)
+				if(YoloEngine.TeamAB[i].changesMade < YoloEngine.MULTI_STEPS) {
+					if(YoloEngine.TeamAB[i].changesMade == 0)
 					{
-						YoloEngine.TeamAB[i].x = YoloEngine.mMultislayer.Opponents_x_lastX[i];
-						YoloEngine.TeamAB[i].y = YoloEngine.mMultislayer.Opponents_y_lastX[i];
+						YoloEngine.TeamAB[i].x = YoloEngine.TeamAB[i].x_lastX;
+						YoloEngine.TeamAB[i].y = YoloEngine.TeamAB[i].y_lastX;
 
-						YoloEngine.mMultislayer.Opponents_x_lastX[i] = YoloEngine.mMultislayer.Opponents_x_last[i];
-						YoloEngine.mMultislayer.Opponents_y_lastX[i] = YoloEngine.mMultislayer.Opponents_y_last[i];
+						YoloEngine.TeamAB[i].x_lastX = YoloEngine.TeamAB[i].x_last;
+						YoloEngine.TeamAB[i].y_lastX = YoloEngine.TeamAB[i].y_last;
 					}
 
-					YoloEngine.TeamAB[i].x += YoloEngine.mMultislayer.Opponents_x_change[i];
-					YoloEngine.TeamAB[i].y += YoloEngine.mMultislayer.Opponents_y_change[i];
+					YoloEngine.TeamAB[i].x +=YoloEngine.TeamAB[i].x_change;
+					YoloEngine.TeamAB[i].y +=YoloEngine.TeamAB[i].y_change;
 
-					YoloEngine.changesMade[i]++;
+					YoloEngine.TeamAB[i].changesMade++;
 				}
 				else
 					;//System.out.println("no new data");

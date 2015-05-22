@@ -1,11 +1,12 @@
 package com.example.yolo_fighter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
@@ -404,14 +405,30 @@ public class YoloGame extends Activity{
 	@Override
 	public void onBackPressed() {
 		
-			YoloEngine.whichLayout=0;
-			YoloGameRenderer.skillTeamBVe.clear();
-			YoloGameRenderer.skillTeamAVe.clear();
-			Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
-			YoloGame.this.startActivity(mainMenu);
-			YoloEngine.context = getApplicationContext();
-			YoloGame.this.finish();
-			//TODO MiHu path to variable YoloEngine.TeamAB[YoloEngine.MyID].coin TO JEST TYLKO ROZNICA NIE WARTOSC
-			setContentView(R.layout.main_menu);
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.game_paused)		
+		//.setMessage("")
+		.setPositiveButton(R.string.return_main_menu, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				YoloEngine.mMultislayer.sendQuitInfo(YoloEngine.MyID);
+				YoloEngine.whichLayout=0;
+				YoloGameRenderer.skillTeamBVe.clear();
+				YoloGameRenderer.skillTeamAVe.clear();
+				Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
+				YoloGame.this.startActivity(mainMenu);
+				YoloEngine.context = getApplicationContext();
+				YoloGame.this.finish();
+				//TODO MiHu path to variable YoloEngine.TeamAB[YoloEngine.MyID].coin TO JEST TYLKO ROZNICA NIE WARTOSC
+				setContentView(R.layout.main_menu);				
+			}
+		}).setNegativeButton(R.string.resume_game, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		}).setIcon(R.drawable.ic_launcher).show();
+		
+		
+			
+			
 	}
 }

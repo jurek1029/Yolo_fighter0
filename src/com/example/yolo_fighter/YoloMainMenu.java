@@ -3,6 +3,7 @@ package com.example.yolo_fighter;
 import static android.content.ContentResolver.setMasterSyncAutomatically;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -11,9 +12,11 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.MailTo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -40,6 +43,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
+import com.google.android.gms.internal.mh;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 
@@ -75,6 +79,7 @@ public class YoloMainMenu extends Activity
 	Button btn_quick;
 	Button btn_invite;
 	TextView debug_textview;
+	ProgressDialog mProgressDialog;
 	
     private void debugLog(String text) {
         System.out.println(text);
@@ -88,20 +93,27 @@ public class YoloMainMenu extends Activity
 		public void onRoomCreated(int statusCode, Room room) {
             if(statusCode == com.google.android.gms.games.GamesStatusCodes.STATUS_OK) {
                 debugLog("Room created");
+                
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if (mProgressDialog != null)
+							mProgressDialog.setMessage("Waiting for other players...");
+					}
+				});
+        
                 YoloEngine.mRoom = room;
                 YoloEngine.playerParticipantID = YoloEngine.mRoom.getParticipantId(Games.Players.getCurrentPlayerId(YoloEngine.mHelper.getApiClient()));
 
-                YoloEngine.teamA.clear();
-                YoloEngine.teamB.clear();
                 YoloEngine.opponents.clear();
                 for(YoloPlayer p : YoloEngine.TeamAB) p = new YoloPlayer(1000f, 1000f, false, 666);
                 if(YoloEngine.participants != null) YoloEngine.participants.clear();
 
-                // @TODO temporarry
-                //YoloEngine.teamA.add(YoloEngine.playerParticipantID);
             }
-            else
-               debugLog("Error "+statusCode);
+            else {
+				if (mProgressDialog != null)
+					mProgressDialog.dismiss();
+            	debugLog("Error "+statusCode);
+            }
 		}
 
 		@Override
@@ -109,13 +121,11 @@ public class YoloMainMenu extends Activity
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("All participants connected");
 
-                //YoloEngine.teamA.clear(); //@TODO temporarry
 
                 YoloEngine.MULTI_ACTIVE = true;
 
                 YoloEngine.mRoom = room;
                 
-                //YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[]{YoloEngine.SkillSprite1, YoloEngine.SkillSprite2, YoloEngine.SkillSprite3}));
                 plInfoList.clear();
         		plInfoList=dbm.getAll();
                 int currentPlayerInfoPosition =preferences.getInt("currentPlInfPos", 0);
@@ -148,14 +158,12 @@ public class YoloMainMenu extends Activity
                     int a=0,b=YoloEngine.TeamSize;
                     // Przydzielamy nam
                     if (new Random().nextBoolean()) {
-                        YoloEngine.teamA.add(YoloEngine.playerParticipantID); //@REMOVE
                         YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
                         YoloEngine.MyID = a;
                         teamAssignPattern += "0";
                         a++;
                     }
                     else {
-                        YoloEngine.teamB.add(YoloEngine.playerParticipantID); //@REMOVE
                         YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
                         YoloEngine.MyID = b;
                         teamAssignPattern += "1";
@@ -167,32 +175,28 @@ public class YoloMainMenu extends Activity
                     
                     // Przydzielamy reszcie graczy
                     for (Participant p : YoloEngine.participants) {
-                        if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED || YoloEngine.teamA.contains(p.getParticipantId()) || YoloEngine.teamB.contains(p.getParticipantId()))) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu
+                        if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED)) { // nie jesteśmy to my, gracz nie należy jeszcze do żadnego teamu
                             // @TODO sprawdzenie, czy gracz nie ma ju� przydzielonego teamu?
-                        	if (YoloEngine.teamA.size() > YoloEngine.teamB.size()) {
-                                YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
+                        	if (a > (b-YoloEngine.TeamSize)) {                               
                                 YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
                                 YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "1";
                                 b++;
                                
-                            } else if (YoloEngine.teamA.size() < YoloEngine.teamB.size()) {
-                                YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
+                            } else if (a < (b-YoloEngine.TeamSize)) {                                
                                 YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
                                 YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                 teamAssignPattern += "0";
                                 a++;
                                 
                             } else {
-                                if (new Random().nextBoolean()) {
-                                    YoloEngine.teamA.add(p.getParticipantId()); //@REMOVE
+                                if (new Random().nextBoolean()) {                                    
                                     YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
                                     YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "0";
                                     a++;
                                     
-                                } else {
-                                    YoloEngine.teamB.add(p.getParticipantId()); //@REMOVE
+                                } else {                                  
                                     YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
                                     YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
                                     teamAssignPattern += "1";
@@ -205,26 +209,30 @@ public class YoloMainMenu extends Activity
 
                     YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
                   //  YoloGameRenderer.givePlayerID();
-                    YoloEngine.mMultislayer.prepareMatchArray();
                     YoloEngine.mMultislayer.sendMaxLife(); //@TODO to powinno by� p�niej, �eby by�a pweno��, czy TeamAB jest dobrze usuzp�enione
                 }
-                
-                
-
+				if (mProgressDialog != null) {
+					mProgressDialog.setMessage("Starting the game");
+					mProgressDialog.dismiss();
+				}
 
             }
-			else if(statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED)
+			else if(statusCode == GamesStatusCodes.STATUS_CLIENT_RECONNECT_REQUIRED) {
                 debugLog("Client reconnect required");
-            else if(statusCode == GamesStatusCodes.STATUS_INTERNAL_ERROR)
+                if(mProgressDialog != null)
+                	mProgressDialog.dismiss();
+			}
+            else if(statusCode == GamesStatusCodes.STATUS_INTERNAL_ERROR) {
                 debugLog("Error when connecting");
+                if(mProgressDialog != null)
+                	mProgressDialog.dismiss();
+	}
 		}
 
 		@Override
 		public void onLeftRoom(int arg0, String arg1) {
             debugLog("Room left");
 
-            YoloEngine.teamA.clear();
-            YoloEngine.teamB.clear();
             YoloEngine.opponents.clear();
             if(YoloEngine.participants != null) YoloEngine.participants.clear();
 		}
@@ -234,8 +242,6 @@ public class YoloMainMenu extends Activity
             if(statusCode == GamesStatusCodes.STATUS_OK) {
                 debugLog("Room joined");
 
-                YoloEngine.teamA.clear();
-                YoloEngine.teamB.clear();
                 YoloEngine.opponents.clear();
                 if(YoloEngine.participants != null) YoloEngine.participants.clear();
 
@@ -267,16 +273,13 @@ public class YoloMainMenu extends Activity
 
             System.out.println("onPeersDisconnected");
 
-            for (String p : participantIds) {
-                YoloEngine.teamA.remove(p);
-                YoloEngine.teamB.remove(p);
-                YoloEngine.opponents.remove(p);
-                try {
-                	YoloEngine.TeamAB[Collections.binarySearch(YoloEngine.mMultislayer.TeamAB_Participants, p)].moveAway();
-				} catch (Exception e) {
-					System.out.println("exception w usuwaniu gracza");
+			for (String p : participantIds) {
+				YoloEngine.opponents.remove(p);
+				for (int i = 0; i < YoloEngine.TeamSize * 2; i++) {
+					if (YoloEngine.TeamAB[i].ParticipantId.equals(p))
+						YoloEngine.TeamAB[i].moveAway();
 				}
-            }
+			}
             
             
             if(YoloEngine.opponents.size() == 0)
@@ -290,8 +293,7 @@ public class YoloMainMenu extends Activity
 
 		@Override
 		public void onDisconnectedFromRoom(Room room) {
-
-			
+			System.out.println("rosja");
 		}
 
 		@Override
@@ -319,9 +321,8 @@ public class YoloMainMenu extends Activity
 
 
 		@Override
-		public void onPeerLeft(Room arg0, List<String> arg1) {
-            // Ktoś lub więcej ludzi uciekło
-            // @TODO informacja w grze, że ktoś odłączył się, usunąć jego postać
+		public void onPeerLeft(Room arg0, List<String> arg1) {          
+			System.out.println("niemcy");
 		}
 
 		@Override
@@ -365,19 +366,20 @@ public class YoloMainMenu extends Activity
 		btn_quick = (Button) findViewById(R.id.quick_button);
 		btn_invite = (Button) findViewById(R.id.invite_button);
 		debug_textview = (TextView) findViewById(R.id.textView1);
+		
 		btn_quick.setEnabled(false);
 		btn_invite.setEnabled(false);
 		
-		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		askInvitation = new AlertDialog.Builder(YoloMainMenu.this).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				System.out.println("Invitation accepted");
 				Games.RealTimeMultiplayer.join(YoloEngine.mHelper.getApiClient(), prepareGame(IncomingInvitation));
 			}
-		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+		}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				System.out.println("Invitation rejected");
 			}
-		}).setIcon(android.R.drawable.ic_dialog_alert);
+		}).setIcon(android.R.drawable.ic_dialog_info);
 		
 		YoloEngine.mHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 		YoloEngine.mHelper.enableDebugLog(true);
@@ -416,8 +418,8 @@ public class YoloMainMenu extends Activity
 						System.out.println("Invitation arrived, asking");
 						IncomingInvitation = invitation;
 
-						askInvitation.setTitle("New invitation");
-						askInvitation.setMessage("Do u wanna accept, huh? from:" + invitation.getInviter().getDisplayName());
+						askInvitation.setTitle(R.string.new_invitation);
+						askInvitation.setMessage(invitation.getInviter().getDisplayName()+ " " +getString(R.string.invitation_dialog));
 						askInvitation.show();
 
 					}
@@ -2610,9 +2612,11 @@ public void skill2devilEqBtnClick(View v){
 	   
    
 	public void startQuickGame(View v) {
-		
-		
-		
+		mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.show();
+		mProgressDialog.setMessage("Connecting...");
+		mProgressDialog.setCancelable(true);
+	//	
 		YoloEngine.MULTI_ACTIVE = true;
 		
 		Games.RealTimeMultiplayer.create(YoloEngine.mHelper.getApiClient(), prepareGame());
@@ -2684,6 +2688,8 @@ public void skill2devilEqBtnClick(View v){
 			final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
             debugLog("invitation sent chyba");
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.invitation_sent, Toast.LENGTH_SHORT);
+            toast.show();
 
 			// get auto-match criteria
 			Bundle autoMatchCriteria = null;
