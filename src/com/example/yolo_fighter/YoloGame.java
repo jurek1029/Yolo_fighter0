@@ -162,23 +162,23 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill1 = false;
                     break;
 				case 1:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(!YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)//skill przeciwnika
+					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)//skill przeciwnika
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill2 = false;
 					break;
 				case 2:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
                     if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
@@ -187,7 +187,7 @@ public class YoloGame extends Activity{
 					break;
 				}
 			 if(newSkill.sprite != 19 && newSkill.sprite != 26 && newSkill.sprite != 30)
-				 YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkill());
+				 YoloEngine.mMultislayer.sendMessageToAllreliable(newSkill.serializeSkillNew());
 			 YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;
 			}
 		

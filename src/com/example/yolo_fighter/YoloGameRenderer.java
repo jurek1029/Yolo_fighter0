@@ -98,7 +98,8 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 300;
     		damage = 3f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 7://Warrior
     		xEnd = 0f;
@@ -110,7 +111,8 @@ class Skill extends YoloObject
     		animation_slowdown = 7;
     		resurestion_count = 300;
     		damage = 5f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 8://Mummy
     		xEnd = 0f;
@@ -122,7 +124,8 @@ class Skill extends YoloObject
     		animation_slowdown = 15;
     		resurestion_count = 300;
     		damage = 1.5f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 9://Hand
     		xEnd = 0f;
@@ -134,7 +137,8 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 300;
     		damage = 5f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 10://Barrel
     		xEnd = 0f;
@@ -146,8 +150,9 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 0;
     		damage = 20f;
-    		setAIXY();
-    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
+    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft; // TODO przes³aæ isLeft
 			this.x++;
     		break;
     	case 11://Tower
@@ -161,7 +166,9 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 0;
     		damage = 5f;
-    		setXYFloor();
+    		if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			setXYFloor();
+    		//
     		break;
     		}
     	case 12://Wall
@@ -174,7 +181,8 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 0;
     		damage = 0f;
-    		setXYFloor();
+    		if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			setXYFloor();
     		break;
     	case 13://Trap
     		xEnd = 0f;
@@ -186,7 +194,8 @@ class Skill extends YoloObject
     		animation_slowdown = 0;
     		resurestion_count = 0;
     		damage = 15f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 14://Warmth
     		xEnd = 0f;
@@ -198,7 +207,8 @@ class Skill extends YoloObject
     		animation_slowdown = 6;
     		resurestion_count = 0;
     		damage = 2f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     		break;
     	case 15://Spikes
     	{
@@ -261,7 +271,8 @@ class Skill extends YoloObject
     		animation_slowdown = 0;
     		resurestion_count = 0;
     		damage = 0f;
-    		setAIXY();
+    		 if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==this.team)
+    			 setAIXY();
     	//	this.x -=.5f;this.y -=.5f;
     		YoloGameRenderer.hitBoxs.add(new HitBox(this.x,this.y, x_radius, y_radius, damage,frameDuration,sprite,isLeft,team,false,id));
     		break;
@@ -2262,7 +2273,7 @@ public class YoloGameRenderer implements Renderer {
 						continue out;
 					}
 				
-				if(Weapontab.get(i).team != YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
+				if(Weapontab.get(i).team != YoloEngine.TeamA)
 				{
 					for (int x =0 ;x < skillTeamAVe.size();x++)
 						if(skillTeamAVe.elementAt(x).sprite>=6 && skillTeamAVe.elementAt(x).sprite <= 12 )
@@ -2672,7 +2683,8 @@ public class YoloGameRenderer implements Renderer {
 	
 	public static void AIFire(float x,float y,boolean isLeft,int sprite,float x_texture,float y_texture, float damage, boolean team)
 	{
-		bullet = new YoloWeapon(x,y,0.2f);//FIXME AI bullet speed
+		System.out.println("tak");
+		bullet = new YoloWeapon(x,y,0.05f);//FIXME AI bullet speed
 		bullet.damage = damage;
 		bullet.team = team;
 		bullet.sprite = sprite;
