@@ -2683,7 +2683,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	public static void AIFire(float x,float y,boolean isLeft,int sprite,float x_texture,float y_texture, float damage, boolean team)
 	{
-		System.out.println("tak");
+		
 		bullet = new YoloWeapon(x,y,0.05f);//FIXME AI bullet speed
 		bullet.damage = damage;
 		bullet.team = team;
@@ -2694,8 +2694,7 @@ public class YoloGameRenderer implements Renderer {
 //		bullet.scale = 4f;
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
-		if(YoloEngine.MULTI_ACTIVE)
-            YoloEngine.mMultislayer.sendAIFire(x, y, isLeft, sprite, x_texture, y_texture, damage, team);
+		
 	}
 	
 	private boolean AIDraw(GL10 gl,int i,boolean Team,int sprite)
@@ -2733,6 +2732,8 @@ public class YoloGameRenderer implements Renderer {
 						{
 							AIFire(Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).isLeft,6,0f,.5f,Ve.elementAt(i).damage,Ve.elementAt(i).team);
 							Ve.elementAt(i).ret = YoloEngine.ARCHER_NULL;
+							//if(YoloEngine.MULTI_ACTIVE)
+					          //  YoloEngine.mMultislayer.sendAIFire(Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).isLeft,6,0f,.5f,Ve.elementAt(i).damage,Ve.elementAt(i).team);
 						}
 						break;
 					case 11:
@@ -2745,6 +2746,8 @@ public class YoloGameRenderer implements Renderer {
 								Ve.elementAt(i).ret = YoloEngine.TOWER_STAND;
 								Ve.elementAt(i).fireCounter =0;
 							}
+							if(YoloEngine.MULTI_ACTIVE)
+					            YoloEngine.mMultislayer.sendAIFire(Ve.elementAt(i).x, Ve.elementAt(i).y, Ve.elementAt(i).isLeft,11,0f,.125f, Ve.elementAt(i).damage,Ve.elementAt(i).team);
 						}
 						else if(Ve.elementAt(i).ret == YoloEngine.TOWER_NEW)
 						{
