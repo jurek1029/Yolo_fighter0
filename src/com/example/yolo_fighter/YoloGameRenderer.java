@@ -3715,8 +3715,8 @@ public class YoloGameRenderer implements Renderer {
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
 		
-		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/YoloEngine.display_x*YoloEngine.LEVEL_scale; 
-		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/YoloEngine.display_y*YoloEngine.LEVEL_scale; 
+		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/(YoloEngine.display_x/YoloEngine.LEVEL_scale); 
+		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/(YoloEngine.display_y/YoloEngine.LEVEL_scale); 
 		YoloEngine.GAME_PROJECTION_X = YoloEngine.display_x/YoloEngine.LEVEL_SIZE_X;
 		YoloEngine.GAME_PROJECTION_Y = YoloEngine.display_y/YoloEngine.LEVEL_SIZE_Y;
 		YoloEngine.TEXTURE_SIZE_X = YoloEngine.TX/(YoloEngine.display_x/YoloEngine.LEVEL_scale);

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.MergeCursor;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -204,9 +205,8 @@ public class YoloGame extends Activity{
 		    DisplayMetrics metrics = getResources().getDisplayMetrics();
 		    YoloEngine.display_x = size.x;
 		    YoloEngine.display_y = size.y;
-		    YoloEngine.xdpi = 210f/metrics.xdpi;
-		    
-		    YoloEngine.LEVEL_scale =YoloEngine.ydpi/YoloEngine.xdpi;
+		    YoloEngine.xdpi = 210f/metrics.densityDpi;
+		    YoloEngine.LEVEL_scale =(YoloEngine.ydpi/YoloEngine.xdpi);
 		}
 		else
 		{
