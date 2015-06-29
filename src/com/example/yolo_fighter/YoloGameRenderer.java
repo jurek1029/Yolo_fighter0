@@ -3727,9 +3727,9 @@ public class YoloGameRenderer implements Renderer {
 		half_fy = (1f/YoloEngine.TEXTURE_SIZE_Y/2f -.5f);
 		half_by = (1f/YoloEngine.TEXTURE_SIZE_Y/2f +.5f);
 
-		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL1_COOLDOWN,YoloEngine.r1);
-		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL2_COOLDOWN,YoloEngine.r2);
-		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x, 0, 100/YoloEngine.display_x, 100/YoloEngine.display_y, YoloEngine.SKILL3_COOLDOWN,YoloEngine.r3);
+		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x/YoloEngine.xdpi, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL1_COOLDOWN,YoloEngine.r1);
+		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL2_COOLDOWN,YoloEngine.r2);
+		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x/YoloEngine.xdpi, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL3_COOLDOWN,YoloEngine.r3);
 		//givePlayerID();
 		
 //------------------------------------------INICJOWANIE OBIEKT�W FIZYCZNYCH----------------------------------		
