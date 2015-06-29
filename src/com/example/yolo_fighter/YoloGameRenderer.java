@@ -1,5 +1,10 @@
 package com.example.yolo_fighter;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Vector;
 
@@ -3714,6 +3719,57 @@ public class YoloGameRenderer implements Renderer {
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
+		boolean test = false;
+		if(test)
+		{
+			 DataInputStream inputStream ;
+			  
+		     try 
+		     {
+				 inputStream = new DataInputStream(YoloEngine.context.getResources().openRawResource(R.raw.lvl1));
+				 YoloEngine.LEVEL_X = inputStream.readInt();
+			     YoloEngine.LEVEL_Y = inputStream.readInt();
+			     int l= inputStream.readInt();
+			     ObjectTab = new YoloObject[l];
+				 for(int i =0;i<l;i++)
+				 {
+				    ObjectTab[i] = new YoloObject(inputStream.readInt(), inputStream.readInt(), inputStream.readInt(), inputStream.readInt());
+				 }
+				 l = inputStream.readInt();
+				 LaddreTab = new YoloObject[l];
+				 for(int i =0;i<l;i++)
+				 {
+					 LaddreTab[i] = new YoloObject(inputStream.readInt(), inputStream.readInt(), inputStream.readInt(), inputStream.readInt());
+				 }
+						 
+			     inputStream.close();		    
+			 } catch (FileNotFoundException e) {System.out.println("xxxxxxxxxxxxxxxxxxxxxxx"+e.getMessage());} catch (IOException e) {System.out.println("xxxxxxxxxxxxxxxxxxxxxxx"+e.getMessage());}
+		}
+		else
+		{
+			ObjectTab[0] = new YoloObject(0,1330,2400,110);
+			ObjectTab[1] = new YoloObject(37, 671, 2301, 115);
+			ObjectTab[2] = new YoloObject(209,495,383,53);
+			ObjectTab[3] = new YoloObject(809,1175,383,53);
+			ObjectTab[4] = new YoloObject(199,1185,130,43);
+			ObjectTab[5] = new YoloObject(89, 889, 130, 43);
+			ObjectTab[6] = new YoloObject(1394, 465, 130, 43);
+			ObjectTab[7] = new YoloObject(1394, 220, 130, 43);
+			ObjectTab[8] = new YoloObject(1705, 545, 130, 43);
+			ObjectTab[9] = new YoloObject(1845, 95, 130, 43);
+			ObjectTab[10] = new YoloObject(2000, 380, 130, 43);
+			ObjectTab[11] = new YoloObject(2220, 270, 130, 43);
+			ObjectTab[12] = new YoloObject(2260, 870, 130, 43);
+			ObjectTab[13] = new YoloObject(210, 145 ,383, 53);
+			ObjectTab[14] = new YoloObject(739, 319, 516, 96);
+			ObjectTab[15] = new YoloObject(370, 990, 516, 96);
+			ObjectTab[16] = new YoloObject(1113, 990, 1020, 122);
+		
+			LaddreTab[0]= new YoloObject(542, 616, 105, 331);
+			LaddreTab[1]= new YoloObject(1381, 621, 105, 326);
+			LaddreTab[2]= new YoloObject(1859, 947, 105, 340);
+			LaddreTab[3]= new YoloObject(1865, 40, 105, 595);
+		}
 		
 		YoloEngine.LEVEL_SIZE_X = YoloEngine.LEVEL_X/(YoloEngine.display_x/YoloEngine.LEVEL_scale); 
 		YoloEngine.LEVEL_SIZE_Y = YoloEngine.LEVEL_Y/(YoloEngine.display_y/YoloEngine.LEVEL_scale); 
@@ -3733,28 +3789,7 @@ public class YoloGameRenderer implements Renderer {
 		//givePlayerID();
 		
 //------------------------------------------INICJOWANIE OBIEKT�W FIZYCZNYCH----------------------------------		
-		ObjectTab[0] = new YoloObject(0,1330,2400,110);
-		ObjectTab[1] = new YoloObject(37, 671, 2301, 115);
-		ObjectTab[2] = new YoloObject(209,495,383,53);
-		ObjectTab[3] = new YoloObject(809,1175,383,53);
-		ObjectTab[4] = new YoloObject(199,1185,130,43);
-		ObjectTab[5] = new YoloObject(89, 889, 130, 43);
-		ObjectTab[6] = new YoloObject(1394, 465, 130, 43);
-		ObjectTab[7] = new YoloObject(1394, 220, 130, 43);
-		ObjectTab[8] = new YoloObject(1705, 545, 130, 43);
-		ObjectTab[9] = new YoloObject(1845, 95, 130, 43);
-		ObjectTab[10] = new YoloObject(2000, 380, 130, 43);
-		ObjectTab[11] = new YoloObject(2220, 270, 130, 43);
-		ObjectTab[12] = new YoloObject(2260, 870, 130, 43);
-		ObjectTab[13] = new YoloObject(210, 145 ,383, 53);
-		ObjectTab[14] = new YoloObject(739, 319, 516, 96);
-		ObjectTab[15] = new YoloObject(370, 990, 516, 96);
-		ObjectTab[16] = new YoloObject(1113, 990, 1020, 122);
-	
-		LaddreTab[0]= new YoloObject(542, 616, 105, 331);
-		LaddreTab[1]= new YoloObject(1381, 621, 105, 326);
-		LaddreTab[2]= new YoloObject(1859, 947, 105, 340);
-		LaddreTab[3]= new YoloObject(1865, 40, 105, 595);
+		
 		
 		YoloEngine.sprite_load[0] = true;
 		YoloEngine.sprite_load[1] = true;
