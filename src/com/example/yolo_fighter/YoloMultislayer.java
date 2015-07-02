@@ -161,7 +161,7 @@ public class YoloMultislayer {
 					YoloGameRenderer.skillOponentVe.add(new Skill(new SkillData(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData
 							.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false,rcvData.getInt())));
 							*/
-					Skill tSkill = new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false);
+					Skill tSkill = new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.getInt());
 					if(tSkill.team == YoloEngine.TeamA)
 						YoloGameRenderer.skillTeamAVe.add(tSkill);
 					else

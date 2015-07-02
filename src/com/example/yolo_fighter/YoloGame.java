@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.MergeCursor;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -163,7 +162,7 @@ public class YoloGame extends Activity{
 			 switch (YoloEngine.usedSkill)
 				{
 				case 0:
-                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+                    newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite1,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,-1);
                     if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
@@ -171,15 +170,15 @@ public class YoloGame extends Activity{
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill1 = false;
                     break;
 				case 1:
-					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
-                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)//skill przeciwnika
+					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite2,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,-1);
+                    if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
                     	YoloGameRenderer.skillTeamBVe.add(newSkill);
                     YoloEngine.TeamAB[YoloEngine.MyID].canSkill2 = false;
 					break;
 				case 2:
-					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+					newSkill = new Skill(x_skill,y_skill,YoloEngine.SkillSprite3,YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,-1);
                     if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam==YoloEngine.TeamA)
                     	YoloGameRenderer.skillTeamAVe.add(newSkill);
                     else
@@ -282,14 +281,16 @@ public class YoloGame extends Activity{
 					else
 					{
 						YoloEngine.isCrouch_prest = false;
-						YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
+						if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
 						if( y2 > 30/YoloEngine.xdpi)
 							ActionUp();
 						else 
 						{
 							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 							YoloEngine.isClimbing = false;
-							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
+							if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
+								YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
 						}
 					}
 					YoloEngine.TeamAB[YoloEngine.MyID].vx = (x2*x2*Math.signum(x2))/(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?(15000f/YoloEngine.xdpi/YoloEngine.xdpi):(7500f/YoloEngine.xdpi/YoloEngine.xdpi));
@@ -305,7 +306,7 @@ public class YoloGame extends Activity{
 					}
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
 					YoloEngine.TeamAB[YoloEngine.MyID].setAction(2);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
+					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
 				}
 				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0)
 				{
@@ -316,7 +317,7 @@ public class YoloGame extends Activity{
 					}
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 					YoloEngine.TeamAB[YoloEngine.MyID].setAction(3);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6);
+					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
 					
 				}
 	

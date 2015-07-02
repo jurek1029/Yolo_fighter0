@@ -65,7 +65,7 @@ public class YoloPlayer extends YoloObject {
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
 	public int coin =0;
-	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0;
+	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1;
 	
 	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0;
 	public int fireSprite =0,fireCount = 0,firePause = 15,baseFirePause = firePause;
@@ -117,30 +117,41 @@ public class YoloPlayer extends YoloObject {
 		indexBuffer.position(0);
 	}
 	public void setAction(int action)
-	{
+	{ 
+		
+		if(action != act)
 		switch (action)
 		{
 		case 0://stand left
-			x_texture =0.25f;y_texture = 0f;
-			x_start = 0.25f	;y_start =0f;
-			x_end = 0.375f	; y_end = 0f;
+			x_texture =0.25f;
+			y_texture = 0f;
+			x_start = 0.25f	;
+			y_start =0f;
+			x_end = 0.375f	;
+			y_end = 0f;
 			break;
 		case 1://stand right
-			x_texture =0f;y_texture = 0.125f;
-			x_start = 0f	;y_start =0.125f;
-			x_end = 0.125f	; y_end = 0.125f;
+			x_texture =0f;
+			y_texture = 0.125f;
+			x_start = 0f	;
+			y_start =0.125f;
+			x_end = 0.125f	;
+			y_end = 0.125f;
 			break;
 		case 2://walk left
 			x_texture = y_texture = 0f;
 			x_start = y_start =0f;
-			x_end = 0.75f; y_end = 0f;
+			x_end = 0.75f;
+			y_end = 0f;
 			break;
 		case 3://walk right
 			x_texture = x_start = 0.75f;
 			y_texture =y_start = 0f;
-			x_end = 0.5f; y_end = 0.125f;
+			x_end = 0.5f;
+			y_end = 0.125f;
 			break;
 		}
+		act = action;
 	}
 	public void drawAlly(GL10 gl,boolean livebar)
 	{
@@ -418,7 +429,7 @@ public class YoloPlayer extends YoloObject {
 		iconcount =0;
 		if(isBeingHealed)
 		{
-			if(PlayerLive+20 < PLAYER_LIVE_MAX)
+			if(PlayerLive+healBuffer < PLAYER_LIVE_MAX)
 			{
     			PlayerLive += healBuffer;
     			healBuffer =0;
@@ -658,7 +669,7 @@ public class YoloPlayer extends YoloObject {
 		iconcount =0;
 		if(isBeingHealed)
 		{
-			if(PlayerLive+20 < PLAYER_LIVE_MAX)
+			if(PlayerLive+healBuffer < PLAYER_LIVE_MAX)
 			{
     			PlayerLive += healBuffer;
     			healBuffer =0;
