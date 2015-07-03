@@ -78,8 +78,8 @@ class Skill extends YoloObject
     			setX();setY();
     			this.x -=(x_radius/2);
     		}
-    		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-    		ly =Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
     		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
     			VolumeScale =0;
     		else
@@ -257,8 +257,8 @@ class Skill extends YoloObject
 				}
 				this.y = maxy;
     		}
-    		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-    		ly =Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
     		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
     			VolumeScale =0;
     		else
@@ -504,11 +504,11 @@ class Skill extends YoloObject
     		boolean My = false;
     		if(team == YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
     		{
-    			if(YoloEngine.SkillSprite1 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
+    			if(YoloEngine.SkillSprite1 == 31 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
     				My = true;
-    			else if(YoloEngine.SkillSprite2 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill2)
+    			else if(YoloEngine.SkillSprite2 == 31 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill2)
     				My = true;
-    			else if(YoloEngine.SkillSprite3 == 29 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill3)
+    			else if(YoloEngine.SkillSprite3 == 31 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill3)
     				My = true;
     		}
     		if(My)
@@ -517,6 +517,15 @@ class Skill extends YoloObject
     			YoloEngine.TeamAB[YoloEngine.MyID].x = this.x;
 	    		YoloEngine.TeamAB[YoloEngine.MyID].y = this.y;
     		}
+    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+    			VolumeScale =0;
+    		else
+    		{
+    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+    		}
+    		YoloEngine.sp.play(YoloEngine.SoundInd[46], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
     		break;
     	}
     	case 32://Buff
@@ -561,6 +570,15 @@ class Skill extends YoloObject
 				this.y = maxy;
 				this.x -= 7f;
     		}
+    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+    			VolumeScale =0;
+    		else
+    		{
+    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+    		}
+    		YoloEngine.sp.play(YoloEngine.SoundInd[47], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage,frameDuration,sprite,isLeft,team,false,id));
     		break; 
     	}
@@ -614,6 +632,15 @@ class Skill extends YoloObject
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerBuff = true;
 					YoloEngine.mMultislayer.SendSkillBool(36);
 	    		}
+	    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    			VolumeScale =0;
+	    		else
+	    		{
+	    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    		}
+	    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    	}
     		break;
     	case 37://Buff fireRate siebie
@@ -635,6 +662,15 @@ class Skill extends YoloObject
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerFireRateBuff = true;
 					YoloEngine.mMultislayer.SendSkillBool(37);
 	    		}
+	    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    			VolumeScale =0;
+	    		else
+	    		{
+	    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    		}
+	    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    	}
     		break;
     	case 38://Buff magReload siebie
@@ -656,6 +692,15 @@ class Skill extends YoloObject
 					YoloEngine.TeamAB[YoloEngine.MyID].isPlayerMagReloadBuff = true;
 					YoloEngine.mMultislayer.SendSkillBool(38);
 	    		}
+	    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    			VolumeScale =0;
+	    		else
+	    		{
+	    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    		}
+	    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    	}
     		break;
     	case 39://thief draw
@@ -725,6 +770,15 @@ class Skill extends YoloObject
 				}
 				this.y = maxy;
     		}
+    		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+    			VolumeScale =0;
+    		else
+    		{
+    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+    		}
+    		YoloEngine.sp.play(YoloEngine.SoundInd[51], YoloEngine.Volume*4*VolumeScale, YoloEngine.Volume*4*VolumeScale, 1, 0, 1f);
     		if(team == YoloEngine.TeamA)
     		{
 				YoloGameRenderer.skillTeamAVe.add(new Skill(this.x, this.y, 41, team,-1));
@@ -757,8 +811,8 @@ class Skill extends YoloObject
     		y_radius = 4f;
     		if(ID<0)
     			setX();setY();
-    		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-        	ly =Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
         	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
         		VolumeScale =0;
         	else
@@ -782,8 +836,8 @@ class Skill extends YoloObject
     		damage = 8f;
     		if(ID<0)
     			setX();setY();
-    		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-        	ly =Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
         	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
         		VolumeScale =0;
         	else
@@ -798,8 +852,8 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		if(ID<0)
     			setX();setY();
-    		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-        	ly =Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
         	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
         		VolumeScale =0;
         	else
@@ -814,6 +868,15 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		if(ID<0)
     			setX();setY();
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    		VolumeScale =0;
+	    	else
+	    	{
+	    		VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    	}
+	    	YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,true, id));
     		break;
     	case 120://buff_team
@@ -832,6 +895,15 @@ class Skill extends YoloObject
 					else
 						YoloGameRenderer.skillTeamBVe.add(skill);
 				}
+				lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    			VolumeScale =0;
+	    		else
+	    		{
+	    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    		}
+	    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    		break;
 	    	}
     	case 121://buff_rad fireRate
@@ -839,6 +911,15 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		if(ID<0)
     			setX();setY();
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    		VolumeScale =0;
+	    	else
+	    	{
+	    		VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    	}
+	    	YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,true, id));
     		break;
     	case 122://buff_rad magRealoa
@@ -846,6 +927,15 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		if(ID<0)
     			setX();setY();
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    		VolumeScale =0;
+	    	else
+	    	{
+	    		VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    	}
+	    	YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,true, id));
     		break;
     	case 123://buff_team fireRate
@@ -864,6 +954,15 @@ class Skill extends YoloObject
 					else
 						YoloGameRenderer.skillTeamBVe.add(skill);
 				}
+				lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    			VolumeScale =0;
+	    		else
+	    		{
+	    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    		}
+	    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    		break;
 	    	}
     	
@@ -882,6 +981,15 @@ class Skill extends YoloObject
 				else
 					YoloGameRenderer.skillTeamBVe.add(skill);
 			}
+			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+    			VolumeScale =0;
+    		else
+    		{
+    			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+    		}
+    		YoloEngine.sp.play(YoloEngine.SoundInd[48], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
     		break;
     	case 126://Thief
     		x_radius = 3f;
@@ -889,6 +997,15 @@ class Skill extends YoloObject
     		damage = 8f;
     		if(ID<0)
     			setX();setY();
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    		VolumeScale =0;
+	    	else
+	    	{
+	    		VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    	}
+	    	YoloEngine.sp.play(YoloEngine.SoundInd[49], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
     		if(team != YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
     			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,false, id));
     		else if(YoloEngine.SkillSprite1 == 126 && YoloEngine.TeamAB[YoloEngine.MyID].canSkill1)
@@ -903,6 +1020,15 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		if(ID<0)
     			setX();setY();
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+	    		VolumeScale =0;
+	    	else
+	    	{
+	    		VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+	    	}
+	    	YoloEngine.sp.play(YoloEngine.SoundInd[50], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			YoloGameRenderer.hitBoxs.add(new HitBox(this.x - x_radius/2 +.5f,this.y - y_radius/2 +.5f, x_radius, y_radius, damage, frameDuration,sprite,isLeft,team,false, id));
     		break;
     	}
@@ -2868,7 +2994,10 @@ public class YoloGameRenderer implements Renderer {
 			{
 				VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
 			}
-			YoloEngine.sp.play(YoloEngine.SoundInd[0], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
+			if(sprite == 0)
+				YoloEngine.sp.play(YoloEngine.SoundInd[0], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
+			else if(sprite == 30)
+				YoloEngine.sp.play(YoloEngine.SoundInd[45], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
 			if(YoloEngine.MULTI_ACTIVE)
 				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
@@ -3474,6 +3603,11 @@ public class YoloGameRenderer implements Renderer {
 						Ve.remove(i);
 						continue;
 					}
+					else if(sprite == 30)
+					{
+						Ve.remove(i);
+						continue;
+					}
 
 				}
 				
@@ -3481,7 +3615,6 @@ public class YoloGameRenderer implements Renderer {
 					Ve.elementAt(i).x+=YoloEngine.WARRIOR_SPEED*2;
 				else if(sprite == 42)
 					Ve.elementAt(i).x-=YoloEngine.WARRIOR_SPEED*2;
-				
 				if(LinearSkillDraw(gl, Ve.elementAt(i)))
 				{
 					Ve.remove(i--);
@@ -4051,8 +4184,8 @@ public class YoloGameRenderer implements Renderer {
 		if(YoloEngine.SkillSprite3==124||YoloEngine.SkillSprite2==124||YoloEngine.SkillSprite1==124)YoloEngine.sprite_load[32]=true;
 		
 //---------------------------------------------INICJOWANIE DZWIEKOW------------------------------------------------
-		YoloEngine.sp = new SoundPool(45, AudioManager.STREAM_MUSIC, 0);
-		YoloEngine.SoundInd = new int[45];
+		YoloEngine.sp = new SoundPool(52, AudioManager.STREAM_MUSIC, 0);
+		YoloEngine.SoundInd = new int[52];
 		YoloEngine.SoundInd[0]= YoloEngine.sp.load(YoloEngine.context, R.raw.shot, 1);
 		YoloEngine.SoundInd[1]= YoloEngine.sp.load(YoloEngine.context, R.raw.step_grass2, 1);
 		YoloEngine.SoundInd[2]= YoloEngine.sp.load(YoloEngine.context, R.raw.step_grass1, 1);
@@ -4192,30 +4325,37 @@ public class YoloGameRenderer implements Renderer {
 		case 30:
 			Skill1BtnTx = 0.5f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[45]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_fireball, 1);
 			break;
 		case 31:
 			Skill1BtnTx = 0.75f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[46]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_teleport, 1);
 			break;
 		case 33:
 			Skill1BtnTx = 0.0f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[47]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_lava, 1);
 			break;
 		case 36:
 			Skill1BtnTx = 0.25f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 37:
 			Skill1BtnTx = 0.75f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 38:
 			Skill1BtnTx = 0.125f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 43:
 			Skill1BtnTx = 0.5f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[51]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_earthquake, 1);
 			break;
 		case 103:
 			Skill1BtnTx = 0.875f;
@@ -4239,34 +4379,42 @@ public class YoloGameRenderer implements Renderer {
 		case 119:
 			Skill1BtnTx = 0.125f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 120:
 			Skill1BtnTx = 0.375f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 121:
 			Skill1BtnTx = 0.875f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 122:
 			Skill1BtnTx = 0.25f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 123:
 			Skill1BtnTx = 0.625f;
 			Skill1BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 124:
 			Skill1BtnTx = 0.375f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 126:
 			Skill1BtnTx = 0.875f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[49]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_coins, 1);
 			break;
 		case 127:
 			Skill1BtnTx = 0.625f;
 			Skill1BtnTy = 0.75f;
+			YoloEngine.SoundInd[50]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_stamina, 1);
 			break;
 		}
 		switch(YoloEngine.SkillSprite2)
@@ -4388,30 +4536,37 @@ public class YoloGameRenderer implements Renderer {
 		case 30:
 			Skill2BtnTx = 0.5f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[45]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_fireball, 1);
 			break;
 		case 31:
 			Skill2BtnTx = 0.75f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[46]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_teleport, 1);
 			break;
 		case 33:
 			Skill2BtnTx = 0.0f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[47]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_lava, 1);
 			break;
 		case 36:
 			Skill2BtnTx = 0.25f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 37:
 			Skill2BtnTx = 0.75f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 38:
 			Skill2BtnTx = 0.125f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 43:
 			Skill2BtnTx = 0.5f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[51]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_earthquake, 1);
 			break;
 		case 103:
 			Skill2BtnTx = 0.875f;
@@ -4435,34 +4590,42 @@ public class YoloGameRenderer implements Renderer {
 		case 119:
 			Skill2BtnTx = 0.125f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 120:
 			Skill2BtnTx = 0.375f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 121:
 			Skill2BtnTx = 0.875f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 122:
 			Skill2BtnTx = 0.25f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 123:
 			Skill2BtnTx = 0.625f;
 			Skill2BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 124:
 			Skill2BtnTx = 0.375f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 126:
 			Skill2BtnTx = 0.875f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[49]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_coins, 1);
 			break;
 		case 127:
 			Skill2BtnTx = 0.625f;
 			Skill2BtnTy = 0.75f;
+			YoloEngine.SoundInd[50]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_stamina, 1);
 			break;
 		}
 		switch(YoloEngine.SkillSprite3)
@@ -4584,30 +4747,37 @@ public class YoloGameRenderer implements Renderer {
 		case 30:
 			Skill3BtnTx = 0.5f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[45]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_fireball, 1);
 			break;
 		case 31:
 			Skill3BtnTx = 0.75f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[46]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_teleport, 1);
 			break;
 		case 33:
 			Skill3BtnTx = 0.0f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[47]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_lava, 1);
 			break;
 		case 36:
 			Skill3BtnTx = 0.25f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 37:
 			Skill3BtnTx = 0.75f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 38:
 			Skill3BtnTx = 0.125f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 43:
 			Skill3BtnTx = 0.5f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[51]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_earthquake, 1);
 			break;
 		case 103:
 			Skill3BtnTx = 0.875f;
@@ -4631,34 +4801,42 @@ public class YoloGameRenderer implements Renderer {
 		case 119:
 			Skill3BtnTx = 0.125f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 120:
 			Skill3BtnTx = 0.375f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 121:
 			Skill3BtnTx = 0.875f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 122:
 			Skill3BtnTx = 0.25f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 123:
 			Skill3BtnTx = 0.625f;
 			Skill3BtnTy = 0.625f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 124:
 			Skill3BtnTx = 0.375f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
 			break;
 		case 126:
 			Skill3BtnTx = 0.875f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[49]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_coins, 1);
 			break;
 		case 127:
 			Skill3BtnTx = 0.625f;
 			Skill3BtnTy = 0.75f;
+			YoloEngine.SoundInd[50]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_stamina, 1);
 			break;
 		}
 //-----------------------------------------------------------------------------------------------------------		
