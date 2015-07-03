@@ -53,9 +53,10 @@ public class YoloPlayer extends YoloObject {
 	public float x_lastX;
 	public float y_lastX;
 	
+	int race;
 	
 	public String ParticipantId = "";
-	public boolean isPlayerActive; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
+	public boolean isPlayerActive,isDead = false; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
 	
 	//public float vy =0;
 	public float vx = 0f;
@@ -65,7 +66,7 @@ public class YoloPlayer extends YoloObject {
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
 	public int coin =0;
-	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1;
+	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1,framecount=0;
 	
 	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0;
 	public int fireSprite =0,fireCount = 0,firePause = 15,baseFirePause = firePause;
@@ -133,7 +134,7 @@ public class YoloPlayer extends YoloObject {
 		case 1://stand right
 			x_texture =0f;
 			y_texture = 0.125f;
-			x_start = 0f	;
+			x_start = 0f;
 			y_start =0.125f;
 			x_end = 0.125f	;
 			y_end = 0.125f;
@@ -143,14 +144,47 @@ public class YoloPlayer extends YoloObject {
 			x_start = y_start =0f;
 			x_end = 0.75f;
 			y_end = 0f;
+			framecount =0;
 			break;
 		case 3://walk right
 			x_texture = x_start = 0.75f;
 			y_texture =y_start = 0f;
 			x_end = 0.5f;
 			y_end = 0.125f;
+			framecount =0;
+			break;
+		case 4:// climb up
+			x_texture =0f;
+			y_texture = 0.125f;
+			x_start = 0f	;
+			y_start =0.125f;
+			x_end = 0.125f	;
+			y_end = 0.125f;
+			framecount =0;
+			animation_slowdown =15;
+			break; 
+		case 5:// climb down
+			x_texture =0f;
+			y_texture = 0.125f;
+			x_start = 0f	;
+			y_start =0.125f;
+			x_end = 0.125f	;
+			y_end = 0.125f;
+			framecount =0;
+			animation_slowdown =15;
+			break; 
+		case 6: // jump
+			break;
+		case 7: // fall
+			break;
+		case 8: //hurt bullet
+			break;
+		case 9: //hurt arrow
+			break;
+		case 10: //hurt Skill/AI		
 			break;
 		}
+		
 		act = action;
 	}
 	public void drawAlly(GL10 gl,boolean livebar)
@@ -164,12 +198,6 @@ public class YoloPlayer extends YoloObject {
 			fireSprite =0;
 			fireCount =0;
 			fireDamage =1f;
-		}
-		
-		if(vx==0)
-		{
-			setAction(isPlayerLeft?0:1);
-			animation_slowdown =0;
 		}
 		
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -188,15 +216,39 @@ public class YoloPlayer extends YoloObject {
 		
 		if(aniSlowCounter++ >= animation_slowdown)
 		{
+
+			if(act == 2 || act == 3)
+			{
+				if(framecount == 0 )
+					YoloEngine.sp.play(YoloEngine.SoundInd[1], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+				else if(framecount == 3)
+					YoloEngine.sp.play(YoloEngine.SoundInd[2], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+			}
+			else if(act == 4 || act == 5)
+			{
+				if(framecount == 0 )
+					YoloEngine.sp.play(YoloEngine.SoundInd[3], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+			}
+			
+			framecount++;
 			aniSlowCounter = 0;
 			if(x_texture<0.875f)x_texture+=0.125f;
 			else{y_texture+=0.125f; x_texture=0f;}
 		
 		}	
 		
+		if(vx==0)
+		{
+			if(act!=4||act != 5)
+			{
+				setAction(isPlayerLeft?0:1);
+				animation_slowdown =0;
+			}
+		}
+		
 		if(y_texture >= y_end && x_texture >= x_end)
 		{
-			
+			framecount =0;
 			y_texture = y_start;
 			x_texture = x_start;
 			
@@ -437,6 +489,16 @@ public class YoloPlayer extends YoloObject {
     		else
     			PlayerLive = PLAYER_LIVE_MAX;
 			isBeingHealed =	LinearDraw(gl,0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
+		}
+		if(PlayerLive <= 0 && ! isDead)
+		{
+			isDead = true;
+			if(YoloEngine.TeamAB[YoloEngine.MyID].race == 0)
+				YoloEngine.sp.play(YoloEngine.SoundInd[13], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 1)
+				YoloEngine.sp.play(YoloEngine.SoundInd[15], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 2)
+				YoloEngine.sp.play(YoloEngine.SoundInd[14], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
 		}
 	}
 	public void drawOpponent(GL10 gl)

@@ -35,7 +35,12 @@ public class YoloGame extends Activity{
 			if(flying-- > 0)
 			{
 				YoloEngine.TeamAB[YoloEngine.MyID].vy = 0.25f;
-				YoloEngine.TeamAB[YoloEngine.MyID].isJumping = true;
+				if(!YoloEngine.TeamAB[YoloEngine.MyID].isJumping)
+				{
+					YoloEngine.TeamAB[YoloEngine.MyID].isJumping = true;
+					YoloEngine.TeamAB[YoloEngine.MyID].setAction(6);
+					YoloEngine.sp.play(YoloEngine.SoundInd[4], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+				}
 			}		
 		}
 		YoloEngine.TeamAB[YoloEngine.MyID].isCrouch = false;
