@@ -93,6 +93,7 @@ public class YoloMultislayer {
                     }
                                                                                    
                     YoloEngine.mMultislayer.sendMaxLife();
+                    YoloEngine.startTime = System.currentTimeMillis()+YoloEngine.countdownTime;
                   //  YoloGameRenderer.givePlayerID();
                     break;
 
@@ -180,7 +181,7 @@ public class YoloMultislayer {
                     YoloEngine.TeamAB[k].moveAway();
                     YoloEngine.opponents.remove(YoloEngine.TeamAB[k].ParticipantId);
                     System.out.println("Someone has just left");
-                    break;
+					break;
 				default:
 					System.out.println("message not recognized");
 					break;

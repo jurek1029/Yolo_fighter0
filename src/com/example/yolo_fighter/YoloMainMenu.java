@@ -209,6 +209,7 @@ public class YoloMainMenu extends Activity
 
                     YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
                   //  YoloGameRenderer.givePlayerID();
+                    YoloEngine.startTime = (System.currentTimeMillis()+YoloEngine.countdownTime+YoloEngine.timeOffset);
                     YoloEngine.mMultislayer.sendMaxLife(); //@TODO to powinno byæ póŸniej, ¿eby by³a pwenoœæ, czy TeamAB jest dobrze usuzp³enione
                 }
 				if (mProgressDialog != null) {

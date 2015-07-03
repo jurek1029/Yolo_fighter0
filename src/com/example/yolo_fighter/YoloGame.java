@@ -2,10 +2,12 @@ package com.example.yolo_fighter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -246,7 +248,36 @@ public class YoloGame extends Activity{
 		if(YoloEngine.isClasic){y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2; x = x_old;}
 		else{x2=-1000;y2 =-1000;x_old = -1000;y_old =-1000;}
 		
-		
+		if (YoloEngine.MULTI_ACTIVE) {
+			final ProgressDialog mProgressDialog = new ProgressDialog(this);
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.setIcon(0);
+
+			Thread t = new Thread() {
+				public void run() {
+					while (((YoloEngine.startTime - System.currentTimeMillis()) / 1000) > 0) {
+						runOnUiThread(new Runnable() {
+							public void run() {
+								mProgressDialog.setMessage(Long.toString(((YoloEngine.startTime - System.currentTimeMillis()) / 1000)));
+								if (!mProgressDialog.isShowing()) 
+									mProgressDialog.show();							
+							}
+						});
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					mProgressDialog.dismiss();
+				}
+
+			};
+			t.start();
+		}
+			
+
 	}
 	
 	@Override
