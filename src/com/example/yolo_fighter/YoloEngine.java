@@ -178,6 +178,12 @@ public class YoloEngine {
    	
 	public static YoloMultislayer mMultislayer = new YoloMultislayer();
 	
+	
+	public static long startTime; // czas startu, wg czasu uzytkownika
+	public static int countdownTime = 20*1000; // dlugosc odliczania
+	public static int timeOffset = 200; // czas na dotarcie wiadomosci
+	
+	
 	// ------------------------- Multislayer END -------------------------
 	
 //------------------------------Menu----------------------------------------------------------------------	
