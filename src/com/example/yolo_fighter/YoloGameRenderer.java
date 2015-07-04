@@ -2913,156 +2913,270 @@ public class YoloGameRenderer implements Renderer {
 			break;
 		case 3:
 			YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUTTON_TEXTURE, YoloEngine.context, 1);
+			YoloEngine.SoundInd[59]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff1, 1);
+			YoloEngine.SoundInd[55]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_inv, 1);
 			drawLoadingSrean(gl, 3f/loadingStepsCout);
 			break;
 		case 4:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.POISON_SKILL, YoloEngine.context, 4);
+				YoloEngine.SoundInd[16]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_poiosn, 1);
+			}
 			drawLoadingSrean(gl, 4f/loadingStepsCout);
 			break;
 		case 5:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_V_SKILL, YoloEngine.context, 5);
+				YoloEngine.SoundInd[52]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_thunder, 1);
+			}
 			drawLoadingSrean(gl, 5f/loadingStepsCout);
 			break;
 		case 6:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.ARCHER_SPRITE, YoloEngine.context, 6);
+				YoloEngine.SoundInd[17]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_archer_step, 1);
+				YoloEngine.SoundInd[18]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_archer_shot, 1);
+				YoloEngine.SoundInd[19]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_archer_hit, 1);
+				YoloEngine.SoundInd[20]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_archer_death, 1);
+			}
 			drawLoadingSrean(gl, 6f/loadingStepsCout);
 			break;
 		case 7:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WARRIOR_SPRITE, YoloEngine.context, 7);
+				YoloEngine.SoundInd[21]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_step1, 1);
+				YoloEngine.SoundInd[22]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_step2, 1);
+				YoloEngine.SoundInd[23]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_atack, 1);
+				YoloEngine.SoundInd[24]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_hit, 1);
+				YoloEngine.SoundInd[25]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_death, 1);
+			}
 				drawLoadingSrean(gl, 7f/loadingStepsCout);
 			break;
 		case 8:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.MUMMY_SPRITE, YoloEngine.context, 8);
+				YoloEngine.SoundInd[26]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_mummy_step1, 1);
+				YoloEngine.SoundInd[27]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_mummy_step2, 1);
+				YoloEngine.SoundInd[28]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_mummy_atack, 1);
+				YoloEngine.SoundInd[29]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warrior_hit, 1);
+				YoloEngine.SoundInd[30]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_mummy_death, 1);
+			}
 				drawLoadingSrean(gl, 8f/loadingStepsCout);
 			break;
 		case 9:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HAND_SPRITE, YoloEngine.context, 9);
+				YoloEngine.SoundInd[31]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_hand, 1);
+				YoloEngine.SoundInd[32]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_hand_hit, 1);
+				YoloEngine.SoundInd[33]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_hand_death, 1);
+			}
 				drawLoadingSrean(gl, 9f/loadingStepsCout);
 			break;
 		case 10:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BARREL_SPRITE, YoloEngine.context, 10);
+				YoloEngine.SoundInd[34]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_barrel_roll, 1);
+				YoloEngine.SoundInd[35]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_barrel_explosion, 1);
+			}
 				drawLoadingSrean(gl, 10f/loadingStepsCout);
 			break;
 		case 11:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.TOWER_SPRITE, YoloEngine.context, 11);
+				YoloEngine.SoundInd[36]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_build, 1);
+				YoloEngine.SoundInd[37]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_tower, 1);
+				YoloEngine.SoundInd[38]= YoloEngine.sp.load(YoloEngine.context, R.raw.hit_wall, 1);
+			}
 				drawLoadingSrean(gl, 11f/loadingStepsCout);
 			break;
 		case 12:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.WALL_SPRITE, YoloEngine.context, 12);
+				YoloEngine.SoundInd[39]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_build, 1);
+				YoloEngine.SoundInd[40]= YoloEngine.sp.load(YoloEngine.context, R.raw.hit_wall, 1);
+			}
 				drawLoadingSrean(gl, 12f/loadingStepsCout);
 			break;
 		case 13:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.TRAP_SPRITE, YoloEngine.context, 13);
+				YoloEngine.SoundInd[53]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_ice_trap, 1);
+				YoloEngine.SoundInd[55]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_inv, 1);
+			}
 				drawLoadingSrean(gl, 13f/loadingStepsCout);
 			break;
 		case 14:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HEAL_LONG_RAD_SPRITE, YoloEngine.context, 14);
+				YoloEngine.SoundInd[54]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warmth, 1);
+				YoloEngine.SoundInd[55]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_inv, 1);
+			}
 				drawLoadingSrean(gl, 14f/loadingStepsCout);
 			break;
 		case 15:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.SPIKES_SPRITE, YoloEngine.context, 15);
+				YoloEngine.SoundInd[41]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_spike_trap, 1);
+			}
 				drawLoadingSrean(gl, 15f/loadingStepsCout);
 			break;
 		case 16:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.SLOW_DOWN_SPRITE, YoloEngine.context, 16);
+				YoloEngine.SoundInd[42]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_slowdown, 1);
+			}
 				drawLoadingSrean(gl, 16f/loadingStepsCout);
 			break;
 		case 17:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HEAL_SPRITE, YoloEngine.context, 17);
+				YoloEngine.SoundInd[56]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_heal, 1);
+				YoloEngine.SoundInd[62]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_heal_more, 1);
+			}
 				drawLoadingSrean(gl, 17f/loadingStepsCout);
 			break;
 		case 18:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.SHOCK_WAVE_SPRITE, YoloEngine.context, 18);
+				YoloEngine.SoundInd[53]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_ice_trap, 1);
+			}
 				drawLoadingSrean(gl, 18f/loadingStepsCout);
 			break;
 		case 19:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.ICICLE_SPRITE, YoloEngine.context, 19);
+				YoloEngine.SoundInd[57]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_icicle, 1);
+			}
 				drawLoadingSrean(gl, 19f/loadingStepsCout);
 			break;
 		case 20:
+		
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.FOG_SPRITE, YoloEngine.context, 20);
+				YoloEngine.SoundInd[58]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_smoke, 1);
+			}
 				drawLoadingSrean(gl, 20f/loadingStepsCout);
 			break;
 		case 21:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.LIVE_DRAIN_SPRITE, YoloEngine.context, 21);
+				YoloEngine.SoundInd[43]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_drain, 1);
+			}
 				drawLoadingSrean(gl, 21f/loadingStepsCout);
 			break;
 		case 22:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.RESURECTION_SPRITE, YoloEngine.context, 22);
+				YoloEngine.SoundInd[44]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_resurect, 1);
+			}
 				drawLoadingSrean(gl, 22f/loadingStepsCout);
 			break;
 		case 26:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THUNDER_H_SPRITE, YoloEngine.context, 26);
+				YoloEngine.SoundInd[60]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_lightning_h, 1);
+			}
 				drawLoadingSrean(gl, 26f/loadingStepsCout);
 			break;
 		case 27:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HEAL_LONG_SPRITE, YoloEngine.context, 27);
+				YoloEngine.SoundInd[54]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warmth, 1);
+				YoloEngine.SoundInd[62]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_heal_more, 1);
+			}
 				drawLoadingSrean(gl, 27f/loadingStepsCout);
 			break;
 		case 28:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.DENIAL_SPRITE, YoloEngine.context, 28);
+				YoloEngine.SoundInd[61]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_denail, 1);
+			}
 				drawLoadingSrean(gl, 28f/loadingStepsCout);
 			break;
 		case 29:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.HEALLONG_SPRITE, YoloEngine.context, 29);
+				YoloEngine.SoundInd[54]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_warmth, 1);
+			}
 				drawLoadingSrean(gl, 29f/loadingStepsCout);
 			break;
 		case 30:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.FIRE_BALL_SPRITE, YoloEngine.context, 30);
+				YoloEngine.SoundInd[45]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_fireball, 1);
+			}
 				drawLoadingSrean(gl, 30f/loadingStepsCout);
 			break;
 		case 31:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.TELE_SPRITE, YoloEngine.context, 31);
+				YoloEngine.SoundInd[46]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_teleport, 1);
+			}
 				drawLoadingSrean(gl, 31f/loadingStepsCout);
 			break;
 		case 32:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.BUFF_EFFECE_SPRITE, YoloEngine.context, 32);
+				YoloEngine.SoundInd[48]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_buff, 1);
+			}
 				drawLoadingSrean(gl, 32f/loadingStepsCout);
 			break;
 		case 33:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.LAVA_SPRITE, YoloEngine.context, 33);
+				YoloEngine.SoundInd[47]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_lava, 1);
+			}
 				drawLoadingSrean(gl, 33f/loadingStepsCout);
 			break;
 		case 39:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.THIEF_SPRITE, YoloEngine.context, 39);
+				YoloEngine.SoundInd[49]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_coins, 1);
+			}
 				drawLoadingSrean(gl, 39f/loadingStepsCout);
 			break;
 		case 40:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.STAMINA_SPRITE, YoloEngine.context, 40);
+				YoloEngine.SoundInd[50]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_stamina, 1);
+			}
 				drawLoadingSrean(gl, 40f/loadingStepsCout);
 			break;
 		case 41:
 			if(YoloEngine.sprite_load[loading_faze])
+			{
 				YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, YoloEngine.EARTHWAVE_SPRITE, YoloEngine.context, 41);
+				YoloEngine.SoundInd[51]= YoloEngine.sp.load(YoloEngine.context, R.raw.skill_earthquake, 1);
+			}
 				drawLoadingSrean(gl, 41f/loadingStepsCout);
 			break;
 		case 42:
@@ -4313,6 +4427,7 @@ public class YoloGameRenderer implements Renderer {
 //---------------------------------------------INICJOWANIE DZWIEKOW------------------------------------------------
 		YoloEngine.sp = new SoundPool(63, AudioManager.STREAM_MUSIC, 0);
 		YoloEngine.SoundInd = new int[63];
+		
 		YoloEngine.SoundInd[0]= YoloEngine.sp.load(YoloEngine.context, R.raw.shot, 1);
 		YoloEngine.SoundInd[1]= YoloEngine.sp.load(YoloEngine.context, R.raw.step_grass2, 1);
 		YoloEngine.SoundInd[2]= YoloEngine.sp.load(YoloEngine.context, R.raw.step_grass1, 1);
@@ -4329,8 +4444,7 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.SoundInd[13]= YoloEngine.sp.load(YoloEngine.context, R.raw.angel_death, 1);
 		YoloEngine.SoundInd[14]= YoloEngine.sp.load(YoloEngine.context, R.raw.necromancer_death, 1);
 		YoloEngine.SoundInd[15]= YoloEngine.sp.load(YoloEngine.context, R.raw.devil_death, 1);
-		
-		
+	
 		
 //-----------------------------------------------------------------------------------------------------------------
 		switch(YoloEngine.SkillSprite1)

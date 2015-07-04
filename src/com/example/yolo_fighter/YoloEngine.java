@@ -5,6 +5,7 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.example.games.basegameutils.GameHelper;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.SoundPool;
 import android.view.Display;
 
@@ -14,7 +15,7 @@ public class YoloEngine {
 	
 	public static boolean test = false;
 	
-	public static SoundPool sp;	
+	public static SoundPool sp;
 	public static int[] SoundInd;
 	public static float Volume = 1;
 	public static final int GAME_THREAD_FSP_SLEEP = (1000/60);
