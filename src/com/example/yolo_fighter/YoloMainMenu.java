@@ -39,6 +39,7 @@ import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
@@ -2649,7 +2650,7 @@ public void skill2devilEqBtnClick(View v){
 	{
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
 		roomConfigBuilder.setRoomStatusUpdateListener(mRoomStatusUpdateListener);
-		roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
+		roomConfigBuilder.setMessageReceivedListener((RealTimeMessageReceivedListener) YoloEngine.mMultislayer);
 		
 		// automatch criteria
 		Bundle am = RoomConfig.createAutoMatchCriteria(1, 2, 0);
@@ -2663,7 +2664,7 @@ public void skill2devilEqBtnClick(View v){
 	private RoomConfig prepareGame(Invitation invitation) {
 		RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);	
 		roomConfigBuilder.setRoomStatusUpdateListener(mRoomStatusUpdateListener);
-		roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
+		roomConfigBuilder.setMessageReceivedListener((RealTimeMessageReceivedListener) YoloEngine.mMultislayer);
 		
 		roomConfigBuilder.setInvitationIdToAccept(invitation.getInvitationId());
 		RoomConfig roomConfig = roomConfigBuilder.build();	
@@ -2706,7 +2707,7 @@ public void skill2devilEqBtnClick(View v){
 			// create the room and specify a variant if appropriate
 			RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(mRoomUpdateListener);
 			
-			roomConfigBuilder.setMessageReceivedListener(YoloEngine.mMultislayer.messageReceiver);
+			roomConfigBuilder.setMessageReceivedListener((RealTimeMessageReceivedListener) YoloEngine.mMultislayer);
 			
 			roomConfigBuilder.addPlayersToInvite(invitees);
 			if (autoMatchCriteria != null) {

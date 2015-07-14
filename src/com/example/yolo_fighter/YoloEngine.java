@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import com.example.yolo_fighter.YoloPlayerInfo;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.example.games.basegameutils.GameHelper;
@@ -179,7 +180,7 @@ public class YoloEngine {
     public static ArrayList<String> opponents = new ArrayList<String>(2);
 
    	
-	public static YoloMultislayer mMultislayer = new YoloMultislayer();
+	public static YoloMultislayerBase mMultislayer = new YoloMultislayerGS();
 	
 	
 	public static long startTime; // czas startu, wg czasu uzytkownika
