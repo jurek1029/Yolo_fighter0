@@ -2,6 +2,8 @@ package com.example.yolo_fighter;
 
 import java.nio.ByteBuffer;
 
+import android.app.Activity;
+
 import com.example.yolo_fighter.YoloEngine;
 import com.google.android.gms.games.multiplayer.Participant;
 
@@ -11,9 +13,13 @@ public abstract class YoloMultislayerBase {
 
 	protected abstract void sendMessageToAll(byte[] data);
 
+	abstract void startQuickGame(Activity mActivity);
+	
+
 	protected long sentAt;
-	//private int sentPackageId = 1;
-	//private int receivedPackageId = 0;
+	protected Activity mActivity = null;
+    // private int sentPackageId = 1;
+	// private int receivedPackageId = 0;
 
 	protected void processMessage(ByteBuffer rcvData) {
 		char messageCode = rcvData.getChar();
@@ -187,9 +193,8 @@ public abstract class YoloMultislayerBase {
 		/*
 		 * if (packageId < receivedPackageId) { System.out.println("old data");
 		 * return; } else receivedPackageId = packageId; // NIE DZIA�A, mo�e
-		 * powinno?? (nie zwi�ksza sie zmienna) XXX dla > 2 graczy trzeba
-		 * zrobi� array, Licznik oparty na INT, kiedy� // sko�czy si�
-		 * zakres
+		 * powinno?? (nie zwi�ksza sie zmienna) XXX dla > 2 graczy trzeba zrobi�
+		 * array, Licznik oparty na INT, kiedy� // sko�czy si� zakres
 		 */
 		YoloEngine.TeamAB[playerID].isCrouch = isCrouch;
 
@@ -361,6 +366,11 @@ public abstract class YoloMultislayerBase {
 		bbf.putInt(YoloEngine.MyID);
 
 		sendMessageToAllreliable(bbf.array());
+	}
+
+	public void setActivity(Activity xActivity) {
+		this.mActivity = xActivity;
+		System.out.println(mActivity.getTaskId()+" id z updateu");
 	}
 
 }
