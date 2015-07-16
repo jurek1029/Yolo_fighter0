@@ -162,8 +162,7 @@ public class YoloEngine {
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	
-	public static Room mRoom;
-	public static GameHelper mHelper;
+
 
     public static String playerParticipantID;
 
@@ -172,10 +171,11 @@ public class YoloEngine {
     public static final boolean MULTI_GS = true;
 	public static final boolean MULTI_BT = false;
 	public static boolean MULTI_ACTIVE = false;
-	public static boolean MULTI_MODE = MULTI_GS; // defaultowe, gdzies w menu trzeba zmieniac
+	public static boolean MULTI_MODE = MULTI_BT; // defaultowe, gdzies w menu trzeba zmieniac
 	
 
     public static ArrayList<Participant> participants = null; // lista graczy, posortowana, ale moze zawierac nieaktywnych
+    public static ArrayList<String> participantsBT = new ArrayList<String>(2); 
 
 	public static int UPDATE_FREQ = 100;
 	public static int MULTI_STEPS = 6*UPDATE_FREQ/100;

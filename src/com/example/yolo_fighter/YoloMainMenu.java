@@ -2,6 +2,9 @@ package com.example.yolo_fighter;
 
 import static android.content.ContentResolver.setMasterSyncAutomatically;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.MailTo;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.provider.CalendarContract.Instances;
 import android.view.View;
@@ -28,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,13 +80,8 @@ public class YoloMainMenu extends Activity
 	
 	static Button btn_quick;
 	static Button btn_invite;
-	static TextView debug_textview;
-
-
-
-	
-	
-	
+	static TextView debug_textview;	
+	RadioGroup multiRadioGroup;
 	
 // ------------------------- Multislayer END -------------------------
 	
@@ -91,7 +91,7 @@ public class YoloMainMenu extends Activity
 
 	{
 		super.onCreate(savedInstanceState);
-		checkMultislayerInstance();
+		
 		setContentView(R.layout.main_menu);
 		AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
@@ -108,16 +108,26 @@ public class YoloMainMenu extends Activity
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setMasterSyncAutomatically(true); // AUTO SYNC niezbÄ™dny dla wysyÅ‚ania zaproszeÅ„
 		
-// ------------------------- Multislayer BEGIN -----------------------
-
+// ------------------------- Multislayer BEGIN  -----------------------
+       
 		btn_quick = (Button) findViewById(R.id.quick_button);
 		btn_invite = (Button) findViewById(R.id.invite_button);
 		debug_textview = (TextView) findViewById(R.id.textView1);
 		
-		btn_quick.setEnabled(false);
-		btn_invite.setEnabled(false);
+		multiRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		multiRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if(checkedId == R.id.BTradio)
+					YoloEngine.MULTI_MODE = YoloEngine.MULTI_BT;
+				else if(checkedId == R.id.GSradio)
+					YoloEngine.MULTI_MODE = YoloEngine.MULTI_GS;	
+				YoloMultislayerBase.checkMultislayerInstance(YoloMainMenu.this);
+			}
+		});
 		
-		
+		YoloMultislayerBase.checkMultislayerInstance(this);				
 		
 // ------------------------- Multislayer END -------------------------
 		
@@ -822,7 +832,7 @@ public class YoloMainMenu extends Activity
 	public void onResume()
 	{
 		super.onResume();
-		checkMultislayerInstance();
+		YoloMultislayerBase.checkMultislayerInstance(this);
 	}
 //------------------------skill 1 menu-------------------------------------
 	public void skills1BtnClick(View v) {
@@ -2265,73 +2275,66 @@ public void skill2devilEqBtnClick(View v){
 
 
 // ------------------------- Multislayer BEGIN -----------------------
-	public void signIn(View v) {
-		checkMultislayerInstance();
-		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS)
+
+	public void signIn(View v) {		
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
 			((YoloMultislayerGS) YoloEngine.mMultislayer).signIn();
-		
-		
-		plInfoList.clear();// TODO
+		//else
+		//	((YoloMultislayerBT) YoloEngine.mMultislayer).sendToAll("f");
+
+		plInfoList.clear();// TODO jest tu ale powinno byæ gdzieœ w lepszym miejscu
 		plInfoList = dbm.getAll();
 		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
 		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
 	}
 
 	public void signOut(View v) {
-		checkMultislayerInstance();
-		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS)
+		YoloEngine.MULTI_ACTIVE = false;
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
 			((YoloMultislayerGS) YoloEngine.mMultislayer).signOut();
 	}
 
+	public void startQuickGame(View v) { // AKA Join
+		YoloMultislayerBase.checkMultislayerInstance(this);
 
-	public void startQuickGame(View v) {
-		checkMultislayerInstance();
-	
-
-		plInfoList.clear();// TODO
+		plInfoList.clear();
 		plInfoList = dbm.getAll();
 		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
 		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
 
 		YoloEngine.MULTI_ACTIVE = true;
-		YoloEngine.mMultislayer.startQuickGame(this);
-	}
-
-	public void invite(View v) { // Only for GS
-		checkMultislayerInstance();
-		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS) {
-			YoloEngine.MULTI_ACTIVE = true;
-			
-			((YoloMultislayerGS) YoloEngine.mMultislayer).invite(this);
-			
-		}
-
-	}
-	
-	// Sprawdza, czy aktywna jest w³aœciwy typ multi
-	private void checkMultislayerInstance() {
-		if (YoloEngine.mMultislayer == null) {
-			if (YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS)
-				YoloEngine.mMultislayer = new YoloMultislayerGS(this);
-			else
-				YoloEngine.mMultislayer = new YoloMultislayerBT();
-		}
-		
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS && YoloEngine.MULTI_MODE == YoloEngine.MULTI_BT)
-			YoloEngine.mMultislayer = new YoloMultislayerBT();
-		else if (YoloEngine.mMultislayer instanceof YoloMultislayerBT && YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS)
-			YoloEngine.mMultislayer = new YoloMultislayerGS(this);
-		
 		YoloEngine.mMultislayer.setActivity(this);
-		System.out.println("refr");
+		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS)
+			((YoloMultislayerGS)YoloEngine.mMultislayer).startQuickGame();
+		else
+			((YoloMultislayerBT)YoloEngine.mMultislayer).joinGame();
 	}
-	
+
+	public void invite(View v) { // AKA Create	
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		YoloEngine.MULTI_ACTIVE = true;
+		
+		plInfoList.clear();
+		plInfoList = dbm.getAll();
+		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
+		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
+		
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)			
+			((YoloMultislayerGS) YoloEngine.mMultislayer).invite();
+		else
+			((YoloMultislayerBT)YoloEngine.mMultislayer).createGame();
+		
+	}
+
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
-		checkMultislayerInstance();
-		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS)YoloEngine.mMultislayer).cosCos(request, response, data);		
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
+			((YoloMultislayerGS) YoloEngine.mMultislayer).cosCos(request, response, data);
 	}
+
 // ------------------------- Multislayer END -------------------------
 
 @Override

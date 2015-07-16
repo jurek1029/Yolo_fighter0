@@ -85,11 +85,12 @@
     </com.google.android.gms.ads.AdView>
     </LinearLayout>
 </LinearLayout>
+
 <LinearLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_weight="30" >
+    android:layout_weight="30"
+    android:orientation="vertical" >
 
     <Button
         android:id="@+id/sign_out_button"
@@ -123,6 +124,26 @@
         android:onClick="startQuickGame"
         android:text="Quick" />
 
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+    
+
+    <RadioButton
+        android:id="@+id/GSradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="GS" />
+
+    <RadioButton
+        android:id="@+id/BTradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="BT" />
+</RadioGroup>
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"

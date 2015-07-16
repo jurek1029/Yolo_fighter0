@@ -1,19 +1,43 @@
 package com.example.yolo_fighter;
 
 import java.nio.ByteBuffer;
+import java.util.Random;
 
 import android.app.Activity;
+import android.database.CharArrayBuffer;
+import android.net.Uri;
+import android.os.Parcel;
 
 import com.example.yolo_fighter.YoloEngine;
+import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Participant;
+import com.google.android.gms.games.multiplayer.ParticipantResult;
 
-public abstract class YoloMultislayerBase {
+public abstract class YoloMultislayerBase { //extends Thread { // TODO is extending Thread a good idea?
 
 	protected abstract void sendMessageToAllreliable(byte[] data);
 
 	protected abstract void sendMessageToAll(byte[] data);
-
-	abstract void startQuickGame(Activity mActivity);
+	
+	
+	// Sprawdza, czy aktywny jest właściwy typ multi
+	public static void checkMultislayerInstance(Activity ac) {
+		if (YoloEngine.mMultislayer == null) {
+			if (YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS)
+				YoloEngine.mMultislayer = new YoloMultislayerGS(ac);
+			else
+				YoloEngine.mMultislayer = new YoloMultislayerBT();
+		}
+		
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS && YoloEngine.MULTI_MODE == YoloEngine.MULTI_BT)
+			YoloEngine.mMultislayer = new YoloMultislayerBT();
+		else if (YoloEngine.mMultislayer instanceof YoloMultislayerBT && YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS) {
+			((YoloMultislayerBT)YoloEngine.mMultislayer).koniec();
+			YoloEngine.mMultislayer = new YoloMultislayerGS(ac);
+		}
+		
+		YoloEngine.mMultislayer.setActivity(ac);
+	}
 	
 
 	protected long sentAt;
@@ -21,6 +45,19 @@ public abstract class YoloMultislayerBase {
     // private int sentPackageId = 1;
 	// private int receivedPackageId = 0;
 
+	
+	protected void debugLog(final String text) {
+		System.out.println(text);
+		mActivity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {				
+				YoloMainMenu.debug_textview.setText(text);
+			}
+		});
+		
+	}	
+	
 	protected void processMessage(ByteBuffer rcvData) {
 		char messageCode = rcvData.getChar();
 
@@ -64,27 +101,51 @@ public abstract class YoloMultislayerBase {
 			int i = 0,
 			a = 0,
 			b = YoloEngine.TeamSize;
-			for (Participant p : YoloEngine.participants) {
-				if (p.getStatus() == Participant.STATUS_JOINED) {
+			if (YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS) {
+				for (Participant p : YoloEngine.participants) {
+					if (p.getStatus() == Participant.STATUS_JOINED) {
 
-					if (pattern.charAt(i) == '0') {
-						YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
-						YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
-						if (p.getParticipantId().equals(YoloEngine.playerParticipantID))
-							YoloEngine.MyID = a;
-						a++;
+						if (pattern.charAt(i) == '0') {
+							YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+							YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
+							if (p.getParticipantId().equals(YoloEngine.playerParticipantID))
+								YoloEngine.MyID = a;
+							a++;
+						}
+						if (pattern.charAt(i) == '1') {
+							YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+							YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
+							if (p.getParticipantId().equals(YoloEngine.playerParticipantID))
+								YoloEngine.MyID = b;
+							b++;
+						}
+						i++;
 					}
-					if (pattern.charAt(i) == '1') {
-						YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
-						YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
-						if (p.getParticipantId().equals(YoloEngine.playerParticipantID))
-							YoloEngine.MyID = b;
-						b++;
-					}
-					i++;
 				}
 			}
-
+			else {	
+				for (YoloPlayer p : YoloEngine.TeamAB)
+					p = new YoloPlayer(1000f, 1000f, false, 666);	
+				
+				for (String p : YoloEngine.participantsBT) {					
+						if (pattern.charAt(i) == '0') {
+							YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+							YoloEngine.TeamAB[a].ParticipantId = p;
+							if (p.equals(YoloEngine.playerParticipantID))
+								YoloEngine.MyID = a;
+							a++;
+						}
+						if (pattern.charAt(i) == '1') {
+							YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+							YoloEngine.TeamAB[b].ParticipantId = p;
+							if (p.equals(YoloEngine.playerParticipantID))
+								YoloEngine.MyID = b;
+							b++;
+						}
+						i++;					
+				}							
+			}
+				
 			YoloEngine.mMultislayer.sendMaxLife();
 			YoloEngine.startTime = System.currentTimeMillis() + YoloEngine.countdownTime;
 			break;
@@ -190,10 +251,10 @@ public abstract class YoloMultislayerBase {
 	 * @param packageId
 	 */
 	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId) {
-		/*
+		/* XXX
 		 * if (packageId < receivedPackageId) { System.out.println("old data");
 		 * return; } else receivedPackageId = packageId; // NIE DZIA�A, mo�e
-		 * powinno?? (nie zwi�ksza sie zmienna) XXX dla > 2 graczy trzeba zrobi�
+		 * powinno?? (nie zwi�ksza sie zmienna)  dla > 2 graczy trzeba zrobi�
 		 * array, Licznik oparty na INT, kiedy� // sko�czy si� zakres
 		 */
 		YoloEngine.TeamAB[playerID].isCrouch = isCrouch;
@@ -324,7 +385,7 @@ public abstract class YoloMultislayerBase {
 		ByteBuffer bbf = ByteBuffer.allocate(40);
 		bbf.putChar('t');
 		bbf.putInt(assignPattern);
-
+		
 		sendMessageToAllreliable(bbf.array());
 	}
 
@@ -334,7 +395,6 @@ public abstract class YoloMultislayerBase {
 		bbf.putInt(idTracer);
 
 		sendMessageToAllreliable(bbf.array());
-
 	}
 
 	public void SendSkillBool(int boolId) {
@@ -373,4 +433,122 @@ public abstract class YoloMultislayerBase {
 		System.out.println(mActivity.getTaskId()+" id z updateu");
 	}
 
+	
+	static String assignTeams() {
+		String teamAssignPattern = "1";
+
+		// Team assignment dokÄ…d {0-teamA, 1-teamB}
+		int a = 0, b = YoloEngine.TeamSize;
+		// Przydzielamy nam
+		if (new Random().nextBoolean()) {
+			YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+			YoloEngine.MyID = a;
+			teamAssignPattern += "0";
+			a++;
+		} else {
+			YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+			YoloEngine.MyID = b;
+			teamAssignPattern += "1";
+			b++;
+		}
+		YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
+
+		// Przydzielamy reszcie graczy
+		for (Participant p : YoloEngine.participants) {
+			if (!(YoloEngine.playerParticipantID.equals(p.getParticipantId()) || p.getStatus() != Participant.STATUS_JOINED)) {
+				// nie jesteĹ›my to my, gracz nie naleĹĽy jeszcze do ĹĽadnego teamu
+				// @TODO sprawdzenie, czy gracz nie ma już
+				// przydzielonego teamu?
+				if (a > (b - YoloEngine.TeamSize)) {
+					YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+					YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
+					teamAssignPattern += "1";
+					b++;
+
+				} else if (a < (b - YoloEngine.TeamSize)) {
+					YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+					YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
+					teamAssignPattern += "0";
+					a++;
+
+				} else {
+					if (new Random().nextBoolean()) {
+						YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+						YoloEngine.TeamAB[a].ParticipantId = p.getParticipantId();
+						teamAssignPattern += "0";
+						a++;
+
+					} else {
+						YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+						YoloEngine.TeamAB[b].ParticipantId = p.getParticipantId();
+						teamAssignPattern += "1";
+						b++;
+
+					}
+				}
+			}
+		}
+		return teamAssignPattern;
+	}
+	
+	static String assignTeamsXX() {
+		String teamAssignPattern = "1";
+
+		// Team assignment dokÄ…d {0-teamA, 1-teamB}
+		int a = 0, b = YoloEngine.TeamSize;
+		// Przydzielamy nam
+		if (new Random().nextBoolean()) {
+			YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+			YoloEngine.MyID = a;
+			teamAssignPattern += "0";
+			a++;
+		} else {
+			YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+			YoloEngine.MyID = b;
+			teamAssignPattern += "1";
+			b++;
+		}
+		YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
+
+		// Przydzielamy reszcie graczy
+		for (String p : YoloEngine.participantsBT) {
+			if (!(YoloEngine.playerParticipantID.equals(p))) {
+				// nie jesteĹ›my to my, 
+				// @TODO sprawdzenie, czy gracz nie ma już
+				// przydzielonego teamu?
+				if (a > (b - YoloEngine.TeamSize)) {
+					YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+					YoloEngine.TeamAB[b].ParticipantId = p;
+					teamAssignPattern += "1";
+					b++;
+
+				} else if (a < (b - YoloEngine.TeamSize)) {
+					YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+					YoloEngine.TeamAB[a].ParticipantId = p;
+					teamAssignPattern += "0";
+					a++;
+
+				} else {
+					if (new Random().nextBoolean()) {
+						YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
+						YoloEngine.TeamAB[a].ParticipantId = p;
+						teamAssignPattern += "0";
+						a++;
+
+					} else {
+						YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
+						YoloEngine.TeamAB[b].ParticipantId = p;
+						teamAssignPattern += "1";
+						b++;
+
+					}
+				}
+			}
+		}
+		return teamAssignPattern;
+	}
+	
+	
 }
+
+
