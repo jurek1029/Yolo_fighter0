@@ -129,19 +129,18 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
     
-
     <RadioButton
         android:id="@+id/GSradio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="false"
+        android:checked="true"
         android:text="GS" />
 
     <RadioButton
         android:id="@+id/BTradio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="BT" />
 </RadioGroup>
     <TextView

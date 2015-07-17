@@ -51,6 +51,8 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 			YoloMainMenu.btn_invite.setEnabled(false);
 			YoloMainMenu.btn_invite.setText("Invite");
 			YoloMainMenu.btn_quick.setText("Quick");	
+			
+			debugLog("");
 		}
 		YoloEngine.timeOffset = 200;
 		

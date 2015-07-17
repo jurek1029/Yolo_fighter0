@@ -171,7 +171,7 @@ public class YoloEngine {
     public static final boolean MULTI_GS = true;
 	public static final boolean MULTI_BT = false;
 	public static boolean MULTI_ACTIVE = false;
-	public static boolean MULTI_MODE = MULTI_BT; // defaultowe, gdzies w menu trzeba zmieniac
+	public static boolean MULTI_MODE = MULTI_GS; // defaultowe, gdzies w menu trzeba zmieniac
 	
 
     public static ArrayList<Participant> participants = null; // lista graczy, posortowana, ale moze zawierac nieaktywnych

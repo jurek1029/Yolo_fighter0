@@ -43,19 +43,14 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		kk.write(data);
 	}
 
-	public void joinGame() {		
+	public void joinGame() {	
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		mBluetoothAdapter.cancelDiscovery();
+		scanFlag = false;
+		
 		startUp1();
 		prepareBluetooth();
-		//findDevices();
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-
-		// If there are paired devices
-		if (pairedDevices.size() > 0) {
-		    // Loop through paired devices
-			btDevicesRaw.add((BluetoothDevice) pairedDevices.toArray()[0]);
-		    connectTo(0);
-		}
+		findDevices();		
 	}
 	
 	public void createGame() {
@@ -77,6 +72,8 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 			
 			YoloMainMenu.btn_quick.setEnabled(true);
 			YoloMainMenu.btn_invite.setEnabled(true);
+			
+			debugLog("");
 		}
 		YoloEngine.timeOffset = 1000;
 	}
@@ -97,34 +94,76 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 
 	private Handler handler = new Handler();
 
-
+	private List<BluetoothDevice> alreadyFoundDevices = new ArrayList<BluetoothDevice>();
 
 	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
+
 			String action = intent.getAction();
 			// When discovery finds a device
-			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-				// Get the BluetoothDevice object from the Intent
-				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-				btDevicesRaw.add(device);
-				device mDevice = new device(device.getName(),device.getAddress());
-				btDevices.add(mDevice);
+			if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+				// clearing any existing list data
+				alreadyFoundDevices.clear();
 			}
-			System.out.println(btDevices.size() + " device(s) found");
-			for (int i = 0; i < btDevices.size(); i++)
-				System.out.println(btDevices.get(i).name + "  " + btDevices.get(i).address);
-			
-			AlertDialog.Builder mDialog = new AlertDialog.Builder(mActivity).setPositiveButton(R.string.yes, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					connectTo(0);
+
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+
+				
+
+		    	// Get the BluetoothDevice object from the Intent
+				BluetoothDevice newDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				if (!alreadyFoundDevices.contains(newDevice)) { // we have a new device
+					
+					mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+					Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+					ArrayList<BluetoothDevice> btDevicesPairedRaw = new ArrayList<BluetoothDevice>();
+
+					for (BluetoothDevice bluetoothDevice : pairedDevices) {
+						btDevicesPairedRaw.add(bluetoothDevice);
+					}
+					
+					alreadyFoundDevices.add(newDevice);
+					Collections.sort(btDevicesPairedRaw, new Comparator<BluetoothDevice>() {
+						@Override
+						public int compare(BluetoothDevice bt1, BluetoothDevice bt2) {
+							return bt1.getAddress().compareTo(bt2.getAddress());
+						}
+					});
+
+					int kk = Collections.binarySearch(btDevicesPairedRaw, newDevice, new Comparator<BluetoothDevice>() {
+						@Override
+						public int compare(BluetoothDevice bt1, BluetoothDevice bt2) {
+							return bt1.getAddress().compareTo(bt2.getAddress());
+						}
+					});
+
+					if (kk > 0) {
+						newDevice = btDevicesPairedRaw.get(kk);
+					}
+					final BluetoothDevice dk = newDevice; // must be final
+
+					AlertDialog.Builder mDialog = new AlertDialog.Builder(mActivity).setNegativeButton("Nope", null).setPositiveButton(R.string.yes, new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mBluetoothAdapter.cancelDiscovery();
+							scanFlag = false;
+							connectTo(dk);
+						}
+					}).setMessage(dk.getName());
+					mDialog.show();
 				}
-			}).setMessage(btDevices.get(0).name);
-			mDialog.show();
-						
-			
-			scanFlag = false;
+
+				// btDevicesRaw.add(newDevice);
+				// device mDevice = new device(newDevice.getName(), newDevice.getAddress());
+				// btDevices.add(mDevice);
+
+				// System.out.println(btDevices.size() + " device(s) found");
+				// for (int i = 0; i < btDevices.size(); i++)
+				// System.out.println(btDevices.get(i).name + "  " + btDevices.get(i).address);
+
+			}
+			// scanFlag = false;
 		}
 	};
 
@@ -213,10 +252,10 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		}).start();
 	}
 
-	public void connectTo(final int ii) {
+	public void connectTo(final BluetoothDevice btDev) {
 		// ³¹czymy siê z okreœlonym urz¹dzeniem, i oznacza numer urz¹dzenia na naszej liœcie
 
-		if (btDevicesRaw.get(ii) == null)
+		if (btDev == null)
 			return;
 
 		new Thread(new Runnable() {
@@ -227,8 +266,8 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 				scanFlag = false;
 
 				try {
-					System.out.println("connecting with" + " " + btDevicesRaw.get(ii).getName());
-					someSocket = btDevicesRaw.get(ii).createRfcommSocketToServiceRecord(mUUID);
+					System.out.println("connecting with" + " " + btDev.getName());
+					someSocket = btDev.createRfcommSocketToServiceRecord(mUUID);
 				} catch (IOException e1) {
 				}
 				try {

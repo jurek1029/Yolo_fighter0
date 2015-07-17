@@ -48,11 +48,13 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	
 	protected void debugLog(final String text) {
 		System.out.println(text);
-		mActivity.runOnUiThread(new Runnable() {
+		if(mActivity!= null)
+			mActivity.runOnUiThread(new Runnable() {
 			
 			@Override
-			public void run() {				
-				YoloMainMenu.debug_textview.setText(text);
+			public void run() {	
+				if(YoloMainMenu.debug_textview != null)
+					YoloMainMenu.debug_textview.setText(text);
 			}
 		});
 		
