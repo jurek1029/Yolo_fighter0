@@ -280,7 +280,7 @@ public class YoloGame extends Activity{
 		x = event.getX(c);
 		y = event.getY(c);
 
-		System.out.println(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft);
+	
 		switch(event.getActionMasked())
 		{
 		
@@ -337,6 +337,8 @@ public class YoloGame extends Activity{
 										vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
 										YoloEngine.TeamAB[YoloEngine.MyID].vx = 0.32f;
 										YoloEngine.TeamAB[YoloEngine.MyID].dashDuration = 10;
+										YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = true;
+										YoloEngine.TeamAB[YoloEngine.MyID].invice = 10;
 										dashHelp =false;
 										lastMovePointer2 =-1;
 									}
@@ -350,6 +352,8 @@ public class YoloGame extends Activity{
 										vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
 										YoloEngine.TeamAB[YoloEngine.MyID].vx = -0.32f;
 										YoloEngine.TeamAB[YoloEngine.MyID].dashDuration = 10;
+										YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = true;
+										YoloEngine.TeamAB[YoloEngine.MyID].invice = 10;
 										dashHelp =false;
 										lastMovePointer2 =-1;
 									}
@@ -448,11 +452,6 @@ public class YoloGame extends Activity{
 				
 				if(YoloEngine.TeamAB[YoloEngine.MyID].vx < 0)
 				{
-					/*if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == false)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
-						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
-					}*/
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft)
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(2);
 					else 
@@ -462,13 +461,6 @@ public class YoloGame extends Activity{
 				}
 				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0)
 				{
-					/*
-					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft == true)
-					{
-						YoloEngine.TeamAB[YoloEngine.MyID].x_texture = YoloEngine.TeamAB[YoloEngine.MyID].x_end;
-						YoloEngine.TeamAB[YoloEngine.MyID].y_texture = YoloEngine.TeamAB[YoloEngine.MyID].y_end;
-					}
-					*/
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft)
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(11);
 					else 

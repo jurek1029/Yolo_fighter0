@@ -36,7 +36,7 @@ class Skill extends YoloObject
 {
 	float x_texture=0,y_texture=0,xEnd,yEnd,xStart,yStart;
 	float x_radius,y_radius;//hitbox
-	float damage,life,MAXlife,damage_buffor =0f;
+	float damage,life,MAXlife,damage_buffor =0f,poiseDamageBuffor =0;
 	float frameDuration=1;//hitbox
 	float x_oponnent, y_oponnent ;
 	int closest =0;
@@ -1783,7 +1783,7 @@ class Skill extends YoloObject
 						{
 							x = YoloGameRenderer.ObjectTab[j].x + YoloGameRenderer.ObjectTab[j].dx-.5f;
 							x_texture = xStart = xEnd = 0.875f;
-							y_texture = yStart = yEnd = 0.25f;
+							y_texture = yStart = yEnd = 0.375f;
 							ret = YoloEngine.MUMMY_STAND;
 						}
 						
@@ -1802,8 +1802,9 @@ class Skill extends YoloObject
 						{
 							x = YoloGameRenderer.ObjectTab[j].x -.5f;
 							x_texture = xStart = xEnd = 0.875f;
-							y_texture = yStart = yEnd = 0.375f;
-							ret = YoloEngine.MUMMY_STAND;	
+							y_texture = yStart = yEnd = 0.25f;
+							ret = YoloEngine.MUMMY_STAND;
+							break;
 						}
 						
 					}
@@ -2036,7 +2037,6 @@ class Skill extends YoloObject
 							{
 								if(ret != YoloEngine.BARREL_ATTACK)
 								{
-									System.out.println("tak4");
 									YoloEngine.sp.play(YoloEngine.SoundInd[35], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 									x_texture = xStart = 0;
 									y_texture = yStart = 0.25f;
@@ -2408,7 +2408,6 @@ public class YoloGameRenderer implements Renderer {
 			{
 				if(IsIn(YoloEngine.TeamAB[YoloEngine.MyID],LaddreTab[i]))
 				{
-					System.out.println(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp+" "+YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown);
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp)
 					{
 						if(YoloEngine.TeamAB[YoloEngine.MyID].y+1 < LaddreTab[i].y + LaddreTab[i].dy )
@@ -2559,7 +2558,7 @@ public class YoloGameRenderer implements Renderer {
 			{
 				YoloEngine.TeamAB[YoloEngine.MyID].playerMag--;
 				nextBullet = YoloEngine.TeamAB[YoloEngine.MyID].firePause;
-				playerFire(0.5f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,YoloEngine.TeamAB[YoloEngine.MyID].fireCount,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage);					
+				playerFire(0.5f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,YoloEngine.TeamAB[YoloEngine.MyID].fireCount,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage,YoloEngine.TeamAB[YoloEngine.MyID].poiseDamage);					
 			}
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerMag==0)
 			{
@@ -2629,7 +2628,8 @@ public class YoloGameRenderer implements Renderer {
 				gl.glRotatef(135, 0, 0, 1);
 				break;
 			case 4:
-				gl.glRotatef(180, 0, 0, 1);
+				if(bullet.sprite ==0)
+					gl.glRotatef(180, 0, 0, 1);
 				break;
 			case 5:
 				gl.glRotatef(225, 0, 0, 1);
@@ -2683,7 +2683,11 @@ public class YoloGameRenderer implements Renderer {
 			}
 			gl.glTranslatef(-.5f, -.5f, 0);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(bullet.x_texture, bullet.y_texture+.125f, 0f);
+			if(bullet.sprite != 0)
+				if(bullet.isLeft)
+					gl.glTranslatef(bullet.x_texture, bullet.y_texture, 0f);
+				else
+					gl.glTranslatef(bullet.x_texture +.125f, bullet.y_texture, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			bullet.draw(gl,YoloEngine.spriteSheets,bullet.sprite);
 			gl.glPopMatrix();
@@ -2738,7 +2742,6 @@ public class YoloGameRenderer implements Renderer {
 				Weapontab.get(i).y -= Weapontab.get(i).bulletSpeedD;
 				break;
 			}  
-
 			drawBullet(gl, Weapontab.get(i));
 			
 //---------------------------------------Bullet Collision--------------------------------------------------------------
@@ -2814,7 +2817,12 @@ public class YoloGameRenderer implements Renderer {
 							{
 								
 								skillTeamAVe.elementAt(x).damage_buffor += Weapontab.get(i).damage;
-								skillTeamAVe.elementAt(x).ret = 3;
+								skillTeamAVe.elementAt(x).poiseDamageBuffor += Weapontab.get(i).poiseDamage;
+								if(skillTeamAVe.elementAt(x).poiseDamageBuffor > 1)
+								{
+									skillTeamAVe.elementAt(x).ret = 3;
+									skillTeamAVe.elementAt(x).poiseDamageBuffor =0;
+								}
 								Weapontab.remove(i--);
 								continue out;
 							}
@@ -2828,7 +2836,12 @@ public class YoloGameRenderer implements Renderer {
 							{
 								
 								skillTeamBVe.elementAt(x).damage_buffor += Weapontab.get(i).damage;
-								skillTeamBVe.elementAt(x).ret = 3;
+								skillTeamBVe.elementAt(x).poiseDamageBuffor += Weapontab.get(i).poiseDamage;
+								if(skillTeamBVe.elementAt(x).poiseDamageBuffor > 1)
+								{
+									skillTeamBVe.elementAt(x).ret = 3;
+									skillTeamBVe.elementAt(x).poiseDamageBuffor =0;
+								}
 								Weapontab.remove(i--);
 								continue out;
 							}
@@ -3300,11 +3313,12 @@ public class YoloGameRenderer implements Renderer {
 		nextBullet--;
 	}
 	*/
-	public static void playerFire(float bulletSpeed,int sprite,int count,float damage)
+	public static void playerFire(float bulletSpeed,int sprite,int count,float damage,float poiseDamage)
 	{
 			bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
 				!YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?YoloEngine.TeamAB[YoloEngine.MyID].y:YoloEngine.TeamAB[YoloEngine.MyID].y ,bulletSpeed);
 			bullet.damage = damage;
+			bullet.poiseDamage = poiseDamage;
 			bullet.team = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam; 
 			bullet.sprite = sprite;
 			bullet.x_texture = 0f;
@@ -3332,14 +3346,15 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.sp.play(YoloEngine.SoundInd[60], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
 			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.GunAim);
+				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.GunAim,poiseDamage);
 	}
 	
 	
-	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim) //XXX oppfire nie potrzebuje isCrouch
+	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim,float poiseDamge) //XXX oppfire nie potrzebuje isCrouch
 	{
 		bullet = new YoloWeapon(x,y,0.2f);
 		bullet.damage = damage;
+		bullet.poiseDamage = poiseDamge;
 		bullet.count = count;
 		bullet.team = team;
 		bullet.sprite = sprite;
@@ -3361,8 +3376,10 @@ public class YoloGameRenderer implements Renderer {
 		bullet.sprite = sprite;
 		bullet.x_texture = x_texture ;
 		bullet.y_texture = y_texture;
-	//	bullet.size = 0.1f;
-//		bullet.scale = 4f;
+		if(isLeft)
+			bullet.Aim = 4;
+		else
+			bullet.Aim =0;
 		bullet.isLeft = isLeft;
 		Weapontab.add(bullet);
 		

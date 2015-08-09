@@ -70,7 +70,7 @@ public class YoloPlayer extends YoloObject {
 	
 	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0,dashDuration =0;
 	public int fireSprite =0,fireCount = 0,firePause = 15,baseFirePause = firePause;
-	public float fireDamage =1f,fireDamageBuff = fireDamage;
+	public float fireDamage =1f,fireDamageBuff = fireDamage,poiseDamage=0.25f;
 	public float PlayerMagCapasity = 30f,playerMag = PlayerMagCapasity;
 	public int playerMagReloadTime = 100,reloading =0,baseMagReloadtime = playerMagReloadTime;
 	public int healBuffer =0;

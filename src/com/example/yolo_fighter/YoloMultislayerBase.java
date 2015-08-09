@@ -154,7 +154,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 
 		case 'f':
 			YoloGameRenderer.OpponentFire(rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.get() == 1 ? true : false, rcvData.getInt(), rcvData.getInt(),
-					rcvData.getFloat(), rcvData.get() == 1 ? true : false,rcvData.getInt());
+					rcvData.getFloat(), rcvData.get() == 1 ? true : false,rcvData.getInt(),rcvData.getFloat());
 			break;
 
 		case 'g':
@@ -310,7 +310,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		return bbf.array();
 	}
 
-	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, int sprite, int count, float damage, boolean team,int aim) {
+	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, int sprite, int count, float damage, boolean team,int aim,float poiseDamge) {
 		ByteBuffer bbf = ByteBuffer.allocate(30);
 		bbf.putChar('f');
 		bbf.putFloat(x);
@@ -331,6 +331,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		else
 			bbf.put((byte) 0);
 		bbf.putInt(aim);
+		bbf.putFloat(poiseDamge);
 
 		sendMessageToAll(bbf.array());
 	}
