@@ -15,8 +15,8 @@ public class YoloWeapon extends YoloObject {
 	public float x_texture,y_texture;
 	public float damage;
 	public boolean isLeft,team;
-	public float bulletSpeed;
-	public int sprite,count=0,couter=0;
+	public float bulletSpeed,bulletSpeedD;
+	public int sprite,count=0,couter=0,Aim=0;
 
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,
@@ -56,6 +56,7 @@ public class YoloWeapon extends YoloObject {
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 		 this.bulletSpeed = bulletSpeed;
+		 bulletSpeedD = bulletSpeed/1.4142f;
 		 
 	}
 	public YoloWeapon(float x, float y)

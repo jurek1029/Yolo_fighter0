@@ -40,7 +40,7 @@ public class YoloPlayer extends YoloObject {
 	public boolean onGround = false;
 	public boolean canMove = true;
 	private boolean a=true,b=true,c=true;
-	
+	private boolean revers = false;
 	
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
 	public int playerID;
@@ -68,7 +68,7 @@ public class YoloPlayer extends YoloObject {
 	public int coin =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1,framecount=0;
 	
-	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0;
+	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0,dashDuration =0;
 	public int fireSprite =0,fireCount = 0,firePause = 15,baseFirePause = firePause;
 	public float fireDamage =1f,fireDamageBuff = fireDamage;
 	public float PlayerMagCapasity = 30f,playerMag = PlayerMagCapasity;
@@ -130,6 +130,7 @@ public class YoloPlayer extends YoloObject {
 			y_start =0f;
 			x_end = 0.375f	;
 			y_end = 0f;
+			revers = false;
 			break;
 		case 1://stand right
 			x_texture =0f;
@@ -138,13 +139,14 @@ public class YoloPlayer extends YoloObject {
 			y_start =0.125f;
 			x_end = 0.125f	;
 			y_end = 0.125f;
+			revers = false;
 			break;
 		case 2://walk left
-			x_texture = y_texture = 0f;
-			x_start = y_start =0f;
+			x_texture = y_texture = x_start = y_start =0f;
 			x_end = 0.75f;
 			y_end = 0f;
 			framecount =0;
+			revers = false;
 			break;
 		case 3://walk right
 			x_texture = x_start = 0.75f;
@@ -152,6 +154,7 @@ public class YoloPlayer extends YoloObject {
 			x_end = 0.5f;
 			y_end = 0.125f;
 			framecount =0;
+			revers = false;
 			break;
 		case 4:// climb up
 			x_texture =0f;
@@ -162,6 +165,7 @@ public class YoloPlayer extends YoloObject {
 			y_end = 0.125f;
 			framecount =0;
 			animation_slowdown =15;
+			revers = false;
 			break; 
 		case 5:// climb down
 			x_texture =0f;
@@ -172,6 +176,7 @@ public class YoloPlayer extends YoloObject {
 			y_end = 0.125f;
 			framecount =0;
 			animation_slowdown =15;
+			revers = false;
 			break; 
 		case 6: // jump
 			break;
@@ -182,6 +187,22 @@ public class YoloPlayer extends YoloObject {
 		case 9: //hurt arrow
 			break;
 		case 10: //hurt Skill/AI		
+			break;
+		case 11: //walk back left
+			x_texture = x_start = 0.625f;
+			y_texture = y_start = 0f;
+			x_end = 0;
+			y_end = 0;
+			framecount =0;
+			revers = true;
+			break;
+		case 12:// walk back right
+			x_texture = x_start =  0.375f;
+			y_texture =y_start = 0.125f;
+			x_end = 0.75f;
+			y_end = 0;
+			framecount =0;
+			revers = true;
 			break;
 		}
 		
@@ -232,9 +253,32 @@ public class YoloPlayer extends YoloObject {
 			
 			framecount++;
 			aniSlowCounter = 0;
-			if(x_texture<0.875f)x_texture+=0.125f;
-			else{y_texture+=0.125f; x_texture=0f;}
-		
+			if(revers)
+			{
+				if(y_texture <= y_end && x_texture <= x_end)
+				{
+					framecount =0;
+					y_texture = y_start;
+					x_texture = x_start;
+				}
+				else if(x_texture>0 )x_texture-=0.125f;
+				else{y_texture-=0.125f; x_texture=0.875f;}
+				
+				
+			}
+			else
+			{
+				if(x_texture<0.875f )x_texture+=0.125f;
+				else
+				{y_texture+=0.125f; x_texture=0f;}
+				
+				if(y_texture >= y_end && x_texture >= x_end)
+				{
+					framecount =0;
+					y_texture = y_start;
+					x_texture = x_start;
+				}
+			}
 		}	
 		
 		if(vx==0)
@@ -246,13 +290,6 @@ public class YoloPlayer extends YoloObject {
 			}
 		}
 		
-		if(y_texture >= y_end && x_texture >= x_end)
-		{
-			framecount =0;
-			y_texture = y_start;
-			x_texture = x_start;
-			
-		}
 	
 		if(livebar)
 		{
@@ -489,6 +526,13 @@ public class YoloPlayer extends YoloObject {
     		else
     			PlayerLive = PLAYER_LIVE_MAX;
 			isBeingHealed =	LinearDraw(gl,0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
+		}
+		if(dashDuration > 0)
+		{
+			if(--dashDuration ==0)
+				vx = YoloGame.vxbuff;
+			
+			//TODO dash texture
 		}
 		if(PlayerLive <= 0 && ! isDead)
 		{

@@ -2285,22 +2285,27 @@ public class YoloGameRenderer implements Renderer {
     public static float half_fx,half_bx,half_fy,half_by ;
 	
 	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
+			//,joyBallX2 =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi
 			,jumpBtnX = 1-125f/YoloEngine.display_x/YoloEngine.xdpi // 1/(MOVE_BALL_SIZE_X*2)-1.5f
-			,shotBtnX = jumpBtnX
+			//,shotBtnX = jumpBtnX
 			,crouchBtnX = 250f/YoloEngine.display_x/YoloEngine.xdpi //2.75f
 			,skillBtnX = .5f - 50f/YoloEngine.display_x/YoloEngine.xdpi //  1/(MOVE_BALL_SIZE_X*2)/2
 			,liveBarX_0 = 25f/YoloEngine.display_x/YoloEngine.xdpi //(0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
 			,joyBallX1
 			,joyBackX1
+			,joyBallX3
+			,joyBackX3
 			,XADD = 0; 
 
 	private float cameraPosY
 			,jumpBtnY = 150f/YoloEngine.display_y/YoloEngine.xdpi
-			,shotBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
+			//,shotBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
 			,crouchBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
 			,liveBarY = 1-55f/YoloEngine.display_y/YoloEngine.xdpi // 1f/LIVE_BAR_SIZE_Y -1.75f;// 1-(25+30)/dis_x
 			,joyBallY1
 			,joyBackY1
+			,joyBallY3
+			,joyBackY3
 			,YADD = 0; 
 	
 	public static boolean toLoad = true,first = false;
@@ -2308,7 +2313,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	
 	private int nextBullet = 1,platformOn=0;
-	private boolean onGround = true,contact = true;
+	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
 				
@@ -2610,10 +2615,36 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(bullet.x, bullet.y, 0f);
+			
+			gl.glTranslatef(bullet.x +.5f, bullet.y+.5f, 0f);
+			switch(bullet.Aim)
+			{
+			case 1:
+				gl.glRotatef(45, 0, 0, 1);
+				break;
+			case 2:
+				gl.glRotatef(90, 0, 0, 1);
+				break;
+			case 3:
+				gl.glRotatef(135, 0, 0, 1);
+				break;
+			case 4:
+				gl.glRotatef(180, 0, 0, 1);
+				break;
+			case 5:
+				gl.glRotatef(225, 0, 0, 1);
+				break;
+			case 6:
+				gl.glRotatef(270, 0, 0, 1);
+				break;
+			case 7:
+				gl.glRotatef(315, 0, 0, 1);
+				break;
+			}
+			gl.glTranslatef(-.5f, -.5f, 0);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			if(bullet.isLeft)gl.glTranslatef(bullet.x_texture, bullet.y_texture, 0f);
-			else gl.glTranslatef(bullet.x_texture + .125f, bullet.y_texture, 0f);
+			//if(bullet.isLeft)gl.glTranslatef(bullet.x_texture, bullet.y_texture, 0f);
+			gl.glTranslatef(bullet.x_texture + .125f, bullet.y_texture, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			bullet.draw(gl,YoloEngine.spriteSheets,bullet.sprite);
 			gl.glPopMatrix();
@@ -2625,10 +2656,34 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
 			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
-			gl.glTranslatef(bullet.x, bullet.y, 0f);
+			gl.glTranslatef(bullet.x +.5f, bullet.y +.5f, 0f);
+			switch(bullet.Aim)
+			{
+			case 1:
+				gl.glRotatef(45, 0, 0, 1);
+				break;
+			case 2:
+				gl.glRotatef(90, 0, 0, 1);
+				break;
+			case 3:
+				gl.glRotatef(135, 0, 0, 1);
+				break;
+			case 4:
+				gl.glRotatef(180, 0, 0, 1);
+				break;
+			case 5:
+				gl.glRotatef(225, 0, 0, 1);
+				break;
+			case 6:
+				gl.glRotatef(270, 0, 0, 1);
+				break;
+			case 7:
+				gl.glRotatef(315, 0, 0, 1);
+				break;
+			}
+			gl.glTranslatef(-.5f, -.5f, 0);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
-			if(bullet.isLeft)gl.glTranslatef(bullet.x_texture, bullet.y_texture, 0f);
-			else gl.glTranslatef(bullet.x_texture, bullet.y_texture+.125f, 0f);
+			gl.glTranslatef(bullet.x_texture, bullet.y_texture+.125f, 0f);
 			gl.glColor4f(1f,1f,1f,1f);
 			bullet.draw(gl,YoloEngine.spriteSheets,bullet.sprite);
 			gl.glPopMatrix();
@@ -2652,8 +2707,37 @@ public class YoloGameRenderer implements Renderer {
 		for(int i = 0 ; i < Weapontab.size() ;i++)
 		{
 			
-			if(Weapontab.get(i).isLeft) Weapontab.get(i).x -= Weapontab.get(i).bulletSpeed;
-			else  Weapontab.get(i).x += Weapontab.get(i).bulletSpeed;
+			switch( Weapontab.get(i).Aim)
+			{
+			case 0:
+				Weapontab.get(i).x += Weapontab.get(i).bulletSpeed;
+				break;
+			case 1:
+				Weapontab.get(i).x += Weapontab.get(i).bulletSpeedD;
+				Weapontab.get(i).y += Weapontab.get(i).bulletSpeedD;
+				break;
+			case 2:
+				Weapontab.get(i).y += Weapontab.get(i).bulletSpeed;
+				break;
+			case 3:
+				Weapontab.get(i).x -= Weapontab.get(i).bulletSpeedD;
+				Weapontab.get(i).y += Weapontab.get(i).bulletSpeedD;
+				break;
+			case 4:
+				Weapontab.get(i).x -= Weapontab.get(i).bulletSpeed;
+				break;
+			case 5:
+				Weapontab.get(i).x -= Weapontab.get(i).bulletSpeedD;
+				Weapontab.get(i).y -= Weapontab.get(i).bulletSpeedD;
+				break;
+			case 6:
+				Weapontab.get(i).y -= Weapontab.get(i).bulletSpeed;
+				break;
+			case 7:
+				Weapontab.get(i).x += Weapontab.get(i).bulletSpeedD;
+				Weapontab.get(i).y -= Weapontab.get(i).bulletSpeedD;
+				break;
+			}  
 
 			drawBullet(gl, Weapontab.get(i));
 			
@@ -2785,6 +2869,13 @@ public class YoloGameRenderer implements Renderer {
 			joyBackY1 = (YoloGame.y_old-80/YoloEngine.xdpi)/YoloEngine.display_y;
 			drawSt(gl, joyBackX1 + XADD, joyBackY1 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
 			drawSt(gl, joyBallX1 + XADD, joyBallY1 + YADD, MOVE_SIZE_X1/2, MOVE_SIZE_Y1/2, .375f, .125f,true);
+			
+			joyBallX3 = (YoloGame.x_old3+YoloGame.x3-40/YoloEngine.xdpi)/YoloEngine.display_x; 
+			joyBallY3 = (YoloGame.y_old3+YoloGame.y3-40/YoloEngine.xdpi)/YoloEngine.display_y; 
+			joyBackX3 = (YoloGame.x_old3-80/YoloEngine.xdpi)/YoloEngine.display_x; 
+			joyBackY3 = (YoloGame.y_old3-80/YoloEngine.xdpi)/YoloEngine.display_y;
+			drawSt(gl, joyBackX3 + XADD, joyBackY3 + YADD, MOVE_SIZE_X1, MOVE_SIZE_Y1, .25f, .125f,true);
+			drawSt(gl, joyBallX3 + XADD, joyBallY3 + YADD, MOVE_SIZE_X1/2, MOVE_SIZE_Y1/2, .375f, .125f,true);
 		}
 
 		LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0*YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive/YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX; // dobrze;
@@ -2800,7 +2891,7 @@ public class YoloGameRenderer implements Renderer {
 			if(YoloEngine.TeamAB[YoloEngine.MyID].isCrouch)drawSt(gl, crouchBtnX + XADD, crouchBtnY + YADD,MOVE_BALL_SIZE_X*2,  MOVE_SIZE_Y*2, YoloEngine.isCrouch_prest? .75f : .875f, 0, true);
 			else drawSt(gl, crouchBtnX + XADD, crouchBtnY + YADD,MOVE_BALL_SIZE_X*2,  MOVE_SIZE_Y*2, YoloEngine.isCrouch_prest? .5f : .625f, 0, true);
 		}
-		drawSt(gl, shotBtnX + XADD, shotBtnY + YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.TeamAB[YoloEngine.MyID].isShoting? .25f : .375f , 0, true);
+		//drawSt(gl, shotBtnX + XADD, shotBtnY + YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2, YoloEngine.TeamAB[YoloEngine.MyID].isShoting? .25f : .375f , 0, true);
 
 		drawSt(gl, skillBtnX + XADD - 100f/YoloEngine.display_x/YoloEngine.xdpi, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill1BtnTx , Skill1BtnTy, true);
 		drawSt(gl, skillBtnX + XADD, YADD, MOVE_BALL_SIZE_X*2, MOVE_SIZE_Y*2,  Skill2BtnTx , Skill2BtnTy, true);
@@ -3212,7 +3303,7 @@ public class YoloGameRenderer implements Renderer {
 	public static void playerFire(float bulletSpeed,int sprite,int count,float damage)
 	{
 			bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
-				!YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?YoloEngine.TeamAB[YoloEngine.MyID].y+0.2f:YoloEngine.TeamAB[YoloEngine.MyID].y - .1f,bulletSpeed);
+				!YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?YoloEngine.TeamAB[YoloEngine.MyID].y:YoloEngine.TeamAB[YoloEngine.MyID].y ,bulletSpeed);
 			bullet.damage = damage;
 			bullet.team = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam; 
 			bullet.sprite = sprite;
@@ -3221,6 +3312,7 @@ public class YoloGameRenderer implements Renderer {
 			bullet.count = count;
 		//	bullet.size = 0.25f;
 			bullet.isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
+			bullet.Aim = YoloEngine.GunAim;
 			Weapontab.add(bullet);
 			
 			float VolumeScale =1,lx = Math.abs(bullet.x-YoloEngine.TeamAB[YoloEngine.MyID].x),ly =Math.abs(bullet.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
@@ -3240,11 +3332,11 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.sp.play(YoloEngine.SoundInd[60], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
 			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam);
+				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.GunAim);
 	}
 	
 	
-	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team) //XXX oppfire nie potrzebuje isCrouch
+	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim) //XXX oppfire nie potrzebuje isCrouch
 	{
 		bullet = new YoloWeapon(x,y,0.2f);
 		bullet.damage = damage;
@@ -3255,6 +3347,7 @@ public class YoloGameRenderer implements Renderer {
 		bullet.y_texture = 0f;
 		//bullet.size = 0.25f;
 		bullet.isLeft = isLeft;
+		bullet.Aim = aim;
 		Weapontab.add(bullet);
 	}
 	

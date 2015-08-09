@@ -2,11 +2,8 @@ package com.example.yolo_fighter;
 
 import com.example.yolo_fighter.YoloPlayerInfo;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.example.games.basegameutils.GameHelper;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.view.Display;
 
@@ -33,6 +30,7 @@ public class YoloEngine {
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
+	public static int GunAim =0; // 0-7
 	
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
 	public static final int ARCHER_SPRITE = R.drawable.archer_sprite;
