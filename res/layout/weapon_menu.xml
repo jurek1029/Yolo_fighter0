@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon1"
+                    android:background="@drawable/longweapon3"
                     android:onClick="gunClick" />
 
                 <ImageView
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon3"
+                    android:background="@drawable/longweapon4"
                     android:onClick="gunClick" />
 
                 <ImageView
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon4"
+                    android:background="@drawable/longweapon1"
                     android:onClick="gunClick" />
 
                 <ImageView
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon5"
+                    android:background="@drawable/longweapon7"
                     android:onClick="gunClick" />
 
                 <ImageView
@@ -265,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon6"
+                    android:background="@drawable/longweapon5"
                     android:onClick="gunClick" />
 
                 <ImageView
@@ -289,7 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/longweapon7"
+                    android:background="@drawable/longweapon6"
                     android:onClick="gunClick" />
 
                 <ImageView

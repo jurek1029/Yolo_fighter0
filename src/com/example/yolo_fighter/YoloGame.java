@@ -393,56 +393,56 @@ public class YoloGame extends Activity{
 						if( y3 >= 0)
 						{
 							if(degree < -2.4142)
-								YoloEngine.GunAim = 2;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 2;
 							else if(degree < -0.4142)
 							{
-								YoloEngine.GunAim = 3;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 3;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
 							}
 							else if(degree < -0)
 							{
-								YoloEngine.GunAim = 4;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 4;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
 							}
 							else if(degree < 0.4142)
 							{
-								YoloEngine.GunAim = 0;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 0;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 							}
 							else if(degree < 2.4142)
 							{
-								YoloEngine.GunAim = 1;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 1;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 							}
 							else
-								YoloEngine.GunAim = 2;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 2;
 						}
 						else
 						{
 							if(degree < -2.4142 && !YoloGameRenderer.onGround)
-								YoloEngine.GunAim = 6;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 6;
 							else if(degree < -0.4142)
 							{
-								YoloEngine.GunAim = 7;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 7;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 							}
 							else if(degree <= 0)
 							{
-								YoloEngine.GunAim = 0;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 0;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = false;
 							}
 							else if(degree < 0.4142)
 							{
-								YoloEngine.GunAim = 4;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 4;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
 							}
 							else if(degree < 2.4142)
 							{
-								YoloEngine.GunAim = 5;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 5;
 								YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft = true;
 							}
 							else if(!YoloGameRenderer.onGround)
-								YoloEngine.GunAim = 6;
+								YoloEngine.TeamAB[YoloEngine.MyID].aim = 6;
 						}
 						
 						

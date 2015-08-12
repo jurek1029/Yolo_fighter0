@@ -83,9 +83,9 @@ public class YoloWeapon extends YoloObject {
 	{
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, spriteSheet[number]);
-		gl.glFrontFace(GL10.GL_CCW);
-		gl.glEnable(GL10.GL_CULL_FACE);
-		gl.glCullFace(GL10.GL_BACK);
+		//gl.glFrontFace(GL10.GL_CCW);
+		//gl.glEnable(GL10.GL_CULL_FACE);
+		//gl.glCullFace(GL10.GL_BACK);
 		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
@@ -93,7 +93,7 @@ public class YoloWeapon extends YoloObject {
 		gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, GL10.GL_UNSIGNED_BYTE, indexBuffer);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		gl.glDisable(GL10.GL_CULL_FACE);
+		//gl.glDisable(GL10.GL_CULL_FACE);
 		gl.glDisable(GL10.GL_TEXTURE_2D);
 	}
 	

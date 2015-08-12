@@ -65,7 +65,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 
 		switch (messageCode) {
 		case 'p':
-			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0);
+			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0,rcvData.getInt());
 			break;
 
 		case 'l':
@@ -94,6 +94,48 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 				if (spriteLoad == 124)
 					YoloEngine.sprite_load[32] = true;
 			}
+			int index  = rcvData.getInt();
+			YoloEngine.TeamAB[index].weapon = rcvData.getInt();
+			switch(YoloEngine.TeamAB[index].weapon)
+			{
+			case 0:
+				YoloEngine.TeamAB[index].weaponTextureX = .25f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 1:
+				YoloEngine.TeamAB[index].weaponTextureX = .375f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 2:
+				YoloEngine.TeamAB[index].weaponTextureX = .5f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 4:
+				YoloEngine.TeamAB[index].weaponTextureX = .625f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 5:
+				YoloEngine.TeamAB[index].weaponTextureX = .75f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 6:
+				YoloEngine.TeamAB[index].weaponTextureX = .875f;
+				YoloEngine.TeamAB[index].weaponTextureY = 0f;
+				break;
+			case 7:
+				YoloEngine.TeamAB[index].weaponTextureX = .0f;
+				YoloEngine.TeamAB[index].weaponTextureY = .125f;
+				break;
+			case 8:
+				YoloEngine.TeamAB[index].weaponTextureX = .125f;
+				YoloEngine.TeamAB[index].weaponTextureY = .125f;
+				break;
+			case 9:
+				YoloEngine.TeamAB[index].weaponTextureX = .25f;
+				YoloEngine.TeamAB[index].weaponTextureY = .125f;
+				break;
+			}
+			YoloEngine.TeamAB[index].race = rcvData.getInt();
 			System.out.println("otrzymane dane spriteload");
 			break;
 
@@ -228,6 +270,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		case 'm':
 			int ind = rcvData.getInt();
 			YoloEngine.TeamAB[ind].PLAYER_LIVE_MAX = rcvData.getFloat();
+
 			break;
 		case 'q':
 			int k = rcvData.getInt();
@@ -252,7 +295,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	 * @param isCrouch
 	 * @param packageId
 	 */
-	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId) {
+	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId,int aim) {
 		/* XXX
 		 * if (packageId < receivedPackageId) { System.out.println("old data");
 		 * return; } else receivedPackageId = packageId; // NIE DZIA�A, mo�e
@@ -270,6 +313,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		YoloEngine.TeamAB[playerID].y_last = y;
 
 		YoloEngine.TeamAB[playerID].PlayerLive = life;
+		YoloEngine.TeamAB[playerID].aim = aim;
 
 	}
 
@@ -285,7 +329,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
 			sentAt = System.currentTimeMillis();
 
-			ByteBuffer bbf = ByteBuffer.allocate(20);
+			ByteBuffer bbf = ByteBuffer.allocate(23);
 			bbf.putChar('p');
 			bbf.putInt(YoloEngine.MyID);
 			bbf.putFloat(x);
@@ -295,23 +339,26 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 			else
 				bbf.put((byte) 0);
 			bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive);
-
+			bbf.putInt(YoloEngine.TeamAB[YoloEngine.MyID].aim);
 			sendMessageToAll(bbf.array());
 		}
 
 	}
 
 	public byte[] sendSpriteLoad(int[] loadArray) {
-		ByteBuffer bbf = ByteBuffer.allocate(2 + 4 * loadArray.length);
+		ByteBuffer bbf = ByteBuffer.allocate(14 + 4 * loadArray.length);
 		bbf.putChar('l');
 		for (int value : loadArray)
 			bbf.putInt(value);
+		bbf.putInt(YoloEngine.MyID);
+		bbf.putInt(YoloEngine.currentPlayerInfo.getWEQ());
+		bbf.putInt(YoloEngine.currentPlayerInfo.getRace());
 
 		return bbf.array();
 	}
 
 	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, int sprite, int count, float damage, boolean team,int aim,float poiseDamge) {
-		ByteBuffer bbf = ByteBuffer.allocate(30);
+		ByteBuffer bbf = ByteBuffer.allocate(31);
 		bbf.putChar('f');
 		bbf.putFloat(x);
 		bbf.putFloat(y);
@@ -420,7 +467,6 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		bbf.putChar('m');
 		bbf.putInt(YoloEngine.MyID);
 		bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX);
-
 		sendMessageToAllreliable(bbf.array());
 	}
 

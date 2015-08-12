@@ -54,6 +54,9 @@ public class YoloPlayer extends YoloObject {
 	public float y_lastX;
 	
 	int race;
+	int weapon;
+	float weaponTextureX,weaponTextureY;
+	int aim;
 	
 	public String ParticipantId = "";
 	public boolean isPlayerActive,isDead = false; // @TODO jak ktoœ siê roz³¹czy -> nie rysowaæ?
@@ -67,6 +70,7 @@ public class YoloPlayer extends YoloObject {
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
 	public int coin =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1,framecount=0;
+	
 	
 	public int poisoned = 0,slowDowned=0,flying =0,defed =0,invice =0,deniled =YoloEngine.denialDuration,frozen =0,icice=0,thunder_h =0,healing =0,buffed =0,fireRated=0,reloadspeeded=0,dashDuration =0;
 	public int fireSprite =0,fireCount = 0,firePause = 15,baseFirePause = firePause;
@@ -786,6 +790,7 @@ public class YoloPlayer extends YoloObject {
 			isBeingHealed = LinearDraw(gl, 0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
 		}
 	}
+	
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{
 		gl.glEnable(GL10.GL_TEXTURE_2D);

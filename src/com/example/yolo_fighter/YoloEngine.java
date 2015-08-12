@@ -30,7 +30,7 @@ public class YoloEngine {
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
-	public static int GunAim =0; // 0-7
+	//public static int GunAim =0; // 0-7
 	
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
 	public static final int ARCHER_SPRITE = R.drawable.archer_sprite;

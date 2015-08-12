@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -12,6 +13,89 @@ import javax.microedition.khronos.opengles.GL10;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.opengl.GLSurfaceView.Renderer;
+
+
+class PowerUP extends YoloObject
+{
+	int effect;
+	float x_texture,y_texture;
+	PowerUP()
+	{	
+		super(0,0);
+		Random rng = new Random();
+		x=(YoloEngine.LEVEL_X/YoloEngine.TX)* rng.nextFloat();
+		y=(YoloEngine.LEVEL_Y/YoloEngine.TY)* rng.nextFloat();
+		effect = rng.nextInt(7);
+		switch(effect)
+		{
+		case 0:
+			x_texture = 0f;
+			y_texture = 0.375f;
+			break;
+		case 1:
+			x_texture = 0.125f;
+			y_texture = 0.375f;
+			break;
+		case 2:
+			x_texture = 0.25f;
+			y_texture = 0.375f;
+			break;
+		case 3:
+			x_texture = 0.375f;
+			y_texture = 0.375f;
+			break;
+		case 4:
+			x_texture = 0.5f;
+			y_texture = 0.375f;
+			break;
+		case 5:
+			x_texture = 0.625f;
+			y_texture = 0.375f;
+			break;
+		case 6:
+			x_texture = 0.75f;
+			y_texture = 0.375f;
+			break;
+		}
+		
+	}
+	
+	public void Activate()
+	{
+		Random rng = new Random();
+		switch(effect)
+		{
+		case 0:
+			int a = rng.nextInt(50);
+			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive + a < YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX )
+				YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive += a;
+			else
+				YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive = YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX ;
+			break;
+		case 1:
+			YoloEngine.TeamAB[YoloEngine.MyID].fireDamage ++;
+			break;
+		case 2:
+			if(YoloEngine.TeamAB[YoloEngine.MyID].firePause-2 > 1)
+				YoloEngine.TeamAB[YoloEngine.MyID].firePause-=2;
+			break;
+		case 3:
+			YoloEngine.TeamAB[YoloEngine.MyID].poiseDamage++;
+			break;
+		case 4:
+			YoloEngine.TeamAB[YoloEngine.MyID].playerMag = YoloEngine.TeamAB[YoloEngine.MyID].PlayerMagCapasity;
+			break;
+		case 5:
+			if(YoloEngine.TeamAB[YoloEngine.MyID].playerMagReloadTime - 10 > 10)
+				YoloEngine.TeamAB[YoloEngine.MyID].playerMagReloadTime -= 10;
+			break;
+		case 6:
+			YoloEngine.TeamAB[YoloEngine.MyID].coin += rng.nextInt(50);
+			break;
+		}
+	}
+	
+}
 
 class HitBox extends YoloObject
 {
@@ -2262,7 +2346,7 @@ public class YoloGameRenderer implements Renderer {
 	private YoloObject[] LaddreTab = new YoloObject[4];
 	
 	private static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
-	private static YoloWeapon bullet;
+	private static YoloWeapon bullet,weapon;
 	
 	public static Skill[] skilltab = new Skill[3];
 	public static Vector<Skill> skillTeamBVe = new Vector<Skill>();
@@ -2573,6 +2657,7 @@ public class YoloGameRenderer implements Renderer {
 				}
 			}
 			drawPlayerSkills(gl);
+			drawWeapon(gl);
 			drawControls(gl);
 			drawPlayerMag(gl);			
 			drawButtons(gl);
@@ -2606,6 +2691,60 @@ public class YoloGameRenderer implements Renderer {
 		
 		return true;
 	}
+	
+	private void drawWeapon(GL10 gl)
+	{
+
+		for(int i =0 ;i<YoloEngine.TeamSize*2;i++)
+		{
+			weapon = new YoloWeapon(YoloEngine.TeamAB[i].x, YoloEngine.TeamAB[i].y);
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
+			gl.glTranslatef(YoloEngine.TeamAB[i].x +.5f, YoloEngine.TeamAB[i].y+.5f, 0f);		
+			
+			switch(YoloEngine.TeamAB[i].aim)
+			{
+			case 1:
+				gl.glRotatef(45, 0, 0, 1);
+				break;
+			case 2:
+				gl.glRotatef(90, 0, 0, 1);
+				break;
+			case 3:
+				gl.glScalef(1, -1, 1);
+				gl.glRotatef(225, 0, 0, 1);
+				break;
+			case 4:
+				gl.glScalef(1, -1, 1);
+				gl.glRotatef(180, 0, 0, 1);
+				break;
+			case 5:
+				gl.glScalef(1, -1, 1);
+				gl.glRotatef(135, 0, 0, 1);
+				break;
+			case 6:
+				gl.glScalef(1, -1, 1);
+				gl.glRotatef(90, 0, 0, 1);
+				break;
+			case 7:
+				gl.glRotatef(315, 0, 0, 1);
+				break;
+			}
+			if(YoloEngine.TeamAB[i].weapon < 3)gl.glScalef(.5f, .25f, 1);
+			else gl.glScalef(1, 0.25f, 1);
+			gl.glTranslatef(-.5f, -.5f, 0);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(YoloEngine.TeamAB[i].weaponTextureX, YoloEngine.TeamAB[i].weaponTextureY, 0f);
+			gl.glColor4f(1f,1f,1f,1f);
+			weapon.draw(gl,YoloEngine.spriteSheets,0);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+	}
+	
 	private void drawBullet(GL10 gl, YoloWeapon bullet)
 	{
 		if(bullet.count ==0)
@@ -3326,7 +3465,7 @@ public class YoloGameRenderer implements Renderer {
 			bullet.count = count;
 		//	bullet.size = 0.25f;
 			bullet.isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
-			bullet.Aim = YoloEngine.GunAim;
+			bullet.Aim = YoloEngine.TeamAB[YoloEngine.MyID].aim;
 			Weapontab.add(bullet);
 			
 			float VolumeScale =1,lx = Math.abs(bullet.x-YoloEngine.TeamAB[YoloEngine.MyID].x),ly =Math.abs(bullet.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
@@ -3346,7 +3485,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.sp.play(YoloEngine.SoundInd[60], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
 			if(YoloEngine.MULTI_ACTIVE)
-				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.GunAim,poiseDamage);
+				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.TeamAB[YoloEngine.MyID].aim,poiseDamage);
 	}
 	
 	
@@ -4417,22 +4556,19 @@ public class YoloGameRenderer implements Renderer {
 		
 		gl.glMatrixMode(GL10.GL_PROJECTION);
 		gl.glLoadIdentity();
-		gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
+		gl.glOrthof(0f, 1f, 0f, 1f, -10f, 10f);
 		
 	}
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	    //gl.glEnable(GL10.GL_TEXTURE_2D);
 	    gl.glClearDepthf(1.0f);
 		gl.glEnable(GL10.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL10.GL_LEQUAL);
 		gl.glEnable(GL10.GL_BLEND);
-		gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
-			
-		//gl.glEnable(GL10.GL_BLEND);
-		//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glDisable(GL10.GL_CULL_FACE);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 //-------------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
 		TextureLoader = new YoloTexture(gl,45);
@@ -4441,6 +4577,46 @@ public class YoloGameRenderer implements Renderer {
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
 		YoloEngine.TeamAB[YoloEngine.MyID].race = YoloEngine.currentPlayerInfo.getRace();
+		YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
+		switch(YoloEngine.TeamAB[YoloEngine.MyID].weapon)
+		{
+		case 0:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 1:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .375f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 2:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .5f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 4:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .625f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 5:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .75f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 6:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .875f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 7:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .0f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		case 8:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .125f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		case 9:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		}
 		
 		boolean test = false;
 		if(test)
