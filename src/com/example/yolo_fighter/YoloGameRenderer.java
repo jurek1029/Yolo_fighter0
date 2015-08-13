@@ -25,7 +25,7 @@ class PowerUP extends YoloObject
 		Random rng = new Random();
 		x=(YoloEngine.LEVEL_X/YoloEngine.TX)* rng.nextFloat();
 		y=(YoloEngine.LEVEL_Y/YoloEngine.TY)* rng.nextFloat();
-		effect = rng.nextInt(7);
+		effect = rng.nextInt(8);
 		switch(effect)
 		{
 		case 0:
@@ -56,6 +56,11 @@ class PowerUP extends YoloObject
 			x_texture = 0.75f;
 			y_texture = 0.375f;
 			break;
+		case 7:
+			x_texture = 0.75f;
+			y_texture = 0.375f;
+			break;
+			
 		}
 		
 	}
@@ -91,6 +96,12 @@ class PowerUP extends YoloObject
 			break;
 		case 6:
 			YoloEngine.TeamAB[YoloEngine.MyID].coin += rng.nextInt(50);
+			break;
+		case 7:
+			int b = rng.nextInt(10);
+			if(b == 3) b += rng.nextBoolean()?-1 :1 ;
+			YoloEngine.TeamAB[YoloEngine.MyID].weapon = b;
+		    YoloGameRenderer.weaponSelect();
 			break;
 		}
 	}
@@ -4532,6 +4543,50 @@ public class YoloGameRenderer implements Renderer {
 		gl.glLoadIdentity();
 	}
 	
+	public static void weaponSelect()
+	{
+		//TODO load weapon statistics
+		switch(YoloEngine.TeamAB[YoloEngine.MyID].weapon)
+		{
+		case 0:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 1:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .375f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 2:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .5f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 4:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .625f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 5:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .75f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 6:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .875f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
+			break;
+		case 7:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .0f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		case 8:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .125f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		case 9:
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
+			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
+			break;
+		}
+	}
+	
 	/*public static void givePlayerID()//wykonywane przy do�aczeniu gracza
 	{
 		try
@@ -4578,45 +4633,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		YoloEngine.TeamAB[YoloEngine.MyID].race = YoloEngine.currentPlayerInfo.getRace();
 		YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
-		switch(YoloEngine.TeamAB[YoloEngine.MyID].weapon)
-		{
-		case 0:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 1:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .375f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 2:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .5f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 4:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .625f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 5:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .75f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 6:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .875f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = 0f;
-			break;
-		case 7:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .0f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
-			break;
-		case 8:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .125f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
-			break;
-		case 9:
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureX = .25f;
-			YoloEngine.TeamAB[YoloEngine.MyID].weaponTextureY = .125f;
-			break;
-		}
+		weaponSelect();
 		
 		boolean test = false;
 		if(test)
@@ -4694,8 +4711,7 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[1] = true;
 		YoloEngine.sprite_load[2] = true;
 		YoloEngine.sprite_load[3] = true;
-		
-		// Mulstislayer po otrzymaniu XXX
+	
 		YoloEngine.sprite_load[YoloEngine.SkillSprite1<45?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale�y od playera
 		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
 		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
