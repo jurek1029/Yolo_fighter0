@@ -79,6 +79,26 @@ public class YoloWeapon extends YoloObject {
 		indexBuffer.position(0);
 	}
 	
+	public YoloWeapon(float x, float y,float dx,float dy)
+	{
+		super(x,y,dx,dy);
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuf.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+		
+		byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+		
+		indexBuffer = ByteBuffer.allocateDirect(indices.length);
+		indexBuffer.put(indices);
+		indexBuffer.position(0);
+	}
+	
 	public void draw (GL10 gl, int[] spriteSheet,int number)
 	{
 		gl.glEnable(GL10.GL_TEXTURE_2D);

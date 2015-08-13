@@ -15,17 +15,18 @@ import android.media.SoundPool;
 import android.opengl.GLSurfaceView.Renderer;
 
 
-class PowerUP extends YoloObject
+class PowerUP extends YoloWeapon
 {
-	int effect;
-	float x_texture,y_texture;
+	int effect,j;
 	PowerUP()
 	{	
-		super(0,0);
+		super(0f,0f,.5f,.5f);
 		Random rng = new Random();
 		x=(YoloEngine.LEVEL_X/YoloEngine.TX)* rng.nextFloat();
 		y=(YoloEngine.LEVEL_Y/YoloEngine.TY)* rng.nextFloat();
 		effect = rng.nextInt(8);
+		vy = 0;
+		j=0;
 		switch(effect)
 		{
 		case 0:
@@ -2357,6 +2358,7 @@ public class YoloGameRenderer implements Renderer {
 	private YoloObject[] LaddreTab = new YoloObject[4];
 	
 	private static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
+	private static Vector<PowerUP> PowerUPtab = new Vector<PowerUP>();
 	private static YoloWeapon bullet,weapon;
 	
 	public static Skill[] skilltab = new Skill[3];
@@ -2411,6 +2413,7 @@ public class YoloGameRenderer implements Renderer {
 	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
+	private int powerUpCoutdown =0,powerUpInterval = 100; // TODO test
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2669,6 +2672,8 @@ public class YoloGameRenderer implements Renderer {
 			}
 			drawPlayerSkills(gl);
 			drawWeapon(gl);
+			spanMovePowerUPs();
+			drawPowerUPs(gl);
 			drawControls(gl);
 			drawPlayerMag(gl);			
 			drawButtons(gl);
@@ -4541,6 +4546,67 @@ public class YoloGameRenderer implements Renderer {
 		mag.drawPartial(gl,YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f);
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
+	}
+	
+	private void drawPowerUPs(GL10 gl)
+	{
+		for(PowerUP UP : PowerUPtab) 
+		{
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X/2, YoloEngine.TEXTURE_SIZE_Y/2, 1f);
+			gl.glTranslatef(UP.x*2, UP.y*2, 0f);		
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(0f, 0.25f, 0f);
+			UP.draw(gl,YoloEngine.spriteSheets,0);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glScalef(YoloEngine.TEXTURE_SIZE_X/2, YoloEngine.TEXTURE_SIZE_Y/2, 1f);
+			gl.glTranslatef(UP.x*2, UP.y*2, 0f);		
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glTranslatef(UP.x_texture, UP.y_texture, 0f);
+			UP.draw(gl,YoloEngine.spriteSheets,0);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+		}
+	}
+	
+	private void spanMovePowerUPs()
+	{
+		if(powerUpCoutdown-- <= 0)
+		{
+			powerUpCoutdown = powerUpInterval;
+			PowerUPtab.add(new PowerUP());
+		}
+		
+		for(PowerUP UP : PowerUPtab) 
+		{
+			UP.vy -= YoloEngine.GAME_ACCELERATION;
+			UP.y += UP.vy;
+			
+			if(IsCollidedTop(UP,ObjectTab[UP.j]))
+				{
+						UP.y = ObjectTab[UP.j].y + ObjectTab[UP.j].dy;
+						UP.vy = 0;
+				}
+			else
+			for(int i = 0; i < ObjectTab.length; i++)
+			{
+				if(IsCollidedTop(UP,ObjectTab[i]))
+				{
+						UP.y = ObjectTab[i].y + ObjectTab[i].dy;
+						UP.vy = 0;
+						UP.j=i;
+					break;
+				}
+			}
+			
+		}
 	}
 	
 	public static void weaponSelect()
