@@ -277,7 +277,7 @@ class Skill extends YoloObject
     		damage = 20f;
     		 if(ID < 0)
     			 setAIXY();
-    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft; // TODO przes�a� isLeft
+    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft; // TODO przes³aæ isLeft
 			this.x++;
     		break;
     	case 11://Tower
@@ -425,7 +425,7 @@ class Skill extends YoloObject
 	    		YoloEngine.sp.play(YoloEngine.SoundInd[56], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 	    	}
     		break;
-    	case 18://zamra�anie 
+    	case 18://zamra¿anie 
     		xEnd = 0.875f;
     		yEnd = 0.875f;
     		x_radius = 2.5f;
@@ -1305,7 +1305,7 @@ class Skill extends YoloObject
 	
 	public void move ()
 	{
-//-------------------------------------------------------------------Szukanie najbli�szego------------------------------		
+//-------------------------------------------------------------------Szukanie najbliï¿½szego------------------------------		
 		if(ret == 100)
 		{ 
 			float minLenght = 10000f,temp;
@@ -2673,6 +2673,7 @@ public class YoloGameRenderer implements Renderer {
 			drawPlayerSkills(gl);
 			drawWeapon(gl);
 			spanMovePowerUPs();
+			checkForPowerUPs();
 			drawPowerUPs(gl);
 			drawControls(gl);
 			drawPlayerMag(gl);			
@@ -3567,7 +3568,7 @@ public class YoloGameRenderer implements Renderer {
 				
 			//	if(isMy)
 			//	{
-//-------------------------------------------------Tworzenie HitBox�w----------------------------------------------------------------------------
+//-------------------------------------------------Tworzenie HitBoxï¿½w----------------------------------------------------------------------------
 					Ve.elementAt(i).frameCounter=0;
 					switch (sprite)
 					{
@@ -3958,7 +3959,7 @@ public class YoloGameRenderer implements Renderer {
 		for(int j =p;j<q;j++)
 		{
 			if(Math.abs(YoloEngine.TeamAB[j].x-Ve.elementAt(i).x)<Ve.elementAt(i).x_radius)			
-				if(Math.abs(YoloEngine.TeamAB[j].y-Ve.elementAt(i).y)<Ve.elementAt(i).y_radius) // rozr�nianie
+				if(Math.abs(YoloEngine.TeamAB[j].y-Ve.elementAt(i).y)<Ve.elementAt(i).y_radius) // rozrï¿½nianie
 				{
 					if(sprite==109)
 					{
@@ -4391,7 +4392,7 @@ public class YoloGameRenderer implements Renderer {
 			}
 			Vector<Skill> Ve = hitBoxs.elementAt(i).team == YoloEngine.TeamA?skillTeamAVe:skillTeamBVe;
 			if(hitBoxs.elementAt(i).team != YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
-			if(hitBoxs.elementAt(i).sprite >5 && hitBoxs.elementAt(i).sprite <11)//je�eli AI
+			if(hitBoxs.elementAt(i).sprite >5 && hitBoxs.elementAt(i).sprite <11)//jeï¿½eli AI
 			{
 				int id = findSkillByID(hitBoxs.elementAt(i).ID,Ve);
 				Ve.elementAt(id).isLeft = hitBoxs.elementAt(i).isLeft;
@@ -4582,6 +4583,7 @@ public class YoloGameRenderer implements Renderer {
 		{
 			powerUpCoutdown = powerUpInterval;
 			PowerUPtab.add(new PowerUP());
+			//XXX send INFO
 		}
 		
 		for(PowerUP UP : PowerUPtab) 
@@ -4606,6 +4608,19 @@ public class YoloGameRenderer implements Renderer {
 				}
 			}
 			
+		}
+	}
+	
+	private void checkForPowerUPs()
+	{
+		for (int i = 0;i < PowerUPtab.size();i++)
+		{
+			if(IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[j]))
+			{
+				PowerUPtab.elementAt(i).Activate();
+				PowerUPtab.remove(i--);
+				//XXX send INFO
+			}
 		}
 	}
 	
@@ -4689,7 +4704,7 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
-	/*public static void givePlayerID()//wykonywane przy do�aczeniu gracza
+	/*public static void givePlayerID()//wykonywane przy doï¿½aczeniu gracza
 	{
 		try
 		{
@@ -4806,7 +4821,7 @@ public class YoloGameRenderer implements Renderer {
 		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x/YoloEngine.xdpi, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL3_COOLDOWN,YoloEngine.r3);
 		//givePlayerID();
 		
-//------------------------------------------INICJOWANIE OBIEKT�W FIZYCZNYCH----------------------------------		
+//------------------------------------------INICJOWANIE OBIEKTï¿½W FIZYCZNYCH----------------------------------		
 		
 		
 		YoloEngine.sprite_load[0] = true;
@@ -4814,9 +4829,9 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.sprite_load[2] = true;
 		YoloEngine.sprite_load[3] = true;
 	
-		YoloEngine.sprite_load[YoloEngine.SkillSprite1<45?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zale�y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zale�y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zale�y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1<45?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zaleï¿½y od playera
 		if(YoloEngine.SkillSprite3==14||YoloEngine.SkillSprite2==14||YoloEngine.SkillSprite1==14)YoloEngine.sprite_load[27]=true;
 		if(YoloEngine.SkillSprite3==36||YoloEngine.SkillSprite2==36||YoloEngine.SkillSprite1==36)YoloEngine.sprite_load[32]=true;
 		if(YoloEngine.SkillSprite3==37||YoloEngine.SkillSprite2==37||YoloEngine.SkillSprite1==37)YoloEngine.sprite_load[32]=true;
