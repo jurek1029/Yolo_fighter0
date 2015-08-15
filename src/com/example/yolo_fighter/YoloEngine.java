@@ -54,7 +54,7 @@ public class YoloEngine {
 	public static final int ICICLE_SPRITE = R.drawable.icicle_sprite;
 	public static final int THUNDER_H_SPRITE = R.drawable.tunder_h_sprite;
 	public static final int THUNDER_V_SKILL = R.drawable.skill_sprite_tunder;
-	public static final int FOG_SPRITE = R.drawable.fog_s;
+	public static final int FOG_SPRITE = R.drawable.smoke_sprite;
 	public static final int DENIAL_SPRITE = R.drawable.denial_sprite;
 	public static final int STAMINA_THIEF_SPRITE =0 ;
 	

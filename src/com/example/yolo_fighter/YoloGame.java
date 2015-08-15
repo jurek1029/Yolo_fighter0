@@ -603,13 +603,12 @@ public class YoloGame extends Activity{
 			public void onClick(DialogInterface dialog, int which) {
 				YoloEngine.mMultislayer.sendQuitInfo(YoloEngine.MyID);
 				YoloEngine.whichLayout=0;
-				YoloGameRenderer.skillTeamBVe.clear();
-				YoloGameRenderer.skillTeamAVe.clear();
-				YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
+				
 				Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
 				YoloGame.this.startActivity(mainMenu);
 				YoloEngine.context = getApplicationContext();
 				YoloGame.this.finish();
+				YoloGameView.renderer.clear();
 				//TODO MiHu path to variable YoloEngine.TeamAB[YoloEngine.MyID].coin TO JEST TYLKO ROZNICA NIE WARTOSC
 				setContentView(R.layout.main_menu);				
 			}

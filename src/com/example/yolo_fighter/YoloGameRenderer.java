@@ -14,7 +14,191 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.opengl.GLSurfaceView.Renderer;
 
-
+class Particle
+{
+	float x,y,velocity,x_distance,a,b,x_texture = 0,y_texture = 0,x_end,y_end,pom,y_pos;
+	int liveTime,velecityDirection,couter =0;
+	
+	public Particle(float x_pos,float y_pos,boolean isSmoke,Random rng,float a0,float a1)
+	{
+		//Random rng = new Random();
+		if(isSmoke)
+		{
+			this.y_pos = y_pos;
+			x_end=0.56f;
+			y_end=0.75f;
+			a=4f;b=2f;
+			x = rng.nextFloat()*2*a - a;
+			pom = (float) Math.sqrt(-((x*x - a*a)*b*b)/(a*a));
+			y = rng.nextFloat()*2*pom - pom;
+			
+			velecityDirection =rng.nextBoolean()? -1:1;
+			velocity = .015625f + rng.nextFloat() * 0.0078125f;
+				
+			x_distance = (float) (Math.sqrt(-((y*y - b*b)*a*a)/(b*b))+ velecityDirection > 0? Math.abs(x):-Math.abs(x));
+			liveTime = (int) (x_distance/velocity);		
+			
+			couter=(int)(Math.asin(y/b)/3.1415f*90f);
+			
+			x+= x_pos;
+			y+= y_pos;
+			
+		}
+		else
+		{
+			x_end=0.375f;
+			y_end=0.125f;
+			a=2;b=0.3f;
+			/*
+			float a0,a1;
+			
+			if(On<0)
+			{
+				float maxy =0;
+				for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
+				{
+					if(x_pos>YoloGameRenderer.ObjectTab[q].x && x_pos<YoloGameRenderer.ObjectTab[q].x + YoloGameRenderer.ObjectTab[q].dx)
+					{
+						if(y_pos+.5f>=YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy)
+							if(YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy>maxy)
+							{
+								maxy = YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy;
+								On =q;
+							}
+					}
+				}
+			}
+			if(On<0)
+				a0 = a1 = a;
+			else
+			{
+				if(x_pos - YoloGameRenderer.ObjectTab[On].x  > a) a0=a;
+				else if(x_pos - YoloGameRenderer.ObjectTab[On].x  < 0) a0 = 0;
+				else a0 = x_pos - YoloGameRenderer.ObjectTab[On].x ;
+				if(YoloGameRenderer.ObjectTab[On].x - x_pos + YoloGameRenderer.ObjectTab[On].dx  > a) a1=a;
+				else if(YoloGameRenderer.ObjectTab[On].x  - x_pos + YoloGameRenderer.ObjectTab[On].dx  < 0) a1 = 0;
+				else a1 = YoloGameRenderer.ObjectTab[On].x  - x_pos + YoloGameRenderer.ObjectTab[On].dx;
+			}		
+			*/
+			x = rng.nextFloat()*(a0+a1) - a0;
+			velecityDirection =rng.nextBoolean()? -1:1;
+			velocity = .015625f + rng.nextFloat() * 0.0078125f;
+			if(velecityDirection < 0)
+			{
+				if(x + a0 > b)y =rng.nextFloat()*b;
+				else y = rng.nextFloat()*(x + a0);
+				x_distance = -y + a0 + x;
+			}
+			else 
+			{
+				if(-x + a1 > b)y = rng.nextFloat()*b;
+				else y = rng.nextFloat()*(-x + a1);
+				x_distance =  Math.abs(-y + a1) - x;
+				
+			}	
+			
+			liveTime = (int) (x_distance/velocity);		
+			
+			System.out.println(x+" "+y+" "+x_distance+" "+liveTime+" "+velocity+" "+velecityDirection+" "+a0+" "+a1);
+			
+			x += x_pos - .5f;
+			y += y_pos - .5f;
+			
+			
+		}
+	}
+	
+	public boolean drawSmoke(GL10 gl)
+	{
+		if(liveTime-- <= 0)
+			return true;
+		couter++;
+		x += velecityDirection*velocity;
+		y = (float) (pom*Math.sin(couter *(6.284f/360.0f)))+y_pos;
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(YoloEngine.TEXTURE_SIZE_X*2f, YoloEngine.TEXTURE_SIZE_Y*2f, 1f);
+		gl.glTranslatef(x/2f, y/2f-.5f, 0f);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glTranslatef(x_texture, y_texture, 0f);
+		YoloGameRenderer.smo.draw(gl, YoloEngine.spriteSheets,20);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		if(x_texture < 0.86f)x_texture += 0.142857f;
+		else {x_texture = 0;y_texture += .142857f;}
+		
+		if(x_texture > x_end && y_texture > y_end)
+		{
+			x_texture = 0;
+			y_texture = 0;
+		}
+		return false;
+	}
+	public boolean drawLava(GL10 gl)
+	{
+		if(liveTime-- <= 0)
+			return true;
+		x += velecityDirection*velocity;
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glScalef(YoloEngine.TEXTURE_SIZE_X, YoloEngine.TEXTURE_SIZE_Y, 1f);
+		gl.glTranslatef(x, y, 0f);
+		gl.glColor4f(1f,1f,1f,1f);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glTranslatef(x_texture, y_texture, 0f);
+		YoloGameRenderer.btn.draw(gl, YoloEngine.spriteSheets,33);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		if(x_texture < 0.875f)x_texture += .125f;
+		else {x_texture = 0;y_texture += .125f;}
+		
+		if(x_texture > x_end && y_texture > y_end)
+		{
+			x_texture = 0;
+			y_texture = 0;
+		}
+		return false;
+	}
+}
+class ParticleObject
+{
+	Particle particleTab[];// = new Particle[200];
+	boolean isSmoke;
+	float x,y,a0,a1;
+	int lifeTime,On;
+	Random rng;
+	
+	public ParticleObject(float x, float y,boolean isSmoke,int liveTime,float a0,float a1) 
+	{
+		this.isSmoke = isSmoke;
+		this.x = x;
+		this.y = y;
+		this.lifeTime = liveTime;
+		rng = new Random();
+		this.a0 = a0;
+		this.a1 = a1;
+		
+		if(isSmoke)
+		{
+			particleTab = new Particle[200];
+			for(int i=0;i<particleTab.length;i++)
+					particleTab[i] = new Particle(x, y, isSmoke,rng,a0,a1);
+		}
+		else
+		{
+			particleTab = new Particle[70];
+			for(int i=0;i<particleTab.length;i++)
+					particleTab[i] = new Particle(x, y, isSmoke,rng,a0,a1);
+		}
+	}
+}
 class PowerUP extends YoloWeapon
 {
 	int effect,j;
@@ -466,21 +650,14 @@ class Skill extends YoloObject
     		YoloEngine.TeamAB[YoloEngine.MyID].icice = YoloEngine.icicleDuration;
     		break;
     	case 20://Smoke weed everyday
-    		xEnd = 0.125f;
-    		yEnd = 0f;
-    		x_radius = 0f;
-    		y_radius = 0f;
-    		frameDuration = 0;
-    		life = 0;MAXlife = life;
-    		animation_slowdown = 300;
-    		resurestion_count = 0;
-    		damage = 5f;
-    		scale_x = 15f;scale_y = 6f;
     		if(ID < 0)
     		{
     			setX();setY();	
-    			this.x -=7f;this.y -= 1.25f;
+    			YoloGameRenderer.particleObjectTabMy.add(new ParticleObject(this.x, this.y, true, 300,-1,-1));
     		}
+    		else
+    			YoloGameRenderer.particleObjectTabOp.add(new ParticleObject(x, y, true, 300,-1,-1));
+    		
     		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
     		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
     		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
@@ -739,34 +916,82 @@ class Skill extends YoloObject
     		break;
     	case 33://Lava weed everyday
     	{
-    		xEnd = 0.125f;
-    		yEnd = 0.375f;
     		x_radius = 10f;
     		y_radius = 0.1f;
     		frameDuration = lava_duration = 300;
     		life = 0;MAXlife = life;
     		animation_slowdown = 0;
-    		resurestion_count = 0;
     		damage = 0.03f;
     		scale_x = 15f;scale_y = 1f;
+    		float a=2,a0,a1;
+    		int On=-1;
     		if(ID<0)
     		{
 	    		setX();setY();
 	    		float maxy=0;
 				for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
 				{
-					if(this.x+1f>YoloGameRenderer.ObjectTab[q].x && this.x<YoloGameRenderer.ObjectTab[q].x + YoloGameRenderer.ObjectTab[q].dx)
+					if(this.x>YoloGameRenderer.ObjectTab[q].x && this.x<YoloGameRenderer.ObjectTab[q].x + YoloGameRenderer.ObjectTab[q].dx)
 					{
-						if(this.y>=YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy)
+						if(this.y+.5f>=YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy)
 							if(YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy>maxy)
+							{
 								maxy = YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy;
+								On =q;
+							}
+						
 					}
 				}
+				if(On<0)
+					a0 = a1 = a;
+				else
+				{
+					if(this.x - YoloGameRenderer.ObjectTab[On].x  > a) a0=a;
+					else if(this.x - YoloGameRenderer.ObjectTab[On].x  < 0) a0 = 0;
+					else a0 = this.x - YoloGameRenderer.ObjectTab[On].x ;
+					if(YoloGameRenderer.ObjectTab[On].x - this.x + YoloGameRenderer.ObjectTab[On].dx  > a) a1=a;
+					else if(YoloGameRenderer.ObjectTab[On].x  - this.x + YoloGameRenderer.ObjectTab[On].dx  < 0) a1 = 0;
+					else a1 = YoloGameRenderer.ObjectTab[On].x  - this.x + YoloGameRenderer.ObjectTab[On].dx;
+				}					
 				this.y = maxy;
-				this.x -= 7f;
+				//this.x -= 6.5f;
+				YoloGameRenderer.particleObjectTabOp.add(new ParticleObject(this.x, this.y, false, 300,a0,a1));
+				x_radius = a0+a1;
     		}
+	    	else
+	    	{
+	    		
+				float maxy =0;
+				for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
+				{
+					if(x>YoloGameRenderer.ObjectTab[q].x && x<YoloGameRenderer.ObjectTab[q].x + YoloGameRenderer.ObjectTab[q].dx)
+					{
+						if(y+.5f>=YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy)
+							if(YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy>maxy)
+							{
+								maxy = YoloGameRenderer.ObjectTab[q].y + YoloGameRenderer.ObjectTab[q].dy;
+								On =q;
+							}
+					}
+				}
+				
+				if(On<0)
+					a0 = a1 = a;
+				else
+				{
+					if(x - YoloGameRenderer.ObjectTab[On].x  > a) a0=a;
+					else if(x - YoloGameRenderer.ObjectTab[On].x  < 0) a0 = 0;
+					else a0 = x - YoloGameRenderer.ObjectTab[On].x ;
+					if(YoloGameRenderer.ObjectTab[On].x - x + YoloGameRenderer.ObjectTab[On].dx  > a) a1=a;
+					else if(YoloGameRenderer.ObjectTab[On].x  - x + YoloGameRenderer.ObjectTab[On].dx  < 0) a1 = 0;
+					else a1 = YoloGameRenderer.ObjectTab[On].x  - x + YoloGameRenderer.ObjectTab[On].dx;
+				}		
+				YoloGameRenderer.particleObjectTabOp.add(new ParticleObject(x, y, false, 300,a0,a1));
+				
+				x_radius = a0+a1;
+	    	}
     		lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
-    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		ly = Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
     		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
     			VolumeScale =0;
     		else
@@ -2351,20 +2576,21 @@ public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
 	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground(),mag = new YoloBackground(YoloEngine.TeamAB[YoloEngine.MyID].PlayerMagCapasity/30f);
-	private YoloWeapon btn = new YoloWeapon(0,0);
+	public static YoloWeapon btn = new YoloWeapon(0,0),smo = new YoloWeapon(0,0,true);
+	private static YoloWeapon bullet,weapon;
 	private Triangle roti0,roti1,roti2;
 	
 	public static YoloObject[] ObjectTab = new YoloObject[17];
 	private YoloObject[] LaddreTab = new YoloObject[4];
 	
-	private static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
-	private static Vector<PowerUP> PowerUPtab = new Vector<PowerUP>();
-	private static YoloWeapon bullet,weapon;
-	
-	public static Skill[] skilltab = new Skill[3];
+	public static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
+	public static Vector<PowerUP> PowerUPtab = new Vector<PowerUP>();
+	//public static Skill[] skilltab = new Skill[3];
 	public static Vector<Skill> skillTeamBVe = new Vector<Skill>();
 	public static Vector<Skill> skillTeamAVe = new Vector<Skill>();
 	public static Vector<HitBox> hitBoxs = new Vector<HitBox>();
+	public static Vector<ParticleObject> particleObjectTabMy = new Vector<ParticleObject>();
+	public static Vector<ParticleObject> particleObjectTabOp = new Vector<ParticleObject>();
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x/YoloEngine.xdpi; // 200/display_x
 	private final float MOVE_SIZE_Y = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_y/YoloEngine.xdpi; // 50/display_y
@@ -2374,17 +2600,13 @@ public class YoloGameRenderer implements Renderer {
 	private final float MOVE_POS_X = 25f/YoloEngine.display_x/YoloEngine.xdpi;//(YoloEngine.MOVE_X/YoloEngine.display_x - MOVE_SIZE_X/2);// /MOVE_SIZE_X;  (125-100)/display_x
 	private final float MOVE_POS_Y = 50f/YoloEngine.display_y/YoloEngine.xdpi; //(YoloEngine.display_y - YoloEngine.MOVE_Y)/YoloEngine.display_y + MOVE_SIZE_Y/2; // 25/display_y == move_y/2/display_y
 	private float Skill1BtnTx,Skill1BtnTy,Skill2BtnTx,Skill2BtnTy,Skill3BtnTx,Skill3BtnTy;
-//	private final float MOVE_POS_X1= (25f/YoloEngine.display_x);// /MOVE_SIZE_X1 ;
-//	private final float MOVE_POS_Y1= (25f/YoloEngine.display_y);// /MOVE_SIZE_Y1 ; 
 	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x/YoloEngine.xdpi;
 	private float LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0;
 	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y/YoloEngine.xdpi;
     public static float half_fx,half_bx,half_fy,half_by ;
 	
 	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
-			//,joyBallX2 =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi
 			,jumpBtnX = 1-125f/YoloEngine.display_x/YoloEngine.xdpi // 1/(MOVE_BALL_SIZE_X*2)-1.5f
-			//,shotBtnX = jumpBtnX
 			,crouchBtnX = 250f/YoloEngine.display_x/YoloEngine.xdpi //2.75f
 			,skillBtnX = .5f - 50f/YoloEngine.display_x/YoloEngine.xdpi //  1/(MOVE_BALL_SIZE_X*2)/2
 			,liveBarX_0 = 25f/YoloEngine.display_x/YoloEngine.xdpi //(0.5f/(1f/LIVE_BAR_SIZE_Y))*(1/LIVE_BAR_SIZE_X_0);	
@@ -2396,7 +2618,6 @@ public class YoloGameRenderer implements Renderer {
 
 	private float cameraPosY
 			,jumpBtnY = 150f/YoloEngine.display_y/YoloEngine.xdpi
-			//,shotBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
 			,crouchBtnY = 25f/YoloEngine.display_y/YoloEngine.xdpi
 			,liveBarY = 1-55f/YoloEngine.display_y/YoloEngine.xdpi // 1f/LIVE_BAR_SIZE_Y -1.75f;// 1-(25+30)/dis_x
 			,joyBallY1
@@ -2408,12 +2629,12 @@ public class YoloGameRenderer implements Renderer {
 	public static boolean toLoad = true,first = false;
 	private int loading_faze=0,loadingStepsCout = 41;
 	
-	
-	private int nextBullet = 1,platformOn=0;
+	public static int platformOn=0;
+	private int nextBullet = 1;
 	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
-	private int powerUpCoutdown =0,powerUpInterval = 1000; // TODO test
+	private int powerUpCoutdown =0,powerUpInterval = 1000; 
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2627,6 +2848,7 @@ public class YoloGameRenderer implements Renderer {
 			drawBackground(gl);
 
 			moveBullets(gl);
+			handleParticles(gl,true);
 			
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA) 
 			{
@@ -2639,6 +2861,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[3].drawAlly(gl,YoloEngine.MyID==3?false:true);
 			}
 			hitBox();
+			drawWeapon(gl);
 			
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA)
 			{
@@ -2651,6 +2874,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[1].drawOpponent(gl);
 			}
 			
+			handleParticles(gl,false);
 			drawOponentSkills(gl);
 			if(nextBullet-- <= 0 && YoloEngine.TeamAB[YoloEngine.MyID].isShoting && YoloEngine.TeamAB[YoloEngine.MyID].playerMag>0)
 			{
@@ -2671,7 +2895,7 @@ public class YoloGameRenderer implements Renderer {
 				}
 			}
 			drawPlayerSkills(gl);
-			drawWeapon(gl);
+			
 			spanMovePowerUPs();
 			checkForPowerUPs();
 			drawPowerUPs(gl);
@@ -4070,7 +4294,7 @@ public class YoloGameRenderer implements Renderer {
 						i--;continue;
 					}
 			}
-			else if(sprite == 33)
+			else /*if(sprite == 33)
 			{
 				LoopSkillDraw(gl, Ve.elementAt(i));
 				if(Ve.elementAt(i).lava_duration-- <= 0)
@@ -4079,7 +4303,7 @@ public class YoloGameRenderer implements Renderer {
 					continue;
 				}			
 			}
-			else
+			else*/
 			{		
 				if(Ve.elementAt(i).x_texture==0 && Ve.elementAt(i).y_texture==0)
 				{
@@ -4111,6 +4335,11 @@ public class YoloGameRenderer implements Renderer {
 						continue;
 					}
 					else if(sprite == 30)
+					{
+						Ve.remove(i);
+						continue;
+					}
+					else if(sprite == 20)
 					{
 						Ve.remove(i);
 						continue;
@@ -4624,6 +4853,47 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
+	private void handleParticles(GL10 gl,boolean My)
+	{
+		Vector<ParticleObject> particleObjectTab;
+		if(My)particleObjectTab = particleObjectTabMy;
+		else particleObjectTab = particleObjectTabOp;
+			
+			
+		for (int i = 0; i < particleObjectTab.size();i++)
+		{
+			if(particleObjectTab.elementAt(i).lifeTime-- <= 0)
+			{
+				particleObjectTab.remove(i--);
+				continue;
+			}
+				
+			if(particleObjectTab.elementAt(i).isSmoke)
+				for(int j = 0;j < particleObjectTab.elementAt(i).particleTab.length; j++)
+				{
+					if(particleObjectTab.elementAt(i).particleTab[j].drawSmoke(gl))
+						{
+							particleObjectTab.elementAt(i).particleTab[j] = new Particle(particleObjectTab.elementAt(i).x, particleObjectTab.elementAt(i).y,
+									particleObjectTab.elementAt(i).isSmoke, particleObjectTab.elementAt(i).rng,-1,-1);
+							particleObjectTab.elementAt(i).particleTab[j].drawSmoke(gl);
+						}
+				}
+			else
+			{
+				for(int j = 0;j < particleObjectTab.elementAt(i).particleTab.length; j++)
+				{
+					if(particleObjectTab.elementAt(i).particleTab[j].drawLava(gl))
+						{
+							particleObjectTab.elementAt(i).particleTab[j] = new Particle(particleObjectTab.elementAt(i).x, particleObjectTab.elementAt(i).y,
+									particleObjectTab.elementAt(i).isSmoke, particleObjectTab.elementAt(i).rng,particleObjectTab.elementAt(i).a0,particleObjectTab.elementAt(i).a1);
+							particleObjectTab.elementAt(i).particleTab[j].drawLava(gl);
+						}
+				}
+			}
+			
+		}
+	}
+	
 	public static void weaponSelect()
 	{
 		//TODO load weapon statistics
@@ -4780,6 +5050,8 @@ public class YoloGameRenderer implements Renderer {
 		}
 		else
 		{
+			ObjectTab = new YoloObject[17];
+			
 			ObjectTab[0] = new YoloObject(0,1330,2400,110);
 			ObjectTab[1] = new YoloObject(37, 671, 2301, 115);
 			ObjectTab[2] = new YoloObject(209,495,383,53);
@@ -5548,5 +5820,24 @@ public class YoloGameRenderer implements Renderer {
 			break;
 		}
 //-----------------------------------------------------------------------------------------------------------		
+		
+	}
+	public void clear()
+	{
+		
+		Weapontab.clear();
+		skillTeamBVe.clear();
+		skillTeamAVe.clear();
+		PowerUPtab.clear();
+		hitBoxs.clear();
+		particleObjectTabMy.clear();
+		particleObjectTabOp.clear();
+		
+		toLoad = true;
+		first = false;
+		onGround = true;
+		contact = true;
+		
+		YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
 	}
 }

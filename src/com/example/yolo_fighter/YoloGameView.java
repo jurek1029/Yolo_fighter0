@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView;
 
 public class YoloGameView extends GLSurfaceView{
 	
-	private YoloGameRenderer renderer;
+	public static YoloGameRenderer renderer;
 
 	public YoloGameView(Context context) {
 		super(context);

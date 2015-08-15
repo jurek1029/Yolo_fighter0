@@ -79,6 +79,33 @@ public class YoloWeapon extends YoloObject {
 		indexBuffer.position(0);
 	}
 	
+	public YoloWeapon(float x, float y,boolean tak)
+	{
+		super(x,y);
+		
+		float texture[] = {
+				0.0f, 0.0f,
+				.142857f, 0.0f,
+				.142857f, .142857f,
+				0.0f, .142857f
+		};
+		ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuf.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+		
+		byteBuf = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuf.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuf.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+		
+		indexBuffer = ByteBuffer.allocateDirect(indices.length);
+		indexBuffer.put(indices);
+		indexBuffer.position(0);
+	}
+	
 	public YoloWeapon(float x, float y,float dx,float dy)
 	{
 		super(x,y,dx,dy);
