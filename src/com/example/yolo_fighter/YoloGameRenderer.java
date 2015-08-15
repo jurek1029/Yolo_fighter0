@@ -58,7 +58,7 @@ class PowerUP extends YoloWeapon
 			y_texture = 0.375f;
 			break;
 		case 7:
-			x_texture = 0.75f;
+			x_texture = 0.875f;
 			y_texture = 0.375f;
 			break;
 			
@@ -2413,7 +2413,7 @@ public class YoloGameRenderer implements Renderer {
 	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
-	private int powerUpCoutdown =0,powerUpInterval = 100; // TODO test
+	private int powerUpCoutdown =0,powerUpInterval = 1000; // TODO test
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -4615,7 +4615,7 @@ public class YoloGameRenderer implements Renderer {
 	{
 		for (int i = 0;i < PowerUPtab.size();i++)
 		{
-			if(IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[j]))
+			if(IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[YoloEngine.MyID]))
 			{
 				PowerUPtab.elementAt(i).Activate();
 				PowerUPtab.remove(i--);

@@ -605,6 +605,7 @@ public class YoloGame extends Activity{
 				YoloEngine.whichLayout=0;
 				YoloGameRenderer.skillTeamBVe.clear();
 				YoloGameRenderer.skillTeamAVe.clear();
+				YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
 				Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);
 				YoloGame.this.startActivity(mainMenu);
 				YoloEngine.context = getApplicationContext();
