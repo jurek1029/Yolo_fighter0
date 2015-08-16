@@ -2880,7 +2880,7 @@ public class YoloGameRenderer implements Renderer {
 			{
 				YoloEngine.TeamAB[YoloEngine.MyID].playerMag--;
 				nextBullet = YoloEngine.TeamAB[YoloEngine.MyID].firePause;
-				playerFire(0.5f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,YoloEngine.TeamAB[YoloEngine.MyID].fireCount,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage,YoloEngine.TeamAB[YoloEngine.MyID].poiseDamage);					
+				playerFire(0.12f,YoloEngine.TeamAB[YoloEngine.MyID].fireSprite,YoloEngine.TeamAB[YoloEngine.MyID].fireCount,YoloEngine.TeamAB[YoloEngine.MyID].fireDamage,YoloEngine.TeamAB[YoloEngine.MyID].poiseDamage);					
 			}
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerMag==0)
 			{
@@ -3090,7 +3090,6 @@ public class YoloGameRenderer implements Renderer {
 		out:
 		for(int i = 0 ; i < Weapontab.size() ;i++)
 		{
-			
 			switch( Weapontab.get(i).Aim)
 			{
 			case 0:
@@ -3732,7 +3731,7 @@ public class YoloGameRenderer implements Renderer {
 	
 	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim,float poiseDamge) //XXX oppfire nie potrzebuje isCrouch
 	{
-		bullet = new YoloWeapon(x,y,0.2f);
+		bullet = new YoloWeapon(x,y,0.12f);
 		bullet.damage = damage;
 		bullet.poiseDamage = poiseDamge;
 		bullet.count = count;
