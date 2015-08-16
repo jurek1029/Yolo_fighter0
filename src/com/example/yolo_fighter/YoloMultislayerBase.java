@@ -65,7 +65,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 
 		switch (messageCode) {
 		case 'p':
-			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0,rcvData.getInt());
+			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0,rcvData.getInt(),rcvData.getInt());
 			break;
 
 		case 'l':
@@ -295,7 +295,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	 * @param isCrouch
 	 * @param packageId
 	 */
-	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId,int aim) {
+	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId,int aim,int act) {
 		/* XXX
 		 * if (packageId < receivedPackageId) { System.out.println("old data");
 		 * return; } else receivedPackageId = packageId; // NIE DZIA�A, mo�e
@@ -314,6 +314,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 
 		YoloEngine.TeamAB[playerID].PlayerLive = life;
 		YoloEngine.TeamAB[playerID].aim = aim;
+		YoloEngine.TeamAB[playerID].setAction(act);
 
 	}
 
@@ -329,7 +330,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
 			sentAt = System.currentTimeMillis();
 
-			ByteBuffer bbf = ByteBuffer.allocate(23);
+			ByteBuffer bbf = ByteBuffer.allocate(27);
 			bbf.putChar('p');
 			bbf.putInt(YoloEngine.MyID);
 			bbf.putFloat(x);
@@ -340,6 +341,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 				bbf.put((byte) 0);
 			bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive);
 			bbf.putInt(YoloEngine.TeamAB[YoloEngine.MyID].aim);
+			bbf.putInt(YoloEngine.TeamAB[YoloEngine.MyID].act);
 			sendMessageToAll(bbf.array());
 		}
 
