@@ -79,6 +79,8 @@ public class YoloPlayer extends YoloObject {
 	public int playerMagReloadTime = 100,reloading =0,baseMagReloadtime = playerMagReloadTime;
 	public int healBuffer =0;
 	
+	float lx,ly,VolumeScale=1;
+	
 	private static float vertices[] = {
 			0.0f, 0.0f, 0.0f,
 			1.0f, 0.0f, 0.0f,
@@ -234,7 +236,7 @@ public class YoloPlayer extends YoloObject {
 		gl.glMatrixMode(GL10.GL_TEXTURE);
 		gl.glTranslatef(x_texture, y_texture, 0f);
 		gl.glTranslatef(0f, 0f, 0f);
-		draw(gl,YoloEngine.spriteSheets,2);
+		draw(gl,YoloEngine.spriteSheets,2);//TODO rasa
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
 		
@@ -245,14 +247,14 @@ public class YoloPlayer extends YoloObject {
 			if(act == 2 || act == 3)
 			{
 				if(framecount == 0 )
-					YoloEngine.sp.play(YoloEngine.SoundInd[1], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+					YoloEngine.sp.play(YoloEngine.SoundInd[1], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 				else if(framecount == 3)
-					YoloEngine.sp.play(YoloEngine.SoundInd[2], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+					YoloEngine.sp.play(YoloEngine.SoundInd[2], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 			}
 			else if(act == 4 || act == 5)
 			{
 				if(framecount == 0 )
-					YoloEngine.sp.play(YoloEngine.SoundInd[3], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+					YoloEngine.sp.play(YoloEngine.SoundInd[3], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 			}
 			
 			framecount++;
@@ -308,6 +310,16 @@ public class YoloPlayer extends YoloObject {
 			draw(gl,YoloEngine.spriteSheets,1);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
+			
+			lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+			ly = Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+			if(lx > 1/YoloEngine.TEXTURE_SIZE_X || ly > 1/YoloEngine.TEXTURE_SIZE_Y )
+				VolumeScale =0;
+			else
+			{
+				VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+			}
+			
 		}
      
 		
@@ -535,18 +547,16 @@ public class YoloPlayer extends YoloObject {
 		{
 			if(--dashDuration ==0)
 				vx = YoloGame.vxbuff;
-			
-			//TODO dash texture
 		}
 		if(PlayerLive <= 0 && ! isDead)
 		{
 			isDead = true;
 			if(YoloEngine.TeamAB[YoloEngine.MyID].race == 0)
-				YoloEngine.sp.play(YoloEngine.SoundInd[13], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+				YoloEngine.sp.play(YoloEngine.SoundInd[13], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 1)
-				YoloEngine.sp.play(YoloEngine.SoundInd[15], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+				YoloEngine.sp.play(YoloEngine.SoundInd[15], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 2)
-				YoloEngine.sp.play(YoloEngine.SoundInd[14], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+				YoloEngine.sp.play(YoloEngine.SoundInd[14], YoloEngine.Volume * (livebar? VolumeScale: 1f), YoloEngine.Volume * (livebar? VolumeScale: 1f), 1, 0, 1f);
 		}
 	}
 	public void drawOpponent(GL10 gl)
@@ -561,7 +571,7 @@ public class YoloPlayer extends YoloObject {
 		if(isCrouch) gl.glTranslatef(0f, 0f, 0f);
 		else gl.glTranslatef(0.125f, 0f, 0f);
 		gl.glTranslatef(0f, 0f, 0f);
-		draw(gl,YoloEngine.spriteSheets,3);
+		draw(gl,YoloEngine.spriteSheets,2);//TODO rasa
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
 		
@@ -577,7 +587,70 @@ public class YoloPlayer extends YoloObject {
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
 		
+		lx = Math.abs(x-YoloEngine.TeamAB[YoloEngine.MyID].x);
+		ly = Math.abs(y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+		if(lx > 1/YoloEngine.TEXTURE_SIZE_X || ly > 1/YoloEngine.TEXTURE_SIZE_Y )
+			VolumeScale =0;
+		else
+		{
+			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+		}
+		
+		if(aniSlowCounter++ >= animation_slowdown)
+		{
 
+			if(act == 2 || act == 3)
+			{
+				if(framecount == 0 )
+					YoloEngine.sp.play(YoloEngine.SoundInd[1], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+				else if(framecount == 3)
+					YoloEngine.sp.play(YoloEngine.SoundInd[2], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+			}
+			else if(act == 4 || act == 5)
+			{
+				if(framecount == 0 )
+					YoloEngine.sp.play(YoloEngine.SoundInd[3], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+			}
+			
+			framecount++;
+			aniSlowCounter = 0;
+			if(revers)
+			{
+				if(y_texture <= y_end && x_texture <= x_end)
+				{
+					framecount =0;
+					y_texture = y_start;
+					x_texture = x_start;
+				}
+				else if(x_texture>0 )x_texture-=0.125f;
+				else{y_texture-=0.125f; x_texture=0.875f;}
+				
+				
+			}
+			else
+			{
+				if(x_texture<0.875f )x_texture+=0.125f;
+				else
+				{y_texture+=0.125f; x_texture=0f;}
+				
+				if(y_texture >= y_end && x_texture >= x_end)
+				{
+					framecount =0;
+					y_texture = y_start;
+					x_texture = x_start;
+				}
+			}
+		}	
+		
+		if(vx==0)
+		{
+			if(act!=4||act != 5)
+			{
+				setAction(isPlayerLeft?0:1);
+				animation_slowdown =0;
+			}
+		}
+		
 		if(isPlayerPoisoned)
 		{
 			PlayerLive -= 0.1f;
@@ -789,6 +862,18 @@ public class YoloPlayer extends YoloObject {
 			
 			isBeingHealed = LinearDraw(gl, 0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
 		}
+		
+		if(PlayerLive <= 0 && ! isDead)
+		{
+			isDead = true;
+			if(YoloEngine.TeamAB[YoloEngine.MyID].race == 0)
+				YoloEngine.sp.play(YoloEngine.SoundInd[13], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 1)
+				YoloEngine.sp.play(YoloEngine.SoundInd[15], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 2)
+				YoloEngine.sp.play(YoloEngine.SoundInd[14], YoloEngine.Volume * VolumeScale, YoloEngine.Volume * VolumeScale, 1, 0, 1f);
+		}
+		
 	}
 	
 	public void draw (GL10 gl, int[] spriteSheet,int number)
