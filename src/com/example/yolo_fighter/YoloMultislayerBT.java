@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
 
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.multiplayer.Participant;
@@ -32,15 +33,36 @@ import android.os.Handler;
 import android.os.IBinder;
 
 public class YoloMultislayerBT extends YoloMultislayerBase {
+					
+	private boolean priorityLock = false; // blokada przesylania pozycji na czas wysylania reliable 
 
 	@Override
-	protected void sendMessageToAllreliable(byte[] data) {		
-		kk.write(data);
+	protected void sendMessageToAllreliable(final byte[] data) {	
+		this.priorityLock = true;		
+		new Thread(new Runnable() {			
+			@Override
+			public void run() {				
+				try {
+					ReliableMessageLock.getInstance().getKLock();
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {					
+						e.printStackTrace();
+					}
+					kk.write(data);					
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				} finally {
+					priorityLock = false;
+					ReliableMessageLock.getInstance().releaseKLock();					
+				}																
+			}
+		}).start();		
 	}
 
 	@Override
 	protected void sendMessageToAll(byte[] data) {		
-		kk.write(data);
+		if(!priorityLock) kk.write(data);
 	}
 
 	public void joinGame() {	
@@ -59,9 +81,6 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		prepareBluetooth();
 		prepareServer();
 	}
-
-	// NEW
-
 	
 	
 	public YoloMultislayerBT() {
@@ -140,6 +159,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 
 					if (kk > 0) {
 						newDevice = btDevicesPairedRaw.get(kk);
+						debugLog("BT device already paired");
 					}
 					final BluetoothDevice dk = newDevice; // must be final
 
@@ -294,7 +314,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		}).start();
 
 	}
-
+/*
 	public void sendToAll(String text) {
 		// serwer wysy³a wszystkim klientom coœ
 		//new ConnectedThread(socket).write(text.getBytes());
@@ -310,7 +330,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	public void closeSocket(BluetoothSocket bSocket) {
 		new ConnectedThread(bSocket).cancel();
 	}
-	
+*/
 	
 	private void startUp1() {
 		/*mActivity.runOnUiThread(new Runnable() {
@@ -463,3 +483,26 @@ class ConnectedThread extends Thread {
 	}		
 }
 
+ class ReliableMessageLock {
+	private ReliableMessageLock(){
+		
+	}
+	
+	private static class SingletonHolder {
+		public static final ReliableMessageLock INSTANCE = new ReliableMessageLock();
+	}
+	
+	public static ReliableMessageLock getInstance() {
+		return SingletonHolder.INSTANCE;
+	}
+	
+	private Semaphore kLock = new Semaphore(1);
+	public void getKLock() throws InterruptedException {
+		kLock.acquire();
+	}
+	public void releaseKLock() {
+		kLock.release();
+	}
+	
+ }
+	

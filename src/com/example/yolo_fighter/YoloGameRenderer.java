@@ -202,6 +202,52 @@ class ParticleObject
 class PowerUP extends YoloWeapon
 {
 	int effect,j;
+	PowerUP(float x, float y, int effect) {
+		super(0f,0f,.5f,.5f);
+		this.effect = effect;
+		this.x = x;
+		this.y = y;
+		vy = 0;
+		j=0;
+		
+		switch(effect)
+		{
+		case 0:
+			x_texture = 0f;
+			y_texture = 0.375f;
+			break;
+		case 1:
+			x_texture = 0.125f;
+			y_texture = 0.375f;
+			break;
+		case 2:
+			x_texture = 0.25f;
+			y_texture = 0.375f;
+			break;
+		case 3:
+			x_texture = 0.375f;
+			y_texture = 0.375f;
+			break;
+		case 4:
+			x_texture = 0.5f;
+			y_texture = 0.375f;
+			break;
+		case 5:
+			x_texture = 0.625f;
+			y_texture = 0.375f;
+			break;
+		case 6:
+			x_texture = 0.75f;
+			y_texture = 0.375f;
+			break;
+		case 7:
+			x_texture = 0.875f;
+			y_texture = 0.375f;
+			break;
+			
+		}
+				
+	}
 	PowerUP()
 	{	
 		super(0f,0f,.5f,.5f);
@@ -461,7 +507,7 @@ class Skill extends YoloObject
     		damage = 20f;
     		 if(ID < 0)
     			 setAIXY();
-    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft; // TODO przes³aæ isLeft
+    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
 			this.x++;
     		break;
     	case 11://Tower
@@ -2780,7 +2826,7 @@ public class YoloGameRenderer implements Renderer {
 // ------------------------- Multislayer BEGIN -----------------------	
 
 			if (YoloEngine.MULTI_ACTIVE) {
-                YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.TeamAB[YoloEngine.MyID].x, YoloEngine.TeamAB[YoloEngine.MyID].y, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch);
+                YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.TeamAB[YoloEngine.MyID].x, YoloEngine.TeamAB[YoloEngine.MyID].y, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft);
 			}	
 			for(int i = 0; i < YoloEngine.TeamSize*2; i++) {
 				if(i == YoloEngine.MyID) continue; //skippujemy jesli dotyczy 'naszego' gracza
@@ -4810,8 +4856,9 @@ public class YoloGameRenderer implements Renderer {
 		if(powerUpCoutdown-- <= 0)
 		{
 			powerUpCoutdown = powerUpInterval;
-			PowerUPtab.add(new PowerUP());
-			//XXX send INFO
+			PowerUP mPowerUP = new PowerUP();
+			YoloEngine.mMultislayer.sendPowerUp(true, mPowerUP.x, mPowerUP.y, mPowerUP.effect);
+			PowerUPtab.add(mPowerUP);			
 		}
 		
 		for(PowerUP UP : PowerUPtab) 
@@ -4844,10 +4891,10 @@ public class YoloGameRenderer implements Renderer {
 		for (int i = 0;i < PowerUPtab.size();i++)
 		{
 			if(IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[YoloEngine.MyID]))
-			{
-				PowerUPtab.elementAt(i).Activate();
+			{			
+				YoloEngine.mMultislayer.sendPowerUp(false, i, 0, 0);
+				PowerUPtab.elementAt(i).Activate();			
 				PowerUPtab.remove(i--);
-				//XXX send INFO
 			}
 		}
 	}

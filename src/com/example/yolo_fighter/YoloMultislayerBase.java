@@ -65,7 +65,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 
 		switch (messageCode) {
 		case 'p':
-			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0,rcvData.getInt(),rcvData.getInt());
+			YoloEngine.mMultislayer.positionDataReceived(rcvData.getInt(), rcvData.getFloat(), rcvData.getFloat(), rcvData.get() == 1 ? true : false, rcvData.getFloat(), 0,rcvData.getInt(),rcvData.getInt(), rcvData.get() == 1 ? true : false);
 			break;
 
 		case 'l':
@@ -270,7 +270,13 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		case 'm':
 			int ind = rcvData.getInt();
 			YoloEngine.TeamAB[ind].PLAYER_LIVE_MAX = rcvData.getFloat();
-
+			break;
+		case 'r':
+			boolean addAction = rcvData.get() == 1 ? true : false;
+			if(addAction)
+				YoloGameRenderer.PowerUPtab.add(new PowerUP(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt()));
+			else
+				YoloGameRenderer.PowerUPtab.removeElementAt((int)rcvData.getFloat());
 			break;
 		case 'q':
 			int k = rcvData.getInt();
@@ -295,7 +301,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	 * @param isCrouch
 	 * @param packageId
 	 */
-	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId,int aim,int act) {
+	protected void positionDataReceived(final int playerID, final float x, final float y, final boolean isCrouch, float life, int packageId,int aim,int act, boolean isLeft) {
 		/* XXX
 		 * if (packageId < receivedPackageId) { System.out.println("old data");
 		 * return; } else receivedPackageId = packageId; // NIE DZIA�A, mo�e
@@ -315,6 +321,8 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		YoloEngine.TeamAB[playerID].PlayerLive = life;
 		YoloEngine.TeamAB[playerID].aim = aim;
 		YoloEngine.TeamAB[playerID].setAction(act);
+		
+		YoloEngine.TeamAB[playerID].isPlayerLeft = isLeft;
 
 	}
 
@@ -325,12 +333,12 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	 * @param y
 	 * @param isCrouched
 	 */
-	public void sendPlayerPosition(float x, float y, boolean isCrouched) {
+	public void sendPlayerPosition(float x, float y, boolean isCrouched, boolean isLeft) {
 		// int 4, float 4, char 2 --> bajty
 		if (System.currentTimeMillis() - sentAt >= YoloEngine.UPDATE_FREQ) {
 			sentAt = System.currentTimeMillis();
 
-			ByteBuffer bbf = ByteBuffer.allocate(27);
+			ByteBuffer bbf = ByteBuffer.allocate(30);
 			bbf.putChar('p');
 			bbf.putInt(YoloEngine.MyID);
 			bbf.putFloat(x);
@@ -342,6 +350,10 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 			bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive);
 			bbf.putInt(YoloEngine.TeamAB[YoloEngine.MyID].aim);
 			bbf.putInt(YoloEngine.TeamAB[YoloEngine.MyID].act);
+			if (isLeft)
+				bbf.put((byte) 1);
+			else
+				bbf.put((byte) 0);
 			sendMessageToAll(bbf.array());
 		}
 
@@ -360,7 +372,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 	}
 
 	public void sendOpponentFire(float x, float y, boolean isLeft, boolean isCrouch, int sprite, int count, float damage, boolean team,int aim,float poiseDamge) {
-		ByteBuffer bbf = ByteBuffer.allocate(31);
+		ByteBuffer bbf = ByteBuffer.allocate(40);
 		bbf.putChar('f');
 		bbf.putFloat(x);
 		bbf.putFloat(y);
@@ -469,6 +481,7 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		bbf.putChar('m');
 		bbf.putInt(YoloEngine.MyID);
 		bbf.putFloat(YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX);
+		
 		sendMessageToAllreliable(bbf.array());
 	}
 
@@ -477,6 +490,20 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 		bbf.putChar('q');
 		bbf.putInt(YoloEngine.MyID);
 
+		sendMessageToAllreliable(bbf.array());
+	}
+	
+	public void sendPowerUp(boolean actionAdd, float x, float y, int effect) {
+		ByteBuffer bbf = ByteBuffer.allocate(16);	
+		bbf.putChar('r');
+		if(actionAdd)
+			bbf.put((byte) 1);
+		else
+			bbf.put((byte) 0);
+		bbf.putFloat(x);
+		bbf.putFloat(y);
+		bbf.putInt(effect);
+		
 		sendMessageToAllreliable(bbf.array());
 	}
 
