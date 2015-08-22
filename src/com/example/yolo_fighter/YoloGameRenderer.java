@@ -2680,7 +2680,7 @@ public class YoloGameRenderer implements Renderer {
 	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
-	private int powerUpCoutdown =0,powerUpInterval = 1000; 
+	private int powerUpCoutdown =0,powerUpInterval = 1000;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -4825,76 +4825,73 @@ public class YoloGameRenderer implements Renderer {
 	
 	private void drawPowerUPs(GL10 gl)
 	{
-		for(PowerUP UP : PowerUPtab) 
-		{
-			gl.glMatrixMode(GL10.GL_MODELVIEW);
-			gl.glLoadIdentity();
-			gl.glPushMatrix();
-			gl.glScalef(YoloEngine.TEXTURE_SIZE_X/2, YoloEngine.TEXTURE_SIZE_Y/2, 1f);
-			gl.glTranslatef(UP.x*2, UP.y*2, 0f);		
-			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(0f, 0.25f, 0f);
-			UP.draw(gl,YoloEngine.spriteSheets,0);
-			gl.glPopMatrix();
-			gl.glLoadIdentity();
-			
-			gl.glMatrixMode(GL10.GL_MODELVIEW);
-			gl.glLoadIdentity();
-			gl.glPushMatrix();
-			gl.glScalef(YoloEngine.TEXTURE_SIZE_X/2, YoloEngine.TEXTURE_SIZE_Y/2, 1f);
-			gl.glTranslatef(UP.x*2, UP.y*2, 0f);		
-			gl.glMatrixMode(GL10.GL_TEXTURE);
-			gl.glTranslatef(UP.x_texture, UP.y_texture, 0f);
-			UP.draw(gl,YoloEngine.spriteSheets,0);
-			gl.glPopMatrix();
-			gl.glLoadIdentity();
+		synchronized (PowerUPtab) {
+			for (PowerUP UP : PowerUPtab) {
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glScalef(YoloEngine.TEXTURE_SIZE_X / 2, YoloEngine.TEXTURE_SIZE_Y / 2, 1f);
+				gl.glTranslatef(UP.x * 2, UP.y * 2, 0f);
+				gl.glMatrixMode(GL10.GL_TEXTURE);
+				gl.glTranslatef(0f, 0.25f, 0f);
+				UP.draw(gl, YoloEngine.spriteSheets, 0);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glScalef(YoloEngine.TEXTURE_SIZE_X / 2, YoloEngine.TEXTURE_SIZE_Y / 2, 1f);
+				gl.glTranslatef(UP.x * 2, UP.y * 2, 0f);
+				gl.glMatrixMode(GL10.GL_TEXTURE);
+				gl.glTranslatef(UP.x_texture, UP.y_texture, 0f);
+				UP.draw(gl, YoloEngine.spriteSheets, 0);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+			}
 		}
 	}
 	
 	private void spanMovePowerUPs()
 	{
-		if(powerUpCoutdown-- <= 0)
-		{
-			powerUpCoutdown = powerUpInterval;
-			PowerUP mPowerUP = new PowerUP();
-			YoloEngine.mMultislayer.sendPowerUp(true, mPowerUP.x, mPowerUP.y, mPowerUP.effect);
-			PowerUPtab.add(mPowerUP);			
-		}
-		
-		for(PowerUP UP : PowerUPtab) 
-		{
-			UP.vy -= YoloEngine.GAME_ACCELERATION;
-			UP.y += UP.vy;
-			
-			if(IsCollidedTop(UP,ObjectTab[UP.j]))
-				{
-						UP.y = ObjectTab[UP.j].y + ObjectTab[UP.j].dy;
-						UP.vy = 0;
-				}
-			else
-			for(int i = 0; i < ObjectTab.length; i++)
-			{
-				if(IsCollidedTop(UP,ObjectTab[i]))
-				{
-						UP.y = ObjectTab[i].y + ObjectTab[i].dy;
-						UP.vy = 0;
-						UP.j=i;
-					break;
-				}
+		synchronized (PowerUPtab) {
+			if (powerUpCoutdown-- <= 0 && YoloEngine.TeamAB[YoloEngine.MyID].gameMaster) {
+				powerUpCoutdown = powerUpInterval;
+				PowerUP mPowerUP = new PowerUP();
+				YoloEngine.mMultislayer.sendPowerUp(true, mPowerUP.x, mPowerUP.y, mPowerUP.effect);
+				PowerUPtab.add(mPowerUP);
 			}
-			
+
+			for (PowerUP UP : PowerUPtab) {
+				UP.vy -= YoloEngine.GAME_ACCELERATION;
+				UP.y += UP.vy;
+
+				if (IsCollidedTop(UP, ObjectTab[UP.j])) {
+					UP.y = ObjectTab[UP.j].y + ObjectTab[UP.j].dy;
+					UP.vy = 0;
+				} else
+					for (int i = 0; i < ObjectTab.length; i++) {
+						if (IsCollidedTop(UP, ObjectTab[i])) {
+							UP.y = ObjectTab[i].y + ObjectTab[i].dy;
+							UP.vy = 0;
+							UP.j = i;
+							break;
+						}
+					}
+
+			}
 		}
 	}
 	
 	private void checkForPowerUPs()
 	{
-		for (int i = 0;i < PowerUPtab.size();i++)
-		{
-			if(IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[YoloEngine.MyID]))
-			{			
-				YoloEngine.mMultislayer.sendPowerUp(false, i, 0, 0);
-				PowerUPtab.elementAt(i).Activate();			
-				PowerUPtab.remove(i--);
+		synchronized (PowerUPtab) {
+			for (int i = 0; i < PowerUPtab.size(); i++) {
+				if (IsCollided(PowerUPtab.elementAt(i), YoloEngine.TeamAB[YoloEngine.MyID])) {
+					YoloEngine.mMultislayer.sendPowerUp(false, i, 0, 0);
+					PowerUPtab.elementAt(i).Activate();
+					PowerUPtab.remove(i--);
+				}
 			}
 		}
 	}

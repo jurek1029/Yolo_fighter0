@@ -52,6 +52,7 @@ public class YoloPlayer extends YoloObject {
 	public float y_last;
 	public float x_lastX;
 	public float y_lastX;
+	public boolean gameMaster = false;
 	
 	int race;
 	int weapon;

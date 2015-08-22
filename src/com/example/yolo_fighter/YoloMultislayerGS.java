@@ -331,6 +331,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 				// My przydzielamy teamy
 				System.out.println("przydzielam team");
 				String teamAssignPattern = assignTeams();
+				YoloEngine.TeamAB[YoloEngine.MyID].gameMaster = true;
 				// @TODO czyszczenie listy teamAB, teamA, teamB ?				
 
 				YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));

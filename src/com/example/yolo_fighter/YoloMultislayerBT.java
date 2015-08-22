@@ -380,7 +380,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 			// My przydzielamy teamy
 			System.out.println("przydzielam team");
 			final String teamAssignPattern = assignTeamsXX();
-						
+			YoloEngine.TeamAB[YoloEngine.MyID].gameMaster = true;			
 
 			YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
 			new Thread(new Runnable() {

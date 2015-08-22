@@ -13,7 +13,7 @@ import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.ParticipantResult;
 
-public abstract class YoloMultislayerBase { //extends Thread { // TODO is extending Thread a good idea?
+public abstract class YoloMultislayerBase extends Thread {// TODO is extending Thread a good idea?
 
 	protected abstract void sendMessageToAllreliable(byte[] data);
 
@@ -273,10 +273,15 @@ public abstract class YoloMultislayerBase { //extends Thread { // TODO is extend
 			break;
 		case 'r':
 			boolean addAction = rcvData.get() == 1 ? true : false;
-			if(addAction)
-				YoloGameRenderer.PowerUPtab.add(new PowerUP(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt()));
-			else
-				YoloGameRenderer.PowerUPtab.removeElementAt((int)rcvData.getFloat());
+			synchronized (YoloGameRenderer.PowerUPtab) {
+				if (addAction)
+					YoloGameRenderer.PowerUPtab.add(new PowerUP(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt()));
+				else {
+					int pIndex = (int) rcvData.getFloat();
+					if (YoloGameRenderer.PowerUPtab.size() > pIndex)
+						YoloGameRenderer.PowerUPtab.removeElementAt(pIndex);
+				}
+			}
 			break;
 		case 'q':
 			int k = rcvData.getInt();
