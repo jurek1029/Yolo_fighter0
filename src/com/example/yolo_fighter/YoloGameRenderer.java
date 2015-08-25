@@ -2627,7 +2627,7 @@ public class YoloGameRenderer implements Renderer {
 	private Triangle roti0,roti1,roti2;
 	
 	public static YoloObject[] ObjectTab = new YoloObject[17];
-	private YoloObject[] LaddreTab = new YoloObject[4];
+	public static YoloObject[] LaddreTab = new YoloObject[4];
 	
 	public static Vector<YoloWeapon> Weapontab  = new Vector<YoloWeapon>();
 	public static Vector<PowerUP> PowerUPtab = new Vector<PowerUP>();
