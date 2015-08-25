@@ -482,33 +482,29 @@ public class YoloGame extends Activity{
 			
 			case MotionEvent.ACTION_UP:
 				{
-					if(x > YoloEngine.display_x/2)
-					{	
-						if(event.getActionIndex() == pointer3)
-						{
-							pointer3 = -1;
-							x3=-1000;
-							y3=-1000;
-							x_old3 = - 1000;
-							y_old3 = - 1000;
-							YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
-						}
-					}
-					else
+
+					if(event.getActionIndex() == pointer3)
 					{
-						if(event.getActionIndex() == pointer2)
-						{
-							pointer2 = -1;
-							x2=-1000;
-							y2=-1000;
-							x_old = - 1000;
-							y_old = - 1000;
-							YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
-							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
-							YoloEngine.isCrouch_prest = false;
-							lastMovePointer2 =-1;
-							currentMovePointer2 = -1;
-						}
+						pointer3 = -1;
+						x3=-1000;
+						y3=-1000;
+						x_old3 = - 1000;
+						y_old3 = - 1000;
+						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
+					}
+
+					if(event.getActionIndex() == pointer2)
+					{
+						pointer2 = -1;
+						x2=-1000;
+						y2=-1000;
+						x_old = - 1000;
+						y_old = - 1000;
+						YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
+						YoloEngine.isCrouch_prest = false;
+					//	lastMovePointer2 =-1;
+						currentMovePointer2 = -1;
 					}
 					
 					if(YoloEngine.isSkillPressed)
@@ -522,33 +518,27 @@ public class YoloGame extends Activity{
 			case MotionEvent.ACTION_POINTER_UP:
 				{		
 					
-					if(x > YoloEngine.display_x/2)
-					{	
-						if(event.getActionIndex() == pointer3)
-						{
-							pointer3 = -1;
-							x3=-1000;
-							y3=-1000;
-							x_old3 = - 1000;
-							y_old3 = - 1000;
-							YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
-						}
-					}
-					else
+					if(event.getActionIndex() == pointer3)
 					{
-						if(event.getActionIndex() == pointer2)
-						{
-							pointer2 = -1;
-							x2=-1000;
-							y2=-1000;
-							x_old = - 1000;
-							y_old = - 1000;
-							YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
-							YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
-							YoloEngine.isCrouch_prest = false;
-							lastMovePointer2 =-1;
-							currentMovePointer2 =-1;
-						}
+						pointer3 = -1;
+						x3=-1000;
+						y3=-1000;
+						x_old3 = - 1000;
+						y_old3 = - 1000;
+						YoloEngine.TeamAB[YoloEngine.MyID].isShoting = false;
+					}
+					if(event.getActionIndex() == pointer2)
+					{
+						pointer2 = -1;
+						x2=-1000;
+						y2=-1000;
+						x_old = - 1000;
+						y_old = - 1000;
+						YoloEngine.TeamAB[YoloEngine.MyID].isMoving = false;
+						YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
+						YoloEngine.isCrouch_prest = false;
+					//	lastMovePointer2 =-1;
+						currentMovePointer2 =-1;
 					}
 					
 					if(event.getActionIndex()<pointer2)
