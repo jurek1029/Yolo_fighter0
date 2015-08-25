@@ -67,7 +67,7 @@ public class YoloPlayer extends YoloObject {
 	public float PlayerLive = 100;
 	public final int PLAYER_BULLET_FREQUENCY = 10; 
 	public float PLAYER_LIVE_MAX = 100;
-	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f;
+	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f,Player_basic_dmg_reduction = 1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
 	public int coin =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1,framecount=0;
@@ -396,11 +396,12 @@ public class YoloPlayer extends YoloObject {
 		
 		if(isPlayerDef )
 		{
-			Player_Dmg_reduction = 0.5f;
+			
+			Player_Dmg_reduction = Player_basic_dmg_reduction/2f;
 			if(defed-- == 0)
 			{
 				isPlayerDef = false;
-				Player_Dmg_reduction = 1;
+				Player_Dmg_reduction = Player_basic_dmg_reduction;
 			}
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
@@ -743,9 +744,12 @@ public class YoloPlayer extends YoloObject {
 		
 		if(isPlayerDef )
 		{
-			Player_Dmg_reduction = 0.5f;
+			Player_Dmg_reduction = Player_basic_dmg_reduction/2f;
 			if(defed-- == 0)
+			{
 				isPlayerDef = false;
+				Player_Dmg_reduction = Player_basic_dmg_reduction;
+			}
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 			gl.glLoadIdentity();
 			gl.glPushMatrix();
