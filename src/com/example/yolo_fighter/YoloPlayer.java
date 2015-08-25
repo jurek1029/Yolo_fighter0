@@ -13,13 +13,13 @@ public class YoloPlayer extends YoloObject {
 	private static FloatBuffer textureBuffer;
 	private static ByteBuffer indexBuffer;
 	
-	public boolean isPlayerPoisoned = false; //nie trzeba przesy≥aÊ 
-	public boolean isPlayerSlowDown = false; //nie trzeba przesy≥aÊ 
+	public boolean isPlayerPoisoned = false; //nie trzeba przesy¬≥a√¶ 
+	public boolean isPlayerSlowDown = false; //nie trzeba przesy¬≥a√¶ 
 	public boolean isPlayerFlying = false;
 	public boolean isPlayerDenialed = false;
 	public boolean isPlayerInvincible = false;
 	public boolean isPlayerDef = false;
-	public boolean isPlayerFrozen = false; //nie trzeba przesy≥aÊ 
+	public boolean isPlayerFrozen = false; //nie trzeba przesy¬≥a√¶ 
 	public boolean isPlayerBuff = false;
 	public boolean isPlayerFireRateBuff = false;
 	public boolean isPlayerMagReloadBuff = false;
@@ -60,7 +60,7 @@ public class YoloPlayer extends YoloObject {
 	int aim;
 	
 	public String ParticipantId = "";
-	public boolean isPlayerActive,isDead = false; // @TODO jak ktoú siÍ roz≥πczy -> nie rysowaÊ?
+	public boolean isPlayerActive,isDead = false; // @TODO jak kto≈ì si√™ roz¬≥¬πczy -> nie rysowa√¶?
 	
 	//public float vy =0;
 	public float vx = 0f;
@@ -562,6 +562,28 @@ public class YoloPlayer extends YoloObject {
 	}
 	public void drawOpponent(GL10 gl)
 	{
+		switch(aim)
+		{
+			case 0:
+				isPlayerLeft = false;
+				break;
+			case 1:
+				isPlayerLeft = false;
+				break;
+			case 3:
+				isPlayerLeft = true;
+				break;
+			case 4:
+				isPlayerLeft = true;
+				break;
+			case 5:
+				isPlayerLeft = true;
+				break;
+			case 7:
+				isPlayerLeft = false;
+				break;
+		}
+		
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
