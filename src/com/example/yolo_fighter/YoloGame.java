@@ -21,11 +21,48 @@ public class YoloGame extends Activity{
 	private int c;
 	private float degree=0;
 	private float x_skill,y_skill;
-    private Skill newSkill;
-    public static int flying=2;
+    	private Skill newSkill;
+    	public static int flying=2;
 	private float buttonJumpX,buttonJumpY,buttonShotX,buttonShotY,buttonCrouchX,buttonCrouchY,buttonSkillX,buttonSkillY;
-	private int pointerCount,pointer2=-1,pointer3=-1,lastMovePointer2 =-1,currentMovePointer2 =-1;
+	private int pointerCount,pointer2=-1,pointer3=-1;
 	private boolean dashHelp = true;
+	public static int doubleTap = 0,lastMovePointer2 =-1,currentMovePointer2 =-1;
+	private float xRadiusLadder = 2, yRadiusLadder = 2;
+	
+	private void detectClimb()
+	{
+		for(int q=0;q<YoloGameRenderer.LaddreTab.length;q++)
+		{
+			if(YoloEngine.TeamAB[YoloEngine.MyID].x + xRadiusLadder/2> YoloGameRenderer.LaddreTab[q].x && YoloEngine.TeamAB[YoloEngine.MyID].x - xRadiusLadder/2 < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
+			{
+				if(YoloEngine.TeamAB[YoloEngine.MyID].y + yRadiusLadder/2 > YoloGameRenderer.LaddreTab[q].y && YoloEngine.TeamAB[YoloEngine.MyID].y - yRadiusLadder/2 < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
+				{
+					if(YoloEngine.TeamAB[YoloEngine.MyID].y > YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy/2)
+					{
+						//TODO up
+						if(!YoloEngine.isClimbing)
+						{
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
+							YoloEngine.isClimbing = true;
+						}
+						YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x;
+						break;
+					}
+					else
+					{
+						//TODO down
+						if(!YoloEngine.isClimbing)
+						{
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
+							YoloEngine.isClimbing = true;
+						}
+						YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x;
+						break;
+					}
+				}
+			}
+		}
+	}
 	
 	private void ActionUp()
 	{
@@ -130,7 +167,7 @@ public class YoloGame extends Activity{
 					if(YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill){YoloEngine.TeamAB[YoloEngine.MyID].isUsingSkill = false;YoloEngine.isSkillPressed = false;}
 				}
 			}	
-			else if(x < YoloEngine.display_x/2 - 150/YoloEngine.xdpi)
+			else if(x < YoloEngine.display_x/2)
 			{
 				if(pointer2 <= -1)
 				{
@@ -139,9 +176,12 @@ public class YoloGame extends Activity{
 				 	x2=YoloEngine.isClasic?x:0;
 					y2=0;
 					YoloEngine.TeamAB[YoloEngine.MyID].isMoving = true;
+					if(doubleTap >= 2 && lastMovePointer2 ==-1)
+						detectClimb();
+					doubleTap++;
 				}
 			}
-			else if(x > YoloEngine.display_x/2 + 150/YoloEngine.xdpi)
+			else if(x > YoloEngine.display_x/2)
 			{
 				if(pointer3 <= -1)
 				{
