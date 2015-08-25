@@ -2680,7 +2680,7 @@ public class YoloGameRenderer implements Renderer {
 	public static boolean onGround = true,contact = true;
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
-	private int powerUpCoutdown =0,powerUpInterval = 1000;
+	private int powerUpCoutdown =0,powerUpInterval = 1000,doubleTapInterval = 9,dashInterval = 14;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2700,6 +2700,17 @@ public class YoloGameRenderer implements Renderer {
 		first = true;
 		if(!toLoad)
 		{
+			//---------------------------------------------------DoubleTap--------------------------------------------------------------
+			if(YoloGame.doubleTap != 0 && doubleTapInterval-- <= 0)
+			{
+				YoloGame.doubleTap = 0;
+				doubleTapInterval = 9;
+			}
+			if(currentMovePointer2 == -1 && dashInterval-- <= 0)
+			{
+				YoloGame.lastMovePointer2 =-1;
+				dashInterval = 14;
+			}
 			//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------
 			YoloEngine.TeamAB[YoloEngine.MyID].y += YoloEngine.TeamAB[YoloEngine.MyID].vy;
 			if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
