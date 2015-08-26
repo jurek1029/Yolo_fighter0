@@ -307,8 +307,8 @@ public class YoloPlayer extends YoloObject {
 			gl.glTranslatef(x/(PlayerLive/PLAYER_LIVE_MAX),y*10+8f, 0f);
 			gl.glMatrixMode(GL10.GL_TEXTURE);
 			gl.glColor4f(1f,1f,1f,1f);
-			gl.glTranslatef(0.875f, 0.125f, 0); 
-			draw(gl,YoloEngine.spriteSheets,1);
+			gl.glTranslatef(0, 0.5f, 0); 
+			draw(gl,YoloEngine.spriteSheets,0);
 			gl.glPopMatrix();
 			gl.glLoadIdentity();
 			
