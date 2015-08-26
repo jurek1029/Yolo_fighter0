@@ -4825,7 +4825,7 @@ public class YoloGameRenderer implements Renderer {
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
 		gl.glTranslatef(25f/YoloEngine.display_x/YoloEngine.xdpi+XADD, 1-90f/YoloEngine.display_y/YoloEngine.xdpi+YADD, 0f);
-		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x/YoloEngine.xdpi)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y, 1f);
+		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/2f/YoloEngine.display_x/YoloEngine.xdpi)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y/2f, 1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glTranslatef(0f, 0.875f, 0f);
