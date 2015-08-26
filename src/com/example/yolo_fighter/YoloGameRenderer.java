@@ -25,7 +25,7 @@ class Particle
 		if(isSmoke)
 		{
 			this.y_pos = y_pos;
-			x_end=0.56f;
+			x_end=0.42f;
 			y_end=0.75f;
 			a=4f;b=2f;
 			x = rng.nextFloat()*2*a - a;
