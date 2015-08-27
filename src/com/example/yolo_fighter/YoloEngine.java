@@ -30,6 +30,9 @@ public class YoloEngine {
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
+	public static int deathSpanInterval = 300;
+	public static int creditStartValue;
+	public static int creditAllyCount = creditStartValue,creditOppinentCount = creditStartValue;
 	//public static int GunAim =0; // 0-7
 	
 	public static final int POISON_SKILL = R.drawable.skill_sprite_poison;
