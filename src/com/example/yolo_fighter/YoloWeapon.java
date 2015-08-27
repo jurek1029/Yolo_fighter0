@@ -16,7 +16,7 @@ public class YoloWeapon extends YoloObject {
 	public float damage,poiseDamage;
 	public boolean isLeft,team;
 	public float bulletSpeed,bulletSpeedD;
-	public int sprite,count=0,couter=0,Aim=0;
+	public int sprite,count=0,couter=0,Aim=0,playerID = -1;
 
 	private float vertices[] = {
 			0.0f, 0.0f, 0.0f,
