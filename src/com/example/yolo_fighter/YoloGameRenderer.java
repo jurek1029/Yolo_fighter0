@@ -2681,6 +2681,7 @@ public class YoloGameRenderer implements Renderer {
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
 	private int powerUpCoutdown =0,powerUpInterval = 1000,doubleTapInterval = 9,dashInterval = 14;
+	private itn deathIntervalCounter = 0;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2710,6 +2711,20 @@ public class YoloGameRenderer implements Renderer {
 			{
 				YoloGame.lastMovePointer2 =-1;
 				dashInterval = 14;
+			}
+			//-------------------------------------------------DeathManagment-----------------------------------------------------------
+			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive < 0 || YoloEngine.TeamAB[YoloEngine.MyID].y < 0 )
+			{
+				YoloEngine.TeamAB[YoloEngine.MyID].canMove = false;
+				YoloEngine.TeamAB[YoloEngine.MyID].deathCount++;
+				//TODO death splash draw
+				if(deathIntervlaCounter++ >= deathSpanInterval)
+				{
+					YoloEngine.TeamAB[YoloEngine.MyID].x = YoloEngine.MyID>YolEngine.TeamSize? YoloEngine.LEVEL_X/YoloEngine.TX -1: 2 ;
+					YoloEngine.TeamAB[YoloEngine.MyID].y = 2.5f;
+					YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive = YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX;
+					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
+				}
 			}
 			//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------
 			YoloEngine.TeamAB[YoloEngine.MyID].y += YoloEngine.TeamAB[YoloEngine.MyID].vy;
