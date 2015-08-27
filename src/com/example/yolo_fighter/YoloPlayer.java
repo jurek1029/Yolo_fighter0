@@ -69,7 +69,7 @@ public class YoloPlayer extends YoloObject {
 	public float PLAYER_LIVE_MAX = 100;
 	public float Player_Dmg_reduction = 1f,PlayerDmgBuff =1f,Player_basic_dmg_reduction = 1f;
 	float x_texture=0.25f,y_texture=0,x_end=0.375f ,y_end=0,x_start=0,y_start=0,xTx[] = {0,0,0,0,0,0},yTx[] = {0,0,0,0,0,0};
-	public int coin =0;
+	public int coin =0,xp = 0,deathCount =0;
 	int aniSlowCounter = 0, animation_slowdown = 0,iconcount=0,act=1,framecount=0;
 	
 	
