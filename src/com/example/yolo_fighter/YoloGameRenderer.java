@@ -3809,6 +3809,7 @@ public class YoloGameRenderer implements Renderer {
 		//	bullet.size = 0.25f;
 			bullet.isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
 			bullet.Aim = YoloEngine.TeamAB[YoloEngine.MyID].aim;
+			bullet.playerID = YoloEngine.MyID;
 			Weapontab.add(bullet);
 			
 			float VolumeScale =1,lx = Math.abs(bullet.x-YoloEngine.TeamAB[YoloEngine.MyID].x),ly =Math.abs(bullet.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
