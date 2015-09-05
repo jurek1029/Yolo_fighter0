@@ -2681,7 +2681,7 @@ public class YoloGameRenderer implements Renderer {
 	private int ClimbingOn;
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
 	private int powerUpCoutdown =0,powerUpInterval = 1000,doubleTapInterval = 9,dashInterval = 14;
-	private itn deathIntervalCounter = 0;
+	private int deathIntervalCounter = 0;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2707,7 +2707,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloGame.doubleTap = 0;
 				doubleTapInterval = 9;
 			}
-			if(currentMovePointer2 == -1 && dashInterval-- <= 0)
+			if(YoloGame.currentMovePointer2 == -1 && dashInterval-- <= 0)
 			{
 				YoloGame.lastMovePointer2 =-1;
 				dashInterval = 14;
@@ -2718,7 +2718,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.TeamAB[YoloEngine.MyID].canMove = false;
 				YoloEngine.TeamAB[YoloEngine.MyID].deathCount++;
 				//TODO death splash draw
-				if(deathIntervlaCounter++ >= deathSpanInterval)
+				if(deathIntervalCounter++ >= YoloEngine.deathSpanInterval)
 				{
 					YoloEngine.TeamAB[YoloEngine.MyID].x = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam? YoloEngine.LEVEL_X/YoloEngine.TX -1: 2 ;
 					YoloEngine.TeamAB[YoloEngine.MyID].y = 2.5f;
@@ -2737,8 +2737,8 @@ public class YoloGameRenderer implements Renderer {
 			{
 				//TODO splash you win
 				//TODO end screan 
-				YoloEngine.TeamAB[YoloEngine.MyID].xp * YoloEngine.winMultiplay;
-				YoloEngine.TeamAB[YoloEngine.MyID].coin * YoloEngine.winMultiplay;
+				YoloEngine.TeamAB[YoloEngine.MyID].xp *= YoloEngine.winMultiplay;
+				YoloEngine.TeamAB[YoloEngine.MyID].coin *= YoloEngine.winMultiplay;
 				//TODO wpisanie  xp,coin z player do bazy
 			}
 			//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------
@@ -3255,20 +3255,20 @@ public class YoloGameRenderer implements Renderer {
 										YoloEngine.sp.play(YoloEngine.SoundInd[7], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 									YoloEngine.TeamAB[j].PlayerLive -= Weapontab.get(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
 									if(YoloEngine.TeamAB[j].PlayerLive <= 0)
-										if(YoloEngine.TeamAB[j].playerTeam == YoloEngine.TeamAB[YoloEngine.MyId].playerTeam)
+										if(YoloEngine.TeamAB[j].playerTeam == YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
 											YoloEngine.creditAllyCount--;
 										else
 										{
 											YoloEngine.creditOppinentCount--;
-											if(Weapontab.get(i).playerID == YoloEngine.MyId)
+											if(Weapontab.get(i).playerID == YoloEngine.MyID)
 											{
-												YoloEngine.TeamAB[YoloEngine.MyId].xp += YoloEngine.xpForKill;	
+												YoloEngine.TeamAB[YoloEngine.MyID].xp += YoloEngine.xpForKill;	
 											}
 										}
-									if(Weapontab.get(i).playerID == YoloEngine.MyId)
+									if(Weapontab.get(i).playerID == YoloEngine.MyID)
 									{
-										YoloEngine.TeamAB[YoloEngine.MyId].xp += Weapontab.get(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
-										YoloEngine.TeamAB[YoloEngine.MyId].coin += Weapontab.get(i).damage;
+										YoloEngine.TeamAB[YoloEngine.MyID].xp += Weapontab.get(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
+										YoloEngine.TeamAB[YoloEngine.MyID].coin += Weapontab.get(i).damage;
 									}
 									Weapontab.remove(i--);
 									continue out;
