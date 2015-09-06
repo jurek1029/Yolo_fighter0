@@ -85,15 +85,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	
 	public YoloMultislayerBT() {
 		mUUID = UUID.fromString("c843a4a7-1e8e-496c-86b4-439cc3936b6d"); // hardcoded UUID :D
-		if(YoloMainMenu.btn_invite != null && YoloMainMenu.btn_quick != null) {
-			YoloMainMenu.btn_invite.setText("Create");
-			YoloMainMenu.btn_quick.setText("Join");	
-			
-			YoloMainMenu.btn_quick.setEnabled(true);
-			YoloMainMenu.btn_invite.setEnabled(true);
-			
-			debugLog("");
-		}
+		
 		YoloEngine.timeOffset = 1000;
 	}
 
@@ -356,9 +348,9 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	String opponentName;
 	
 	private void startUp2() {
-		YoloEngine.MULTI_ACTIVE = true;
+		//YoloEngine.MULTI_ACTIVE = true;
 
-		YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[] { YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(),
+		YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendPreStartInfo(new int[] { YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(),
 				YoloEngine.currentPlayerInfo.getSK3EQ() }));
 
 		//YoloEngine.participants = mRoom.getParticipants();
@@ -380,7 +372,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 			// My przydzielamy teamy
 			System.out.println("przydzielam team");
 			final String teamAssignPattern = assignTeamsXX();
-			YoloEngine.TeamAB[YoloEngine.MyID].gameMaster = true;			
+			YoloEngine.TeamAB[YoloEngine.MyID].isServer = true;			
 
 			YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
 			new Thread(new Runnable() {
@@ -410,6 +402,24 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		
 		
 	
+	}
+
+	@Override
+	protected void createGame(GameProperties gp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void manuallyAssignTeams() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void startTheGame() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 class device {

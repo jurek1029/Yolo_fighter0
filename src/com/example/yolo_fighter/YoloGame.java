@@ -280,7 +280,7 @@ public class YoloGame extends Activity{
 		if(YoloEngine.isClasic){y_old=YoloEngine.display_y-YoloEngine.MOVE_Y+YoloEngine.MOVE_SIZE_Y/2; x = x_old;}
 		else{x2=-1000;y2 =-1000;x_old = -1000;y_old =-1000;x3=-1000;y3 =-1000;x_old3 = -1000;y_old3 =-1000;}
 		
-		if (YoloEngine.MULTI_ACTIVE) {
+		if (YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE) {
 			final ProgressDialog mProgressDialog = new ProgressDialog(this);
 			mProgressDialog.setCancelable(false);
 			mProgressDialog.setIcon(0);
@@ -631,7 +631,7 @@ public class YoloGame extends Activity{
 		//.setMessage("")
 		.setPositiveButton(R.string.return_main_menu, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				YoloEngine.mMultislayer.sendQuitInfo(YoloEngine.MyID);
+				YoloEngine.mMultislayer.sendStateChangedMessage(3);
 				YoloEngine.whichLayout=0;
 				
 				Intent mainMenu = new Intent(getApplicationContext(),YoloMainMenu.class);

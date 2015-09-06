@@ -31,7 +31,7 @@
     <string name="return_main_menu">Main menu</string>
     <string name="resume_game">Wróć do gry</string>
     <string name="game_paused">Gra wstrzymana</string>
-    <string name="invitation_sent">Zaproszenie zostało wysłane</string>
+    <string name="invitation_sent">Zaproszenia zostały wysłane</string>
     <string name="new_invitation">Zaproszenie</string>
     <string name="invitation_dialog">zaprasza Cię do gry</string>
     <string name="yes">Akceptuj</string>

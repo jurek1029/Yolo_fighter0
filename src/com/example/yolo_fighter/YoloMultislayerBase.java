@@ -1,42 +1,90 @@
 package com.example.yolo_fighter;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
-import android.database.CharArrayBuffer;
-import android.net.Uri;
-import android.os.Parcel;
-
-import com.example.yolo_fighter.YoloEngine;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.ParticipantResult;
 
-public abstract class YoloMultislayerBase extends Thread {// TODO is extending Thread a good idea?
+
+class GameProperties {
+	int AIdiff = 1;
+	int AIqt = 0;
+	int mapID = 0;
+	
+	// min and max regard the total - including the creator itself
+	int minPlayers;
+	int maxPlayers;
+	int gameType;
+	
+	final static int INTERNET = 1;
+	final static int BLUETOOTH = 2;
+	final static int OFFLINE = 3;
+	
+	// FOR BT and light version for sending and receiving
+	public GameProperties(int gameType, int AIdiff, int AIqt, int mapID) {
+		this.gameType = gameType;
+		this.AIdiff = AIdiff;
+		this.AIqt = AIqt;
+		this.mapID = mapID;				
+	}
+	
+	public GameProperties(int gameType, int AIdiff, int AIqt, int mapID, int minPlayers, int maxPlayers) {
+		this.gameType = gameType;
+		this.AIdiff = AIdiff;
+		this.AIqt = AIqt;
+		this.mapID = mapID;
+		this.minPlayers = minPlayers;
+		this.maxPlayers = maxPlayers;									
+	}
+	
+	
+}
+
+public abstract class YoloMultislayerBase extends Thread {
 
 	protected abstract void sendMessageToAllreliable(byte[] data);
 
 	protected abstract void sendMessageToAll(byte[] data);
+	protected abstract void createGame(GameProperties gp);
+	protected abstract void manuallyAssignTeams();
 	
+	protected boolean isServer = false;
+	protected int notreadyPlayersNumber;
+	protected int fromAutomatchNo = 0;
+	protected boolean fromAutomatch = false;
 	
 	// Sprawdza, czy aktywny jest właściwy typ multi
 	public static void checkMultislayerInstance(Activity ac) {
+		GameProperties gp = YoloEngine.mGameProperties;
+		
 		if (YoloEngine.mMultislayer == null) {
-			if (YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS)
+			if (gp.gameType == GameProperties.INTERNET)
 				YoloEngine.mMultislayer = new YoloMultislayerGS(ac);
-			else
+			else if (gp.gameType == GameProperties.BLUETOOTH)
 				YoloEngine.mMultislayer = new YoloMultislayerBT();
+			else
+				YoloEngine.mMultislayer = new YoloMultislayerOFFLINE();
 		}
 		
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS && YoloEngine.MULTI_MODE == YoloEngine.MULTI_BT)
-			YoloEngine.mMultislayer = new YoloMultislayerBT();
-		else if (YoloEngine.mMultislayer instanceof YoloMultislayerBT && YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS) {
-			((YoloMultislayerBT)YoloEngine.mMultislayer).koniec();
+		if (gp.gameType == GameProperties.INTERNET && !(YoloEngine.mMultislayer instanceof YoloMultislayerGS)) {
+			if(YoloEngine.mMultislayer instanceof YoloMultislayerBT) ((YoloMultislayerBT)YoloEngine.mMultislayer).koniec();
 			YoloEngine.mMultislayer = new YoloMultislayerGS(ac);
+		}
+		else if (gp.gameType == GameProperties.BLUETOOTH && !(YoloEngine.mMultislayer instanceof YoloMultislayerBT)) {
+			if(YoloEngine.mMultislayer instanceof YoloMultislayerBT) ((YoloMultislayerBT)YoloEngine.mMultislayer).koniec();
+			YoloEngine.mMultislayer = new YoloMultislayerBT();
+		}
+		else if (gp.gameType == GameProperties.OFFLINE && !(YoloEngine.mMultislayer instanceof YoloMultislayerOFFLINE)) {
+			if(YoloEngine.mMultislayer instanceof YoloMultislayerBT) ((YoloMultislayerBT)YoloEngine.mMultislayer).koniec();
+			YoloEngine.mMultislayer = new YoloMultislayerOFFLINE(ac);
 		}
 		
 		YoloEngine.mMultislayer.setActivity(ac);
+		YoloEngine.mMultislayer.listeners.clear();
+		YoloEngine.mMultislayer.addListener((YoloMainMenu)ac);
 	}
 	
 
@@ -92,7 +140,7 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 				if (spriteLoad == 123)
 					YoloEngine.sprite_load[32] = true;
 				if (spriteLoad == 124)
-					YoloEngine.sprite_load[32] = true;
+					YoloEngine.sprite_load[32] = true;			
 			}
 			int index  = rcvData.getInt();
 			YoloEngine.TeamAB[index].weapon = rcvData.getInt();
@@ -137,6 +185,11 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 			}
 			YoloEngine.TeamAB[index].race = rcvData.getInt();
 			System.out.println("otrzymane dane spriteload");
+			if(rcvData.get() == 1) {
+				fromAutomatchNo++;
+				if(YoloEngine.participants.size()-1 == fromAutomatchNo)
+					manuallyAssignTeams();
+			}		
 			break;
 
 		case 't':
@@ -168,8 +221,6 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 				}
 			}
 			else {	
-				for (YoloPlayer p : YoloEngine.TeamAB)
-					p = new YoloPlayer(1000f, 1000f, false, 666);	
 				
 				for (String p : YoloEngine.participantsBT) {					
 						if (pattern.charAt(i) == '0') {
@@ -258,6 +309,7 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 			 * Republik Radzieckich
 			 */
 			Skill tSkill = new Skill(rcvData.getFloat(), rcvData.getFloat(), rcvData.getInt(), rcvData.get() == 1 ? true : false, rcvData.getInt());
+			tSkill.creatorID = rcvData.getInt();
 			if (tSkill.team == YoloEngine.TeamA)
 				YoloGameRenderer.skillTeamAVe.add(tSkill);
 			else
@@ -284,10 +336,32 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 			}
 			break;
 		case 'q':
-			int k = rcvData.getInt();
-			YoloEngine.TeamAB[k].moveAway();
-			YoloEngine.opponents.remove(YoloEngine.TeamAB[k].ParticipantId);
-			System.out.println("Someone has just left");
+			int action = rcvData.getInt();
+			// 3 - quit, 2 - invitee ready, 1 - startGame by server
+			
+			switch(action) {
+				case 3:
+					int k = rcvData.getInt();
+					YoloEngine.TeamAB[k].moveAway();
+					YoloEngine.opponents.remove(YoloEngine.TeamAB[k].ParticipantId);
+					System.out.println("Someone has just left");
+					break;
+				case 2:
+					notreadyPlayersNumber--;
+					if(notreadyPlayersNumber <= 0) {
+						sendStateChangedMessage(1);
+						startTheGame();
+					}					
+					break;
+				case 1:
+					startTheGame();
+					break;					
+			}	
+			break;
+		case 'z':
+			YoloEngine.mGameProperties = new GameProperties(rcvData.getInt(),rcvData.getInt(),rcvData.getInt(),rcvData.getInt());
+			debugLog("received game properties");
+			sendStateChangedMessage(2);
 			break;
 		default:
 			System.out.println("message not recognized");
@@ -295,6 +369,8 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 		}
 
 	}
+
+	
 
 	/**
 	 * Wyznacza nowe przemieszczenia dla postaci przeciwnika
@@ -323,12 +399,10 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 		YoloEngine.TeamAB[playerID].x_last = x;
 		YoloEngine.TeamAB[playerID].y_last = y;
 
+		YoloEngine.TeamAB[playerID].isPlayerLeft = isLeft;
 		YoloEngine.TeamAB[playerID].PlayerLive = life;
 		YoloEngine.TeamAB[playerID].aim = aim;
-		YoloEngine.TeamAB[playerID].setAction(act);
-		
-		YoloEngine.TeamAB[playerID].isPlayerLeft = isLeft;
-
+		YoloEngine.TeamAB[playerID].setAction(act);		
 	}
 
 	/**
@@ -359,19 +433,24 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 				bbf.put((byte) 1);
 			else
 				bbf.put((byte) 0);
+		
 			sendMessageToAll(bbf.array());
 		}
 
 	}
 
-	public byte[] sendSpriteLoad(int[] loadArray) {
-		ByteBuffer bbf = ByteBuffer.allocate(14 + 4 * loadArray.length);
+	public byte[] sendPreStartInfo(int[] loadArray) {
+		ByteBuffer bbf = ByteBuffer.allocate(14 + 4 * loadArray.length + 2);
 		bbf.putChar('l');
 		for (int value : loadArray)
 			bbf.putInt(value);
 		bbf.putInt(YoloEngine.MyID);
 		bbf.putInt(YoloEngine.currentPlayerInfo.getWEQ());
 		bbf.putInt(YoloEngine.currentPlayerInfo.getRace());
+		if (fromAutomatch)
+			bbf.put((byte) 1);
+		else
+			bbf.put((byte) 0);
 
 		return bbf.array();
 	}
@@ -489,7 +568,7 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 		
 		sendMessageToAllreliable(bbf.array());
 	}
-
+/*
 	public void sendQuitInfo(int myID) {
 		ByteBuffer bbf = ByteBuffer.allocate(12);
 		bbf.putChar('q');
@@ -497,7 +576,7 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 
 		sendMessageToAllreliable(bbf.array());
 	}
-	
+*/	
 	public void sendPowerUp(boolean actionAdd, float x, float y, int effect) {
 		ByteBuffer bbf = ByteBuffer.allocate(16);	
 		bbf.putChar('r');
@@ -510,6 +589,26 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 		bbf.putInt(effect);
 		
 		sendMessageToAllreliable(bbf.array());
+	}
+	
+	public void sendGameProperties() {
+		ByteBuffer bbf = ByteBuffer.allocate(20);	
+		bbf.putChar('z');
+		bbf.putInt(YoloEngine.mGameProperties.gameType);
+		bbf.putInt(YoloEngine.mGameProperties.AIdiff);
+		bbf.putInt(YoloEngine.mGameProperties.AIqt);
+		bbf.putInt(YoloEngine.mGameProperties.mapID);
+		
+		sendMessageToAll(bbf.array());
+	}
+	
+	public void sendStateChangedMessage(int action) {
+		ByteBuffer bbf = ByteBuffer.allocate(12);
+		bbf.putChar('q');
+		bbf.putInt(action);
+		bbf.putInt(YoloEngine.MyID);
+
+		sendMessageToAllreliable(bbf.array());		
 	}
 
 	public void setActivity(Activity xActivity) {
@@ -630,6 +729,20 @@ public abstract class YoloMultislayerBase extends Thread {// TODO is extending T
 			}
 		}
 		return teamAssignPattern;
+	}
+	
+	protected List<YoloStartListener> listeners = new ArrayList<YoloStartListener>();
+	
+	public void addListener(YoloStartListener toAdd) {
+        listeners.add(toAdd);
+    }
+
+	protected void startTheGame() {
+		// TODO START GAME;
+		debugLog("NOW THE GAME IS STARTING");
+		
+		for(YoloStartListener l : listeners )
+			l.gameReadyToStart(mActivity.findViewById(android.R.id.content));
 	}
 	
 	

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -55,7 +56,7 @@ import com.google.android.gms.internal.mh;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 
-public class YoloMainMenu extends Activity 
+public class YoloMainMenu extends Activity implements YoloStartListener
 {
 	YoloDataBaseManager dbm = new YoloDataBaseManager(this);
 	int spinnerPosition=0;
@@ -78,8 +79,7 @@ public class YoloMainMenu extends Activity
 	
 // ------------------------- Multislayer BEGIN -----------------------
 	
-	static Button btn_quick;
-	static Button btn_invite;
+	static Button btn_joinBT;
 	static TextView debug_textview;	
 	RadioGroup multiRadioGroup;
 	
@@ -109,25 +109,8 @@ public class YoloMainMenu extends Activity
         setMasterSyncAutomatically(true); // AUTO SYNC niezbÄ™dny dla wysyÅ‚ania zaproszeÅ„
 		
 // ------------------------- Multislayer BEGIN  -----------------------
-       
-		btn_quick = (Button) findViewById(R.id.quick_button);
-		btn_invite = (Button) findViewById(R.id.invite_button);
-		debug_textview = (TextView) findViewById(R.id.textView1);
-		
-		multiRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-		multiRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				if(checkedId == R.id.BTradio)
-					YoloEngine.MULTI_MODE = YoloEngine.MULTI_BT;
-				else if(checkedId == R.id.GSradio)
-					YoloEngine.MULTI_MODE = YoloEngine.MULTI_GS;	
-				YoloMultislayerBase.checkMultislayerInstance(YoloMainMenu.this);
-			}
-		});
-		
-		YoloMultislayerBase.checkMultislayerInstance(this);				
+        
+		multislayerStartup();	
 		
 // ------------------------- Multislayer END -------------------------
 		
@@ -209,9 +192,7 @@ public class YoloMainMenu extends Activity
 	
 	
 	public void joinClick(View v)
-	{
-		
-		// Te dwie instrukcje warto wrzuciï¿½ do jakiegoï¿½ senwoengo eventu, ï¿½eby ciï¿½gle tego nie odï¿½wieï¿½aï¿½ XXX
+	{		
 		plInfoList.clear();
 		plInfoList=dbm.getAll();
 		YoloEngine.whichLayout = 1;
@@ -832,6 +813,22 @@ public class YoloMainMenu extends Activity
 	public void onResume()
 	{
 		super.onResume();
+		
+		multiRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		multiRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if(checkedId == R.id.BTradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.BLUETOOTH;		
+				else if(checkedId == R.id.GSradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.INTERNET;			
+				else if(checkedId == R.id.OFFLINEradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.OFFLINE;	
+				YoloMultislayerBase.checkMultislayerInstance(YoloMainMenu.this);
+			}
+		});
+		cleanupForNewGame();
 		YoloMultislayerBase.checkMultislayerInstance(this);
 	}
 //------------------------skill 1 menu-------------------------------------
@@ -2276,64 +2273,108 @@ public void skill2devilEqBtnClick(View v){
 
 // ------------------------- Multislayer BEGIN -----------------------
 
-	public void signIn(View v) {		
-		YoloMultislayerBase.checkMultislayerInstance(this);
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS) YoloEngine.mMultislayer).signIn();
-		//else
-		//	((YoloMultislayerBT) YoloEngine.mMultislayer).sendToAll("f");
-
-		plInfoList.clear();// TODO jest tu ale powinno byæ gdzieœ w lepszym miejscu
-		plInfoList = dbm.getAll();
-		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
-		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
-	}
-
-	public void signOut(View v) {
-		YoloEngine.MULTI_ACTIVE = false;
-		YoloMultislayerBase.checkMultislayerInstance(this);
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS) YoloEngine.mMultislayer).signOut();
-	}
-
-	public void startQuickGame(View v) { // AKA Join
-		YoloMultislayerBase.checkMultislayerInstance(this);
-
-		plInfoList.clear();
-		plInfoList = dbm.getAll();
-		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
-		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
-
-		YoloEngine.MULTI_ACTIVE = true;
-		YoloEngine.mMultislayer.setActivity(this);
+	public void multislayerStartup() {
+		// Fired with onCreate
+		
+		
+	//<----Just temporary stuff BEGIN ---->
+		YoloEngine.mGameProperties = new GameProperties(GameProperties.INTERNET, 0,0,0,2,4);
+		//btn_joinBT = (Button) findViewById(R.id.joinBT_button);		
+		debug_textview = (TextView) findViewById(R.id.textView1);
+		
+		multiRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+		multiRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if(checkedId == R.id.BTradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.BLUETOOTH;		
+				else if(checkedId == R.id.GSradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.INTERNET;			
+				else if(checkedId == R.id.OFFLINEradio)
+					YoloEngine.mGameProperties.gameType = GameProperties.OFFLINE;	
+				YoloMultislayerBase.checkMultislayerInstance(YoloMainMenu.this);
+			}
+		});
+		
+		YoloMultislayerBase.checkMultislayerInstance(this);			
+	//<----Just temporary stuff END ---->
+		
+		
+		// TODO check if connected to the Internet
+		
+		// Yes
+		YoloEngine.mGameProperties = new GameProperties(GameProperties.INTERNET, 0,0,0,2,4);
+		YoloMultislayerBase.checkMultislayerInstance(this);		
 		if(YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS)YoloEngine.mMultislayer).startQuickGame();
-		else
-			((YoloMultislayerBT)YoloEngine.mMultislayer).joinGame();
+			((YoloMultislayerGS)YoloEngine.mMultislayer).signIn();
+		
+		// No
+		// Ask to (connect to the internet) or use (bluetooth or singleplayer mode)
+		
+	
+
+		// 'Offline' mode: disable quick, disable Internet in create?		
+		
+		
+		cleanupForNewGame();
 	}
 
-	public void invite(View v) { // AKA Create	
+
+
+
+	public void startQuickGame(View v) {
+		YoloEngine.mGameProperties = new GameProperties(GameProperties.INTERNET, 0,0,0,2,4); // TODO set up some defaults!
 		YoloMultislayerBase.checkMultislayerInstance(this);
-		YoloEngine.MULTI_ACTIVE = true;
+		cleanupForNewGame();
+		// TODO start quicka w drugim urz¹dzeniu
 		
-		plInfoList.clear();
-		plInfoList = dbm.getAll();
-		int currentPlayerInfoPosition = preferences.getInt("currentPlInfPos", 0);
-		YoloEngine.currentPlayerInfo = plInfoList.get(currentPlayerInfoPosition);
+		// TODO Check if still connected to the Internet
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS) {		
+			((YoloMultislayerGS) YoloEngine.mMultislayer).signInAndQuick();
+		}
+	}
+
+	
+
+	public void createGame(View v) {
+		// TODO open screen1
+		// TODO open screen2
+
+		// TODO temp assuming that YoloEngine.mGameProperties contains GameProperties data entered by user
+
 		
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)			
-			((YoloMultislayerGS) YoloEngine.mMultislayer).invite();
-		else
-			((YoloMultislayerBT)YoloEngine.mMultislayer).createGame();
-		
+		cleanupForNewGame();
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		YoloEngine.mMultislayer.createGame(YoloEngine.mGameProperties);
 	}
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
 		YoloMultislayerBase.checkMultislayerInstance(this);
 		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS) YoloEngine.mMultislayer).cosCos(request, response, data);
+			((YoloMultislayerGS) YoloEngine.mMultislayer).incomingAction(request, response, data);
 	}
+
+	private void cleanupForNewGame() {
+		plInfoList.clear();
+		plInfoList = dbm.getAll();
+		YoloEngine.currentPlayerInfo = plInfoList.get(preferences.getInt("currentPlInfPos", 0));
+	}
+	
+	
+	@Override
+	public void gameReadyToStart(View v) {
+		joinClick(v);
+	}
+	
+	public void signOut(View v) {
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
+			((YoloMultislayerGS) YoloEngine.mMultislayer).signOut();
+	}
+	
+	
 
 // ------------------------- Multislayer END -------------------------
 

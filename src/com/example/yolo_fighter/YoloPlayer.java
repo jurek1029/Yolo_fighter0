@@ -52,7 +52,7 @@ public class YoloPlayer extends YoloObject {
 	public float y_last;
 	public float x_lastX;
 	public float y_lastX;
-	public boolean gameMaster = false;
+	public boolean isServer = false;
 	
 	int race;
 	int weapon;
@@ -105,6 +105,7 @@ public class YoloPlayer extends YoloObject {
 		super(x,y);
 		this.playerTeam = team;
 		this.playerID = playerID;
+		this.isServer = false;
 		x_texture =0.25f;y_texture = 0f;
 		x_start = 0.25f	;y_start =0f;
 		x_end = 0.375f	; y_end = 0f;
@@ -122,7 +123,7 @@ public class YoloPlayer extends YoloObject {
 		
 		indexBuffer = ByteBuffer.allocateDirect(indices.length);
 		indexBuffer.put(indices);
-		indexBuffer.position(0);
+		indexBuffer.position(0);		
 	}
 	public void setAction(int action)
 	{ 

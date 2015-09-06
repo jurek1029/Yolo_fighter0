@@ -165,7 +165,7 @@ public class YoloEngine {
 	
 	// ------------------------- Multislayer BEGIN -----------------------
 	
-
+	public static GameProperties mGameProperties = null;
 
     public static String playerParticipantID;
 
@@ -173,7 +173,7 @@ public class YoloEngine {
 
     public static final boolean MULTI_GS = true;
 	public static final boolean MULTI_BT = false;
-	public static boolean MULTI_ACTIVE = false;
+	//public static boolean MULTI_ACTIVE = false;
 	public static boolean MULTI_MODE = MULTI_GS; // defaultowe, gdzies w menu trzeba zmieniac
 	
 
@@ -190,7 +190,7 @@ public class YoloEngine {
 	
 	
 	public static long startTime; // czas startu, wg czasu uzytkownika
-	public static int countdownTime = 20*1000; // dlugosc odliczania
+	public static int countdownTime = 15*1000; // dlugosc odliczania
 	public static int timeOffset = 200; // czas na dotarcie wiadomosci
 	
 	

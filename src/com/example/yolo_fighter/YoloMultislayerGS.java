@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.games.Games;
@@ -46,15 +44,10 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 
 	public YoloMultislayerGS(final Activity xActivity) {
 		this.mActivity = xActivity;		
-		if(YoloMainMenu.btn_invite != null && YoloMainMenu.btn_quick != null) {
-			YoloMainMenu.btn_quick.setEnabled(false);
-			YoloMainMenu.btn_invite.setEnabled(false);
-			YoloMainMenu.btn_invite.setText("Invite");
-			YoloMainMenu.btn_quick.setText("Quick");	
 			
-			debugLog("");
-		}
+		debugLog("");	
 		YoloEngine.timeOffset = 200;
+		
 		
 		mHelper = new GameHelper(mActivity, GameHelper.CLIENT_GAMES);
 		mHelper.enableDebugLog(true);
@@ -66,10 +59,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 				// mHelper.beginUserInitiatedSignIn();
 				debugLog("Signed in successfully");
 
-				// POTENTIAL_PROBLEM generalnie brzydkie że static w
-				// YoloMainMenu, ale buttony są tylko do testów
-				YoloMainMenu.btn_quick.setEnabled(true);
-				YoloMainMenu.btn_invite.setEnabled(true);
+				
 
 				mSignInprogress = false;
 				if (mHelper.getInvitationId() != null) {
@@ -91,6 +81,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 						System.out.println(mActivity.getTaskId()+" id zapisanej");
 						askInvitation = new AlertDialog.Builder(mActivity).setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
+								cleanupBeforeNewPlay();
 								System.out.println("Invitation accepted");
 								Games.RealTimeMultiplayer.join(mHelper.getApiClient(), prepareGame(IncomingInvitation));
 							}
@@ -106,17 +97,23 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 
 					}
 				});
+				
+				if(mRunQuick) {
+					mRunQuick = false;
+					startQuickGame();
+				}
 
 			}
 
 			@Override
 			public void onSignInFailed() {
 				debugLog("Signing in failed :(" + mHelper.getSignInError());
+				mRunQuick = false;
 			}
 
 		};
-
 		mHelper.setup(listener);
+		signIn();
 	}
 
 	
@@ -177,6 +174,8 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 
 		@Override
 		public void onPeerDeclined(Room arg0, List<String> arg1) {
+			System.out.println("Invitation declined by smn");
+			//decrease waiting for count?
 
 		}
 
@@ -200,6 +199,8 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 			// STATUS: Someone has joined and his conection is being established
 		}
 	};
+	private boolean mRunQuick;
+	
 
 	@Override
 	public void onRealTimeMessageReceived(RealTimeMessage message) {
@@ -215,7 +216,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 	 */
 	@Override
 	protected void sendMessageToAllreliable(byte[] data) {
-		if (!YoloEngine.MULTI_ACTIVE)
+		if (YoloEngine.mGameProperties.gameType == GameProperties.OFFLINE)
 			return;
 
 		ArrayList<Participant> mParticipants = mRoom.getParticipants();
@@ -241,7 +242,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 	 */
 	@Override
 	protected void sendMessageToAll(byte[] data) {
-		if (!YoloEngine.MULTI_ACTIVE)
+		if (YoloEngine.mGameProperties.gameType == GameProperties.OFFLINE)
 			return;
 
 		Games.RealTimeMultiplayer.sendUnreliableMessageToOthers(mHelper.getApiClient(), data, mRoom.getRoomId().toString());
@@ -286,8 +287,6 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 			YoloEngine.playerParticipantID = mRoom.getParticipantId(Games.Players.getCurrentPlayerId(mHelper.getApiClient()));
 
 			YoloEngine.opponents.clear();
-			for (YoloPlayer p : YoloEngine.TeamAB)
-				p = new YoloPlayer(1000f, 1000f, false, 666);
 			if (YoloEngine.participants != null)
 				YoloEngine.participants.clear();
 
@@ -304,14 +303,11 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 	public void onRoomConnected(int statusCode, Room room) {
 		if (statusCode == GamesStatusCodes.STATUS_OK) {
 			debugLog("All participants connected");
-
-			YoloEngine.MULTI_ACTIVE = true;
-
 			mRoom = room;
+						
+			sendMessageToAllreliable(sendPreStartInfo(new int[] { YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(), YoloEngine.currentPlayerInfo.getSK3EQ() }));
 
-			YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendSpriteLoad(new int[] { YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(),
-					YoloEngine.currentPlayerInfo.getSK3EQ() }));
-
+			// Prepare participants and opponents list for further use
 			YoloEngine.playerParticipantID = mRoom.getParticipantId(Games.Players.getCurrentPlayerId(mHelper.getApiClient()));
 			YoloEngine.participants = mRoom.getParticipants();
 			Collections.sort(YoloEngine.participants, new Comparator<Participant>() {
@@ -326,18 +322,35 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 					YoloEngine.opponents.add(p.getParticipantId());
 				}
 			}
-
-			if (YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {				
-				// My przydzielamy teamy
-				System.out.println("przydzielam team");
+			
+			
+			// If we are the server - assign teams
+			if(isServer) { 				
 				String teamAssignPattern = assignTeams();
-				YoloEngine.TeamAB[YoloEngine.MyID].gameMaster = true;
+				YoloEngine.TeamAB[YoloEngine.MyID].isServer = true;
 				// @TODO czyszczenie listy teamAB, teamA, teamB ?				
 
 				YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
 				YoloEngine.startTime = (System.currentTimeMillis() + YoloEngine.countdownTime + YoloEngine.timeOffset);
-				YoloEngine.mMultislayer.sendMaxLife(); // TODO to powinno być później, żeby była pweność, że TeamAB jest dobrze usuzpłenione
+				YoloEngine.mMultislayer.sendMaxLife();				
+									
+				this.notreadyPlayersNumber = mRoom.getParticipantIds().size()-1;
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							sleep(300); // TODO po co ten sleep???
+						} catch (InterruptedException e) {						
+							e.printStackTrace();
+						}
+						sendGameProperties();
+						
+					}
+				}).start();			
 			}
+			
+			
 
 			if (mProgressDialog != null) {
 				mProgressDialog.setMessage("Starting the game");
@@ -355,10 +368,17 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		}
 	}
 
-	// GGGG
+
 	public void signIn() {
 		System.out.println("Signing in");
 		mSignInprogress = true;
+		mHelper.beginUserInitiatedSignIn();
+	}
+	
+	public void signInAndQuick() {
+		System.out.println("Signing in");
+		mSignInprogress = true;
+		mRunQuick = true;
 		mHelper.beginUserInitiatedSignIn();
 	}
 
@@ -366,8 +386,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		// całkowicie wylogowuje, żby np. zmienić konto
 		System.out.println("Signing out");
 
-		YoloMainMenu.btn_quick.setEnabled(false);
-		YoloMainMenu.btn_invite.setEnabled(false);		
+	
 		mHelper.signOut();
 		// mHelper.disconnect(); odĹ‚Ä…cza, nie wylogowuje
 	}
@@ -385,7 +404,12 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 	ProgressDialog mProgressDialog;
 
 	public void startQuickGame( ) {
-		leaveRoom();
+		// TODO check if signed in
+		cleanupBeforeNewPlay();
+		fromAutomatch = true;
+		fromAutomatchNo = 0;
+		
+		
 		mProgressDialog = new ProgressDialog(mActivity);
 		mProgressDialog.show();
 		mProgressDialog.setMessage("Connecting...");
@@ -394,14 +418,28 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		Games.RealTimeMultiplayer.create(mHelper.getApiClient(), prepareGame());		
 	}
 
-	public void invite() {
-		leaveRoom();
+	@Override
+	public void createGame(GameProperties gp) {
+		// previously invite
+		cleanupBeforeNewPlay();
+		isServer = true;
 		
 		// launch the player selection screen
-		// minimum: 1 other player; maximum: 3 other players
-		Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mHelper.getApiClient(), 1, 3);
+		Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mHelper.getApiClient(), gp.minPlayers-1, gp.maxPlayers-1, true);
 		mActivity.startActivityForResult(intent, RC_SELECT_PLAYERS);
-
+	}
+	
+	private void cleanupBeforeNewPlay() {
+		leaveRoom();
+		fromAutomatch = false;
+		isServer = false;
+		for (int i = 0; i < YoloEngine.TeamAB.length; i++) {			
+			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);
+		}
+		if (YoloEngine.participants != null)
+			YoloEngine.participants.clear();
+		if (YoloEngine.opponents != null)
+			YoloEngine.opponents.clear();		
 	}
 
 	private RoomConfig prepareGame() {
@@ -427,7 +465,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		return roomConfig;
 	}
 
-	public void cosCos(int request, int response, Intent data) {
+	public void incomingAction(int request, int response, Intent data) {
 		if (request == RC_SIGNIN) { // Wracamy z powrotem do gameHelpera, który otworzył‚ okienko i chce wiedzieć co się stało
 			mHelper.onActivityResult(request, response, data);
 		}
@@ -441,12 +479,9 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 			
 
 			// get the invitee list
-			Bundle extras = data.getExtras();
+			//Bundle extras = data.getExtras();
 			final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
-
-			debugLog("invitation sent chyba");
-			Toast toast = Toast.makeText(mActivity.getApplicationContext(), R.string.invitation_sent, Toast.LENGTH_SHORT);
-			toast.show();
+			
 
 			// get auto-match criteria
 			Bundle autoMatchCriteria = null;
@@ -470,10 +505,31 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 			}
 			RoomConfig roomConfig = roomConfigBuilder.build();
 			Games.RealTimeMultiplayer.create(mHelper.getApiClient(), roomConfig);
-
+			
+			debugLog("invitation sent");
+			Toast toast = Toast.makeText(mActivity.getApplicationContext(), R.string.invitation_sent, Toast.LENGTH_LONG);
+			toast.show();
 		}
 
 	}
+
+	@Override
+	protected void manuallyAssignTeams() {
+		if (YoloEngine.playerParticipantID.equals(YoloEngine.participants.get(0).getParticipantId())) {
+			isServer = false;
+			YoloEngine.TeamAB[YoloEngine.MyID].isServer = true;
+			String teamAssignPattern = assignTeams();
+			YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
+			YoloEngine.startTime = (System.currentTimeMillis() + YoloEngine.countdownTime + YoloEngine.timeOffset);
+			YoloEngine.mMultislayer.sendMaxLife();
+			
+			sendStateChangedMessage(1);
+			startTheGame();
+						
+		}
+
+	}
+	
 
 	
 

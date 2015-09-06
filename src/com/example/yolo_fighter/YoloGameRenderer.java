@@ -375,6 +375,7 @@ class Skill extends YoloObject
 	int poison_duration =0,slowDown_duration =0,frozen_duration =0,lava_duration =0;
 	int fire_rate = 10,fireCounter =0;
 	int resurestion_count =0;
+	int creatorID = YoloEngine.MyID;
 	
 	boolean isLeft = false,onGround = false ,haveXY = false,team,canMove = true;
 	boolean isUsed=false;
@@ -507,7 +508,7 @@ class Skill extends YoloObject
     		damage = 20f;
     		 if(ID < 0)
     			 setAIXY();
-    		isLeft = YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft;
+    		isLeft = YoloEngine.TeamAB[this.creatorID].isPlayerLeft;
 			this.x++;
     		break;
     	case 11://Tower
@@ -2579,32 +2580,10 @@ class Skill extends YoloObject
 		
         YoloEngine.mMultislayer.sendTracerIncrease(YoloEngine.IDTracer);//info o zwiekszniu
 		return ID;
-	}
-
-    public byte[] serializeSkill()
-    {
-        ByteBuffer bbf = ByteBuffer.allocate(50);
-        bbf.putChar('s');
-        bbf.putFloat(x);
-        bbf.putFloat(y);
-        bbf.putInt(sprite);
-        bbf.putInt(animation_slowdown);
-        bbf.putFloat(xEnd);
-        bbf.putFloat(yEnd);
-        bbf.putFloat(x_radius);
-        bbf.putFloat(y_radius);
-        bbf.putFloat(frameDuration);
-        bbf.putFloat(life);
-        if(team)
-            bbf.put((byte)1);
-        else
-            bbf.put((byte)0);
-
-        return bbf.array();
-    }
+	}  
     
     public byte[] serializeSkillNew() {
-    	ByteBuffer bbf = ByteBuffer.allocate(20);
+    	ByteBuffer bbf = ByteBuffer.allocate(25);
         bbf.putChar('s');  // 2 bajty
         bbf.putFloat(x); // 4 bajty
         bbf.putFloat(y); // 4 bajty
@@ -2614,6 +2593,7 @@ class Skill extends YoloObject
         else
             bbf.put((byte)0);
         bbf.putInt(id); // 4 bajty
+        bbf.putInt(creatorID); //4 bajty
         return bbf.array();
     }
 }
@@ -2866,7 +2846,7 @@ public class YoloGameRenderer implements Renderer {
 	
 // ------------------------- Multislayer BEGIN -----------------------	
 
-			if (YoloEngine.MULTI_ACTIVE) {
+			if (YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE) {
                 YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.TeamAB[YoloEngine.MyID].x, YoloEngine.TeamAB[YoloEngine.MyID].y, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft);
 			}	
 			for(int i = 0; i < YoloEngine.TeamSize*2; i++) {
@@ -3828,7 +3808,7 @@ public class YoloGameRenderer implements Renderer {
 			else if(sprite == 26)
 				YoloEngine.sp.play(YoloEngine.SoundInd[60], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
-			if(YoloEngine.MULTI_ACTIVE)
+			if(YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE)
 				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.TeamAB[YoloEngine.MyID].aim,poiseDamage);
 	}
 	
@@ -4913,11 +4893,12 @@ public class YoloGameRenderer implements Renderer {
 	private void spanMovePowerUPs()
 	{
 		synchronized (PowerUPtab) {
-			if (powerUpCoutdown-- <= 0 && YoloEngine.TeamAB[YoloEngine.MyID].gameMaster) {
+			if (powerUpCoutdown-- <= 0 && YoloEngine.TeamAB[YoloEngine.MyID].isServer) {
 				powerUpCoutdown = powerUpInterval;
 				PowerUP mPowerUP = new PowerUP();
 				YoloEngine.mMultislayer.sendPowerUp(true, mPowerUP.x, mPowerUP.y, mPowerUP.effect);
 				PowerUPtab.add(mPowerUP);
+				System.out.println("adding powerup");
 			}
 
 			for (PowerUP UP : PowerUPtab) {

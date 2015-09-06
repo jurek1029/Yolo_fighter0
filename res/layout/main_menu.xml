@@ -49,7 +49,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:background="@drawable/btnplay2"
-        android:onClick="joinClick" />
+        android:onClick="startQuickGame" 
+        android:text="Quick start"
+        android:textColor="@color/dark_tab"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+    
+    <Button
+        android:id="@+id/btnOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="@drawable/btnoptions2"
+        android:onClick="createGame"
+        android:text="Create game"
+        android:textColor="@color/dark_tab"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnPM"
@@ -59,15 +75,7 @@
         android:background="@drawable/btnpm2"
         android:onClick="skillsClick" />
 
-    <Button
-        android:id="@+id/btnOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:background="@drawable/btnoptions2"
-        android:onClick="optionsClick" />
 
- 
     
 </LinearLayout>
 
@@ -101,39 +109,30 @@
         android:text="Sign Out" />
 
     <Button
-        android:id="@+id/sign_in_button"
+        android:id="@+id/joinBT_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:onClick="signIn"
-        android:text="  Sign In " />
+        android:onClick="blank"
+        android:text="Join BT" />
 
-    <Button
-        android:id="@+id/invite_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:onClick="invite"
-        android:text="Invite" />
-
-    <Button
-        android:id="@+id/quick_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:onClick="startQuickGame"
-        android:text="Quick" />
+    
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" >
-    
+    <RadioButton
+        android:id="@+id/OFFLINEradio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="offline" />
     <RadioButton
         android:id="@+id/GSradio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:checked="false"
         android:text="GS" />
 
     <RadioButton
