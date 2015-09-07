@@ -2,28 +2,14 @@ package com.example.yolo_fighter;
 
 import static android.content.ContentResolver.setMasterSyncAutomatically;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.MailTo;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.provider.CalendarContract.Instances;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.ScaleAnimation;
@@ -40,21 +26,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Invitation;
-import com.google.android.gms.games.multiplayer.Multiplayer;
-import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
-import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener;
-import com.google.android.gms.games.multiplayer.realtime.Room;
-import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
-import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
-import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
-import com.google.android.gms.internal.ma;
-import com.google.android.gms.internal.mh;
-import com.google.example.games.basegameutils.GameHelper;
-import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
 
 public class YoloMainMenu extends Activity implements YoloStartListener
 {
@@ -2320,9 +2291,6 @@ public void skill2devilEqBtnClick(View v){
 		cleanupForNewGame();
 	}
 
-
-
-
 	public void startQuickGame(View v) {
 		YoloEngine.mGameProperties = new GameProperties(GameProperties.INTERNET, 0,0,0,2,4); // TODO set up some defaults!
 		YoloMultislayerBase.checkMultislayerInstance(this);
@@ -2333,9 +2301,7 @@ public void skill2devilEqBtnClick(View v){
 		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS) {		
 			((YoloMultislayerGS) YoloEngine.mMultislayer).signInAndQuick();
 		}
-	}
-
-	
+	}	
 
 	public void createGame(View v) {
 		// TODO open screen1
@@ -2348,18 +2314,28 @@ public void skill2devilEqBtnClick(View v){
 		YoloMultislayerBase.checkMultislayerInstance(this);
 		YoloEngine.mMultislayer.createGame(YoloEngine.mGameProperties);
 	}
+		
+	public void joinBT(View v) {
+		YoloEngine.mGameProperties = new GameProperties(GameProperties.BLUETOOTH);
+		YoloMultislayerBase.checkMultislayerInstance(this);
+		cleanupForNewGame();
+		if (YoloEngine.mMultislayer instanceof YoloMultislayerBT) {		
+			((YoloMultislayerBT) YoloEngine.mMultislayer).joinGame();
+		}
+	}
 
 	@Override
 	public void onActivityResult(int request, int response, Intent data) {
 		YoloMultislayerBase.checkMultislayerInstance(this);
-		if (YoloEngine.mMultislayer instanceof YoloMultislayerGS)
-			((YoloMultislayerGS) YoloEngine.mMultislayer).incomingAction(request, response, data);
+		YoloEngine.mMultislayer.incomingAction(request, response, data);
 	}
 
 	private void cleanupForNewGame() {
 		plInfoList.clear();
 		plInfoList = dbm.getAll();
 		YoloEngine.currentPlayerInfo = plInfoList.get(preferences.getInt("currentPlInfPos", 0));
+		for (int i = 0; i < YoloEngine.TeamAB.length; i++) 		
+			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);	
 	}
 	
 	

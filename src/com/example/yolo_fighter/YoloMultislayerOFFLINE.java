@@ -1,6 +1,7 @@
 package com.example.yolo_fighter;
 
 import android.app.Activity;
+import android.content.Intent;
 
 public class YoloMultislayerOFFLINE extends YoloMultislayerBase {
 
@@ -33,6 +34,12 @@ public class YoloMultislayerOFFLINE extends YoloMultislayerBase {
 
 	@Override
 	protected void manuallyAssignTeams() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void incomingAction(int request, int response, Intent data) {
 		// TODO Auto-generated method stub
 		
 	}

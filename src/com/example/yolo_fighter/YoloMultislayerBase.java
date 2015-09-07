@@ -6,10 +6,16 @@ import java.util.List;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Intent;
+
 import com.google.android.gms.games.multiplayer.Participant;
 
 
 class GameProperties {
+	public GameProperties(int gameType) {
+		this.gameType = gameType;
+	}
+
 	int AIdiff = 1;
 	int AIqt = 0;
 	int mapID = 0;
@@ -744,6 +750,10 @@ public abstract class YoloMultislayerBase extends Thread {
 		for(YoloStartListener l : listeners )
 			l.gameReadyToStart(mActivity.findViewById(android.R.id.content));
 	}
+
+	abstract void incomingAction(int request, int response, Intent data);
+ 		
+	
 	
 	
 }
