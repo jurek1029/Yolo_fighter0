@@ -12,12 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 
-import com.google.android.gms.games.Games;
-import com.google.android.gms.games.multiplayer.Participant;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
@@ -28,22 +24,29 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Binder;
-import android.os.Handler;
-import android.os.IBinder;
+import android.os.Bundle;
 
 public class YoloMultislayerBT extends YoloMultislayerBase {
-	private static final int REQUEST_ENABLE_BT = 688_44_10;
-	private static final int REQUEST_DISCOVERABLE_BT = 688_44_20;
+	private static final int REQUEST_ENABLE_BT_AND_SCAN = 688_44_10;
+	private static final int REQUEST_DISCOVERABLE_BT_AND_START_SERVER = 688_44_20;
 	private static final int DISCOVERABLE_DURATION = 300; // works as activity result for make discoverable
-
-	private static final int ACTION_ENABLE_BT_AND_SCAN = 10;
-	private static final int ACTION_ENABLE_BT_AND_START_SERVER = 20;
-	
-	
-	
+	private static final UUID mUUID = UUID.fromString("c843a4a7-1e8e-496c-86b4-439cc3936b6d");
 	
 	private boolean priorityLock = false; // blokada przesylania pozycji na czas wysylania reliable
+	
+	
+	ConnectedThread mConnectedThread;
+
+	private boolean scanFlag = false; // wartoœæ false oznacza, ¿e nie trwa skanowanie
+	private BluetoothAdapter mBluetoothAdapter;
+	protected List<device> btDevices = new ArrayList<device>(10);
+	protected List<BluetoothDevice> btDevicesRaw = new ArrayList<BluetoothDevice>(10);
+	private List<BluetoothDevice> alreadyFoundDevices = new ArrayList<BluetoothDevice>();
+
+	protected BluetoothServerSocket mBluetoothServerSocket;
+	private BluetoothSocket someSocket;
+	BluetoothSocket socket;
+	
 
 	@Override
 	protected void sendMessageToAllreliable(final byte[] data) {
@@ -76,36 +79,25 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	}
 
 	public void joinGame() {
+		cleanupBeforeNewPlay();
 		startUp1();
-		enableBT(ACTION_ENABLE_BT_AND_SCAN);
+		enableBT(REQUEST_ENABLE_BT_AND_SCAN);
 	}
 
 	public void createGame(GameProperties gp) {
+		cleanupBeforeNewPlay();
 		startUp1();
-		enableBT(ACTION_ENABLE_BT_AND_START_SERVER);		
+		isServer = true;
+		enableBT(REQUEST_DISCOVERABLE_BT_AND_START_SERVER);		
 	}
 
 	public YoloMultislayerBT() {
-		mUUID = UUID.fromString("c843a4a7-1e8e-496c-86b4-439cc3936b6d"); // hardcoded UUID :D
-
 		YoloEngine.timeOffset = 1000;
 	}
 
-	ConnectedThread mConnectedThread;
-
-	private boolean scanFlag = false; // wartoœæ false oznacza, ¿e nie trwa skanowanie
-	private BluetoothAdapter mBluetoothAdapter;
-	protected List<device> btDevices = new ArrayList<device>(10);
-	protected List<BluetoothDevice> btDevicesRaw = new ArrayList<BluetoothDevice>(10);
-
-	protected BluetoothServerSocket mBluetoothServerSocket;
-	private BluetoothSocket someSocket;
-	BluetoothSocket socket;
-	private UUID mUUID;
 
 
 
-	private List<BluetoothDevice> alreadyFoundDevices = new ArrayList<BluetoothDevice>();
 
 	private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
@@ -140,15 +132,15 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 						}
 					});
 
-					int kk = Collections.binarySearch(btDevicesPairedRaw, newDevice, new Comparator<BluetoothDevice>() {
+					int foundDevIndex = Collections.binarySearch(btDevicesPairedRaw, newDevice, new Comparator<BluetoothDevice>() {
 						@Override
 						public int compare(BluetoothDevice bt1, BluetoothDevice bt2) {
 							return bt1.getAddress().compareTo(bt2.getAddress());
 						}
 					});
 
-					if (kk > 0) {
-						newDevice = btDevicesPairedRaw.get(kk);
+					if (foundDevIndex > 0) {
+						newDevice = mBluetoothAdapter.getRemoteDevice(btDevicesPairedRaw.get(foundDevIndex).getAddress());						
 						debugLog("BT device already paired");
 					}
 					final BluetoothDevice dk = newDevice; // must be final
@@ -163,17 +155,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 					}).setMessage(dk.getName());
 					mDialog.show();
 				}
-
-				// btDevicesRaw.add(newDevice);
-				// device mDevice = new device(newDevice.getName(), newDevice.getAddress());
-				// btDevices.add(mDevice);
-
-				// System.out.println(btDevices.size() + " device(s) found");
-				// for (int i = 0; i < btDevices.size(); i++)
-				// System.out.println(btDevices.get(i).name + "  " + btDevices.get(i).address);
-
 			}
-			// scanFlag = false;
 		}
 	};
 
@@ -184,42 +166,39 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 			return;
 		}
 
-		if(action == ACTION_ENABLE_BT_AND_SCAN) {
+		if(action == REQUEST_ENABLE_BT_AND_SCAN) {
 			if (!mBluetoothAdapter.isEnabled()) { // Checking if BT is already enabled
 				Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				enableBtIntent.putExtra("action", action); // FIXME name should include package name
-			    mActivity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);			    
-			}
-		} else if(action == ACTION_ENABLE_BT_AND_START_SERVER) {
+			    mActivity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT_AND_SCAN);			    
+			} else
+				findDevices();
+		} else if(action == REQUEST_DISCOVERABLE_BT_AND_START_SERVER) {
 			Intent discoverableIntent = new	Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE); // enables BT automatically
 			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
-			discoverableIntent.putExtra("action", action);
-			mActivity.startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE_BT);	
+			mActivity.startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE_BT_AND_START_SERVER);	
 		}
 		
 	}
 	
 	public void incomingAction(int request, int response, Intent data) {
-		if(request == REQUEST_ENABLE_BT) 
+		if(request == REQUEST_ENABLE_BT_AND_SCAN) 
 			if(response == Activity.RESULT_OK) {
-				debugLog("BT turned on");
-				if(data.getIntExtra("action", 0) == ACTION_ENABLE_BT_AND_SCAN);
-					findDevices();
+				debugLog("BT turned on");				
+				findDevices();						
 			}
+			// TODO what if user clicks deny
 				
 		
-		if(request == REQUEST_DISCOVERABLE_BT)
+		if(request == REQUEST_DISCOVERABLE_BT_AND_START_SERVER)
 			if(response == DISCOVERABLE_DURATION) {
-				debugLog("BT discoverable");
-				if(data.getIntExtra("action", 0) == ACTION_ENABLE_BT_AND_START_SERVER)
-					prepareServer();				
+				debugLog("BT discoverable");	
+				prepareServer();				
 			}
+			// TODO what if user clicks deny
 		
 	}
 
 	public void findDevices() {
-		// Tworzy listê urz¹dzeñ
-
 		btDevices.clear();
 		btDevicesRaw.clear(); // clear the list of devices
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -267,17 +246,16 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 						break;
 					}
 					if (socket != null) {
-						// manageConnectedSocket(socket);
 						debugLog("server: connected succesfully");
 						mConnectedThread = new ConnectedThread(socket);
-						mConnectedThread.start();
-						startUp2();
+						mConnectedThread.start();												
+						onConnectionEstablished();
+						
 						try {
 							mBluetoothServerSocket.close(); // teraz zamykamy, ale chyba póŸniej mo¿na zostawiæ otwarte dopóki nie po³¹czymy
 															// wszyskiego
 						} catch (IOException e) {
 						}
-						// tu trzeba jeszcze trochê dopisaæ...
 						break;
 
 					}
@@ -288,7 +266,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	}
 
 	public void connectTo(final BluetoothDevice btDev) {
-		// ³¹czymy siê z okreœlonym urz¹dzeniem, i oznacza numer urz¹dzenia na naszej liœcie
+		// ³¹czymy siê z okreœlonym urz¹dzeniem
 
 		if (btDev == null)
 			return;
@@ -301,16 +279,18 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 				scanFlag = false;
 
 				try {
-					System.out.println("connecting with" + " " + btDev.getName());
+					System.out.println("connecting to" + " " + btDev.getName());
 					someSocket = btDev.createRfcommSocketToServiceRecord(mUUID);
+					// TODO consider using createInsecureRfcommSocketToServiceRecord  and  proper listener
 				} catch (IOException e1) {
+					
 				}
 				try {
 					someSocket.connect();
 					debugLog("client: connected succesfully");
 					mConnectedThread = new ConnectedThread(someSocket);
 					mConnectedThread.start();
-					startUp2();
+					onConnectionEstablished();
 				} catch (IOException connectException) {
 
 					try {
@@ -323,21 +303,11 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 				}
 
 				// Also jeœli program nie zdechnie wczeœniej, to pod someSocket mamy pod³¹czone urz¹dzenie
-				// Na razie zadowalamy siê jednym st¹d zostawiamy someSocket :D
 				// manageConnectedSocket(someSocket);
 			}
 		}).start();
 
 	}
-
-	/*
-	 * public void sendToAll(String text) { // serwer wysy³a wszystkim klientom coœ //new ConnectedThread(socket).write(text.getBytes());
-	 * kk.write("test 123".getBytes()); // @TODO docelowo tutaj pêtla przez wszystkie sockety oznaczaj¹ce pod³¹czonych klientów }
-	 * 
-	 * public void sendToServer(String text) { // klient wysy³a coœ serwerowi new ConnectedThread(someSocket).write(text.getBytes()); }
-	 * 
-	 * public void closeSocket(BluetoothSocket bSocket) { new ConnectedThread(bSocket).cancel(); }
-	 */
 
 	private void startUp1() {
 		/*
@@ -348,58 +318,71 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		mBluetoothAdapter.cancelDiscovery();
 		scanFlag = false;
 		YoloEngine.playerParticipantID = mBluetoothAdapter.getName() + " " + mBluetoothAdapter.getAddress();		
-		
-		YoloEngine.opponents.clear();		
-		if (YoloEngine.participantsBT != null)
-			YoloEngine.participantsBT.clear();
 	}
 
-	// TODO
 	String opponentName;
-
-	private void startUp2() {
-		// YoloEngine.MULTI_ACTIVE = true;
-
+	
+	
+	private void onConnectionEstablished() {
 		YoloEngine.mMultislayer.sendMessageToAllreliable(YoloEngine.mMultislayer.sendPreStartInfo(new int[] { YoloEngine.currentPlayerInfo.getSK1EQ(), YoloEngine.currentPlayerInfo.getSK2EQ(),
 				YoloEngine.currentPlayerInfo.getSK3EQ() }));
-
-		// YoloEngine.participants = mRoom.getParticipants();
-		opponentName = mConnectedThread.devName + " " + mConnectedThread.devMAC;
-		// YoloEngine.opponentName = opponentName;
-
+		
+		opponentName = mConnectedThread.devName + " " + mConnectedThread.devMAC; // TODO should be list/array for more players
 		YoloEngine.participantsBT.add(opponentName);
 		YoloEngine.participantsBT.add(YoloEngine.playerParticipantID);
-
+		
+		
 		Collections.sort(YoloEngine.participantsBT);
 
-		for (String p : YoloEngine.participantsBT) { // TODO po co to?
+		for (String p : YoloEngine.participantsBT) {
 			if (!p.equals(YoloEngine.playerParticipantID)) {
 				YoloEngine.opponents.add(p);
 			}
 		}
-
-		if (YoloEngine.playerParticipantID.equals(YoloEngine.participantsBT.get(0))) {
-			// My przydzielamy teamy
-			System.out.println("przydzielam team");
-			final String teamAssignPattern = assignTeamsXX();
+		
+		if (isServer) {			
+			this.notreadyPlayersNumber = YoloEngine.participantsBT.size()-1;
+			final String teamAssignPattern = assignTeamsXX();			
 			YoloEngine.TeamAB[YoloEngine.MyID].isServer = true;
 
-			YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
 			new Thread(new Runnable() {
 				public void run() {
 					try {
-						Thread.sleep(800);
+						Thread.sleep(600);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					YoloEngine.mMultislayer.sendTeamAssignment(Integer.parseInt(teamAssignPattern, 2));
 				}
 			}).start();
+			
+			
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(1200);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					YoloEngine.mMultislayer.sendGameProperties();
+				}
+			}).start();
+					
 			YoloEngine.startTime = (System.currentTimeMillis() + YoloEngine.countdownTime + YoloEngine.timeOffset);
 			YoloEngine.mMultislayer.sendMaxLife(); // TODO to powinno byæ póŸniej, ¿eby by³a pwenoœæ, ¿e TeamAB jest dobrze usuzp³enione
 		}
-
+	}
+	
+	
+	private void cleanupBeforeNewPlay() {
+		isServer = false;
+		for (int i = 0; i < YoloEngine.TeamAB.length; i++) {			
+			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);
+		}
+		if (YoloEngine.participantsBT != null)
+			YoloEngine.participantsBT.clear();
+		if (YoloEngine.opponents != null)
+			YoloEngine.opponents.clear();		
 	}
 
 	public void koniec() {
@@ -412,6 +395,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	}
 
 
+	
 
 	@Override
 	protected void manuallyAssignTeams() {
@@ -419,11 +403,6 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 
 	}
 
-	@Override
-	protected void startTheGame() {
-		// TODO Auto-generated method stub
-
-	}
 }
 
 class device {
@@ -499,7 +478,6 @@ class ConnectedThread extends Thread {
 
 class ReliableMessageLock {
 	private ReliableMessageLock() {
-
 	}
 
 	private static class SingletonHolder {
@@ -519,5 +497,4 @@ class ReliableMessageLock {
 	public void releaseKLock() {
 		kLock.release();
 	}
-
 }

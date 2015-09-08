@@ -56,6 +56,7 @@ public abstract class YoloMultislayerBase extends Thread {
 	protected abstract void sendMessageToAll(byte[] data);
 	protected abstract void createGame(GameProperties gp);
 	protected abstract void manuallyAssignTeams();
+	abstract void incomingAction(int request, int response, Intent data);
 	
 	protected boolean isServer = false;
 	protected int notreadyPlayersNumber;
@@ -199,12 +200,13 @@ public abstract class YoloMultislayerBase extends Thread {
 			break;
 
 		case 't':
+			debugLog("received team ass");
 			String pattern = Integer.toBinaryString(rcvData.getInt()).substring(1);
 
 			int i = 0,
 			a = 0,
 			b = YoloEngine.TeamSize;
-			if (YoloEngine.MULTI_MODE == YoloEngine.MULTI_GS) {
+			if (YoloEngine.mGameProperties.gameType == GameProperties.INTERNET) {
 				for (Participant p : YoloEngine.participants) {
 					if (p.getStatus() == Participant.STATUS_JOINED) {
 
@@ -226,8 +228,7 @@ public abstract class YoloMultislayerBase extends Thread {
 					}
 				}
 			}
-			else {	
-				
+			else {					
 				for (String p : YoloEngine.participantsBT) {					
 						if (pattern.charAt(i) == '0') {
 							YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
@@ -343,7 +344,7 @@ public abstract class YoloMultislayerBase extends Thread {
 			break;
 		case 'q':
 			int action = rcvData.getInt();
-			// 3 - quit, 2 - invitee ready, 1 - startGame by server
+			// 3 - quit, 2 - invitee/join player ready, 1 - startGame by server
 			
 			switch(action) {
 				case 3:
@@ -356,11 +357,11 @@ public abstract class YoloMultislayerBase extends Thread {
 					notreadyPlayersNumber--;
 					if(notreadyPlayersNumber <= 0) {
 						sendStateChangedMessage(1);
-						startTheGame();
+						startTheGame();								
 					}					
 					break;
 				case 1:
-					startTheGame();
+					startTheGame();							
 					break;					
 			}	
 			break;
@@ -446,6 +447,7 @@ public abstract class YoloMultislayerBase extends Thread {
 	}
 
 	public byte[] sendPreStartInfo(int[] loadArray) {
+		// Skill sprites to load AND information if the player is form Automatch 
 		ByteBuffer bbf = ByteBuffer.allocate(14 + 4 * loadArray.length + 2);
 		bbf.putChar('l');
 		for (int value : loadArray)
@@ -574,15 +576,7 @@ public abstract class YoloMultislayerBase extends Thread {
 		
 		sendMessageToAllreliable(bbf.array());
 	}
-/*
-	public void sendQuitInfo(int myID) {
-		ByteBuffer bbf = ByteBuffer.allocate(12);
-		bbf.putChar('q');
-		bbf.putInt(YoloEngine.MyID);
-
-		sendMessageToAllreliable(bbf.array());
-	}
-*/	
+	
 	public void sendPowerUp(boolean actionAdd, float x, float y, int effect) {
 		ByteBuffer bbf = ByteBuffer.allocate(16);	
 		bbf.putChar('r');
@@ -605,7 +599,7 @@ public abstract class YoloMultislayerBase extends Thread {
 		bbf.putInt(YoloEngine.mGameProperties.AIqt);
 		bbf.putInt(YoloEngine.mGameProperties.mapID);
 		
-		sendMessageToAll(bbf.array());
+		sendMessageToAllreliable(bbf.array());
 	}
 	
 	public void sendStateChangedMessage(int action) {
@@ -747,11 +741,16 @@ public abstract class YoloMultislayerBase extends Thread {
 		// TODO START GAME;
 		debugLog("NOW THE GAME IS STARTING");
 		
-		for(YoloStartListener l : listeners )
-			l.gameReadyToStart(mActivity.findViewById(android.R.id.content));
+		mActivity.runOnUiThread(new Runnable() {			
+			@Override
+			public void run() {
+				for(YoloStartListener l : listeners )
+					l.gameReadyToStart(mActivity.findViewById(android.R.id.content));				
+			}
+		});
 	}
 
-	abstract void incomingAction(int request, int response, Intent data);
+	
  		
 	
 	
