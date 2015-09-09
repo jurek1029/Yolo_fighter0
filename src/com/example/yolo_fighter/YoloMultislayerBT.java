@@ -79,6 +79,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	}
 
 	public void joinGame() {
+		koniec();
 		cleanupBeforeNewPlay();
 		startUp1();
 		enableBT(REQUEST_ENABLE_BT_AND_SCAN);
@@ -140,7 +141,8 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 					});
 
 					if (foundDevIndex > 0) {
-						newDevice = mBluetoothAdapter.getRemoteDevice(btDevicesPairedRaw.get(foundDevIndex).getAddress());						
+						//newDevice = mBluetoothAdapter.getRemoteDevice(btDevicesPairedRaw.get(foundDevIndex).getAddress());
+						newDevice = btDevicesPairedRaw.get(foundDevIndex);
 						debugLog("BT device already paired");
 					}
 					final BluetoothDevice dk = newDevice; // must be final
@@ -231,7 +233,8 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 					}
 				}
 				try {
-					mBluetoothServerSocket = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("server-socket", mUUID);
+					//mBluetoothServerSocket = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("server-socket", mUUID); forces new pairing every connection
+					mBluetoothServerSocket = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord("server-socket", mUUID);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -257,9 +260,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 						} catch (IOException e) {
 						}
 						break;
-
 					}
-
 				}
 			}
 		}).start();
@@ -280,8 +281,8 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 
 				try {
 					System.out.println("connecting to" + " " + btDev.getName());
-					someSocket = btDev.createRfcommSocketToServiceRecord(mUUID);
-					// TODO consider using createInsecureRfcommSocketToServiceRecord  and  proper listener
+					//someSocket = btDev.createRfcommSocketToServiceRecord(mUUID); forces new pairing every connection
+					someSocket = btDev.createInsecureRfcommSocketToServiceRecord(mUUID);
 				} catch (IOException e1) {
 					
 				}
@@ -375,7 +376,9 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 	
 	
 	private void cleanupBeforeNewPlay() {
+		YoloEngine.playerParticipantID = "";
 		isServer = false;
+		opponentName = "";
 		for (int i = 0; i < YoloEngine.TeamAB.length; i++) {			
 			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);
 		}

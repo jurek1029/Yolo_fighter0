@@ -679,36 +679,22 @@ public abstract class YoloMultislayerBase extends Thread {
 
 		// Team assignment dokÄ…d {0-teamA, 1-teamB}
 		int a = 0, b = YoloEngine.TeamSize;
-		// Przydzielamy nam
-		if (new Random().nextBoolean()) {
-			YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
-			YoloEngine.MyID = a;
-			teamAssignPattern += "0";
-			a++;
-		} else {
-			YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
-			YoloEngine.MyID = b;
-			teamAssignPattern += "1";
-			b++;
-		}
-		YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
 
-		// Przydzielamy reszcie graczy
-		for (String p : YoloEngine.participantsBT) {
-			if (!(YoloEngine.playerParticipantID.equals(p))) {
-				// nie jesteĹ›my to my, 
-				// @TODO sprawdzenie, czy gracz nie ma już
-				// przydzielonego teamu?
+		for (String p : YoloEngine.participantsBT) {		
 				if (a > (b - YoloEngine.TeamSize)) {
 					YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
 					YoloEngine.TeamAB[b].ParticipantId = p;
 					teamAssignPattern += "1";
+					if(p.equals(YoloEngine.playerParticipantID))
+						YoloEngine.MyID = b;
 					b++;
 
 				} else if (a < (b - YoloEngine.TeamSize)) {
 					YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
 					YoloEngine.TeamAB[a].ParticipantId = p;
 					teamAssignPattern += "0";
+					if(p.equals(YoloEngine.playerParticipantID))
+						YoloEngine.MyID = a;
 					a++;
 
 				} else {
@@ -716,18 +702,23 @@ public abstract class YoloMultislayerBase extends Thread {
 						YoloEngine.TeamAB[a].playerTeam = YoloEngine.TeamA;
 						YoloEngine.TeamAB[a].ParticipantId = p;
 						teamAssignPattern += "0";
+						if(p.equals(YoloEngine.playerParticipantID))
+							YoloEngine.MyID = a;
 						a++;
 
 					} else {
 						YoloEngine.TeamAB[b].playerTeam = YoloEngine.TeamB;
 						YoloEngine.TeamAB[b].ParticipantId = p;
 						teamAssignPattern += "1";
+						if(p.equals(YoloEngine.playerParticipantID))
+							YoloEngine.MyID = b;
 						b++;
 
 					}
-				}
+				}				
 			}
-		}
+		YoloEngine.TeamAB[YoloEngine.MyID].ParticipantId = YoloEngine.playerParticipantID;
+		
 		return teamAssignPattern;
 	}
 	
