@@ -138,6 +138,7 @@ class Particle
 		}
 		return false;
 	}
+	
 	public boolean drawLava(GL10 gl)
 	{
 		if(liveTime-- <= 0)
@@ -248,6 +249,7 @@ class PowerUP extends YoloWeapon
 		}
 				
 	}
+	
 	PowerUP()
 	{	
 		super(0f,0f,.5f,.5f);
@@ -1535,6 +1537,7 @@ class Skill extends YoloObject
 				x = YoloEngine.LEVEL_X/YoloEngine.TX - (YoloEngine.display_x/YoloEngine.TX/YoloEngine.LEVEL_scale - x);
 		x-=.5f;
 	}
+	
 	public void setY()
 	{
 		if(YoloEngine.TeamAB[YoloEngine.MyID].y > YoloGameRenderer.half_fy && YoloEngine.TeamAB[YoloEngine.MyID].y < YoloEngine.LEVEL_Y/YoloEngine.TY -  YoloGameRenderer.half_by)
@@ -1553,6 +1556,7 @@ class Skill extends YoloObject
 			x = YoloEngine.TeamAB[YoloEngine.MyID].x + 0.5f;
 		y = YoloEngine.TeamAB[YoloEngine.MyID].y+ 0.1f;
 	}
+	
 	public void setXYFloor()
 	{
 		if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft)
@@ -2685,12 +2689,12 @@ public class YoloGameRenderer implements Renderer {
 			if(YoloGame.doubleTap != 0 && doubleTapInterval-- <= 0)
 			{
 				YoloGame.doubleTap = 0;
-				doubleTapInterval = 9;
+				doubleTapInterval = 40;
 			}
 			if(YoloGame.currentMovePointer2 == -1 && dashInterval-- <= 0)
 			{
 				YoloGame.lastMovePointer2 =-1;
-				dashInterval = 14;
+				dashInterval = 20;
 			}
 			//-------------------------------------------------DeathManagment-----------------------------------------------------------
 			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive < 0 || YoloEngine.TeamAB[YoloEngine.MyID].y < 0 )
@@ -2829,6 +2833,7 @@ public class YoloGameRenderer implements Renderer {
 					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
+					YoloEngine.isDoubleTaped = false;
 					
 				}
 			}
@@ -2840,6 +2845,7 @@ public class YoloGameRenderer implements Renderer {
 					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
 					YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
+					YoloEngine.isDoubleTaped = false;
 					
 				}
 			}
@@ -2978,6 +2984,7 @@ public class YoloGameRenderer implements Renderer {
 		loopRunTime = (loopEnd - loopStart);
 
 	}
+	
 	public static boolean IsCollidedTop(YoloObject object1,YoloObject object2)
 	{
 		if(object1.x + object1.dx < object2.x || object1.x > object2.x + object2.dx)return false;
@@ -2985,6 +2992,7 @@ public class YoloGameRenderer implements Renderer {
 		if(object1.y > object2.y + object2.dy && object1.y - object1.vy > object2.y + object2.dy)return false;
 		return true;
 	}
+	
 	private boolean IsCollided(YoloObject object1, YoloObject object2)
 	{
 		if(object1.x + object1.px + object1.dx <= object2.x || object1.x + object1.px >= object2.x + object2.dx)return false;
@@ -2992,6 +3000,7 @@ public class YoloGameRenderer implements Renderer {
 		
 		return true;
 	}
+	
 	private boolean IsIn(YoloObject object1, YoloObject object2)
 	{
 		if(object1.x <= object2.x || object1.x + object1.dx >= object2.x + object2.dx)return false;
@@ -3461,6 +3470,7 @@ public class YoloGameRenderer implements Renderer {
 			gl.glLoadIdentity();
 		}
 	}
+	
 	private void Load(GL10 gl)
 	{
 		switch(loading_faze)
@@ -3775,6 +3785,7 @@ public class YoloGameRenderer implements Renderer {
 		nextBullet--;
 	}
 	*/
+	
 	public static void playerFire(float bulletSpeed,int sprite,int count,float damage,float poiseDamage)
 	{
 			bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
@@ -3812,7 +3823,6 @@ public class YoloGameRenderer implements Renderer {
 				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.TeamAB[YoloEngine.MyID].aim,poiseDamage);
 	}
 	
-	
 	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim,float poiseDamge) //XXX oppfire nie potrzebuje isCrouch
 	{
 		bullet = new YoloWeapon(x,y,0.12f);
@@ -3828,7 +3838,6 @@ public class YoloGameRenderer implements Renderer {
 		bullet.Aim = aim;
 		Weapontab.add(bullet);
 	}
-	
 	
 	public static void AIFire(float x,float y,boolean isLeft,int sprite,float x_texture,float y_texture, float damage, boolean team)
 	{
@@ -4164,6 +4173,7 @@ public class YoloGameRenderer implements Renderer {
 		}	
 		return false;
 	}
+	
 	private void LoopSkillDraw(GL10 gl,Skill skill)
 	{
 		if(skill.y_texture >= skill.yEnd && skill.x_texture >= skill.xEnd)
@@ -4191,6 +4201,7 @@ public class YoloGameRenderer implements Renderer {
 			else{skill.y_texture+=0.125f; skill.x_texture=0f;}
 		}	
 	}
+	
 	private void findingSkillinOpp(int i,boolean Team)
 	{
 		Vector<Skill> Ve;
@@ -4442,9 +4453,7 @@ public class YoloGameRenderer implements Renderer {
 			}		
 		}
 	}
-	
-	
-	
+		
 	private void drawOponentSkills (GL10 gl)
 	{		
 		Vector<Skill> Ve;
@@ -4846,13 +4855,14 @@ public class YoloGameRenderer implements Renderer {
 		}
 		
 	}
+	
 	private void drawPlayerMag(GL10 gl)
 	{
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
-		gl.glTranslatef(25f/YoloEngine.display_x/YoloEngine.xdpi+XADD, 1-90f/YoloEngine.display_y/YoloEngine.xdpi+YADD, 0f);
-		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/2f/YoloEngine.display_x/YoloEngine.xdpi)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y/2f, 1f);
+		gl.glTranslatef(25f/YoloEngine.display_x/YoloEngine.xdpi+XADD, 1-80f/YoloEngine.display_y/YoloEngine.xdpi+YADD, 0f);
+		gl.glScalef((YoloEngine.LIVE_BAR_SIZE/1.5f/YoloEngine.display_x/YoloEngine.xdpi)*(YoloEngine.TeamAB[YoloEngine.MyID].playerMag/30f),LIVE_BAR_SIZE_Y/1.5f, 1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glTranslatef(0f, 0.875f, 0f);

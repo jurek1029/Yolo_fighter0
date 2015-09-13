@@ -151,7 +151,7 @@ public class YoloEngine {
 	public static boolean isCrouch_prest = false;
 	public static boolean isClimbing = false;
 	public static boolean isSkillPressed = false;
-
+	public static boolean isDoubleTaped = false;
 	public static boolean canClimb = false;
 	
 	

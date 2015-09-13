@@ -33,30 +33,32 @@ public class YoloGame extends Activity{
 	{
 		for(int q=0;q<YoloGameRenderer.LaddreTab.length;q++)
 		{
-			if(YoloEngine.TeamAB[YoloEngine.MyID].x + xRadiusLadder/2> YoloGameRenderer.LaddreTab[q].x && YoloEngine.TeamAB[YoloEngine.MyID].x - xRadiusLadder/2 < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].x + xRadiusLadder/2 + .5f> YoloGameRenderer.LaddreTab[q].x && YoloEngine.TeamAB[YoloEngine.MyID].x - xRadiusLadder/2 +.5f < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
 			{
-				if(YoloEngine.TeamAB[YoloEngine.MyID].y + yRadiusLadder/2 > YoloGameRenderer.LaddreTab[q].y && YoloEngine.TeamAB[YoloEngine.MyID].y - yRadiusLadder/2 < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
+				if(YoloEngine.TeamAB[YoloEngine.MyID].y + yRadiusLadder/2 +.5f> YoloGameRenderer.LaddreTab[q].y && YoloEngine.TeamAB[YoloEngine.MyID].y - yRadiusLadder/2 + .5f < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
 				{
 					if(YoloEngine.TeamAB[YoloEngine.MyID].y > YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy/2)
 					{
-						//TODO up
+						
 						if(!YoloEngine.isClimbing)
-						{
-							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
+						{	
 							YoloEngine.isClimbing = true;
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
+							YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x + 0.01f;
+							YoloEngine.isDoubleTaped = true;
 						}
-						YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x;
 						break;
 					}
 					else
 					{
-						//TODO down
+						
 						if(!YoloEngine.isClimbing)
-						{
-							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = true;
+						{	
 							YoloEngine.isClimbing = true;
-						}
-						YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x;
+							YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = true;
+							YoloEngine.TeamAB[YoloEngine.MyID].x = YoloGameRenderer.LaddreTab[q].x + 0.01f;
+							YoloEngine.isDoubleTaped = true;
+						}	
 						break;
 					}
 				}
@@ -176,7 +178,7 @@ public class YoloGame extends Activity{
 				 	x2=YoloEngine.isClasic?x:0;
 					y2=0;
 					YoloEngine.TeamAB[YoloEngine.MyID].isMoving = true;
-					if(doubleTap >= 2 && lastMovePointer2 ==-1)
+					if(doubleTap >= 1 && lastMovePointer2 ==-1)
 						detectClimb();
 					doubleTap++;
 				}
@@ -358,15 +360,16 @@ public class YoloGame extends Activity{
 							else
 							{
 								YoloEngine.isCrouch_prest = false;
-								if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
+								if(YoloEngine.TeamAB[YoloEngine.MyID].canMove && !YoloEngine.isDoubleTaped)
 									YoloEngine.TeamAB[YoloEngine.MyID].isClimbingDown = false;
 								if( y2 > 30/YoloEngine.xdpi)
 									ActionUp();
 								else 
 								{
+									
 									YoloEngine.TeamAB[YoloEngine.MyID].isJumping = false;
 									YoloEngine.isClimbing = false;
-									if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
+									if(YoloEngine.TeamAB[YoloEngine.MyID].canMove && !YoloEngine.isDoubleTaped)
 										YoloEngine.TeamAB[YoloEngine.MyID].isClimbingUp = false;
 								}
 								
@@ -606,6 +609,7 @@ public class YoloGame extends Activity{
 		super.onResume();
 		gameView.onResume();
 	}
+	
 	@Override
 	protected void onPause()
 	{
