@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Vector;
 
@@ -25,7 +27,7 @@ class Particle
 		if(isSmoke)
 		{
 			this.y_pos = y_pos;
-			x_end=0.42f;
+			x_end=0.40f;
 			y_end=0.75f;
 			a=4f;b=2f;
 			x = rng.nextFloat()*2*a - a;
@@ -99,7 +101,7 @@ class Particle
 			
 			liveTime = (int) (x_distance/velocity);		
 			
-			System.out.println(x+" "+y+" "+x_distance+" "+liveTime+" "+velocity+" "+velecityDirection+" "+a0+" "+a1);
+			//System.out.println(x+" "+y+" "+x_distance+" "+liveTime+" "+velocity+" "+velecityDirection+" "+a0+" "+a1);
 			
 			x += x_pos - .5f;
 			y += y_pos - .5f;
@@ -508,10 +510,10 @@ class Skill extends YoloObject
     		animation_slowdown = 10;
     		resurestion_count = 0;
     		damage = 20f;
-    		 if(ID < 0)
+    		 if(this.creatorID == YoloEngine.MyID)
     			 setAIXY();
     		isLeft = YoloEngine.TeamAB[this.creatorID].isPlayerLeft;
-			this.x++;
+			//this.x++;
     		break;
     	case 11://Tower
     		{
@@ -693,10 +695,20 @@ class Skill extends YoloObject
     		resurestion_count = 0;
     		damage = 3f;
     		setX();setY();
-     		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
-    		YoloEngine.TeamAB[YoloEngine.MyID].icice = YoloEngine.icicleDuration;
+    		if(ID == -1)
+    		{
+	     		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].icice = YoloEngine.icicleDuration;
+    		}
+    		else
+    		{
+    			YoloEngine.TeamAB[ID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[ID].fireDamage = damage;
+	    		YoloEngine.TeamAB[ID].fireCount = 8;
+	    		YoloEngine.TeamAB[ID].icice = YoloEngine.icicleDuration;
+    		}
     		break;
     	case 20://Smoke weed everyday
     		if(ID < 0)
@@ -825,10 +837,20 @@ class Skill extends YoloObject
     		animation_slowdown = 0;
     		resurestion_count = 0;
     		damage = 5f;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 4;
-    		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
+    		if(ID == -1)
+    		{
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 4;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
+    		}
+    		else
+    		{
+    			YoloEngine.TeamAB[ID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[ID].fireDamage = damage;
+	    		YoloEngine.TeamAB[ID].fireCount = 4;
+	    		YoloEngine.TeamAB[ID].thunder_h = YoloEngine.thunderDuration;
+    		}
     		setX();setY();
     		break;
     	case 27://Heal_long
@@ -912,11 +934,22 @@ class Skill extends YoloObject
     		animation_slowdown = 0;
     		resurestion_count = 0;
     		damage = 5f;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
-    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
-    		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
+    		if(ID == -1)
+    		{
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireDamage = damage;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].fireCount = 8;
+	    		YoloEngine.TeamAB[YoloEngine.MyID].thunder_h = YoloEngine.thunderDuration;
+    		}
+    		else
+    		{
+    			YoloEngine.TeamAB[ID].fireSprite = sprite;
+	    		YoloEngine.TeamAB[ID].fireDamage = damage;
+	    		YoloEngine.TeamAB[ID].fireCount = 8;
+	    		YoloEngine.TeamAB[ID].thunder_h = YoloEngine.thunderDuration;
+    		}
     		setX();setY();
+    		
     		break;
     	case 31://Teleportacion
     	{
@@ -1244,7 +1277,10 @@ class Skill extends YoloObject
     		damage = 15f;
     		if(ID<0)
     		{
-	    		setX();setY();
+    			if(ID == -1)
+    			{
+    				setX();setY();
+    			}
 	    		float maxy=0;
 				for(int q=0;q<YoloGameRenderer.ObjectTab.length;q++)
 				{
@@ -1375,7 +1411,7 @@ class Skill extends YoloObject
 	    		int p =(team == YoloEngine.TeamA?0:YoloEngine.TeamSize),k=YoloEngine.TeamSize + p;
 				for(int j =p;j<k;j++)
 				{
-					Skill skill = new Skill(YoloEngine.TeamAB[j].x,YoloEngine.TeamAB[j].y+0.25f,32,team,-1);
+					Skill skill = new Skill(YoloEngine.TeamAB[j].x,YoloEngine.TeamAB[j].y+0.25f,32,team,ID);
 					skill.x = YoloEngine.TeamAB[j].x;
 					skill.y = YoloEngine.TeamAB[j].y+0.25f;
 					YoloGameRenderer.hitBoxs.add(new HitBox(skill.x - x_radius/2 +.5f,skill.y - y_radius/2 +.5f, x_radius, y_radius, damage,1,32,isLeft,team,true,id));
@@ -1384,8 +1420,16 @@ class Skill extends YoloObject
 					else
 						YoloGameRenderer.skillTeamBVe.add(skill);
 				}
+				if(ID==-1)
+				{
 				lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
 	    		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+				}
+				else
+				{
+					lx = Math.abs(this.x-YoloEngine.TeamAB[ID].x);
+		    		ly =Math.abs(this.y-YoloEngine.TeamAB[ID].y);
+				}
 	    		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
 	    			VolumeScale =0;
 	    		else
@@ -1398,10 +1442,17 @@ class Skill extends YoloObject
     	case 121://buff_rad fireRate
     		x_radius = 3f;
     		y_radius = 3f;
-    		if(ID<0)
+    		if(ID==-1)
+    		{
     			setX();setY();
     			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
         		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		}
+    		else
+    		{
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[ID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[ID].y);
+    		}
 	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
 	    		VolumeScale =0;
 	    	else
@@ -1415,9 +1466,16 @@ class Skill extends YoloObject
     		x_radius = 3f;
     		y_radius = 3f;
     		if(ID<0)
+    		{
     			setX();setY();
     			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
         		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		}
+    		else
+    		{
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[ID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[ID].y);
+    		}
 	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
 	    		VolumeScale =0;
 	    	else
@@ -1485,9 +1543,16 @@ class Skill extends YoloObject
     		y_radius = 3f;
     		damage = 8f;
     		if(ID<0)
+    		{
     			setX();setY();
     			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
         		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		}
+    		else
+    		{
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[ID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[ID].y);
+    		}
 	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
 	    		VolumeScale =0;
 	    	else
@@ -1508,9 +1573,16 @@ class Skill extends YoloObject
     		x_radius = 3f;
     		y_radius = 3f;
     		if(ID<0)
+    		{
     			setX();setY();
     			lx = Math.abs(this.x-YoloEngine.TeamAB[YoloEngine.MyID].x);
         		ly =Math.abs(this.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+    		}
+    		else
+    		{
+    			lx = Math.abs(this.x-YoloEngine.TeamAB[ID].x);
+        		ly =Math.abs(this.y-YoloEngine.TeamAB[ID].y);
+    		}
 	    	if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
 	    		VolumeScale =0;
 	    	else
@@ -1551,9 +1623,9 @@ class Skill extends YoloObject
 	public void setAIXY()
 	{
 		if(YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft)
-			x = YoloEngine.TeamAB[YoloEngine.MyID].x - 0.5f ;
+			x = YoloEngine.TeamAB[YoloEngine.MyID].x - 1f ;
 		else
-			x = YoloEngine.TeamAB[YoloEngine.MyID].x + 0.5f;
+			x = YoloEngine.TeamAB[YoloEngine.MyID].x + 1f;
 		y = YoloEngine.TeamAB[YoloEngine.MyID].y+ 0.1f;
 	}
 	
@@ -2605,7 +2677,8 @@ class Skill extends YoloObject
 public class YoloGameRenderer implements Renderer {
 	
 	private YoloTexture TextureLoader ;
-	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground(),mag = new YoloBackground(YoloEngine.TeamAB[YoloEngine.MyID].PlayerMagCapasity/30f);
+	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground(),mag = new YoloBackground(YoloEngine.TeamAB[YoloEngine.MyID].PlayerMagCapasity/30f),
+			death = new YoloBackground(),win = new YoloBackground(),lose = new YoloBackground(),gray = new YoloBackground(),liveBarOut = new YoloBackground(),liveBarIn = new YoloBackground(),creditBarInG = new YoloBackground();
 	public static YoloWeapon btn = new YoloWeapon(0,0),smo = new YoloWeapon(0,0,true);
 	private static YoloWeapon bullet,weapon;
 	private Triangle roti0,roti1,roti2;
@@ -2633,7 +2706,8 @@ public class YoloGameRenderer implements Renderer {
 	private final float LIVE_BAR_SIZE_X_0 = YoloEngine.LIVE_BAR_SIZE/YoloEngine.display_x/YoloEngine.xdpi;
 	private float LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0;
 	private final float LIVE_BAR_SIZE_Y = 30f/YoloEngine.display_y/YoloEngine.xdpi;
-    public static float half_fx,half_bx,half_fy,half_by ;
+    public static float half_fx,half_bx,half_fy,half_by;
+    private float creditBarSizeX0 = 50f/YoloEngine.display_x/YoloEngine.xdpi,creditBarSizeY0 = 25f/YoloEngine.display_y/YoloEngine.xdpi,creditBarSizeX1 = creditBarSizeX0;
 	
 	private float cameraPosX,joyBallX =(YoloGame.x2-25f)/YoloEngine.display_x/YoloEngine.xdpi //(YoloGame.x2/YoloEngine.display_x - MOVE_BALL_SIZE_X/2)// /MOVE_BALL_SIZE_X, (x2-25)dis_x
 			,jumpBtnX = 1-125f/YoloEngine.display_x/YoloEngine.xdpi // 1/(MOVE_BALL_SIZE_X*2)-1.5f
@@ -2644,7 +2718,9 @@ public class YoloGameRenderer implements Renderer {
 			,joyBackX1
 			,joyBallX3
 			,joyBackX3
-			,XADD = 0; 
+			,XADD = 0
+			,creditBarPosX = 1 - 75/YoloEngine.display_x/YoloEngine.xdpi
+			,creditBarPosX1 = creditBarPosX + 2.8f/YoloEngine.display_x/YoloEngine.xdpi ; 
 
 	private float cameraPosY
 			,jumpBtnY = 150f/YoloEngine.display_y/YoloEngine.xdpi
@@ -2666,6 +2742,7 @@ public class YoloGameRenderer implements Renderer {
 	private int S1cooldown = 0,S2cooldown = 0,S3cooldown = 0,s1=0,s2=0,s3=0;
 	private int powerUpCoutdown =0,powerUpInterval = 1000,doubleTapInterval = 9,dashInterval = 14;
 	private int deathIntervalCounter = 0;
+	private float fadeIn = 0f;
 				
 	private long loopStart = 0;
 	private long loopEnd = 0;
@@ -2685,6 +2762,7 @@ public class YoloGameRenderer implements Renderer {
 		first = true;
 		if(!toLoad)
 		{
+			
 			//---------------------------------------------------DoubleTap--------------------------------------------------------------
 			if(YoloGame.doubleTap != 0 && doubleTapInterval-- <= 0)
 			{
@@ -2696,35 +2774,7 @@ public class YoloGameRenderer implements Renderer {
 				YoloGame.lastMovePointer2 =-1;
 				dashInterval = 20;
 			}
-			//-------------------------------------------------DeathManagment-----------------------------------------------------------
-			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive < 0 || YoloEngine.TeamAB[YoloEngine.MyID].y < 0 )
-			{
-				YoloEngine.TeamAB[YoloEngine.MyID].canMove = false;
-				YoloEngine.TeamAB[YoloEngine.MyID].deathCount++;
-				//TODO death splash draw
-				if(deathIntervalCounter++ >= YoloEngine.deathSpanInterval)
-				{
-					YoloEngine.TeamAB[YoloEngine.MyID].x = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam? YoloEngine.LEVEL_X/YoloEngine.TX -1: 2 ;
-					YoloEngine.TeamAB[YoloEngine.MyID].y = 2.5f;
-					YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive = YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX;
-					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
-				}
-			}
-			//--------------------------------------------------EndGameCheck------------------------------------------------------------
-			if(YoloEngine.creditAllyCount <= 0 )
-			{
-				//TODO splash you lose
-				//TODO end screan 
-				//TODO wpisanie  xp,coin z player do bazy
-			}
-			else if(YoloEngine.creditOppinentCount <= 0)
-			{
-				//TODO splash you win
-				//TODO end screan 
-				YoloEngine.TeamAB[YoloEngine.MyID].xp *= YoloEngine.winMultiplay;
-				YoloEngine.TeamAB[YoloEngine.MyID].coin *= YoloEngine.winMultiplay;
-				//TODO wpisanie  xp,coin z player do bazy
-			}
+			
 			//--------------------------------------------------GRAVITANCJA-------------------------------------------------------------
 			YoloEngine.TeamAB[YoloEngine.MyID].y += YoloEngine.TeamAB[YoloEngine.MyID].vy;
 			if(YoloEngine.TeamAB[YoloEngine.MyID].canMove)
@@ -2854,9 +2904,12 @@ public class YoloGameRenderer implements Renderer {
 
 			if (YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE) {
                 YoloEngine.mMultislayer.sendPlayerPosition(YoloEngine.TeamAB[YoloEngine.MyID].x, YoloEngine.TeamAB[YoloEngine.MyID].y, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft);
-			}	
+			}
+			continue_point:
 			for(int i = 0; i < YoloEngine.TeamSize*2; i++) {
-				if(i == YoloEngine.MyID) continue; //skippujemy jesli dotyczy 'naszego' gracza
+				for(int z : YoloEngine.AIToManage)
+					if(z == i)continue continue_point;
+				if(i == YoloEngine.MyID ) continue; //skippujemy jesli dotyczy 'naszego' gracza
 				if(YoloEngine.TeamAB[i].changesMade < YoloEngine.MULTI_STEPS) {
 					if(YoloEngine.TeamAB[i].changesMade == 0)
 					{
@@ -2878,6 +2931,7 @@ public class YoloGameRenderer implements Renderer {
 			}
 						
 // ------------------------- Multislayer END -------------------------
+			manageYourAI();
 			try
 			{
 				if(loopRunTime < YoloEngine.GAME_THREAD_FSP_SLEEP)
@@ -2925,26 +2979,26 @@ public class YoloGameRenderer implements Renderer {
 			
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA) 
 			{
-				YoloEngine.TeamAB[0].drawAlly(gl,YoloEngine.MyID==0?false:true);
-				YoloEngine.TeamAB[1].drawAlly(gl,YoloEngine.MyID==1?false:true);
+				for(int i =0;i<YoloEngine.TeamSize;i++)
+					YoloEngine.TeamAB[i].drawAlly(gl,YoloEngine.MyID==i?false:true);
 			}
 			else
 			{
-				YoloEngine.TeamAB[2].drawAlly(gl,YoloEngine.MyID==2?false:true);
-				YoloEngine.TeamAB[3].drawAlly(gl,YoloEngine.MyID==3?false:true);
+				for(int i = YoloEngine.TeamSize; i< YoloEngine.TeamSize*2;i++)
+					YoloEngine.TeamAB[i].drawAlly(gl,YoloEngine.MyID==i?false:true);
 			}
 			hitBox();
 			drawWeapon(gl);
 			
 			if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam == YoloEngine.TeamA)
 			{
-				YoloEngine.TeamAB[2].drawOpponent(gl);
-				YoloEngine.TeamAB[3].drawOpponent(gl);
+				for(int i = YoloEngine.TeamSize; i< YoloEngine.TeamSize*2;i++)
+					YoloEngine.TeamAB[i].drawOpponent(gl);
 			}
 			else
 			{
-				YoloEngine.TeamAB[0].drawOpponent(gl);
-				YoloEngine.TeamAB[1].drawOpponent(gl);
+				for(int i =0;i<YoloEngine.TeamSize;i++)
+					YoloEngine.TeamAB[i].drawOpponent(gl);
 			}
 			
 			handleParticles(gl,false);
@@ -2976,6 +3030,63 @@ public class YoloGameRenderer implements Renderer {
 			drawPlayerMag(gl);			
 			drawButtons(gl);
 			drawSkillCoolDown(gl);
+			
+			//-------------------------------------------------DeathManagment-----------------------------------------------------------
+			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive < 0 || YoloEngine.TeamAB[YoloEngine.MyID].y < 0 )
+			{
+				YoloEngine.TeamAB[YoloEngine.MyID].canMove = false;
+				YoloEngine.TeamAB[YoloEngine.MyID].deathCount++;
+				
+				SplashText(gl, 0);
+				if(deathIntervalCounter++ >= YoloEngine.deathSpanInterval)
+				{
+					if(YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
+					{
+						gl.glMatrixMode(GL10.GL_PROJECTION);
+						gl.glLoadIdentity();
+						gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
+						YoloEngine.TeamAB[YoloEngine.MyID].x = YoloEngine.LEVEL_X/YoloEngine.TX -1;
+						XADD = (YoloEngine.LEVEL_X/YoloEngine.TX-half_bx+0.5f)*YoloEngine.TEXTURE_SIZE_X- 0.5f;
+						cameraPosX = -XADD;
+						YADD = 0;
+						cameraPosY = 0;
+						gl.glTranslatef(cameraPosX,0,0f);
+					}
+					else
+					{
+						gl.glMatrixMode(GL10.GL_PROJECTION);
+						gl.glLoadIdentity();
+						gl.glOrthof(0f, 1f, 0f, 1f, -1f, 1f);
+						YoloEngine.TeamAB[YoloEngine.MyID].x = 2;
+						XADD = 0;
+						cameraPosX = 0;
+						YADD = 0;
+						cameraPosY = 0;
+						gl.glTranslatef(cameraPosX,0,0f);
+					}
+					YoloEngine.TeamAB[YoloEngine.MyID].y = 2.5f;
+					YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive = YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX;
+					YoloEngine.TeamAB[YoloEngine.MyID].canMove = true;
+					fadeIn = 0f;
+					deathIntervalCounter =0;
+				}
+			}
+			//--------------------------------------------------EndGameCheck------------------------------------------------------------
+			if(YoloEngine.creditAllyCount <= 0 )
+			{
+				SplashText(gl, 1);
+				//TODO end screan 
+				//TODO wpisanie  xp,coin z player do bazy
+			}
+			else if(YoloEngine.creditOppinentCount <= 0)
+			{
+				SplashText(gl, 2);
+				//TODO end screan 
+				YoloEngine.TeamAB[YoloEngine.MyID].xp *= YoloEngine.winMultiplay;
+				YoloEngine.TeamAB[YoloEngine.MyID].coin *= YoloEngine.winMultiplay;
+				//TODO wpisanie  xp,coin z player do bazy
+			}
+			
 		}
 
 		gl.glEnable(GL10.GL_BLEND);
@@ -3363,8 +3474,39 @@ public class YoloGameRenderer implements Renderer {
 		}
 
 		LIVE_BAR_SIZE_X_1 = LIVE_BAR_SIZE_X_0*YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive/YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX; // dobrze;
-		drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_0, LIVE_BAR_SIZE_Y, .75f, .125f,true);
-		drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_1,LIVE_BAR_SIZE_Y, .875f, .125f,false);
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef(liveBarX_0 + XADD,liveBarY +YADD, 0f);
+		gl.glScalef(LIVE_BAR_SIZE_X_0, LIVE_BAR_SIZE_Y, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		liveBarOut.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef((liveBarX_0 + XADD + 14f/YoloEngine.display_x/YoloEngine.xdpi),(liveBarY +YADD + 4.3f/YoloEngine.display_y/YoloEngine.xdpi), 0f);
+		gl.glScalef(LIVE_BAR_SIZE_X_1*0.921875f, LIVE_BAR_SIZE_Y*0.6875f, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		liveBarIn.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		drawCredits(gl);
+		
+		//drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_0, LIVE_BAR_SIZE_Y, .75f, .125f,true);
+		//drawSt(gl, liveBarX_0 + XADD, liveBarY +YADD, LIVE_BAR_SIZE_X_1,LIVE_BAR_SIZE_Y, .875f, .125f,false);
 	}
 	
 	private void drawButtons(GL10 gl)
@@ -3757,6 +3899,13 @@ public class YoloGameRenderer implements Renderer {
 			break;
 		case 42:
 			back.loadTexture(gl, YoloEngine.BACKGROUND, YoloEngine.context);
+			death.loadTexture(gl, R.drawable.you_are_dead, YoloEngine.context);
+			win.loadTexture(gl, R.drawable.you_win, YoloEngine.context);
+			lose.loadTexture(gl, R.drawable.you_lose, YoloEngine.context);
+			gray.loadTexture(gl, R.drawable.gray, YoloEngine.context);
+			liveBarOut.loadTexture(gl, R.drawable.emptybar, YoloEngine.context);
+			liveBarIn.loadTexture(gl, R.drawable.barfilling, YoloEngine.context);
+			creditBarInG.loadTexture(gl, R.drawable.barfillingg, YoloEngine.context);
 			toLoad = false;
 			break;
 		}
@@ -3790,10 +3939,10 @@ public class YoloGameRenderer implements Renderer {
 	{
 			bullet = new YoloWeapon(YoloEngine.TeamAB[YoloEngine.MyID].x,
 				!YoloEngine.TeamAB[YoloEngine.MyID].isCrouch?YoloEngine.TeamAB[YoloEngine.MyID].y:YoloEngine.TeamAB[YoloEngine.MyID].y ,bulletSpeed);
-			bullet.damage = damage;
+			bullet.damage = YoloEngine.TeamAB[YoloEngine.MyID].fireDamage;
 			bullet.poiseDamage = poiseDamage;
 			bullet.team = YoloEngine.TeamAB[YoloEngine.MyID].playerTeam; 
-			bullet.sprite = sprite;
+			bullet.sprite = YoloEngine.TeamAB[YoloEngine.MyID].fireSprite;
 			bullet.x_texture = 0f;
 			bullet.y_texture = 0f;
 			bullet.count = count;
@@ -3810,17 +3959,17 @@ public class YoloGameRenderer implements Renderer {
 			{
 				VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
 			}
-			if(sprite == 0)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].fireSprite == 0)
 				YoloEngine.sp.play(YoloEngine.SoundInd[0], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
-			else if(sprite == 30)
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].fireSprite == 30)
 				YoloEngine.sp.play(YoloEngine.SoundInd[45], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
-			else if(sprite == 19)
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].fireSprite == 19)
 				YoloEngine.sp.play(YoloEngine.SoundInd[57], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
-			else if(sprite == 26)
+			else if(YoloEngine.TeamAB[YoloEngine.MyID].fireSprite == 26)
 				YoloEngine.sp.play(YoloEngine.SoundInd[60], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 			
 			if(YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE)
-				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, sprite, count, damage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.TeamAB[YoloEngine.MyID].aim,poiseDamage);
+				YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[YoloEngine.MyID].isPlayerLeft, YoloEngine.TeamAB[YoloEngine.MyID].isCrouch, YoloEngine.TeamAB[YoloEngine.MyID].fireSprite, count, YoloEngine.TeamAB[YoloEngine.MyID].fireDamage, YoloEngine.TeamAB[YoloEngine.MyID].playerTeam,YoloEngine.TeamAB[YoloEngine.MyID].aim,poiseDamage);
 	}
 	
 	public static void OpponentFire(float x, float y, boolean isLeft, boolean isCrouch,int sprite,int count,float damage, boolean team, int aim,float poiseDamge) //XXX oppfire nie potrzebuje isCrouch
@@ -4986,6 +5135,1506 @@ public class YoloGameRenderer implements Renderer {
 		}
 	}
 	
+	private void SplashText(GL10 gl,int wchatTxt)
+	{
+		if(fadeIn <= 0.7f)
+			fadeIn+=0.01;
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef(XADD, YADD, 0);
+		gl.glScalef(1, 1, 1);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(0f,0f,0f,fadeIn);
+		gray.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		switch(wchatTxt)
+		{
+		case 0://death
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glColor4f(1f,1f,1f,1f);
+			death.draw(gl);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			break;
+		case 1://lose
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glColor4f(1f,1f,1f,1f);
+			lose.draw(gl);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			break;
+		case 2://win
+			gl.glMatrixMode(GL10.GL_MODELVIEW);
+			gl.glLoadIdentity();
+			gl.glPushMatrix();
+			gl.glTranslatef(XADD, YADD, 0);
+			gl.glMatrixMode(GL10.GL_TEXTURE);
+			gl.glColor4f(1f,1f,1f,1f);
+			win.draw(gl);
+			gl.glPopMatrix();
+			gl.glLoadIdentity();
+			break;
+		}
+	}
+	
+	private void drawCredits(GL10 gl)
+	{
+		creditBarSizeX1 = creditBarSizeX0*YoloEngine.creditAllyCount/YoloEngine.creditStartValue;
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef(creditBarPosX + XADD,liveBarY +YADD, 0f);
+		gl.glScalef(creditBarSizeX0, creditBarSizeY0, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		liveBarOut.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef((creditBarPosX1 + XADD),(liveBarY +YADD + 4.3f/YoloEngine.display_y/YoloEngine.xdpi), 0f);
+		gl.glScalef(creditBarSizeX1*0.921875f, creditBarSizeY0*0.6875f, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		liveBarIn.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		creditBarSizeX1 = creditBarSizeX0*YoloEngine.creditOppinentCount/YoloEngine.creditStartValue;
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef(creditBarPosX + XADD,liveBarY +YADD - 30/YoloEngine.display_y/YoloEngine.xdpi, 0f);
+		gl.glScalef(creditBarSizeX0, creditBarSizeY0, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		liveBarOut.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+		
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glPushMatrix();
+		gl.glTranslatef((creditBarPosX1 + XADD),(liveBarY +YADD -26f/YoloEngine.display_y/YoloEngine.xdpi), 0f);
+		gl.glScalef(creditBarSizeX1*0.921875f, creditBarSizeY0*0.6875f, 1f);
+		gl.glTranslatef(.5f, .5f, 0);
+		gl.glRotatef(180, 0, 0, 1);
+		gl.glTranslatef(-.5f, -.5f, 0);
+		gl.glMatrixMode(GL10.GL_TEXTURE);
+		gl.glColor4f(1f,1f,1f,1f);
+		creditBarInG.draw(gl);
+		gl.glPopMatrix();
+		gl.glLoadIdentity();
+	}
+	
+	enum acction
+	{
+		goLeft, goRight, ladderDown, ladderUP, jump, jumpLeft, jumpRight, stand;
+		
+		public static acction fromInt(int i)
+		{
+			switch(i)
+			{
+				case 0:
+				return goLeft;
+				case 1:
+				return goRight;
+				case 2:
+				return ladderDown;
+				case 3:
+				return ladderUP;
+				case 4:
+				return jump;
+				case 5:
+				return jumpLeft;
+				case 6:
+				return jumpRight;
+			}
+			
+			return goLeft;
+		}
+	}
+
+	class NodeDistanceComperator implements Comparator<Node>
+	{
+		@Override
+	    public int compare(Node x, Node y)
+	    {
+	        if (x.distance < y.distance)
+	        {
+	            return -1;
+	        }
+	        if (x.distance > y.distance)
+	        {
+	            return 1;
+	        }
+	        return 0;
+	    }
+	}
+
+	class NodeInfo
+	{
+		int subNode,subNodeValue;
+		acction subNodeAcction;
+		public NodeInfo(int NodeID, acction NodeAcction, int value)
+		{
+			subNode = NodeID;
+			subNodeAcction = NodeAcction;
+			subNodeValue = value;
+		}
+	}
+		
+	class Node 
+	{
+		int ID;
+		float x0,y0,x1,y1;
+		NodeInfo connections[];
+		int distance = 10000;
+		int previousNode = -1;
+		
+		public Node(int count)
+		{
+			connections = new NodeInfo[count];
+		}
+		
+		public void reSet()
+		{
+			distance = 10000;
+			previousNode = -1;
+		}
+	}
+
+	class Map
+	{
+		Comparator<Node> comparato;
+		PriorityQueue<Node> queue;
+		Node[] nodes;
+		int[] IDtoIndex;
+		
+		private float calculateXFromInt(int i)
+		{
+			return (float)(i / YoloEngine.TX);
+		}
+		
+		private float calculateYFromInt(int i)
+		{
+			return (float)(i / YoloEngine.TY);
+		}
+		
+		public Map(int ID)
+		{
+			 DataInputStream inputStream; 
+			 try 
+			 {
+				 int NodeCount,NodeICount;
+				 inputStream = new DataInputStream(YoloEngine.context.getResources().openRawResource(ID));
+				 IDtoIndex = new int[inputStream.readInt()];
+				 NodeCount = inputStream.readInt();
+				 nodes = new Node[NodeCount];
+				 for(int i = 0; i < NodeCount; i++)
+				 {
+					 
+					 NodeICount = inputStream.readInt();
+					 nodes[i] = new Node(NodeICount);
+					 for(int j = 0; j < NodeICount; j++)
+					 {
+						 nodes[i].connections[j] = new NodeInfo(inputStream.readInt(), acction.fromInt(inputStream.readInt()), inputStream.readInt()); 
+					 }
+					 nodes[i].x0 = calculateXFromInt(inputStream.readInt());
+					 nodes[i].y0 = calculateYFromInt(inputStream.readInt());
+					 nodes[i].x1 = calculateXFromInt(inputStream.readInt());
+					 nodes[i].y1 = calculateYFromInt(inputStream.readInt());
+					 nodes[i].ID = inputStream.readInt();
+					 IDtoIndex[nodes[i].ID] = i;
+				 }
+				 inputStream.close();		    
+			 } catch (FileNotFoundException e) {System.out.println("Loading NodeMap faild becouse of:"+e.getMessage());} catch (IOException e) {System.out.println("Loading NodeMap faild becouse of:"+e.getMessage());}
+			 comparato = new NodeDistanceComperator();
+			 queue = new PriorityQueue<Node>(nodes.length,comparato);
+		}
+	}
+	
+	private void initAI(int AIID)
+	{
+		Random rng = new Random();
+		int cooldownMultiplayer = 1;
+		YoloEngine.TeamAB[AIID].race = rng.nextInt(3);
+		YoloEngine.TeamAB[AIID].playerTeam = !YoloEngine.TeamAB[YoloEngine.MyID].playerTeam; //TODO undo Test
+		if(!YoloEngine.TeamAB[AIID].playerTeam )
+		{
+			YoloEngine.TeamAB[AIID].x = YoloEngine.LEVEL_X/YoloEngine.TX -1;
+		}
+		else
+		{
+			YoloEngine.TeamAB[AIID].x = 2;
+		}
+		YoloEngine.TeamAB[AIID].y = 2.5f;
+		YoloEngine.TeamAB[AIID].difficulty = YoloEngine.AIDificulty;
+		
+		switch(YoloEngine.AIDificulty)
+		{
+		case 0:
+			YoloEngine.TeamAB[AIID].weapon = rng.nextInt(3);
+			YoloEngine.TeamAB[AIID].fireXRadius = YoloEngine.fireXRadius0;
+			YoloEngine.TeamAB[AIID].fireYRadius = YoloEngine.fireYRadius0;
+			YoloEngine.TeamAB[AIID].skillXRadius = YoloEngine.skillXRadius0;
+			YoloEngine.TeamAB[AIID].skillYRadius = YoloEngine.skillYRadius0;
+			cooldownMultiplayer = 6;
+			switch(YoloEngine.TeamAB[AIID].race)
+			{
+			case 0:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill00A[rng.nextInt(YoloEngine.skill00A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill00D[rng.nextInt(YoloEngine.skill00D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill00B[rng.nextInt(YoloEngine.skill00B.length)];
+				break;
+			case 1:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill01A[rng.nextInt(YoloEngine.skill01A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill01D[rng.nextInt(YoloEngine.skill01D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill01B[rng.nextInt(YoloEngine.skill01B.length)];
+				break;
+			case 2:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill02A[rng.nextInt(YoloEngine.skill02A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill02D[rng.nextInt(YoloEngine.skill02D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill02B[rng.nextInt(YoloEngine.skill02B.length)];
+				break;
+			}
+			break;
+		case 1:
+			YoloEngine.TeamAB[AIID].weapon = rng.nextInt(4) + 2;
+			YoloEngine.TeamAB[AIID].fireXRadius = YoloEngine.fireXRadius1;
+			YoloEngine.TeamAB[AIID].fireYRadius = YoloEngine.fireYRadius1;
+			YoloEngine.TeamAB[AIID].skillXRadius = YoloEngine.skillXRadius1;
+			YoloEngine.TeamAB[AIID].skillYRadius = YoloEngine.skillYRadius1;
+			cooldownMultiplayer = 4;
+			switch(YoloEngine.TeamAB[AIID].race)
+			{
+			case 0:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill10A[rng.nextInt(YoloEngine.skill10A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill10D[rng.nextInt(YoloEngine.skill10D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill10B[rng.nextInt(YoloEngine.skill10B.length)];
+				break;
+			case 1:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill11A[rng.nextInt(YoloEngine.skill11A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill11D[rng.nextInt(YoloEngine.skill11D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill11B[rng.nextInt(YoloEngine.skill11B.length)];
+				break;
+			case 2:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill12A[rng.nextInt(YoloEngine.skill12A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill12D[rng.nextInt(YoloEngine.skill12D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill12B[rng.nextInt(YoloEngine.skill12B.length)];
+				break;
+			}
+			break;
+		case 2:
+			YoloEngine.TeamAB[AIID].weapon = rng.nextInt(4) + 5;
+			YoloEngine.TeamAB[AIID].fireXRadius = YoloEngine.fireXRadius2;
+			YoloEngine.TeamAB[AIID].fireYRadius = YoloEngine.fireYRadius2;
+			YoloEngine.TeamAB[AIID].skillXRadius = YoloEngine.skillXRadius2;
+			YoloEngine.TeamAB[AIID].skillYRadius = YoloEngine.skillYRadius2;
+			cooldownMultiplayer = 3;
+			switch(YoloEngine.TeamAB[AIID].race)
+			{
+			case 0:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill20A[rng.nextInt(YoloEngine.skill20A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill20D[rng.nextInt(YoloEngine.skill20D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill20B[rng.nextInt(YoloEngine.skill20B.length)];
+				break;
+			case 1:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill21A[rng.nextInt(YoloEngine.skill21A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill21D[rng.nextInt(YoloEngine.skill21D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill21B[rng.nextInt(YoloEngine.skill21B.length)];
+				break;
+			case 2:
+				YoloEngine.TeamAB[AIID].skill1 = YoloEngine.skill22A[rng.nextInt(YoloEngine.skill22A.length)];
+				YoloEngine.TeamAB[AIID].skill2 = YoloEngine.skill22D[rng.nextInt(YoloEngine.skill22D.length)];
+				YoloEngine.TeamAB[AIID].skill3 = YoloEngine.skill22B[rng.nextInt(YoloEngine.skill22B.length)];
+				break;
+			}
+			break;
+		}
+		
+		YoloEngine.TeamAB[AIID].skill1OrginalCooldown = YoloEngine.cooldownsTab[YoloEngine.TeamAB[AIID].skill1]*cooldownMultiplayer;
+		YoloEngine.TeamAB[AIID].skill2OrginalCooldown = YoloEngine.cooldownsTab[YoloEngine.TeamAB[AIID].skill2]*cooldownMultiplayer;
+		YoloEngine.TeamAB[AIID].skill3OrginalCooldown = YoloEngine.cooldownsTab[YoloEngine.TeamAB[AIID].skill3]*cooldownMultiplayer;
+		
+		YoloEngine.sprite_load[YoloEngine.TeamAB[AIID].skill1<45?YoloEngine.TeamAB[AIID].skill1 : YoloEngine.TeamAB[AIID].skill1-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.TeamAB[AIID].skill2<45?YoloEngine.TeamAB[AIID].skill2 : YoloEngine.TeamAB[AIID].skill2-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.TeamAB[AIID].skill3<45?YoloEngine.TeamAB[AIID].skill3 : YoloEngine.TeamAB[AIID].skill3-87] = true;//Zaleï¿½y od playera
+		if(YoloEngine.TeamAB[AIID].skill3==14||YoloEngine.TeamAB[AIID].skill2==14||YoloEngine.TeamAB[AIID].skill1==14)YoloEngine.sprite_load[27]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==36||YoloEngine.TeamAB[AIID].skill2==36||YoloEngine.TeamAB[AIID].skill1==36)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==37||YoloEngine.TeamAB[AIID].skill2==37||YoloEngine.TeamAB[AIID].skill1==37)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==38||YoloEngine.TeamAB[AIID].skill2==38||YoloEngine.TeamAB[AIID].skill1==38)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==43||YoloEngine.TeamAB[AIID].skill2==43||YoloEngine.TeamAB[AIID].skill1==43)YoloEngine.sprite_load[41]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==120||YoloEngine.TeamAB[AIID].skill2==120||YoloEngine.TeamAB[AIID].skill1==120)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==121||YoloEngine.TeamAB[AIID].skill2==121||YoloEngine.TeamAB[AIID].skill1==121)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==122||YoloEngine.TeamAB[AIID].skill2==122||YoloEngine.TeamAB[AIID].skill1==122)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==123||YoloEngine.TeamAB[AIID].skill2==123||YoloEngine.TeamAB[AIID].skill1==123)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.TeamAB[AIID].skill3==124||YoloEngine.TeamAB[AIID].skill2==124||YoloEngine.TeamAB[AIID].skill1==124)YoloEngine.sprite_load[32]=true;
+		
+		//TODO XXX przesylanie do wszystkich jakie skille za�adowac chyba dziala lae trzeba jeszcze sprawdzic 
+		
+		YoloEngine.TeamAB[AIID].NodesToGo.add(-1);
+		YoloEngine.TeamAB[AIID].acction = acction.jump;
+		YoloEngine.TeamAB[AIID].nextAcction = acction.jump;
+		
+	}
+
+	private void searchForClosestPlayer(int AIID)
+	{
+		float distance = 1000,p;
+		int closestIndex = 0,start=0;
+		if(!YoloEngine.TeamAB[AIID].playerTeam) start = YoloEngine.TeamSize;
+		for(int i = start; i < YoloEngine.TeamSize + start; i++)
+		{
+			p = (float)Math.sqrt((YoloEngine.TeamAB[AIID].x-YoloEngine.TeamAB[i].x)*(YoloEngine.TeamAB[AIID].x-YoloEngine.TeamAB[i].x) + (YoloEngine.TeamAB[AIID].y-YoloEngine.TeamAB[i].y)*(YoloEngine.TeamAB[AIID].y-YoloEngine.TeamAB[i].y));
+			if(distance > p)
+			{
+				distance = p;
+				closestIndex = i;
+			}
+		}
+		YoloEngine.TeamAB[AIID].currentTrackedPlayerID = closestIndex;
+		YoloEngine.TeamAB[AIID].targetDistance = distance;
+	}
+
+	private int checkTargetNode(int AIID)//return ID 
+	{
+		float x = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x, y = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].y;
+		
+		for(Node n : YoloEngine.map.nodes)
+		{
+			if(x + .5f >= n.x0 && x +.5f < n.x1)
+				if(y + .5f >= n.y0 && y + .5f < n.y1)
+				{
+					YoloEngine.TeamAB[AIID].findingRodeOutOfNodeIntervalCounter = YoloEngine.findingRodeOutOfNodeInterval;
+					return n.ID; 
+				}	
+		}
+		return -1;
+	}
+
+	private int checkTargetClostestNode(int AIID)
+	{
+		float x = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x, y = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].y,
+				min = Float.MAX_VALUE,pom;
+		int ID = 0;
+		for(Node n : YoloEngine.map.nodes)
+		{
+			pom = ((n.x0 + n.x1)/2f - x)*((n.x0 + n.x1)/2f - x) + ((n.y0 + n.y1)/2f - y)*((n.y0 + n.y1)/2f - y)/4f;
+			if(pom < min)
+			{
+				min = pom;
+				ID = n.ID;
+			}
+		}
+		return ID;
+	}
+	
+	private int checkAIClosestNode(int AIID)
+	{
+		float x = YoloEngine.TeamAB[AIID].x, y = YoloEngine.TeamAB[AIID].y,
+				min = Float.MAX_VALUE,pom;
+		int ID = 0;
+		for(Node n : YoloEngine.map.nodes)
+		{
+			pom = ((n.x0 + n.x1)/2f - x)*((n.x0 + n.x1)/2f - x) + ((n.y0 + n.y1)/2f - y)*((n.y0 + n.y1)/2f - y)/4f;
+			if(pom < min)
+			{
+				min = pom;
+				ID = n.ID;
+			}
+		}
+		return ID;
+	}
+	
+	private int checkAINodeTranslate(int AIID)//return ID 
+	{
+		float x = YoloEngine.TeamAB[AIID].x, y = YoloEngine.TeamAB[AIID].y;
+		
+		for(Node n : YoloEngine.map.nodes)
+		{
+			if(x + 1f >= n.x0 && x < n.x1)
+				if(y + 1.5f >= n.y0 && y+.5f < n.y1)
+				{
+					return n.ID; 
+				}			
+		}
+		return -1;
+	}
+	
+	private int checkAINodeMiddle(int AIID)//return ID 
+	{
+		float x = YoloEngine.TeamAB[AIID].x, y = YoloEngine.TeamAB[AIID].y;
+		
+		for(Node n : YoloEngine.map.nodes)
+		{
+			if(x + .5f >= n.x0 && x +.5f < n.x1)
+				if(y + .5f >= n.y0 && y +.5f < n.y1)
+				{
+					return n.ID; 
+				}	
+		}
+		return -1;
+	}
+
+	private boolean checkTargetChangeNode(int AIID)//set ID
+	{
+		int last = YoloEngine.TeamAB[AIID].NodesToGo.elementAt(0),current = checkTargetNode(AIID);
+		if( current == last || current == -1)
+		{
+			if(current == -1)
+			{
+				if(YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].vy == 0)
+				{
+					YoloEngine.TeamAB[AIID].NodesToGo.set(0,current);
+					return true;
+				}
+				else if(YoloEngine.TeamAB[AIID].findingRodeOutOfNodeIntervalCounter-- <= 0)
+				{
+					YoloEngine.TeamAB[AIID].NodesToGo.set(0,current);
+					return true;
+				}
+			}
+			return false;
+		}
+		else
+		{
+			YoloEngine.TeamAB[AIID].NodesToGo.set(0,current);
+			return true;
+		}
+	}
+
+	private boolean checkTargetChange(int AIID)
+	{
+		int last = YoloEngine.TeamAB[AIID].currentTrackedPlayerID;
+		searchForClosestPlayer(AIID);
+		if(last == YoloEngine.TeamAB[AIID].currentTrackedPlayerID)
+			return false;
+		else
+			return true;
+	}
+
+	private void fillDistanceFrom(int AINodeId)
+	{
+		Node n;
+		int dist;
+		YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[AINodeId]].distance = 0;
+		
+		for(int i = 0; i < YoloEngine.map.nodes.length; i++ )
+		{
+			YoloEngine.map.queue.add(YoloEngine.map.nodes[i]);
+		}
+		n = YoloEngine.map.queue.poll();
+		while(n != null)
+		{
+			//System.out.println(q++);
+			for(int j = 0; j < n.connections.length; j++)
+			{
+				dist = n.distance + n.connections[j].subNodeValue;
+				if(dist < YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[n.connections[j].subNode]].distance)
+				{
+					
+					YoloEngine.map.queue.remove(YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[n.connections[j].subNode]]);
+					YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[n.connections[j].subNode]].distance = dist;
+					YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[n.connections[j].subNode]].previousNode = n.ID;
+					YoloEngine.map.queue.add(YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[n.connections[j].subNode]]);
+				}
+			}
+			n = YoloEngine.map.queue.poll();
+		}
+	}
+
+	private void saveNodeRode(int AINodeId, int targetNodeId, int AIID)//out put ID nodestogo
+	{
+		int currentNodeIndex = YoloEngine.map.IDtoIndex[targetNodeId];
+		AINodeId = YoloEngine.map.IDtoIndex[AINodeId];
+		YoloEngine.TeamAB[AIID].NodesToGo.clear();
+		while(currentNodeIndex != AINodeId)
+		{
+			YoloEngine.TeamAB[AIID].NodesToGo.add(YoloEngine.map.nodes[currentNodeIndex].ID);
+			currentNodeIndex = YoloEngine.map.IDtoIndex[YoloEngine.map.nodes[currentNodeIndex].previousNode];
+		}
+		if(YoloEngine.TeamAB[AIID].NodesToGo.size() > 0)
+		{
+			YoloEngine.TeamAB[AIID].acction = indexToAcction(AIID, YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.lastElement()],YoloEngine.TeamAB[AIID].currentNode);
+			if(YoloEngine.TeamAB[AIID].NodesToGo.size() > 1)
+				YoloEngine.TeamAB[AIID].nextAcction = indexToAcction(AIID, YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.elementAt(YoloEngine.TeamAB[AIID].NodesToGo.size()-2)],
+						YoloEngine.TeamAB[AIID].NodesToGo.lastElement());
+		}
+		else
+			YoloEngine.TeamAB[AIID].acction = acction.goLeft;
+		YoloEngine.TeamAB[AIID].NodesToGo.add(YoloEngine.map.nodes[AINodeId].ID);
+
+	} 
+
+	private void reSetNodeDistances()
+	{
+		for(Node n : YoloEngine.map.nodes)
+			n.reSet();
+	}
+
+	private void findShortestRode(int AIID, int targetNodeId)
+	{
+		fillDistanceFrom(YoloEngine.TeamAB[AIID].currentNode);
+		saveNodeRode(YoloEngine.TeamAB[AIID].currentNode,targetNodeId,AIID);
+		reSetNodeDistances();
+	}	
+
+	private acction indexToAcction(int AIID, int indexOfNextNode, int AINode)
+	{
+	//	int nextNodeIndex = YoloEngine.map.nodes[index].previousNode;
+		for(NodeInfo n : YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[AINode]].connections)
+		{
+			
+			if(YoloEngine.map.IDtoIndex[n.subNode] == indexOfNextNode)
+				return n.subNodeAcction;
+		}
+		return acction.goLeft;
+	}
+
+	private void makeInsideMove(int AIID, acction a)
+	{
+		if(YoloEngine.TeamAB[AIID].x < -.5f)
+			YoloEngine.TeamAB[AIID].x = YoloEngine.LEVEL_X/YoloEngine.TX-0.5f;
+		else if(YoloEngine.TeamAB[AIID].x > YoloEngine.LEVEL_X/YoloEngine.TX-0.5f)
+			YoloEngine.TeamAB[AIID].x = -0.5f;
+		switch(a)
+		{
+			case goLeft:
+			YoloEngine.TeamAB[AIID].x -= 0.08f;
+			break;
+			case goRight:
+			YoloEngine.TeamAB[AIID].x += 0.08f;
+			break;
+			case ladderUP:
+			YoloEngine.TeamAB[AIID].y +=YoloEngine.PLAYER_CLIMBING_SPEED;
+			YoloEngine.TeamAB[AIID].isClimbingUp = true;
+			break;
+			case ladderDown:
+			YoloEngine.TeamAB[AIID].y -=YoloEngine.PLAYER_CLIMBING_SPEED;
+			YoloEngine.TeamAB[AIID].isClimbingUp = true;
+			break;
+			case jump:
+			if(YoloEngine.TeamAB[AIID].vy <= -0.06f || YoloEngine.TeamAB[AIID].onGround)
+			{
+				if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+					YoloEngine.TeamAB[AIID].vy = 0.24f;
+			}
+			break;
+			case jumpLeft:
+			YoloEngine.TeamAB[AIID].x -= 0.08f;
+			break;
+			case jumpRight:
+			YoloEngine.TeamAB[AIID].x += 0.08f;
+			break;
+			case stand:
+				break;
+		}
+	}
+
+	private void makeOutsideMove(int AIID, acction a)
+	{
+		if(YoloEngine.TeamAB[AIID].x < -.5f)
+			YoloEngine.TeamAB[AIID].x = YoloEngine.LEVEL_X/YoloEngine.TX-0.5f;
+		else if(YoloEngine.TeamAB[AIID].x > YoloEngine.LEVEL_X/YoloEngine.TX-0.5f)
+			YoloEngine.TeamAB[AIID].x = -0.5f;
+		switch(a)
+		{
+			case goLeft:
+			YoloEngine.TeamAB[AIID].x -= 0.08f;
+			break;
+			case goRight:
+			YoloEngine.TeamAB[AIID].x += 0.08f;
+			break;
+			case ladderUP:
+			YoloEngine.TeamAB[AIID].y +=YoloEngine.PLAYER_CLIMBING_SPEED;
+			YoloEngine.TeamAB[AIID].isClimbingUp = true;
+			break;
+			case ladderDown:
+			YoloEngine.TeamAB[AIID].y -=YoloEngine.PLAYER_CLIMBING_SPEED;
+			YoloEngine.TeamAB[AIID].isClimbingUp = true;
+			break;
+			case jump:
+			if(YoloEngine.TeamAB[AIID].vy <= -0.06f || YoloEngine.TeamAB[AIID].onGround)
+			{
+				if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+					YoloEngine.TeamAB[AIID].vy = 0.24f;
+			}
+			break;
+			case jumpLeft:
+			if(YoloEngine.TeamAB[AIID].NodesToGo.size() > 1)
+				if(YoloEngine.TeamAB[AIID].x +.5f < YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.elementAt(YoloEngine.TeamAB[AIID].NodesToGo.size() -2)]].x0
+						|| YoloEngine.TeamAB[AIID].x +.5f > YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.elementAt(YoloEngine.TeamAB[AIID].NodesToGo.size() -2)]].x1)
+				{
+					if(YoloEngine.TeamAB[AIID].vy <= -0.14f || YoloEngine.TeamAB[AIID].onGround)
+					{
+						if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+							YoloEngine.TeamAB[AIID].vy = 0.24f;
+					}
+					YoloEngine.TeamAB[AIID].x -= 0.08f;
+				}
+			break;
+			case jumpRight:
+			if(YoloEngine.TeamAB[AIID].NodesToGo.size() > 1)
+				if(YoloEngine.TeamAB[AIID].x +.5f < YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.elementAt(YoloEngine.TeamAB[AIID].NodesToGo.size() -2)]].x0
+						|| YoloEngine.TeamAB[AIID].x +.5f > YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[AIID].NodesToGo.elementAt(YoloEngine.TeamAB[AIID].NodesToGo.size() -2)]].x1)
+				{
+					if(YoloEngine.TeamAB[AIID].vy <= -0.14f || YoloEngine.TeamAB[AIID].onGround)
+					{
+						if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+							YoloEngine.TeamAB[AIID].vy = 0.24f;
+					}
+					YoloEngine.TeamAB[AIID].x += 0.08f;
+				}
+			break;
+			case stand:
+				break;
+		}
+	}
+
+	private void folowTarget(int AIID)
+	{
+		if(YoloEngine.TeamAB[AIID].followDelayCounter-- < 0)//op�neinie przy zmianie kierunko celu
+		{
+			if(YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x > YoloEngine.TeamAB[AIID].x)
+				YoloEngine.TeamAB[AIID].followXbuffer = .08f;
+			else
+				YoloEngine.TeamAB[AIID].followXbuffer = -.08f;
+			
+			switch(YoloEngine.AIDificulty)
+			{
+			case 0:
+				YoloEngine.TeamAB[AIID].followDelayCounter = YoloEngine.followDelay0;
+			break;
+			case 1:
+				YoloEngine.TeamAB[AIID].followDelayCounter = YoloEngine.followDelay1;
+			break;
+			case 2:
+				YoloEngine.TeamAB[AIID].followDelayCounter = YoloEngine.followDelay2;
+			break;
+			}
+		}
+		
+		if(YoloEngine.AIDificulty != 2)
+			YoloEngine.TeamAB[AIID].x += YoloEngine.TeamAB[AIID].followXbuffer;
+		else
+		{
+			if(YoloEngine.TeamAB[AIID].followXbuffer > 0)
+				if(YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x > YoloEngine.TeamAB[AIID].x + YoloEngine.TeamAB[AIID].followXbuffer)
+					YoloEngine.TeamAB[AIID].x += YoloEngine.TeamAB[AIID].followXbuffer;
+				else
+					YoloEngine.TeamAB[AIID].x = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x;
+			else
+				if(YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x < YoloEngine.TeamAB[AIID].x + YoloEngine.TeamAB[AIID].followXbuffer)
+					YoloEngine.TeamAB[AIID].x += YoloEngine.TeamAB[AIID].followXbuffer;
+				else
+					YoloEngine.TeamAB[AIID].x = YoloEngine.TeamAB[YoloEngine.TeamAB[AIID].currentTrackedPlayerID].x;
+		}
+		
+	}
+
+	private int searchForPlayerInFireRadius(int AIID)
+	{
+		int start = 0;
+		float x0 = YoloEngine.TeamAB[AIID].x + .5f - YoloEngine.TeamAB[AIID].fireXRadius/2f,y0 = YoloEngine.TeamAB[AIID].y + .5f - YoloEngine.TeamAB[AIID].fireYRadius/2f,
+				x1 = x0 + YoloEngine.TeamAB[AIID].fireXRadius,y1 = y0 + YoloEngine.TeamAB[AIID].fireYRadius;
+		if(!YoloEngine.TeamAB[AIID].playerTeam) start = YoloEngine.TeamSize;
+		for(int i = start; i < YoloEngine.TeamSize + start;i++)
+		{
+			if(YoloEngine.TeamAB[i].x + .5f >= x0 && YoloEngine.TeamAB[i].x + .5f <= x1)
+				if(YoloEngine.TeamAB[i].y + .5f >=y0 && YoloEngine.TeamAB[i].y + .5f <= y1)
+					return i;
+		}
+		return -1;
+	}
+
+	private int searchForSkillAIInFireRadius(int AIID)
+	{
+		float x0 = YoloEngine.TeamAB[AIID].x + .5f -  YoloEngine.TeamAB[AIID].fireXRadius/2f,y0 = YoloEngine.TeamAB[AIID].y + .5f - YoloEngine.TeamAB[AIID].fireYRadius/2f,
+				x1 = x0 + YoloEngine.TeamAB[AIID].fireXRadius,y1 = y0 + YoloEngine.TeamAB[AIID].fireYRadius;
+		
+		if(YoloEngine.TeamAB[AIID].playerTeam != YoloEngine.TeamA ) 
+		for(int i = 0; i < skillTeamAVe.size();i++)
+		{
+			if(skillTeamAVe.elementAt(i).x + .5f >= x0 && skillTeamAVe.elementAt(i).x + .5f <= x1)
+				if(skillTeamAVe.elementAt(i).y + .5f >=y0 && skillTeamAVe.elementAt(i).y + .5f <= y1)
+					return i;
+		}
+		else
+		for(int i = 0; i < skillTeamBVe.size();i++)
+		{
+			if(skillTeamBVe.elementAt(i).x + .5f >= x0 && skillTeamBVe.elementAt(i).x + .5f <= x1)
+				if(skillTeamBVe.elementAt(i).y + .5f >=y0 && skillTeamBVe.elementAt(i).y + .5f <= y1)
+					return i;
+		}
+		
+		return -1;
+	}
+
+	private int searchForPlayerInSkillRadius(int AIID)
+	{
+		int start = 0;
+		float x0 = YoloEngine.TeamAB[AIID].x + .5f - YoloEngine.TeamAB[AIID].skillXRadius/2f,y0 = YoloEngine.TeamAB[AIID].y + .5f - YoloEngine.TeamAB[AIID].skillYRadius/2f,
+				x1 = x0 + YoloEngine.TeamAB[AIID].skillXRadius,y1 = y0 + YoloEngine.TeamAB[AIID].skillYRadius;
+		
+		if(!YoloEngine.TeamAB[AIID].playerTeam) start = YoloEngine.TeamSize;
+		for(int i = start; i < YoloEngine.TeamSize + start;i++)
+		{
+			if(YoloEngine.TeamAB[i].x + .5f >= x0 && YoloEngine.TeamAB[i].x + .5f <= x1)
+				if(YoloEngine.TeamAB[i].y + .5f >=y0 && YoloEngine.TeamAB[i].y + .5f <= y1)
+					return i;
+		}
+		return -1;
+	}
+
+	private int searchForSkillAIInSkillRadius(int AIID)
+	{
+		float x0 = YoloEngine.TeamAB[AIID].x + .5f - YoloEngine.TeamAB[AIID].skillXRadius/2f,y0 = YoloEngine.TeamAB[AIID].y + .5f - YoloEngine.TeamAB[AIID].skillYRadius/2f,
+				x1 = x0 + YoloEngine.TeamAB[AIID].skillXRadius,y1 = y0 + YoloEngine.TeamAB[AIID].skillYRadius;
+		
+		if(YoloEngine.TeamAB[AIID].playerTeam != YoloEngine.TeamA ) 
+		for(int i = 0; i < skillTeamAVe.size();i++)
+		{
+			if(skillTeamAVe.elementAt(i).x + .5f >= x0 && skillTeamAVe.elementAt(i).x + .5f <= x1)
+				if(skillTeamAVe.elementAt(i).y + .5f >=y0 && skillTeamAVe.elementAt(i).y + .5f <= y1)
+					return i;
+		}
+		else
+		for(int i = 0; i < skillTeamBVe.size();i++)
+		{
+			if(skillTeamBVe.elementAt(i).x + .5f >= x0 && skillTeamBVe.elementAt(i).x + .5f <= x1)
+				if(skillTeamBVe.elementAt(i).y + .5f >=y0 && skillTeamBVe.elementAt(i).y + .5f <= y1)
+					return i;
+		}
+		
+		return -1;
+	}
+
+	private void playerAIFire(int AIID)
+	{
+		bullet = new YoloWeapon(YoloEngine.TeamAB[AIID].x,
+				!YoloEngine.TeamAB[AIID].isCrouch?YoloEngine.TeamAB[AIID].y:YoloEngine.TeamAB[AIID].y ,0.12f);
+		bullet.damage = YoloEngine.TeamAB[AIID].fireDamage;
+		bullet.poiseDamage = YoloEngine.TeamAB[AIID].poiseDamage;
+		bullet.team = YoloEngine.TeamAB[AIID].playerTeam; 
+		bullet.sprite = YoloEngine.TeamAB[AIID].fireSprite;
+		bullet.x_texture = 0f;
+		bullet.y_texture = 0f;
+		bullet.count = YoloEngine.TeamAB[AIID].fireCount;
+		bullet.isLeft = YoloEngine.TeamAB[AIID].isPlayerLeft;
+		bullet.Aim = YoloEngine.TeamAB[AIID].aim;
+		bullet.playerID = AIID;
+		Weapontab.add(bullet);
+		
+		float VolumeScale =1,lx = Math.abs(bullet.x-YoloEngine.TeamAB[YoloEngine.MyID].x),ly =Math.abs(bullet.y-YoloEngine.TeamAB[YoloEngine.MyID].y);
+		if(lx>1/YoloEngine.TEXTURE_SIZE_X || ly>1/YoloEngine.TEXTURE_SIZE_Y )
+			VolumeScale =0;
+		else
+		{
+			VolumeScale = Math.min(1f-(lx/(1/YoloEngine.TEXTURE_SIZE_X )),1f-(ly/(1/YoloEngine.TEXTURE_SIZE_Y )));
+		}
+		YoloEngine.sp.play(YoloEngine.SoundInd[0], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
+		
+		if(YoloEngine.mGameProperties.gameType != GameProperties.OFFLINE)
+			YoloEngine.mMultislayer.sendOpponentFire(bullet.x, bullet.y, YoloEngine.TeamAB[AIID].isPlayerLeft, YoloEngine.TeamAB[AIID].isCrouch, 0, YoloEngine.TeamAB[AIID].fireCount,
+					YoloEngine.TeamAB[AIID].fireDamage, YoloEngine.TeamAB[AIID].playerTeam,YoloEngine.TeamAB[AIID].aim, YoloEngine.TeamAB[AIID].poiseDamage);
+	}
+
+	private boolean isTargetInStraightLineOfFire(int AIID, float x1, float y1)
+	{
+		/*
+		int j = 0;
+		float[] tab = new float[8], aim = new float[4];
+		tab[0] = x1 - YoloEngine.TeamAB[AIID].x;
+		tab[1] = y1 - YoloEngine.TeamAB[AIID].y;
+		tab[2] = tab[0] + 1;
+		tab[3] = tab[1];
+		tab[4] = tab[2];
+		tab[5] = tab[1] + 1;
+		tab[6] = tab[0];
+		tab[7] = tab[5];
+		float degree;
+		for(int i = 0; i < 8; i+=2)
+		{
+			if(tab[i] != 0)
+			degree = tab[i + 1]/tab[i];
+			else
+			degree = 3;
+		
+			if(tab[i + 1]!=0 && tab[i] != 0)
+			if( tab[i + 1] >= 0)
+			{
+				if(degree > 1)
+					aim[j] = 1;
+				else if(degree > 0)
+					
+					aim[j] = 0;
+				else if(degree > -1)
+					aim[j] = 3;
+				else
+					aim[j] = 2;
+			}
+			else
+			{
+				if(degree > 1)
+					aim[j] = 5;
+				else if(degree > 0)
+					aim[j] = 4;
+				else if(degree > -1)
+					aim[j] = 7;
+				else
+					aim[j] = 6;
+			}		
+			j++;
+		}
+		
+		if(aim[0] == aim[1])
+			if(aim[1] == aim[2])
+				if(aim[2] == aim[3])
+				{
+					// nie jest w lini prostej
+					return false;
+				}
+		
+		// jest w lini prostej;
+		 */
+		float x = x1 - YoloEngine.TeamAB[AIID].x ,y = y1 - YoloEngine.TeamAB[AIID].y;
+		
+		if(y < 2.4f && y > 0.75f) // po prostej ale trzeba skoczyc 
+			return false;
+		if(y > 0)
+			if((Math.abs(y-x) < 2.4f && Math.abs(y-x) > 1.4f)|| ( Math.abs(y+x) < 2.4f && Math.abs(y+x) > 1.4f ) ) // 
+				return false;
+		
+		return true;
+	}
+
+	private boolean isTargetInJumpHorizontalLineOfFire(int AIID, float y1)
+	{
+		float y = y1 - YoloEngine.TeamAB[AIID].y;
+		
+		if(y < 2.4f && y > 0.75f)
+			return true;
+		
+		return false;
+	}
+
+	private void fireAt(int AIID,int difficulty, boolean toAI, float x1, float y1)
+	{
+		switch(difficulty)
+		{
+			case 2:
+			if(!toAI && !isTargetInStraightLineOfFire(AIID,x1,y1) )
+				if(YoloEngine.TeamAB[AIID].vy <= -0.14f || YoloEngine.TeamAB[AIID].onGround)
+				{
+					YoloEngine.TeamAB[AIID].shouldCalculateRode = false;
+					if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+						YoloEngine.TeamAB[AIID].vy = 0.24f;
+				}
+		break;
+			case 1:
+			if(!toAI && isTargetInJumpHorizontalLineOfFire(AIID,y1))
+				if(YoloEngine.TeamAB[AIID].vy <= -0.14f || YoloEngine.TeamAB[AIID].onGround)
+				{
+					YoloEngine.TeamAB[AIID].shouldCalculateRode = false;
+					if(YoloEngine.TeamAB[AIID].jumps++ < 2)
+						YoloEngine.TeamAB[AIID].vy = 0.24f;
+				}
+		break;
+		}
+		
+		float x = x1 - YoloEngine.TeamAB[AIID].x, y = y1 - YoloEngine.TeamAB[AIID].y + 0.000001f ,degree;
+		
+		if(x != 0 )
+			degree = y/x;
+		else
+			degree = 3;
+		
+		//if(y!=0 && x != 0)
+		if( y >= 0)
+		{
+			if(degree < -2.4142)
+				YoloEngine.TeamAB[AIID].aim = 2;
+			else if(degree < -0.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 3;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = true;
+			}
+			else if(degree < -0)
+			{
+				YoloEngine.TeamAB[AIID].aim = 4;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = true;
+			}
+			else if(degree < 0.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 0;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = false;
+			}
+			else if(degree < 2.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 1;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = false;
+			}
+			else
+				YoloEngine.TeamAB[AIID].aim = 2;
+		}
+		else
+		{
+			if(degree < -2.4142)
+				YoloEngine.TeamAB[AIID].aim = 6;
+			else if(degree < -0.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 7;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = false;
+			}
+			else if(degree <= 0)
+			{
+				YoloEngine.TeamAB[AIID].aim = 0;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = false;
+			}
+			else if(degree < 0.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 4;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = true;
+			}
+			else if(degree < 2.4142)
+			{
+				YoloEngine.TeamAB[AIID].aim = 5;
+				YoloEngine.TeamAB[AIID].isPlayerLeft = true;
+			}
+			else
+				YoloEngine.TeamAB[AIID].aim = 6;
+		}				
+		playerAIFire(AIID);
+	}
+
+	private void useOffensiveSkillAt(int AIID, float x, float y, Random rng)
+	{
+		if(YoloEngine.TeamAB[AIID].difficulty == 0)
+		{
+			x += (rng.nextFloat() -.5f)*2f * YoloEngine.skillXDispersion0;
+			y += (rng.nextFloat() -.5f)*2f * YoloEngine.skillYDispersion0;
+		}
+		else if(YoloEngine.TeamAB[AIID].difficulty == 1)
+		{
+			x += (rng.nextFloat() -.5f)*2f * YoloEngine.skillXDispersion1;
+			y += (rng.nextFloat() -.5f)*2f * YoloEngine.skillYDispersion1;
+		}
+		Skill newSkill = new Skill(x,y,YoloEngine.TeamAB[AIID].skill1,YoloEngine.TeamAB[AIID].playerTeam,AIID);
+		if(YoloEngine.TeamAB[AIID].playerTeam==YoloEngine.TeamA)
+			YoloGameRenderer.skillTeamAVe.add(newSkill);
+		else
+			YoloGameRenderer.skillTeamBVe.add(newSkill);
+	}
+
+	private void useDefensiveSkill(int AIID, float x, float y)
+	{
+		Skill newSkill = new Skill(x,y,YoloEngine.TeamAB[AIID].skill2,YoloEngine.TeamAB[AIID].playerTeam,AIID);
+		if(YoloEngine.TeamAB[AIID].playerTeam==YoloEngine.TeamA)
+			YoloGameRenderer.skillTeamAVe.add(newSkill);
+		else
+			YoloGameRenderer.skillTeamBVe.add(newSkill);
+	}
+
+	private void useBuffSkill(int AIID)
+	{
+		Skill newSkill = new Skill(YoloEngine.TeamAB[AIID].x,YoloEngine.TeamAB[AIID].y,YoloEngine.TeamAB[AIID].skill3,YoloEngine.TeamAB[AIID].playerTeam,AIID);
+		if(YoloEngine.TeamAB[AIID].playerTeam==YoloEngine.TeamA)
+			YoloGameRenderer.skillTeamAVe.add(newSkill);
+		else
+			YoloGameRenderer.skillTeamBVe.add(newSkill);
+	}
+	
+	private int whereToDash(int AIID)
+	{
+		for(YoloWeapon b : Weapontab)
+		{
+			if(b.team != YoloEngine.TeamAB[AIID].playerTeam)
+			if(b.isLeft)
+			{
+				if(b.x - YoloEngine.TeamAB[AIID].x > 0 && b.x - YoloEngine.TeamAB[AIID].x < 2f)
+					if(b.y - YoloEngine.TeamAB[AIID].y > -.5f && b.y - YoloEngine.TeamAB[AIID].y < 1.5f)
+						return -1;// w lewo
+			}
+			else
+				if(b.x - YoloEngine.TeamAB[AIID].x > -1f && b.x - YoloEngine.TeamAB[AIID].x < 0)
+					if(b.y - YoloEngine.TeamAB[AIID].y > -.5f && b.y - YoloEngine.TeamAB[AIID].y < 1.5f)
+						return 1; // w prawo
+		}
+		
+		return 0;// niema nic w zasiegu 
+	}
+	
+	private void manageYourAI()
+	{	
+		int firePlayerID,skillPlayerID;
+		Random rng = new Random();
+		for(int i : YoloEngine.AIToManage)
+		{
+			//System.out.println("currNode: "+YoloEngine.TeamAB[i].currentNode +" currAcction: "+YoloEngine.TeamAB[i].acction+" targetNode: "+YoloEngine.TeamAB[i].NodesToGo.elementAt(0)+" nextNode: "+YoloEngine.TeamAB[i].NodesToGo.lastElement()+ " checkTNode: " + checkTargetNode(i)+ " checkTCNode: " + checkTargetClostestNode(i) + " shouldCalRode: "+YoloEngine.TeamAB[i].shouldCalculateRode+ " AIvy: "+YoloEngine.TeamAB[i].vy);
+			//for(int j = 0;j<YoloEngine.TeamAB[i].NodesToGo.size();j++)
+			//	System.out.println("      "+YoloEngine.TeamAB[i].NodesToGo.elementAt(j));
+			//------------------------------------DEATH CHECK-----------------------------------------------
+			
+			if(YoloEngine.TeamAB[i].PlayerLive < 0 || YoloEngine.TeamAB[i].y < 0 )
+			{
+				YoloEngine.TeamAB[i].canMove = false;
+				YoloEngine.TeamAB[i].deathCount++;
+				
+				if(YoloEngine.TeamAB[i].deathIntervalCounter++ >= YoloEngine.deathSpanInterval)
+				{
+					if(YoloEngine.TeamAB[i].playerTeam)
+						YoloEngine.TeamAB[i].x = YoloEngine.LEVEL_X/YoloEngine.TX -1;
+					else
+						YoloEngine.TeamAB[i].x = 2;
+					YoloEngine.TeamAB[i].y = 2.5f;
+					YoloEngine.TeamAB[i].PlayerLive = YoloEngine.TeamAB[i].PLAYER_LIVE_MAX;
+					YoloEngine.TeamAB[i].canMove = true;
+					YoloEngine.TeamAB[i].deathIntervalCounter =0;
+				}
+			}
+			//---------------------------Walk------------------------------
+			if(YoloEngine.TeamAB[i].canMove)
+			{
+				if(!YoloEngine.TeamAB[i].isClimbingUp)// jesli sie nie wspina to licz grawitacje
+				{
+				YoloEngine.TeamAB[i].x += YoloEngine.TeamAB[i].vx;
+				YoloEngine.TeamAB[i].y += YoloEngine.TeamAB[i].vy;
+				YoloEngine.TeamAB[i].vy -= YoloEngine.GAME_ACCELERATION;
+				
+					for(int j = 0; j < ObjectTab.length; j++)
+					{
+						if(IsCollidedTop(YoloEngine.TeamAB[i],ObjectTab[j]))
+						{
+							if(YoloEngine.TeamAB[i].vy > 0)
+								{
+									YoloEngine.TeamAB[i].onGround = false;
+								}
+							else
+								{
+									//YoloGame.flying = YoloEngine.TeamAB[i].isPlayerFlying?10:2;
+									YoloEngine.TeamAB[i].y = ObjectTab[j].y + ObjectTab[j].dy;
+									YoloEngine.TeamAB[i].vy = 0;
+									YoloEngine.TeamAB[i].platformOn = j;
+									YoloEngine.TeamAB[i].shouldCalculateRode = true;
+									YoloEngine.TeamAB[i].onGround = true;
+									YoloEngine.TeamAB[i].jumps =0;
+									
+								}
+							break;
+						}
+						YoloEngine.TeamAB[i].onGround = false;
+					}
+					if(IsCollidedTop(YoloEngine.TeamAB[i],ObjectTab[platformOn]))
+					{
+						if(YoloEngine.TeamAB[i].contact)
+						{
+							YoloEngine.TeamAB[i].contact = false;
+							YoloEngine.sp.play(YoloEngine.SoundInd[5], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+							YoloEngine.TeamAB[i].setAction(7);
+						}
+					}
+					else YoloEngine.TeamAB[i].contact = true;
+				}
+				YoloEngine.TeamAB[i].currentNode = checkAINodeMiddle(i);//sprawdza noda 
+				
+				if(YoloEngine.TeamAB[i].AICheckInterval-- <= 0 && !YoloEngine.TeamAB[i].isClimbingUp)
+				{
+					if(YoloEngine.TeamAB[i].shouldCalculateRode)
+					if(YoloEngine.TeamAB[i].currentNode > -1)
+					{
+						if(checkTargetChange(i))
+						{
+							//jest bli�szy cel
+							int NID = checkTargetNode(i);
+							if(NID > -1)
+								findShortestRode(i,NID);//YoloEngine.testNode
+							else
+								findShortestRode(i,checkTargetClostestNode(i));//YoloEngine.testNode
+						}
+						else if(checkTargetChangeNode(i))
+						{
+							//cel zmieni� noda
+							if(YoloEngine.TeamAB[i].NodesToGo.elementAt(0) > -1)
+								findShortestRode(i,YoloEngine.TeamAB[i].NodesToGo.elementAt(0));//YoloEngine.testNode
+							else
+								findShortestRode(i,checkTargetClostestNode(i));//YoloEngine.testNode
+						}
+						
+						switch(YoloEngine.TeamAB[i].difficulty)
+						{
+							case 0:
+							YoloEngine.TeamAB[i].AICheckInterval = YoloEngine.AICheckInterval0;
+						break;
+							case 1:
+							YoloEngine.TeamAB[i].AICheckInterval = YoloEngine.AICheckInterval1;
+						break;
+							case 2:
+							YoloEngine.TeamAB[i].AICheckInterval = YoloEngine.AICheckInterval2;
+						break;
+						}
+					}
+					/*else if(YoloEngine.TeamAB[i].NodesToGo.size() < 2)// jesli skonczyl droge a jest poza nodem to niech mu przypisze najblizszy
+					{
+						System.out.println("liczy bo jest poza");
+						//YoloEngine.TeamAB[i].currentNode = checkAIClosestNode(i);
+					}*/
+				}
+				
+				if(YoloEngine.TeamAB[i].NodesToGo.size() > 1)
+				{
+					//sprawdza czy kolejny node to drabina jesli tak to wykrywanie nodow jest poszerzoen o .5 do gory
+					if(YoloEngine.TeamAB[i].nextAcction == acction.ladderDown)
+						YoloEngine.TeamAB[i].currentNode = checkAINodeTranslate(i);
+					
+					if(YoloEngine.TeamAB[i].currentNode == YoloEngine.TeamAB[i].NodesToGo.lastElement())
+					{
+						//jest w aktualnym nodzie
+						makeInsideMove(i,YoloEngine.TeamAB[i].acction);
+						if(YoloEngine.TeamAB[i].isClimbingUp)// wlaczenie grawitacji jesli doszed do konca drabiny
+						{
+							YoloEngine.TeamAB[i].isClimbingUp = false;
+							YoloEngine.TeamAB[i].vy = 0;
+						}
+					}
+					else if(YoloEngine.TeamAB[i].currentNode == YoloEngine.TeamAB[i].NodesToGo.elementAt(YoloEngine.TeamAB[i].NodesToGo.size() -2))
+					{
+						//jest w nast�pnym nodzie
+						//if(YoloEngine.TeamAB[i].acction != acction.jumpLeft || YoloEngine.TeamAB[i].acction != acction.jumpRight || YoloEngine.TeamAB[i].onGround)
+							
+						YoloEngine.TeamAB[i].NodesToGo.remove(YoloEngine.TeamAB[i].NodesToGo.size() -1);
+						YoloEngine.TeamAB[i].jumps =0;
+						if(YoloEngine.TeamAB[i].NodesToGo.size() > 1)
+						{
+							YoloEngine.TeamAB[i].acction = YoloEngine.TeamAB[i].nextAcction;
+							//YoloEngine.TeamAB[i].acction = indexToAcction(i, YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[i].NodesToGo.elementAt(YoloEngine.TeamAB[i].NodesToGo.size() -2)]);
+							//jesli istnieje kolejne acction to jaki jest
+							if(YoloEngine.TeamAB[i].NodesToGo.size() > 2)
+								YoloEngine.TeamAB[i].nextAcction = indexToAcction(i, YoloEngine.map.IDtoIndex[YoloEngine.TeamAB[i].NodesToGo.elementAt(YoloEngine.TeamAB[i].NodesToGo.size() -3)],
+										YoloEngine.TeamAB[i].NodesToGo.elementAt(YoloEngine.TeamAB[i].NodesToGo.size() -2));
+							
+							makeInsideMove(i,YoloEngine.TeamAB[i].acction);
+							
+							// jesli sie wspina to go przytula do drabniy(nie ma zadnego powiazania miedzy nodami a drabinami dlatego wyszujuje najblzsza)
+							if(YoloEngine.TeamAB[i].acction == acction.ladderUP || YoloEngine.TeamAB[i].acction == acction.ladderDown)
+							{
+								for(int q=0;q<YoloGameRenderer.LaddreTab.length;q++)
+								{
+									if(YoloEngine.TeamAB[i].x + YoloEngine.xRadiusLadder/2 + .5f> YoloGameRenderer.LaddreTab[q].x &&
+											YoloEngine.TeamAB[i].x - YoloEngine.xRadiusLadder/2 +.5f < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
+									{
+										if(YoloEngine.TeamAB[i].y + YoloEngine.yRadiusLadder/2 +.5f> YoloGameRenderer.LaddreTab[q].y && 
+												YoloEngine.TeamAB[i].y - YoloEngine.yRadiusLadder/2 + .5f < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
+										{
+											if(YoloEngine.TeamAB[i].y > YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy/2)
+											{	
+												YoloEngine.TeamAB[i].isClimbingDown = true;
+												YoloEngine.TeamAB[i].x = YoloGameRenderer.LaddreTab[q].x + 0.01f;
+												break;
+											}
+											else
+											{
+												YoloEngine.TeamAB[i].isClimbingUp = true;
+												YoloEngine.TeamAB[i].x = YoloGameRenderer.LaddreTab[q].x + 0.01f;
+												break;
+											}
+										}
+									}
+								}
+							}
+								
+							if(YoloEngine.TeamAB[i].isClimbingUp)// wlaczenie grawitacji jesli doszed do konca drabiny
+							{
+								YoloEngine.TeamAB[i].isClimbingUp = false;
+								YoloEngine.TeamAB[i].vy = 0;
+							}
+						}
+						
+							
+					}
+					else if(YoloEngine.TeamAB[i].currentNode == -1)
+					{
+						//jest poza nodami
+							makeOutsideMove(i,YoloEngine.TeamAB[i].acction);
+					}
+					else
+					{
+						//zboczyl z drogi
+						if(!YoloEngine.TeamAB[i].isClimbingUp)
+							findShortestRode(i,YoloEngine.TeamAB[i].NodesToGo.elementAt(0)); //YoloEngine.testNode
+						else
+							makeOutsideMove(i,YoloEngine.TeamAB[i].acction);
+					}
+					// attak na SkillAI----------------------------------
+					if(YoloEngine.TeamAB[i].difficulty == 2)
+					{
+						//szuka SkillAI do strza�u lub skilla
+						if(YoloEngine.TeamAB[i].nextBullet-- <=0 && YoloEngine.TeamAB[i].playerMag > 0)
+						{
+							int indexSkillaFire = searchForSkillAIInFireRadius(i);
+							if(indexSkillaFire > -1)
+							{
+								fireAt(i,2,true,skillTeamAVe.elementAt(indexSkillaFire).x,skillTeamAVe.elementAt(indexSkillaFire).y);
+								YoloEngine.TeamAB[i].nextBullet = YoloEngine.TeamAB[i].firePause;
+								YoloEngine.TeamAB[i].playerMag--;
+							}
+						}
+						if(YoloEngine.TeamAB[i].playerMag == 0)
+						{
+							if(YoloEngine.TeamAB[i].reloading == 0)
+									YoloEngine.sp.play(YoloEngine.SoundInd[11], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+							
+								if(YoloEngine.TeamAB[i].reloading++ == YoloEngine.TeamAB[i].playerMagReloadTime)
+								{
+									YoloEngine.TeamAB[i].reloading =0;
+									YoloEngine.TeamAB[i].playerMag = YoloEngine.TeamAB[i].PlayerMagCapasity;
+									YoloEngine.sp.play(YoloEngine.SoundInd[12], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+								}
+						}
+						if(YoloEngine.TeamAB[i].skill1cooldown-- <= 0)
+						{
+							int indexSkillaSkill = searchForSkillAIInSkillRadius(i);
+							if(indexSkillaSkill > -1)
+							{
+								useOffensiveSkillAt(i,skillTeamAVe.elementAt(indexSkillaSkill).x,skillTeamAVe.elementAt(indexSkillaSkill).y,rng);
+								YoloEngine.TeamAB[i].skill1cooldown = YoloEngine.TeamAB[i].skill1OrginalCooldown;
+							}
+						}
+					}
+					else if(YoloEngine.TeamAB[i].difficulty == 1)
+					{
+						//szuka SkillAI do strza�u 
+						if(YoloEngine.TeamAB[i].nextBullet-- <=0 && YoloEngine.TeamAB[i].playerMag > 0)
+						{
+							int indexSkilla = searchForSkillAIInFireRadius(i);
+							if(indexSkilla > -1)
+							{
+								fireAt(i,1,true,skillTeamAVe.elementAt(indexSkilla).x,skillTeamAVe.elementAt(indexSkilla).y);
+								YoloEngine.TeamAB[i].nextBullet = YoloEngine.TeamAB[i].firePause;
+								YoloEngine.TeamAB[i].playerMag--;
+							}
+						}
+						if(YoloEngine.TeamAB[i].playerMag == 0)
+						{
+							if(YoloEngine.TeamAB[i].reloading == 0)
+									YoloEngine.sp.play(YoloEngine.SoundInd[11], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+							
+								if(YoloEngine.TeamAB[i].reloading++ == YoloEngine.TeamAB[i].playerMagReloadTime)
+								{
+									YoloEngine.TeamAB[i].reloading =0;
+									YoloEngine.TeamAB[i].playerMag = YoloEngine.TeamAB[i].PlayerMagCapasity;
+									YoloEngine.sp.play(YoloEngine.SoundInd[12], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+								}
+						}
+					}
+					//---------------------------------------------------
+				}
+				else if(YoloEngine.TeamAB[i].currentNode == YoloEngine.TeamAB[i].NodesToGo.firstElement())
+				{
+					//jest w tym samym nodzie co cel
+					if(YoloEngine.TeamAB[i].acction != acction.stand)
+						YoloEngine.TeamAB[i].acction = acction.stand;
+					folowTarget(i);
+					if(YoloEngine.TeamAB[i].isClimbingUp)
+					{
+						YoloEngine.TeamAB[i].isClimbingUp = false;
+						YoloEngine.TeamAB[i].vy = 0;
+					}
+				}
+				else 
+				{
+					//powinien byc w tym samym co gracz ale nie jest
+					if(YoloEngine.TeamAB[i].shouldCalculateRode)
+					{
+						int pomi = checkAIClosestNode(i);
+						if(YoloEngine.TeamAB[i].y + .5f < YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].y0)
+							makeOutsideMove(i, acction.jump);
+						if(YoloEngine.TeamAB[i].x + .5f < (YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].x0 + YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].x0)/2f)
+							YoloEngine.TeamAB[i].x += 0.08f;
+						else
+							YoloEngine.TeamAB[i].x -= 0.08f;
+						YoloEngine.TeamAB[i].currentNode = checkAINodeMiddle(i);
+						if( YoloEngine.TeamAB[i].currentNode > -1)
+							findShortestRode(i, checkTargetClostestNode(i));
+					}
+				}
+				if(YoloEngine.TeamAB[i].y > YoloEngine.LEVEL_Y/YoloEngine.TY)
+				{
+					if(YoloEngine.TeamAB[i].outOfBoundCounter-- < 0)
+					{
+						int pomi = checkAIClosestNode(i);
+						if(YoloEngine.TeamAB[i].y + .5f < YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].y0)
+							makeOutsideMove(i, acction.jump);
+						if(YoloEngine.TeamAB[i].x + .5f < (YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].x0 + YoloEngine.map.nodes[YoloEngine.map.IDtoIndex[pomi]].x0)/2f)
+							YoloEngine.TeamAB[i].x += 0.08f;
+						else
+							YoloEngine.TeamAB[i].x -= 0.08f;
+						YoloEngine.TeamAB[i].currentNode = checkAINodeMiddle(i);
+						if( YoloEngine.TeamAB[i].currentNode > -1)
+							findShortestRode(i, checkTargetClostestNode(i));
+						
+						YoloEngine.TeamAB[i].outOfBoundCounter = YoloEngine.outOfBoundInterval;
+					}
+				}
+				else
+					YoloEngine.TeamAB[i].outOfBoundCounter = YoloEngine.outOfBoundInterval;
+				
+				//--------------------------Offensive--------------------------
+				
+				if(YoloEngine.TeamAB[i].nextBullet-- <=0 && YoloEngine.TeamAB[i].playerMag > 0)
+				{
+					firePlayerID = searchForPlayerInFireRadius(i);
+					if(firePlayerID > -1)
+					{
+						fireAt(i,YoloEngine.TeamAB[i].difficulty,false,YoloEngine.TeamAB[firePlayerID].x,YoloEngine.TeamAB[firePlayerID].y);
+						YoloEngine.TeamAB[i].nextBullet = YoloEngine.TeamAB[i].firePause;
+						YoloEngine.TeamAB[i].playerMag--;
+					}
+				}
+				
+				if(YoloEngine.TeamAB[i].playerMag == 0)
+				{
+					if(YoloEngine.TeamAB[i].reloading == 0)
+							YoloEngine.sp.play(YoloEngine.SoundInd[11], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+					
+						if(YoloEngine.TeamAB[i].reloading++ == YoloEngine.TeamAB[i].playerMagReloadTime)
+						{
+							YoloEngine.TeamAB[i].reloading =0;
+							YoloEngine.TeamAB[i].playerMag = YoloEngine.TeamAB[i].PlayerMagCapasity;
+							YoloEngine.sp.play(YoloEngine.SoundInd[12], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
+						}
+				}
+				if(YoloEngine.TeamAB[i].skill1cooldown-- <= 0)
+				{
+					skillPlayerID = searchForPlayerInSkillRadius(i);
+					if(skillPlayerID > -1)
+					{
+						useOffensiveSkillAt(i,YoloEngine.TeamAB[skillPlayerID].x + .5f,YoloEngine.TeamAB[skillPlayerID].y + .5f,rng);
+						YoloEngine.TeamAB[i].skill1cooldown = YoloEngine.TeamAB[i].skill1OrginalCooldown;
+					}
+				}
+				
+				//--------------------------Deffensive-------------------------
+				if(YoloEngine.TeamAB[i].targetDistance <= YoloEngine.deffensiveDistance)
+				{
+					if(YoloEngine.TeamAB[i].deffensiveCooldown-- <= 0)
+						if(YoloEngine.TeamAB[i].skill2cooldown-- <= 0)
+						{
+							useDefensiveSkill(i,YoloEngine.TeamAB[YoloEngine.TeamAB[i].currentTrackedPlayerID].x, YoloEngine.TeamAB[YoloEngine.TeamAB[i].currentTrackedPlayerID].y);
+							switch(YoloEngine.TeamAB[i].difficulty)
+							{
+								case 0:
+								YoloEngine.TeamAB[i].deffensiveCooldown = 120;
+							break;
+								case 1:
+								YoloEngine.TeamAB[i].deffensiveCooldown = 30;
+							break;
+								case 2:
+								YoloEngine.TeamAB[i].deffensiveCooldown = 0;
+							break;
+							}
+							YoloEngine.TeamAB[i].skill2cooldown = YoloEngine.TeamAB[i].skill2OrginalCooldown;
+						}
+					//YoloEngine.TeamAB[i].skill2cooldown--;
+				}
+				
+				//----------------------------Buff-----------------------------
+				if(YoloEngine.TeamAB[i].buffCooldown-- <= 0)
+					if(YoloEngine.TeamAB[i].skill3cooldown-- <=0)
+					{
+						useBuffSkill(i);
+							switch(YoloEngine.TeamAB[i].difficulty)
+							{
+								case 0:
+								YoloEngine.TeamAB[i].buffCooldown = (int) (rng.nextFloat()*120);
+							break;
+								case 1:
+								YoloEngine.TeamAB[i].buffCooldown = (int) (rng.nextFloat()*30);
+							break;
+								case 2:
+								YoloEngine.TeamAB[i].buffCooldown = 0;
+							break;
+							}
+							YoloEngine.TeamAB[i].skill3cooldown = YoloEngine.TeamAB[i].skill3OrginalCooldown;
+					}
+				//YoloEngine.TeamAB[i].skill3cooldown--;
+				
+				//----------------------------Dodge----------------------------
+				if(YoloEngine.TeamAB[i].dashIntervalCounter-- < 0)
+				{
+					switch(whereToDash(i))
+					{
+					case -1:
+						YoloEngine.TeamAB[i].shouldCalculateRode = false;
+						YoloEngine.TeamAB[i].vx = 0.32f;
+						YoloEngine.TeamAB[i].dashDuration = 10;
+						YoloEngine.TeamAB[i].isPlayerInvincible = true;
+						YoloEngine.TeamAB[i].invice = 10;
+						
+						switch(YoloEngine.AIDificulty)
+						{
+						case 0:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval0;
+							break;
+						case 1:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval1;
+							break;
+						case 2:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval2;
+							break;
+						}
+						break;
+					case 1:
+						YoloEngine.TeamAB[i].shouldCalculateRode = false;
+						YoloEngine.TeamAB[i].vx = -0.32f;
+						YoloEngine.TeamAB[i].dashDuration = 10;
+						YoloEngine.TeamAB[i].isPlayerInvincible = true;
+						YoloEngine.TeamAB[i].invice = 10;
+						
+						switch(YoloEngine.AIDificulty)
+						{
+						case 0:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval0;
+							break;
+						case 1:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval1;
+							break;
+						case 2:
+							YoloEngine.TeamAB[i].dashIntervalCounter = YoloEngine.dashInterval2;
+							break;
+						}
+						break;	
+					}		
+				}
+				//-------------------------------------------------------------
+			}
+		}
+	}
+	
 	public static void weaponSelect()
 	{
 		//TODO load weapon statistics
@@ -5110,10 +6759,31 @@ public class YoloGameRenderer implements Renderer {
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);
 		
+		
 		YoloEngine.TeamAB[YoloEngine.MyID].race = YoloEngine.currentPlayerInfo.getRace();
 		YoloEngine.TeamAB[YoloEngine.MyID].weapon = YoloEngine.currentPlayerInfo.getWEQ();
 		weaponSelect();
 		
+		YoloEngine.sprite_load[0] = true;
+		YoloEngine.sprite_load[1] = true;
+		YoloEngine.sprite_load[2] = true;
+		YoloEngine.sprite_load[3] = true;
+	
+		YoloEngine.sprite_load[YoloEngine.SkillSprite1<45?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zaleï¿½y od playera
+		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zaleï¿½y od playera
+		if(YoloEngine.SkillSprite3==14||YoloEngine.SkillSprite2==14||YoloEngine.SkillSprite1==14)YoloEngine.sprite_load[27]=true;
+		if(YoloEngine.SkillSprite3==36||YoloEngine.SkillSprite2==36||YoloEngine.SkillSprite1==36)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==37||YoloEngine.SkillSprite2==37||YoloEngine.SkillSprite1==37)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==38||YoloEngine.SkillSprite2==38||YoloEngine.SkillSprite1==38)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==43||YoloEngine.SkillSprite2==43||YoloEngine.SkillSprite1==43)YoloEngine.sprite_load[41]=true;
+		if(YoloEngine.SkillSprite3==120||YoloEngine.SkillSprite2==120||YoloEngine.SkillSprite1==120)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==121||YoloEngine.SkillSprite2==121||YoloEngine.SkillSprite1==121)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==122||YoloEngine.SkillSprite2==122||YoloEngine.SkillSprite1==122)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==123||YoloEngine.SkillSprite2==123||YoloEngine.SkillSprite1==123)YoloEngine.sprite_load[32]=true;
+		if(YoloEngine.SkillSprite3==124||YoloEngine.SkillSprite2==124||YoloEngine.SkillSprite1==124)YoloEngine.sprite_load[32]=true;
+		
+//------------------------------------------INICJOWANIE OBIEKTï¿½W FIZYCZNYCH----------------------------------		
 		boolean test = false;
 		if(test)
 		{
@@ -5183,29 +6853,7 @@ public class YoloGameRenderer implements Renderer {
 		roti0 = new Triangle(skillBtnX - 100/YoloEngine.display_x/YoloEngine.xdpi, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL1_COOLDOWN,YoloEngine.r1);
 		roti1 = new Triangle(skillBtnX, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL2_COOLDOWN,YoloEngine.r2);
 		roti2 = new Triangle(skillBtnX + 100/YoloEngine.display_x/YoloEngine.xdpi, 0, 100/YoloEngine.display_x/YoloEngine.xdpi, 100/YoloEngine.display_y/YoloEngine.xdpi, YoloEngine.SKILL3_COOLDOWN,YoloEngine.r3);
-		//givePlayerID();
-		
-//------------------------------------------INICJOWANIE OBIEKTï¿½W FIZYCZNYCH----------------------------------		
-		
-		
-		YoloEngine.sprite_load[0] = true;
-		YoloEngine.sprite_load[1] = true;
-		YoloEngine.sprite_load[2] = true;
-		YoloEngine.sprite_load[3] = true;
-	
-		YoloEngine.sprite_load[YoloEngine.SkillSprite1<45?YoloEngine.SkillSprite1 : YoloEngine.SkillSprite1-87] = true;//Zaleï¿½y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite2<45?YoloEngine.SkillSprite2 : YoloEngine.SkillSprite2-87] = true;//Zaleï¿½y od playera
-		YoloEngine.sprite_load[YoloEngine.SkillSprite3<45?YoloEngine.SkillSprite3 : YoloEngine.SkillSprite3-87] = true;//Zaleï¿½y od playera
-		if(YoloEngine.SkillSprite3==14||YoloEngine.SkillSprite2==14||YoloEngine.SkillSprite1==14)YoloEngine.sprite_load[27]=true;
-		if(YoloEngine.SkillSprite3==36||YoloEngine.SkillSprite2==36||YoloEngine.SkillSprite1==36)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==37||YoloEngine.SkillSprite2==37||YoloEngine.SkillSprite1==37)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==38||YoloEngine.SkillSprite2==38||YoloEngine.SkillSprite1==38)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==43||YoloEngine.SkillSprite2==43||YoloEngine.SkillSprite1==43)YoloEngine.sprite_load[41]=true;
-		if(YoloEngine.SkillSprite3==120||YoloEngine.SkillSprite2==120||YoloEngine.SkillSprite1==120)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==121||YoloEngine.SkillSprite2==121||YoloEngine.SkillSprite1==121)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==122||YoloEngine.SkillSprite2==122||YoloEngine.SkillSprite1==122)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==123||YoloEngine.SkillSprite2==123||YoloEngine.SkillSprite1==123)YoloEngine.sprite_load[32]=true;
-		if(YoloEngine.SkillSprite3==124||YoloEngine.SkillSprite2==124||YoloEngine.SkillSprite1==124)YoloEngine.sprite_load[32]=true;
+		//givePlayerID();		
 		
 //---------------------------------------------INICJOWANIE DZWIEKOW------------------------------------------------
 		YoloEngine.sp = new SoundPool(63, AudioManager.STREAM_MUSIC, 0);
@@ -5229,7 +6877,18 @@ public class YoloGameRenderer implements Renderer {
 		YoloEngine.SoundInd[15]= YoloEngine.sp.load(YoloEngine.context, R.raw.devil_death, 1);
 	
 		
-//-----------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------AI STUFF--------------------------------------------------------
+		YoloEngine.map = new Map(R.raw.node3);
+		YoloEngine.AIToManage = new int[YoloEngine.AICount];
+		YoloEngine.AIToManage[0] = 3;
+		initAI(3);
+		//for(int i = 0;) inicjowaniae AI w odpowiednim miejscu
+//--------------------------------------------------------------------------------------------------------------------
+		
+		YoloEngine.SKILL1_COOLDOWN = (int)(YoloEngine.cooldownsTab[YoloEngine.SkillSprite1] * YoloEngine.Skill1ButtonCooldownMultiplay);
+		YoloEngine.SKILL2_COOLDOWN = (int)(YoloEngine.cooldownsTab[YoloEngine.SkillSprite2] * YoloEngine.Skill2ButtonCooldownMultiplay);
+		YoloEngine.SKILL3_COOLDOWN = (int)(YoloEngine.cooldownsTab[YoloEngine.SkillSprite3] * YoloEngine.Skill3ButtonCooldownMultiplay);
+		
 		switch(YoloEngine.SkillSprite1)
 		{
 		case 4:

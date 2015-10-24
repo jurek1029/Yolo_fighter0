@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 public class YoloGame extends Activity{
@@ -27,15 +28,17 @@ public class YoloGame extends Activity{
 	private int pointerCount,pointer2=-1,pointer3=-1;
 	private boolean dashHelp = true;
 	public static int doubleTap = 0,lastMovePointer2 =-1,currentMovePointer2 =-1;
-	private float xRadiusLadder = 2, yRadiusLadder = 2;
+	
+	
+	private int l=-1;
 	
 	private void detectClimb()
 	{
 		for(int q=0;q<YoloGameRenderer.LaddreTab.length;q++)
 		{
-			if(YoloEngine.TeamAB[YoloEngine.MyID].x + xRadiusLadder/2 + .5f> YoloGameRenderer.LaddreTab[q].x && YoloEngine.TeamAB[YoloEngine.MyID].x - xRadiusLadder/2 +.5f < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
+			if(YoloEngine.TeamAB[YoloEngine.MyID].x + YoloEngine.xRadiusLadder/2 + .5f> YoloGameRenderer.LaddreTab[q].x && YoloEngine.TeamAB[YoloEngine.MyID].x - YoloEngine.xRadiusLadder/2 +.5f < YoloGameRenderer.LaddreTab[q].x + YoloGameRenderer.LaddreTab[q].dx)
 			{
-				if(YoloEngine.TeamAB[YoloEngine.MyID].y + yRadiusLadder/2 +.5f> YoloGameRenderer.LaddreTab[q].y && YoloEngine.TeamAB[YoloEngine.MyID].y - yRadiusLadder/2 + .5f < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
+				if(YoloEngine.TeamAB[YoloEngine.MyID].y + YoloEngine.yRadiusLadder/2 +.5f> YoloGameRenderer.LaddreTab[q].y && YoloEngine.TeamAB[YoloEngine.MyID].y - YoloEngine.yRadiusLadder/2 + .5f < YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy)
 				{
 					if(YoloEngine.TeamAB[YoloEngine.MyID].y > YoloGameRenderer.LaddreTab[q].y + YoloGameRenderer.LaddreTab[q].dy/2)
 					{
@@ -377,7 +380,7 @@ public class YoloGame extends Activity{
 								{
 									if(lastMovePointer2 == 0)
 									{
-										vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
+										YoloEngine.TeamAB[YoloEngine.MyID].vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
 										YoloEngine.TeamAB[YoloEngine.MyID].vx = 0.32f;
 										YoloEngine.TeamAB[YoloEngine.MyID].dashDuration = 10;
 										YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = true;
@@ -392,7 +395,7 @@ public class YoloGame extends Activity{
 								{
 									if(lastMovePointer2 == 1)
 									{
-										vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
+										YoloEngine.TeamAB[YoloEngine.MyID].vxbuff = YoloEngine.TeamAB[YoloEngine.MyID].vx;
 										YoloEngine.TeamAB[YoloEngine.MyID].vx = -0.32f;
 										YoloEngine.TeamAB[YoloEngine.MyID].dashDuration = 10;
 										YoloEngine.TeamAB[YoloEngine.MyID].isPlayerInvincible = true;
@@ -499,7 +502,7 @@ public class YoloGame extends Activity{
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(2);
 					else 
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(12);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
+					//YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = -(int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
 					
 				}
 				if(YoloEngine.TeamAB[YoloEngine.MyID].vx > 0)
@@ -508,7 +511,7 @@ public class YoloGame extends Activity{
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(11);
 					else 
 						YoloEngine.TeamAB[YoloEngine.MyID].setAction(3);
-					YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
+					//YoloEngine.TeamAB[YoloEngine.MyID].animation_slowdown = (int)(2f/YoloEngine.TeamAB[YoloEngine.MyID].vx/6f);
 				}
 				
 				break;
@@ -598,6 +601,86 @@ public class YoloGame extends Activity{
 				}
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	    switch (keyCode) {
+	    case KeyEvent.KEYCODE_MINUS:
+	    	if(l!= -1)
+	    		YoloEngine.s += '-';
+	    	return true;
+	    	case KeyEvent.KEYCODE_PERIOD:
+	    		if(l !=-1)
+	    			YoloEngine.s += '.';
+	    		return true;
+	        case KeyEvent.KEYCODE_ENTER:
+	        	if(l == 110)//'n'
+	        	{
+		        	int temp = -1;
+		        	try 
+		        	{
+		        		temp = Integer.parseInt(YoloEngine.s);
+		        		
+		        	}
+		        	catch (NumberFormatException e)
+		        	{
+		        		System.out.println(e.getMessage());
+		        	}
+		        	if(temp > 0 && temp < YoloEngine.map.IDtoIndex.length)
+		        	{
+		        		System.out.println("Done change to: " + temp);
+		        		YoloEngine.testNode = temp;
+		        	}
+		        	else
+		        	System.out.println("out of bound");
+	        	}
+	        	if(l == 102)//'f'
+	        	{
+		        	float temp = -1;
+		        	try 
+		        	{
+		        		temp = Float.parseFloat(YoloEngine.s);
+		        		
+		        	}
+		        	catch (NumberFormatException e)
+		        	{
+		        		System.out.println(e.getMessage());
+		        	}
+		        	if(temp > 0 && temp < YoloEngine.map.IDtoIndex.length)
+		        	{
+		        		System.out.println("Done change to: " + temp);
+		        		YoloEngine.flo = temp;
+		        	}
+		        	else
+		        	System.out.println("out of bound");
+	        	}
+	        	if(l == 106)//'j'
+	        	{
+		        	float te = -1;
+		        	try 
+		        	{
+		        		te = Float.parseFloat(YoloEngine.s);
+		        		
+		        	}
+		        	catch (NumberFormatException e)
+		        	{
+		        		System.out.println(e.getMessage());
+		        	}
+		        	System.out.println("Done change to: " + te);
+		        	YoloEngine.fflo = te;
+	        	}
+	        	YoloEngine.s = "";
+	        	l =-1;
+	            return true;
+	        default:
+	        	if(l == -1)
+	        		l = keyCode+68;
+	        	else
+	        		YoloEngine.s += keyCode-7;
+	        	System.out.println(YoloEngine.s);
+	            return super.onKeyUp(keyCode, event);
+	    }
 	}
 	
 	@Override

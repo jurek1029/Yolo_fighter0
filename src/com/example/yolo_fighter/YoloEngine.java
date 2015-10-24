@@ -1,5 +1,6 @@
 package com.example.yolo_fighter;
 
+import com.example.yolo_fighter.YoloGameRenderer.Map;
 import com.example.yolo_fighter.YoloPlayerInfo;
 import com.google.android.gms.games.multiplayer.Participant;
 
@@ -31,7 +32,7 @@ public class YoloEngine {
 	public static int MyID =0;
 	public static int TeamSize = 2;
 	public static int deathSpanInterval = 300;
-	public static int creditStartValue;
+	public static int creditStartValue = 30;
 	public static int creditAllyCount = creditStartValue,creditOppinentCount = creditStartValue;
 	public static int xpForKill = 100;
 	public static int winMultiplay = 2;
@@ -101,12 +102,29 @@ public class YoloEngine {
 	public static float r1 =1;
 	public static float r2 =5;
 	public static float r3 =5;
+	public static float xRadiusLadder = 2, yRadiusLadder = 2;
 	//--------------------------------------------
 	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;
 	public static int SKILL1_COOLDOWN = 16;
 	public static int SKILL2_COOLDOWN = 104;
 	public static int SKILL3_COOLDOWN = 208;
+	
+	public static float Skill1ButtonCooldownMultiplay = .5f,Skill2ButtonCooldownMultiplay = 1f,Skill3ButtonCooldownMultiplay = 2f;
+	
+	public static int[] cooldownsTab = {0,0,0,0,30,40,100,90,70,65,
+		70,75,60,80,90,40,16,50,50,60,
+		50,21,22,40,50,80,55,27,30,80,
+		55,40,32,50,34,35,50,50,50,39,
+		40,41,42,40,44,45,46,47,48,49,
+		0,0,0,0,0,0,0,0,0,59,
+		0,0,0,0,0,0,0,0,0,69,
+		0,0,0,0,0,0,0,0,0,79,
+		0,0,0,0,0,0,0,0,0,89,
+		0,0,0,0,0,0,0,0,0,99,
+		100,101,102,60,90,105,106,107,90,100,
+		0,0,0,0,0,0,0,0,0,90,
+		100,90,90,100,100,0,110,110,0,129};
 	
 	//Multislayer SEND XXX
 	public static int SkillSprite1 = 0; //MiHu baza danych
@@ -145,6 +163,32 @@ public class YoloEngine {
 	public static int thunderDuration = 150;
 	public static int healingDuration = 300;
 	public static int buffDuration = 300;
+	//------------------AI------------------------
+	public static int AICount=1,AIDificulty = 2; // 0 easy,1 med, 2 hard
+	public static int[] AIToManage;
+	public static float fireXRadius0 = 2.5f, fireXRadius1 = 3.5f, fireXRadius2 = 5f, fireYRadius0 =5f,fireYRadius1 = 3.5f, fireYRadius2 = 5f;
+	public static float skillXRadius0 = 1.5f,  skillXRadius1 = 2.5f, skillXRadius2 = 4f, skillYRadius0 = 1f, skillYRadius1 = 2.5f, skillYRadius2 = 4f; 
+	public static float skillXDispersion0 = 1.5f, skillXDispersion1 = .75f, skillYDispersion0 = .75f, skillYDispersion1 = .5f;
+	public static int dashInterval0 = 50,dashInterval1 = 40,dashInterval2 = 30;
+	public static float deffensiveDistance = 3f;
+	public static int findingRodeOutOfNodeInterval  = 10,followDelay0 = 14,followDelay1 = 7,followDelay2 = 0; // to debuge
+	public static int AICheckInterval0 = 10,AICheckInterval1 = 5,AICheckInterval2 = 3;
+	public static int outOfBoundInterval = 60;
+	public static Map map;
+	public static int[] skill00A = {5},skill00D = {24,17},skill00B = {23},
+			skill01A = {5,18},skill01D = {29,17,20},skill01B = {23,24},
+			skill02A = {26,19},skill02D = {20,25,28,13},skill02B = {14,104,24},
+			skill10A = {4},skill10D = {15},skill10B = {9},
+			skill11A = {4},skill11D = {103,15},skill11B = {9,8},
+			skill12A = {4,108,11},skill12D = {103,108,12,11},skill12B = {7,6,109},
+			skill20A = {43},skill20D = {43},skill20B = {36,37,38},
+			skill21A = {43},skill21D = {33},skill21B = {119,121,122},
+			skill22A = {30,43},skill22D = {33,127},skill22B = {120,123,124};
+	
+	public static int testNode = 11;	
+	public static String s ="";
+	public static float flo = 0.22f;
+	public static float fflo = -0.06f;
 	//--------------------------------------------
 	
 	public static boolean isClasic = false;

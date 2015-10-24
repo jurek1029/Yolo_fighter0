@@ -3,8 +3,11 @@ package com.example.yolo_fighter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import com.example.yolo_fighter.YoloGameRenderer.acction;
 
 
 public class YoloPlayer extends YoloObject {
@@ -41,9 +44,30 @@ public class YoloPlayer extends YoloObject {
 	public boolean canMove = true;
 	private boolean a=true,b=true,c=true;
 	private boolean revers = false;
+	public boolean contact = false;
+	public int platformOn;
 	
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
 	public int playerID;
+	
+	//------------------AI-----------------
+	public int currentTrackedPlayerID;
+	public float targetDistance;
+	public int skill1,skill2,skill3;
+	public float fireXRadius,fireYRadius;
+	public float skillXRadius, skillYRadius;
+	public int difficulty;
+	public Vector<Integer> NodesToGo = new Vector<Integer>();
+	public int AICheckInterval = 0;
+	public int currentNode,jumps=0; // ID 
+	public acction acction,nextAcction;
+	public int skill1cooldown, skill2cooldown, skill3cooldown, skill1OrginalCooldown, skill2OrginalCooldown, skill3OrginalCooldown;
+	public int nextBullet;
+	public int deffensiveCooldown,buffCooldown;
+	public int  deathIntervalCounter =0,findingRodeOutOfNodeIntervalCounter  =0,followDelayCounter =0,outOfBoundCounter=0,dashIntervalCounter=0;
+	public float followXbuffer=0;
+	public boolean shouldCalculateRode; 
+	//--------------------------------------
 	
 	public int changesMade;
 	public float x_change;
@@ -54,7 +78,7 @@ public class YoloPlayer extends YoloObject {
 	public float y_lastX;
 	public boolean isServer = false;
 	
-	int race;
+	int race; // 0 Angle 1 Necro 2 Devil
 	int weapon;
 	float weaponTextureX,weaponTextureY;
 	int aim;
@@ -79,6 +103,7 @@ public class YoloPlayer extends YoloObject {
 	public float PlayerMagCapasity = 30f,playerMag = PlayerMagCapasity;
 	public int playerMagReloadTime = 100,reloading =0,baseMagReloadtime = playerMagReloadTime;
 	public int healBuffer =0;
+	public float vxbuff;
 	
 	float lx,ly,VolumeScale=1;
 	
@@ -145,7 +170,7 @@ public class YoloPlayer extends YoloObject {
 			y_texture = 0.125f;
 			x_start = 0f;
 			y_start =0.125f;
-			x_end = 0.125f	;
+			x_end = 0.125f;
 			y_end = 0.125f;
 			revers = false;
 			break;
@@ -212,6 +237,11 @@ public class YoloPlayer extends YoloObject {
 			framecount =0;
 			revers = true;
 			break;
+		case 13://CrouchLeft
+			break;
+		case 14://CrouchRight
+			break;
+			
 		}
 		
 		act = action;
@@ -229,6 +259,11 @@ public class YoloPlayer extends YoloObject {
 			fireDamage =1f;
 		}
 		
+		if(act == 2 || act == 12)
+				animation_slowdown = -(int)(2f/vx/6f);
+		if(act == 3 || act == 11)
+				animation_slowdown = (int)(2f/vx/6f);
+		
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
@@ -237,7 +272,6 @@ public class YoloPlayer extends YoloObject {
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
 		gl.glTranslatef(x_texture, y_texture, 0f);
-		gl.glTranslatef(0f, 0f, 0f);
 		draw(gl,YoloEngine.spriteSheets,2);//TODO rasa
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
@@ -549,7 +583,10 @@ public class YoloPlayer extends YoloObject {
 		if(dashDuration > 0)
 		{
 			if(--dashDuration ==0)
-				vx = YoloGame.vxbuff;
+			{
+				vx = vxbuff;
+				shouldCalculateRode = true;
+			}
 		}
 		if(PlayerLive <= 0 && ! isDead)
 		{
@@ -586,6 +623,12 @@ public class YoloPlayer extends YoloObject {
 				break;
 		}
 		
+		if(act == 2 || act == 12)
+			animation_slowdown = -(int)(2f/vx/6f);
+		if(act == 3 || act == 11)
+			animation_slowdown = (int)(2f/vx/6f);
+		
+		
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glPushMatrix();
@@ -593,9 +636,7 @@ public class YoloPlayer extends YoloObject {
 		gl.glTranslatef(x, y-YoloEngine.Y_DDROP, 0f);
 		gl.glColor4f(1f,1f,1f,1f);
 		gl.glMatrixMode(GL10.GL_TEXTURE);
-		if(isCrouch) gl.glTranslatef(0f, 0f, 0f);
-		else gl.glTranslatef(0.125f, 0f, 0f);
-		gl.glTranslatef(0f, 0f, 0f);
+		gl.glTranslatef(x_texture, y_texture, 0f);
 		draw(gl,YoloEngine.spriteSheets,2);//TODO rasa
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
@@ -891,6 +932,15 @@ public class YoloPlayer extends YoloObject {
 			isBeingHealed = LinearDraw(gl, 0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
 		}
 		
+		if(dashDuration > 0)
+		{
+			if(--dashDuration ==0)
+			{
+				vx = vxbuff;
+				shouldCalculateRode = true;
+			}
+		}
+		
 		if(PlayerLive <= 0 && ! isDead)
 		{
 			isDead = true;
@@ -958,5 +1008,6 @@ public class YoloPlayer extends YoloObject {
 		this.y_last = 1000f;
 		
 	}
-
+	
+	
 }

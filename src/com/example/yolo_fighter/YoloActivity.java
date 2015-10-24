@@ -19,13 +19,14 @@ public class YoloActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_yolo);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+
 		new Handler().postDelayed(new Thread() 
 		{
 			@Override
 			public void run()
 			{	
 				Intent mainMenu = new Intent(YoloActivity.this,YoloMainMenu.class);
+				
 				YoloActivity.this.startActivity(mainMenu);
 				YoloActivity.this.finish();
 				overridePendingTransition(R.layout.fadein, R.layout.fadeout);
@@ -33,9 +34,6 @@ public class YoloActivity extends Activity {
 			
 		},600);
 		
-		
 	}
-
-	
 	
 }

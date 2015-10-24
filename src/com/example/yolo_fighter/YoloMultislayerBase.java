@@ -271,27 +271,35 @@ public abstract class YoloMultislayerBase extends Thread {
 				break;
 			case 23:
 				YoloEngine.TeamAB[id].isPlayerFlying = true;
+				YoloEngine.TeamAB[id].flying = YoloEngine.flyingDuration;
 				break;
 			case 24:
 				YoloEngine.TeamAB[id].isPlayerDef = true;
+				YoloEngine.TeamAB[id].defed = YoloEngine.defDuration;
 				break;
 			case 25:
 				YoloEngine.TeamAB[id].isPlayerInvincible = true;
+				YoloEngine.TeamAB[id].invice = YoloEngine.InvincibleDuration;
 				break;
 			case 28:
 				YoloEngine.TeamAB[id].isPlayerDenialed = true;
+				YoloEngine.TeamAB[id].deniled = YoloEngine.denialDuration;
 				break;
 			case 29:
 				YoloEngine.TeamAB[id].isHealing = true;
+				YoloEngine.TeamAB[id].healing = YoloEngine.healingDuration;
 				break;
 			case 36:
 				YoloEngine.TeamAB[id].isPlayerBuff = true;
+				YoloEngine.TeamAB[id].buffed = YoloEngine.buffDuration;
 				break;
 			case 37:
 				YoloEngine.TeamAB[id].isPlayerFireRateBuff = true;
+				YoloEngine.TeamAB[id].fireRated = YoloEngine.buffDuration;
 				break;
 			case 38:
 				YoloEngine.TeamAB[id].isPlayerMagReloadBuff = true;
+				YoloEngine.TeamAB[id].reloadspeeded = YoloEngine.buffDuration;
 				break;
 			default:
 				System.out.println("Unrecognized bool id");
@@ -400,6 +408,7 @@ public abstract class YoloMultislayerBase extends Thread {
 
 		YoloEngine.TeamAB[playerID].x_change = ((x - YoloEngine.TeamAB[playerID].x_last) / (float) YoloEngine.MULTI_STEPS);
 		YoloEngine.TeamAB[playerID].y_change = ((y - YoloEngine.TeamAB[playerID].y_last) / (float) YoloEngine.MULTI_STEPS);
+		YoloEngine.TeamAB[playerID].vx = YoloEngine.TeamAB[playerID].x_change;
 
 		YoloEngine.TeamAB[playerID].changesMade = 0;
 
@@ -409,7 +418,7 @@ public abstract class YoloMultislayerBase extends Thread {
 		YoloEngine.TeamAB[playerID].isPlayerLeft = isLeft;
 		YoloEngine.TeamAB[playerID].PlayerLive = life;
 		YoloEngine.TeamAB[playerID].aim = aim;
-		YoloEngine.TeamAB[playerID].setAction(act);		
+		YoloEngine.TeamAB[playerID].setAction(act);
 	}
 
 	/**

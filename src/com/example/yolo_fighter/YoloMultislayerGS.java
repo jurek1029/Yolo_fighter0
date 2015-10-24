@@ -424,7 +424,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		cleanupBeforeNewPlay();
 		isServer = true;
 		
-		// launch the player selection screen
+		// launch the player selection screen (czasami wywala przy uruchomieniu gry)
 		Intent intent = Games.RealTimeMultiplayer.getSelectOpponentsIntent(mHelper.getApiClient(), gp.minPlayers-1, gp.maxPlayers-1, true);
 		mActivity.startActivityForResult(intent, RC_SELECT_PLAYERS);
 	}
