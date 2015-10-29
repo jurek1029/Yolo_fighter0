@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Vector;
@@ -308,9 +309,16 @@ class PowerUP extends YoloWeapon
 		case 0:
 			int a = rng.nextInt(50);
 			if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive + a < YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX )
+			{
 				YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive += a;
+				YoloGameRenderer.DamageBuffer.add(new ThreeNum(YoloEngine.MyID, a));
+			}
 			else
+			{
+				YoloGameRenderer.DamageBuffer.add(new ThreeNum(YoloEngine.MyID, (int)(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive + a - YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX)));
 				YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive = YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX ;
+				
+			}
 			break;
 		case 1:
 			YoloEngine.TeamAB[YoloEngine.MyID].fireDamage ++;
@@ -1319,7 +1327,15 @@ class Skill extends YoloObject
     		resurestion_count = 0;
     		damage = 20f;
     		if(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive+damage<YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX)
+    		{
 				YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive+=damage;
+				YoloGameRenderer.DamageBuffer.add(new ThreeNum(YoloEngine.MyID, (int)(damage)));
+    		}
+    		else
+    		{
+    			YoloGameRenderer.DamageBuffer.add(new ThreeNum(YoloEngine.MyID, (int)(YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive+damage-YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX)));
+    			YoloEngine.TeamAB[YoloEngine.MyID].PlayerLive=YoloEngine.TeamAB[YoloEngine.MyID].PLAYER_LIVE_MAX;
+    		}
 			sprite = 17;
     		break;
     	case 103://SlowDown
@@ -2674,13 +2690,27 @@ class Skill extends YoloObject
     }
 }
 
+class ThreeNum
+{
+	int ID,Value,part;
+	ThreeNum(int ID,int Value)
+	{
+		this.ID = ID;
+		this.Value = Value;
+		this.part = 0;
+	}
+}
+
 public class YoloGameRenderer implements Renderer {
+	
+	
 	
 	private YoloTexture TextureLoader ;
 	private YoloBackground back= new YoloBackground(),load_back=new YoloBackground(),load_front = new YoloBackground(),mag = new YoloBackground(YoloEngine.TeamAB[YoloEngine.MyID].PlayerMagCapasity/30f),
-			death = new YoloBackground(),win = new YoloBackground(),lose = new YoloBackground(),gray = new YoloBackground(),liveBarOut = new YoloBackground(),liveBarIn = new YoloBackground(),creditBarInG = new YoloBackground();
+			death = new YoloBackground(),win = new YoloBackground(),lose = new YoloBackground(),gray = new YoloBackground(),liveBarOut = new YoloBackground(),liveBarIn = new YoloBackground(),
+			creditBarInG = new YoloBackground();
 	public static YoloWeapon btn = new YoloWeapon(0,0),smo = new YoloWeapon(0,0,true);
-	private static YoloWeapon bullet,weapon;
+	private static YoloWeapon bullet,weapon,number = new YoloWeapon(0,0);
 	private Triangle roti0,roti1,roti2;
 	
 	public static YoloObject[] ObjectTab = new YoloObject[17];
@@ -2694,6 +2724,7 @@ public class YoloGameRenderer implements Renderer {
 	public static Vector<HitBox> hitBoxs = new Vector<HitBox>();
 	public static Vector<ParticleObject> particleObjectTabMy = new Vector<ParticleObject>();
 	public static Vector<ParticleObject> particleObjectTabOp = new Vector<ParticleObject>();
+	public static Vector<ThreeNum> DamageBuffer = new Vector<ThreeNum>();
 	
 	private final float MOVE_SIZE_X = 2*YoloEngine.MAX_VALUE_PLAYER_SPEED/YoloEngine.display_x/YoloEngine.xdpi; // 200/display_x
 	private final float MOVE_SIZE_Y = YoloEngine.MOVE_SIZE_Y/YoloEngine.display_y/YoloEngine.xdpi; // 50/display_y
@@ -2747,7 +2778,7 @@ public class YoloGameRenderer implements Renderer {
 	private long loopStart = 0;
 	private long loopEnd = 0;
 	private long loopRunTime = 0;
-
+	
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		loopStart = System.currentTimeMillis();
@@ -3026,6 +3057,7 @@ public class YoloGameRenderer implements Renderer {
 			spanMovePowerUPs();
 			checkForPowerUPs();
 			drawPowerUPs(gl);
+			drawNumbers(gl);//,YoloEngine.TeamAB[YoloEngine.MyID].x,YoloEngine.TeamAB[YoloEngine.MyID].y,test,-100);
 			drawControls(gl);
 			drawPlayerMag(gl);			
 			drawButtons(gl);
@@ -3354,15 +3386,25 @@ public class YoloGameRenderer implements Renderer {
 									else if(YoloEngine.TeamAB[YoloEngine.MyID].race == 2)
 										YoloEngine.sp.play(YoloEngine.SoundInd[7], YoloEngine.Volume*VolumeScale, YoloEngine.Volume*VolumeScale, 1, 0, 1f);
 									YoloEngine.TeamAB[j].PlayerLive -= Weapontab.get(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
+									DamageBuffer.add(new ThreeNum(j, -(int)(Weapontab.get(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction)));
 									if(YoloEngine.TeamAB[j].PlayerLive <= 0)
 										if(YoloEngine.TeamAB[j].playerTeam == YoloEngine.TeamAB[YoloEngine.MyID].playerTeam)
-											YoloEngine.creditAllyCount--;
+											if(!YoloEngine.TeamAB[j].creditTaken)
+											{
+												YoloEngine.creditAllyCount--;
+												YoloEngine.TeamAB[j].creditTaken = true;
+											}
 										else
 										{
-											YoloEngine.creditOppinentCount--;
-											if(Weapontab.get(i).playerID == YoloEngine.MyID)
+											if(!YoloEngine.TeamAB[j].creditTaken)
 											{
-												YoloEngine.TeamAB[YoloEngine.MyID].xp += YoloEngine.xpForKill;	
+												YoloEngine.TeamAB[j].creditTaken = true;
+											
+												YoloEngine.creditOppinentCount--;
+												if(Weapontab.get(i).playerID == YoloEngine.MyID)
+												{
+													YoloEngine.TeamAB[YoloEngine.MyID].xp += YoloEngine.xpForKill;	
+												}
 											}
 										}
 									if(Weapontab.get(i).playerID == YoloEngine.MyID)
@@ -3906,6 +3948,7 @@ public class YoloGameRenderer implements Renderer {
 			liveBarOut.loadTexture(gl, R.drawable.emptybar, YoloEngine.context);
 			liveBarIn.loadTexture(gl, R.drawable.barfilling, YoloEngine.context);
 			creditBarInG.loadTexture(gl, R.drawable.barfillingg, YoloEngine.context);
+			YoloEngine.spriteSheets = TextureLoader.loadTexture(gl, R.drawable.num, YoloEngine.context, 42);
 			toLoad = false;
 			break;
 		}
@@ -4726,9 +4769,15 @@ public class YoloGameRenderer implements Renderer {
 								break;
 							case 14:
 								if(YoloEngine.TeamAB[j].PlayerLive + hitBoxs.elementAt(i).damage < YoloEngine.TeamAB[j].PLAYER_LIVE_MAX && YoloEngine.TeamAB[j].PlayerLive>0)
+								{
 									YoloEngine.TeamAB[j].PlayerLive += hitBoxs.elementAt(i).damage;
+									DamageBuffer.add(new ThreeNum(j, -(int)(hitBoxs.elementAt(i).damage)));
+								}
 								else
+								{
+									DamageBuffer.add(new ThreeNum(j, -(int)(YoloEngine.TeamAB[j].PlayerLive + hitBoxs.elementAt(i).damage - YoloEngine.TeamAB[j].PLAYER_LIVE_MAX)));
 									YoloEngine.TeamAB[j].PlayerLive = YoloEngine.TeamAB[j].PLAYER_LIVE_MAX;
+								}
 								break;
 							case 18:
 								YoloEngine.TeamAB[j].frozen = 100;
@@ -4749,7 +4798,10 @@ public class YoloGameRenderer implements Renderer {
 								break;
 							case 109:
 								if(YoloEngine.TeamAB[j].PlayerLive<=0)
+								{
 									YoloEngine.TeamAB[j].PlayerLive = YoloEngine.TeamAB[j].PLAYER_LIVE_MAX/2;
+									DamageBuffer.add(new ThreeNum(j, (int)(YoloEngine.TeamAB[j].PLAYER_LIVE_MAX/2)));
+								}
 								break;
 							case 103:
 								YoloEngine.TeamAB[j].slowDowned = 300;
@@ -4792,6 +4844,7 @@ public class YoloGameRenderer implements Renderer {
 								{
 									YoloEngine.sp.play(YoloEngine.SoundInd[10], YoloEngine.Volume, YoloEngine.Volume, 1, 0, 1f);
 									YoloEngine.TeamAB[j].PlayerLive -= hitBoxs.elementAt(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction;
+									DamageBuffer.add(new ThreeNum(j, -(int)(hitBoxs.elementAt(i).damage*YoloEngine.TeamAB[j].Player_Dmg_reduction)));
 								}
 							}
 							if(hitBoxs.elementAt(i).sprite!=33)hitBoxs.elementAt(i).hitAIs.add(YoloEngine.TeamAB[j].playerID);
@@ -5249,6 +5302,98 @@ public class YoloGameRenderer implements Renderer {
 		creditBarInG.draw(gl);
 		gl.glPopMatrix();
 		gl.glLoadIdentity();
+	}
+	
+	private void drawNumbers(GL10 gl)//,float x,float y,float part,int Value)
+	{
+		gl.glEnable(GL10.GL_COLOR_MATERIAL) ;
+		Iterator<ThreeNum> it = DamageBuffer.iterator();
+		while(it.hasNext())
+		{
+			ThreeNum n = it.next();
+			if(n.part < YoloEngine.numFadeOutTime)
+			{
+				String s  = String.valueOf(n.Value);
+				float yy = .25f,tx=0,ty=yy,xTranslate,yTranslate;
+				
+				yTranslate = .5f*(n.part/YoloEngine.numFadeOutTime) + 1.2f - YoloEngine.Y_DDROP;
+				xTranslate = ((5f - s.length())/2f)/5f; 
+				for(int i = 0;i<s.length();i++)
+				{
+					switch(s.charAt(i))
+					{
+						case '-':
+							tx = .25f;
+							ty = yy + .125f;
+							break;
+						case '0':
+							tx = 0;
+							ty = yy;
+							break;
+						case '1':
+							tx = .125f;
+							ty = yy;
+							break;
+						case '2':
+							tx = .25f;
+							ty = yy;
+							break;
+						case '3':
+							tx = .375f;
+							ty = yy;
+							break;
+						case '4':
+							tx = .5f;
+							ty = yy;
+							break;
+						case '5':
+							tx = .625f;
+							ty = yy;
+							break;
+						case '6':
+							tx = .75f;
+							ty = yy;
+							break;
+						case '7':
+							tx = .875f;
+							ty = yy;
+							break;
+						case '8':
+							tx = 0;
+							ty = yy + .125f;
+							break;
+						case '9':
+							tx = .125f;
+							ty = yy + .125f;
+							break;
+					}
+				
+					gl.glMatrixMode(GL10.GL_MODELVIEW);
+					gl.glLoadIdentity();
+					gl.glPushMatrix();
+					gl.glScalef(YoloEngine.TEXTURE_SIZE_X/5f,YoloEngine.TEXTURE_SIZE_Y/5f, 1f);
+					gl.glTranslatef((YoloEngine.TeamAB[n.ID].x + xTranslate + i*.15f)*5f,(YoloEngine.TeamAB[n.ID].y + yTranslate)*5f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					if(n.Value < 0)
+						gl.glColor4f(1f,0f,0f,(1.3f - (n.part/YoloEngine.numFadeOutTime)));
+					else
+						gl.glColor4f(0f,1f,0f,(1.3f - (n.part/YoloEngine.numFadeOutTime)));
+					gl.glTranslatef(tx, ty, 0);
+					btn.draw(gl,YoloEngine.spriteSheets,42);
+					gl.glPopMatrix();
+					gl.glLoadIdentity();
+					//gl.glMatrixMode(GL10.GL_MODELVIEW);
+					//gl.glTranslatef(.15f, 0, 0);
+					n.part++;
+				}
+				
+			}
+			else
+			{
+				it.remove();
+			}
+		}
+		gl.glDisable(GL10.GL_COLOR_MATERIAL) ;
 	}
 	
 	enum acction
@@ -6754,7 +6899,7 @@ public class YoloGameRenderer implements Renderer {
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 //-------------------------------------------WCZYTYWANIE TEXTUREK----------------------------------------------
-		TextureLoader = new YoloTexture(gl,45);
+		TextureLoader = new YoloTexture(gl,46);
 		back.loadTexture(gl, R.drawable.aniol_tlo_loading, YoloEngine.context);
 		load_back.loadTexture(gl, R.drawable.pasek_back, YoloEngine.context);
 		load_front.loadTexture(gl, R.drawable.pasek_wypelnienie, YoloEngine.context);

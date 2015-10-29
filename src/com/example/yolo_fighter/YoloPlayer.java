@@ -45,10 +45,11 @@ public class YoloPlayer extends YoloObject {
 	private boolean a=true,b=true,c=true;
 	private boolean revers = false;
 	public boolean contact = false;
+	public boolean creditTaken = false;
 	public int platformOn;
 	
 	public boolean playerTeam = false; // 0 - teamA, 1 - teamB
-	public int playerID;
+	public int playerID,index;
 	
 	//------------------AI-----------------
 	public int currentTrackedPlayerID;
@@ -125,11 +126,12 @@ public class YoloPlayer extends YoloObject {
 		0, 1, 2,
 		0, 2, 3
 	};
-	public YoloPlayer(float x,float y,boolean team,int playerID)
+	public YoloPlayer(float x,float y,boolean team,int playerID,int index)
 	{
 		super(x,y);
 		this.playerTeam = team;
 		this.playerID = playerID;
+		this.index = index;
 		this.isServer = false;
 		x_texture =0.25f;y_texture = 0f;
 		x_start = 0.25f	;y_start =0f;
@@ -331,7 +333,8 @@ public class YoloPlayer extends YoloObject {
 				animation_slowdown =0;
 			}
 		}
-		
+		if(PlayerLive > 0)
+			creditTaken = false;
 	
 		if(livebar)
 		{
@@ -362,6 +365,7 @@ public class YoloPlayer extends YoloObject {
 		if(isPlayerPoisoned)
 		{
 			PlayerLive -= 0.1f;
+		//	YoloGameRenderer.DamageBuffer.add(new ThreeNum(index, (int)()));
 			if(poisoned-- == 0)
 				isPlayerPoisoned = false;	
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
@@ -574,10 +578,15 @@ public class YoloPlayer extends YoloObject {
 			if(PlayerLive+healBuffer < PLAYER_LIVE_MAX)
 			{
     			PlayerLive += healBuffer;
+    			YoloGameRenderer.DamageBuffer.add(new ThreeNum(index, (int)(healBuffer)));
     			healBuffer =0;
 			}
     		else
+    		{
+    			YoloGameRenderer.DamageBuffer.add(new ThreeNum(index,(int)(PlayerLive+healBuffer-PLAYER_LIVE_MAX)));
     			PlayerLive = PLAYER_LIVE_MAX;
+    			healBuffer =0;
+    		}
 			isBeingHealed =	LinearDraw(gl,0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
 		}
 		if(dashDuration > 0)
@@ -716,6 +725,9 @@ public class YoloPlayer extends YoloObject {
 				animation_slowdown =0;
 			}
 		}
+		
+		if(PlayerLive > 0)
+			creditTaken = false;
 		
 		if(isPlayerPoisoned)
 		{
@@ -924,10 +936,15 @@ public class YoloPlayer extends YoloObject {
 			if(PlayerLive+healBuffer < PLAYER_LIVE_MAX)
 			{
     			PlayerLive += healBuffer;
+    			YoloGameRenderer.DamageBuffer.add(new ThreeNum(index, healBuffer));
     			healBuffer =0;
 			}
     		else
+    		{
+    			YoloGameRenderer.DamageBuffer.add(new ThreeNum(index, (int)(PlayerLive+healBuffer-PLAYER_LIVE_MAX)));
     			PlayerLive = PLAYER_LIVE_MAX;
+    			healBuffer =0;
+    		}
 			
 			isBeingHealed = LinearDraw(gl, 0, 0.875f, 0.875f, 17,0,-YoloEngine.Y_DDROP,1,1);
 		}

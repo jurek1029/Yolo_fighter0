@@ -380,7 +380,7 @@ public class YoloMultislayerBT extends YoloMultislayerBase {
 		isServer = false;
 		opponentName = "";
 		for (int i = 0; i < YoloEngine.TeamAB.length; i++) {			
-			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);
+			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666,i);
 		}
 		if (YoloEngine.participantsBT != null)
 			YoloEngine.participantsBT.clear();

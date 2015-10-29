@@ -27,7 +27,7 @@ public class YoloEngine {
 	public static final int WEAPON_SPRITE = R.drawable.weapon_sprite;
 	public static final int LIVE_BAR_0 = R.drawable.ramka;
 	public static final int LIVE_BAR_1 = R.drawable.pasek_srodek;
-	public static YoloPlayer[] TeamAB = {new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666),new YoloPlayer(1000f, 1000f, false, 666)};//new YoloPlayer[4];
+	public static YoloPlayer[] TeamAB = {new YoloPlayer(1000f, 1000f, false, 666,0),new YoloPlayer(1000f, 1000f, false, 666,1),new YoloPlayer(1000f, 1000f, false, 666,2),new YoloPlayer(1000f, 1000f, false, 666,3)};//new YoloPlayer[4];
 	public static boolean TeamA = false, TeamB = true;
 	public static int MyID =0;
 	public static int TeamSize = 2;
@@ -72,7 +72,7 @@ public class YoloEngine {
 	public static final int STAMINA_SPRITE  = R.drawable.stamina_sprite;
 	public static final int EARTHWAVE_SPRITE = R.drawable.earth_wave_sprite;
 	
-	public static int[] spriteSheets = new int[42];
+	public static int[] spriteSheets = new int[43];
 	public static boolean[] sprite_load = new boolean[44];
 	//----------------SCALE----------------------
 	public static float TX = 100;//pixele
@@ -103,6 +103,7 @@ public class YoloEngine {
 	public static float r2 =5;
 	public static float r3 =5;
 	public static float xRadiusLadder = 2, yRadiusLadder = 2;
+	public static float numFadeOutTime = 60;
 	//--------------------------------------------
 	//-----------------SKILL----------------------
 	public static int SKILL_ID = 0;
@@ -182,8 +183,8 @@ public class YoloEngine {
 			skill11A = {4},skill11D = {103,15},skill11B = {9,8},
 			skill12A = {4,108,11},skill12D = {103,108,12,11},skill12B = {7,6,109},
 			skill20A = {43},skill20D = {43},skill20B = {36,37,38},
-			skill21A = {43},skill21D = {33},skill21B = {119,121,122},
-			skill22A = {30,43},skill22D = {33,127},skill22B = {120,123,124};
+			skill21A = {43},skill21D = {36},skill21B = {119,121,122},
+			skill22A = {30,43},skill22D = {127},skill22B = {120,123,124};
 	
 	public static int testNode = 11;	
 	public static String s ="";

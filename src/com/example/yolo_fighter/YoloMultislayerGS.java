@@ -434,7 +434,7 @@ public class YoloMultislayerGS extends YoloMultislayerBase implements RealTimeMe
 		fromAutomatch = false;
 		isServer = false;
 		for (int i = 0; i < YoloEngine.TeamAB.length; i++) {			
-			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666);
+			YoloEngine.TeamAB[i] =  new YoloPlayer(1000f, 1000f, false, 666,i);
 		}
 		if (YoloEngine.participants != null)
 			YoloEngine.participants.clear();
